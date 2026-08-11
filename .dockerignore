@@ -1,0 +1,23 @@
+# Docker / build context — never ship production secrets into images
+.env
+.env.*
+!.env.example
+.env.local
+.env.production
+.dev.vars
+*.pem
+*.key
+id_rsa*
+*.p12
+*.pfx
+wallet.json
+**/private-keys/
+node_modules/
+.git/
+.wrangler/
+coverage/
+dist/
+dist-worker/
+.cursor/
+.specstory/
+*.log
