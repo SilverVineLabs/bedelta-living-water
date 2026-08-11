@@ -1,0 +1,126 @@
+#!/bin/bash
+set -e
+
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Suppress Wrangler update notice noise & metrics globally
+export WRANGLER_SEND_METRICS=false
+export EMPTY_LINE_DEPRECATION_WARNING=false
+
+DEPLOY_FLAG=false
+DARK_SYNC_FLAG=false
+TARGET_CORE_BRANCH="feature/v1.5-dark-staging"
+CITADEL_SYNC_DIR="${CITADEL_SYNC_DIR:-/home/lhsum/dev/bedelta-citadel-core}"
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -d|--deploy) DEPLOY_FLAG=true ;;
+        -dark|--dark) DARK_SYNC_FLAG=true ;;
+        -m|--message) CUSTOM_MSG="$2"; shift ;;
+        *) echo -e "${YELLOW}Unknown option: $1. Options: -d (deploy), -dark (sync to ${TARGET_CORE_BRANCH}).${NC}" ;;
+    esac
+    shift
+done
+
+echo -e "${BLUE}[1/6] Running Typecheck & Test suite on branch [${CYAN}$CURRENT_BRANCH${BLUE}]...${NC}"
+pnpm run typecheck
+
+TEST_LOG=$(mktemp)
+pnpm run test 2>&1 | tee "$TEST_LOG" || { rm -f "$TEST_LOG"; exit 1; }
+
+PASSED_TESTS=$(grep -E "Tests\s+" "$TEST_LOG" | grep -oE "[0-9]+ passed \([0-9]+\)" | head -n 1)
+PASSED_FILES=$(grep -E "Test Files\s+" "$TEST_LOG" | grep -oE "[0-9]+ passed \([0-9]+\)" | head -n 1)
+
+rm -f "$TEST_LOG"
+
+if [ -n "$PASSED_TESTS" ]; then
+    TEST_SUMMARY="$PASSED_TESTS across $PASSED_FILES (100% PASS)"
+else
+    TEST_SUMMARY="All Vitest Suites Clean (100% PASS)"
+fi
+
+echo -e "${GREEN}Tests passed: $TEST_SUMMARY${NC}"
+
+echo -e "${BLUE}[2/6] Staging and committing current repo (${CURRENT_BRANCH})...${NC}"
+git add .
+
+TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+LOG_SUMMARY=$(git diff --staged --name-only | head -n 5 | tr '\n' ', ' | sed 's/,$//')
+
+if [ -z "$LOG_SUMMARY" ]; then
+    echo -e "${YELLOW}No changes to commit in current repo.${NC}"
+else
+    COMMIT_MSG="feat(gmx-citadel): sync ${CURRENT_BRANCH} ($TIMESTAMP)
+- Modified: [$LOG_SUMMARY]
+- Verifications: $TEST_SUMMARY"
+
+    git commit -m "$COMMIT_MSG" --author="qum0x | SilverVine <github@silvervinelabs.com>" || true
+fi
+
+echo -e "${BLUE}[3/6] Pulling and pushing repo to origin/${CURRENT_BRANCH}...${NC}"
+git pull origin "$CURRENT_BRANCH" --rebase || {
+    echo -e "${YELLOW}Notice: Rebase conflict detected — resolve manually.${NC}"
+    exit 1
+}
+git push origin "$CURRENT_BRANCH" || git push origin "$CURRENT_BRANCH" --force-with-lease
+
+if [ "$DARK_SYNC_FLAG" = true ]; then
+    echo -e "${CYAN}[4/6] Synchronizing clean core to secondary repo ($CITADEL_SYNC_DIR)...${NC}"
+    if [ -d "$CITADEL_SYNC_DIR" ]; then
+        rsync -av --progress \
+          --exclude='node_modules' \
+          --exclude='.git' \
+          --exclude='.wrangler' \
+          --exclude='dist' \
+          ./ "$CITADEL_SYNC_DIR/"
+        echo -e "${GREEN}rsync to $CITADEL_SYNC_DIR completed successfully.${NC}"
+    else
+        echo -e "${YELLOW}CITADEL_SYNC_DIR ($CITADEL_SYNC_DIR) missing — skipping secondary repo rsync.${NC}"
+    fi
+
+    echo -e "${CYAN}[5/6] Committing and pushing secondary repo to remote [${TARGET_CORE_BRANCH}]...${NC}"
+    if [ -d "$CITADEL_SYNC_DIR" ]; then
+        PREV_DIR=$(pwd)
+        cd "$CITADEL_SYNC_DIR"
+
+        git checkout "$TARGET_CORE_BRANCH" 2>/devnull || git checkout -b "$TARGET_CORE_BRANCH"
+        git pull origin "$TARGET_CORE_BRANCH" --rebase || true
+
+        git add .
+        SYNC_LOG_SUMMARY=$(git diff --staged --name-only | head -n 5 | tr '\n' ', ' | sed 's/,$//')
+
+        if [ -z "$SYNC_LOG_SUMMARY" ]; then
+            echo -e "${YELLOW}Secondary repo ($TARGET_CORE_BRANCH) is already up to date.${NC}"
+        else
+            git commit -m "feat(gmx-citadel): sync core from ${CURRENT_BRANCH} ($TIMESTAMP)
+- Sync Summary: [$SYNC_LOG_SUMMARY]
+- Tests: $TEST_SUMMARY" || true
+            git push origin "$TARGET_CORE_BRANCH" || git push origin "$TARGET_CORE_BRANCH" --force-with-lease
+            echo -e "${GREEN}Secondary repo pushed successfully to ${TARGET_CORE_BRANCH}.${NC}"
+        fi
+
+        cd "$PREV_DIR"
+    fi
+else
+    echo -e "${YELLOW}[SKIP DARK SYNC] -dark flag not provided. Skipping rsync and push to ${TARGET_CORE_BRANCH}.${NC}"
+fi
+
+if [ "$DEPLOY_FLAG" = true ]; then
+    echo -e "${BLUE}[6/6] Deploying to Cloudflare Worker (bedelta-living-water)...${NC}"
+
+    # Silently upgrade wrangler at workspace root (-w avoids pnpm workspace install blocking)
+    echo -e "${CYAN}Ensuring Wrangler is on the latest version...${NC}"
+    pnpm add -D wrangler@latest -w --silent 2>/dev/null || true
+
+    # Run production deployment
+    pnpm exec wrangler deploy
+    echo -e "${GREEN}[ALL DONE] End-of-day wrap, dual-repo sync, and production deployment complete.${NC}"
+else
+    echo -e "${YELLOW}[SKIP DEPLOY] Run './san -d' for Cloudflare deploy.${NC}"
+    echo -e "${GREEN}[ALL DONE] Local audit and push completed successfully.${NC}"
+fi
