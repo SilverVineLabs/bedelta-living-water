@@ -1,0 +1,89 @@
+import { afterEach, describe, expect, it } from "vitest";
+import { buildArbitrumCitadelRiskMetrics } from "../../src/routes/grant-audit-lib/grant-audit-citadel-metrics";
+import {
+  __setGmxBalancerCacheForTests,
+  buildGmxBalancerMetrics,
+  cacheGmxBalancerSnapshot,
+  evaluateAndCacheGmxBalancer,
+  evaluateGmxBalancerQualification,
+  resolveGmxUnderweightSide,
+} from "../../src/services/yield/gmx-v2-balancer";
+import {
+  __setGmxPriceImpactCacheForTests,
+  cacheGmxPriceImpactSnapshot,
+  estimatePreliminaryImpact,
+} from "../../src/services/yield/gmx-v2-price-impact";
+
+afterEach(() => {
+  __setGmxBalancerCacheForTests(null);
+  __setGmxPriceImpactCacheForTests(null);
+});
+
+describe("gmx-v2-balancer", () => {
+  it("resolveGmxUnderweightSide picks lighter GM leg", () => {
+    expect(resolveGmxUnderweightSide({ longTokenUsd: 6_000_000, shortTokenUsd: 2_000_000 })).toBe("short");
+    expect(resolveGmxUnderweightSide({ longTokenUsd: 1_000_000, shortTokenUsd: 4_000_000 })).toBe("long");
+  });
+
+  it("qualifies short on long-heavy pool with positive rebate bps", () => {
+    const result = evaluateGmxBalancerQualification({
+      orderSizeUsd: 200_000,
+      isLong: false,
+      pool: { longTokenUsd: 6_000_000, shortTokenUsd: 2_000_000 },
+    });
+    expect(result.underweightSide).toBe("short");
+    expect(result.isUnderweightSideOrder).toBe(true);
+    expect(result.isGmxBalancerQualified).toBe(true);
+    expect(result.expectedPriceImpactRebateBps).toBeGreaterThan(0);
+    expect(result.expectedPriceImpactRebateBps).toBe(result.priceImpactSubsidiesBps);
+  });
+
+  it("rejects long order that worsens long-heavy pool", () => {
+    const result = evaluateGmxBalancerQualification({
+      orderSizeUsd: 100_000,
+      isLong: true,
+      pool: { longTokenUsd: 6_000_000, shortTokenUsd: 2_000_000 },
+    });
+    expect(result.isUnderweightSideOrder).toBe(false);
+    expect(result.isGmxBalancerQualified).toBe(false);
+    expect(result.expectedPriceImpactRebateBps).toBe(0);
+  });
+
+  it("buildGmxBalancerMetrics reads dedicated cache", () => {
+    const evalResult = evaluateGmxBalancerQualification({
+      orderSizeUsd: 50_000,
+      isLong: false,
+      pool: { longTokenUsd: 5_000_000, shortTokenUsd: 2_500_000 },
+    });
+    cacheGmxBalancerSnapshot("ETH", 50_000, false, evalResult);
+    const metrics = buildGmxBalancerMetrics();
+    expect(metrics.isGmxBalancerQualified).toBe(true);
+    expect(metrics.expectedPriceImpactRebateBps).toBeGreaterThan(0);
+  });
+
+  it("buildGmxBalancerMetrics falls back to price-impact cache", () => {
+    const impact = estimatePreliminaryImpact({
+      orderSizeUsd: 100_000,
+      isLong: false,
+      pool: { longTokenUsd: 5_000_000, shortTokenUsd: 2_000_000 },
+    });
+    cacheGmxPriceImpactSnapshot("ETH", 100_000, false, impact);
+    const metrics = buildGmxBalancerMetrics();
+    expect(metrics.isGmxBalancerQualified).toBe(true);
+    expect(metrics.underweightSide).toBe("short");
+  });
+
+  it("evaluateAndCacheGmxBalancer exposes grant-audit citadel fields", () => {
+    evaluateAndCacheGmxBalancer({
+      symbol: "ETH",
+      orderSizeUsd: 100_000,
+      isLong: false,
+      pool: { longTokenUsd: 5_000_000, shortTokenUsd: 2_000_000 },
+    });
+    const citadel = buildArbitrumCitadelRiskMetrics();
+    expect(citadel.isGmxBalancerQualified).toBe(true);
+    expect(citadel.expectedPriceImpactRebateBps).toBeGreaterThan(0);
+    expect(citadel.gmxUnderweightSide).toBe("short");
+    expect(citadel.metricsBuildMs).toBeLessThan(50);
+  });
+});

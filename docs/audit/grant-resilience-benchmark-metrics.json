@@ -1,0 +1,58 @@
+{
+  "protocol": "Santenmoku v0.9",
+  "harness": "grant-advanced-resilience-benchmark",
+  "sourceSync": "bedelta-citadel-core",
+  "tests": {
+    "toctou": {
+      "pass": true,
+      "phase1Pass": true,
+      "phase2FailClosed": true,
+      "sagaPhase": "COMPENSATE",
+      "compensationTriggered": true,
+      "orderTimeout": true,
+      "reasons": [
+        "INVALID_ORACLE_TIMESTAMP_FAIL_CLOSED",
+        "CROSS_VENUE_SLIPPAGE=2.0000%>0.5%"
+      ],
+      "keeperDelayMs": 2000
+    },
+    "failover": {
+      "pass": true,
+      "maxFailoverMs": 40.29964000000018,
+      "falseNegatives": 0,
+      "gateChecks": 6,
+      "routes": [
+        {
+          "route": "https://rpc.ankr.com/arbitrum",
+          "failoverMs": 2.230011000000104,
+          "primaryFailed": true,
+          "statusCode": 200
+        },
+        {
+          "route": "https://rpc.ankr.com/arbitrum",
+          "failoverMs": 0.2622679999999491,
+          "primaryFailed": true,
+          "statusCode": 200
+        },
+        {
+          "route": "https://rpc.ankr.com/arbitrum",
+          "failoverMs": 40.29964000000018,
+          "primaryFailed": true,
+          "statusCode": 200
+        }
+      ]
+    },
+    "benchmark": {
+      "pass": true,
+      "meanLatencyMs": 0.1566,
+      "heapDeltaMb": 0.3875,
+      "gcUsed": true,
+      "iterations": 10000,
+      "sloTargetMs": 1,
+      "soilSloMs": 500
+    }
+  },
+  "allPass": true,
+  "durationMs": 4356,
+  "generatedAt": "2026-08-14T14:16:38.317Z"
+}

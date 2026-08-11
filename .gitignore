@@ -1,0 +1,74 @@
+# Build & Temp
+node_modules/
+dist/
+dist-worker/
+.wrangler/
+coverage/
+.pnpm-store/
+
+# Secrets & Local Configs
+.dev.vars
+.env.production
+.env
+.env.*
+!.env.example
+.env.local
+# wrangler.toml is committed SSOT (no secrets); do not re-ignore
+.cursor/
+.specstory/
+*.log
+.DS_Store
+logs/*
+!logs/.gitkeep
+
+# Design drafts & local brand artifacts (public/brand/ release assets are tracked SSOT)
+public/brand/drafts/
+public/brand/**/*draft*
+public/brand/**/*_wip.*
+design/
+*.psd
+*.ai
+*.sketch
+
+# Private Keys & Wallet
+*.pem
+*.key
+id_rsa*
+*.p12
+*.pfx
+wallet.json
+**/private-keys/
+
+# Lock Workspace & Dev Tooling
+*.code-workspace
+.grantignore
+san
+
+# ------------------------------------------------------------------------------
+# STRICT OPSEC WHITELIST FOR DOCUMENTS (BLOCK EVERYTHING BY DEFAULT)
+# ------------------------------------------------------------------------------
+# Block all root-level and sub-folder markdown files by default
+*.md
+docs/**
+
+# EXPLICITLY ALLOW ONLY PUBLIC GRANT ARTIFACTS
+!README.md
+!LICENSE
+!DOCKER_README.md
+!docs/ARCHITECTURE.md
+!docs/ARBITRUM_ONE_PAGER.md
+!docs/map_Index.md
+!docs/SLA.md
+!docs/TCA_Data_Product.md
+!docs/README.md
+!docs/grant/GRANT_PROPOSAL.md
+!docs/audit/chaos-blackswan-metrics.json
+!docs/audit/grant-resilience-benchmark-metrics.json
+!docs/grant/
+!docs/grant/**
+!SECURITY.md
+!docs/audit/
+!docs/audit/negative-proofs-artifact.json
+!docs/logging/
+!docs/logging/**
+

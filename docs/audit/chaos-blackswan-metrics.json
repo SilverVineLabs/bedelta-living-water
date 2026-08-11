@@ -1,0 +1,79 @@
+{
+  "protocol": "Santenmoku v0.9",
+  "matrix": "Blackswan Chaos A–K",
+  "totalCases": 262,
+  "crashes": 0,
+  "failClosedTrips": 256,
+  "mismatches": 0,
+  "pass": true,
+  "groups": {
+    "A": {
+      "total": 26,
+      "trips": 24,
+      "crashes": 0,
+      "mismatches": 0
+    },
+    "B": {
+      "total": 26,
+      "trips": 25,
+      "crashes": 0,
+      "mismatches": 0
+    },
+    "C": {
+      "total": 26,
+      "trips": 26,
+      "crashes": 0,
+      "mismatches": 0
+    },
+    "D": {
+      "total": 26,
+      "trips": 24,
+      "crashes": 0,
+      "mismatches": 0
+    },
+    "E": {
+      "total": 26,
+      "trips": 26,
+      "crashes": 0,
+      "mismatches": 0
+    },
+    "F": {
+      "total": 25,
+      "trips": 25,
+      "crashes": 0,
+      "mismatches": 0
+    },
+    "G": {
+      "total": 25,
+      "trips": 25,
+      "crashes": 0,
+      "mismatches": 0
+    },
+    "H": {
+      "total": 25,
+      "trips": 25,
+      "crashes": 0,
+      "mismatches": 0
+    },
+    "I": {
+      "total": 25,
+      "trips": 25,
+      "crashes": 0,
+      "mismatches": 0
+    },
+    "J": {
+      "total": 25,
+      "trips": 25,
+      "crashes": 0,
+      "mismatches": 0
+    },
+    "K": {
+      "total": 7,
+      "trips": 6,
+      "crashes": 0,
+      "mismatches": 0
+    }
+  },
+  "durationMs": 89,
+  "generatedAt": "2026-08-14T14:55:29.940Z"
+}
