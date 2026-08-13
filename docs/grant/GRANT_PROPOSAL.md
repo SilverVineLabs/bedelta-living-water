@@ -7,7 +7,7 @@
 **Ecosystem DApp:** [slivervine.xyz](https://slivervine.xyz)  
 **Live HUD:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)  
-**Regression bar:** **117 test files · 630 Vitest PASS** · **`tsc` CLEAN**
+**Regression bar:** **686 Vitest tests pass clean (126 test files, grant-ui-ssot)** · **`tsc` CLEAN**
 
 ---
 
@@ -30,12 +30,12 @@ Live proof: **0.2223 ETH Short** (OID `513344575969`) · `GET /api/grant-audit`.
 | Live HUD + Grant Audit certificate | `bedeltawater.slivervine.xyz` · `GET /api/grant-audit` | **Live** |
 | Machine-readable +5 bps `uiFeeReceiver` routing | `gmx-v2-order-payload.ts` · `gmxBuilderProof` JSON | **Live** |
 | GMX Balancer / underweight router | `gmx-v2-balancer.ts` | **Live** |
-| Regression bar | 117 test files · 630 Vitest PASS · `tsc` CLEAN | **Live** |
+| Regression bar | 686 Vitest tests pass clean (126 test files, grant-ui-ssot) · `tsc` CLEAN | **Live** |
 
 ### M1 Done Criteria
 
 - [x] Live `/api/grant-audit` with provenance-verified mainnet order + Sepolia dual-leg bundle
-- [x] 117 / 117 test files PASS · 630 Vitest PASS
+- [x] 126 / 126 test files PASS · 686 Vitest tests pass clean (grant-ui-ssot)
 - [x] Fail-closed guards wired before any GMX payload broadcast path
 - [x] HUD MDD label scoped (90d · ~$1.3k monitored TVL)
 
@@ -56,7 +56,7 @@ M2 sits **behind** the same Citadel fail-closed envelope — no guard bypass.
 
 - [ ] In-repo CCXT facade with `fetchTicker` · `createOrder` · `fetchPositions` parity tests green
 - [ ] Sidecar intent gate + keeper saga handles partial-fill compensation without soil bypass
-- [ ] 117+ test files PASS · zero TS errors · grant-audit JSON contract unchanged
+- [ ] 126+ test files PASS · zero TS errors · grant-audit JSON contract unchanged
 
 ### M2 NOT Done
 
@@ -82,7 +82,7 @@ Reference vault / public SDK publish remains gated post-TVL per BUSL-1.1 schedul
 
 ```bash
 pnpm install
-pnpm test    # 630 Vitest PASS (117 test files)
+pnpm test    # 686 Vitest tests pass clean (126 test files, grant-ui-ssot)
 pnpm typecheck
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel
 ```

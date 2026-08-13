@@ -32,6 +32,10 @@ import {
 import { buildSepoliaArbiscanTxUrl } from "../../../routes/grant-audit-lib/sepolia-dual-leg-proof.types";
 import type { SepoliaDualLegProof } from "../../../routes/grant-audit-lib/sepolia-dual-leg-proof.types";
 import type { GrantAuditClientPayload } from "../grant-audit-fetch";
+import {
+  AA_GATEWAY_DISABLED_LABEL,
+  type ZeroDevAaGatewayBadgeStatus,
+} from "../../../adapters/arbitrum/zerodev-aa/zerodev-aa-gate";
 
 export const V0_VITEST_PASS = 953;
 export const V0_VITEST_FILES = 167;
@@ -166,6 +170,8 @@ export function resolveFullGrantAuditView(audit: GrantAuditViewInput): FullGrant
   const sepoliaTxExplorerUrl = sepoliaTxHash
     ? sepoliaProof?.arbiscanUrl ?? buildSepoliaArbiscanTxUrl(sepoliaTxHash)
     : null;
+  const zeroDevAaGateway =
+    (telemetry.resolved as { zeroDevAaGateway?: ZeroDevAaGatewayBadgeStatus } | null)?.zeroDevAaGateway;
 
   return {
     ...base,
@@ -212,5 +218,7 @@ export function resolveFullGrantAuditView(audit: GrantAuditViewInput): FullGrant
     sepoliaTxHash,
     sepoliaTxExplorerUrl,
     sepoliaLatencyMs: sepoliaProof?.latencyMs ?? null,
+    aaGatewaySecured: zeroDevAaGateway?.secured ?? false,
+    aaGatewayLabel: zeroDevAaGateway?.label ?? AA_GATEWAY_DISABLED_LABEL,
   };
 }

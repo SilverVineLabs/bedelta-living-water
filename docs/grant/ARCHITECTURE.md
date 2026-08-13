@@ -58,7 +58,7 @@ Constants: `MDD_GUARD_*` in `src/config/constants.ts`.
 |-------|------------|--------------|-------|
 | Pre-audit peak | 167+ | 846+ | Broad matrix · duplicate async stubs · dark-staging modules |
 | Scope refactoring & matrix stabilization pass | 115 | 623 | Removed stale duplicates · scoped async-api project · grant-path focus |
-| Current bar | **117** | **630** | **100% PASS** · `tsc --noEmit` CLEAN |
+| Current bar | **126** | **686** | **686 Vitest tests pass clean (126 test files, grant-ui-ssot)** · `tsc --noEmit` CLEAN |
 
 **Why 846 → 623:** Deliberate scope stabilization — dropped redundant HL/GMX matrix fixtures, consolidated grant-audit async tests, and removed dark-staging-only suites not in M1 grant deliverables. The bar reflects **grant-critical paths** (Citadel gate, grant-audit JSON, execution logs, defense matrix) rather than inflated count.
 

@@ -50,12 +50,12 @@ Source: `GET /api/grant-audit` · SWR-bound Grant Audit HUD.
 
 ```bash
 pnpm install
-pnpm test    # 630 Vitest PASS (117 test files, 100% Clean)
+pnpm test    # 686 Vitest tests pass clean (126 test files, grant-ui-ssot)
 npx tsc --noEmit
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel
 ```
 
-**Regression bar:** **117 Test Files | 630 Vitest PASS (100% Clean)** · **`npx tsc --noEmit` CLEAN**
+**Regression bar:** **686 Vitest tests pass clean (126 test files, grant-ui-ssot)** · **`npx tsc --noEmit` CLEAN**
 
 ---
 
@@ -69,7 +69,7 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCita
 
 | Milestone | Scope | Status |
 |-----------|-------|--------|
-| **M1** — Mainnet Pre-Execution Gateway & Live Telemetry ($10k) | Off-chain Citadel Edge Gateway · Arbitrum One + Sepolia dual-leg provenance · Live HUD · machine-readable +5 bps `uiFeeReceiver` routing · `/api/grant-audit` certificate endpoint · **117 test files / 630 Vitest PASS** | **Complete & Live** |
+| **M1** — Mainnet Pre-Execution Gateway & Live Telemetry ($10k) | Off-chain Citadel Edge Gateway · Arbitrum One + Sepolia dual-leg provenance · Live HUD · machine-readable +5 bps `uiFeeReceiver` routing · `/api/grant-audit` certificate endpoint · **686 Vitest tests pass clean (126 test files, grant-ui-ssot)** | **Complete & Live** |
 | **M2** — Institutional Gateway & CCXT Adapter ($10k) | CCXT-compatible asynchronous order-key state machine · Docker Sidecar (`:8080`) execution daemon · multi-market rebalance router · automated on-chain `claimUiFees` integration | Planned |
 | **M3** — B2B Scaling & Cross-Venue Compensation ($10k) | Single-writer high-frequency nonce queue · multi-tenant rate-limiting & mTLS · cross-venue automated liquidation compensation · institutional B2B SLA framework | Planned |
 

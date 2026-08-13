@@ -8,6 +8,7 @@ import type { GrantAuditOnChainProof } from "./grant-audit-onchain-proof";
 import type { GmxBuilderProof } from "./gmx-builder-proof";
 import type { ProvenanceVerifiedTrades } from "./grant-audit-provenance";
 import type { SepoliaDualLegProof } from "./sepolia-dual-leg-proof.types";
+import type { ZeroDevAaGatewayBadgeStatus } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gate";
 
 export type { ArbitrumCitadelRiskMetrics, EngineModeStatus, GmxBuilderProof, GmxDataStoreStatus, GrantAuditOnChainProof, ProvenanceVerifiedTrades, SepoliaDualLegProof };
 
@@ -58,5 +59,6 @@ export interface GrantAuditPayload {
   sepoliaDualLegProof?: SepoliaDualLegProof | null;
   provenanceVerified?: ProvenanceVerifiedTrades | null;
   gmxBuilderProof: GmxBuilderProof;
+  zeroDevAaGateway: ZeroDevAaGatewayBadgeStatus;
   error?: string;
 }

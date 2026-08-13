@@ -49,6 +49,7 @@ describe("GrantAuditPage", () => {
     const html = renderToStaticMarkup(createElement(GrantAuditPageHeader, { role: "grant" }));
     expect(html).not.toContain('data-testid="grant-audit-vitest-metric-bar"');
     expect(html).not.toContain("623 Vitest PASS (115 test files, 100% Clean)");
+    expect(html).not.toContain("677 Vitest PASS (124 test files, 100% Clean)");
   });
 
   it("GrantAuditPageHeader shows Zero-Delta Vault label on vault role", () => {

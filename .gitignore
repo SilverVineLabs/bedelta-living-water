@@ -57,6 +57,7 @@ docs/**
 !DOCKER_README.md
 !docs/ARCHITECTURE.md
 !docs/ARBITRUM_ONE_PAGER.md
+!docs/Buildaton.md
 !docs/map_Index.md
 !docs/SLA.md
 !docs/TCA_Data_Product.md
@@ -66,4 +67,6 @@ docs/**
 !SECURITY.md
 !docs/audit/
 !docs/audit/negative-proofs-artifact.json
+!docs/audit/chaos-blackswan-metrics.json
+!docs/audit/zerodev-aa-metrics.json
 

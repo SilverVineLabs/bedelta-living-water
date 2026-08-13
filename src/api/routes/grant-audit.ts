@@ -35,7 +35,7 @@ export async function handleGrantAuditRequest(
     return jsonResponse(payload, 200);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Grant audit route failed";
-    const fallback = buildGrantAuditSwrFallbackPayload(request, message);
+    const fallback = buildGrantAuditSwrFallbackPayload(request, message, env);
     grantAuditResponseCache = { at: now, payload: fallback };
     return jsonResponse(fallback, 200);
   }
