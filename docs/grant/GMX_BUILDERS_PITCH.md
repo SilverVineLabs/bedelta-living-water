@@ -80,7 +80,7 @@ Router qualifies flow only when rebalance **reduces GM pool skew** and passes so
 | Underweight flow | Qualified rebalance volume attribution |
 | Referral | Optional `referralCode` (bytes32) |
 
-**M1 (Mainnet Pre-Execution Gateway & Live Telemetry — $10k):** **Complete & Live.** Off-chain Citadel Edge Gateway, Arbitrum One + Sepolia dual-leg provenance, Live HUD, machine-readable +5 bps `uiFeeReceiver` routing, `/api/grant-audit` certificate endpoint, 117 test files / 630 Vitest PASS.
+**M1 (Mainnet Pre-Execution Gateway & Live Telemetry — $10k):** **Complete & Live.** Off-chain Citadel Edge Gateway, Arbitrum One + Sepolia dual-leg provenance, Live HUD, machine-readable +5 bps `uiFeeReceiver` routing, `/api/grant-audit` certificate endpoint, 686 Vitest tests pass clean (126 test files, grant-ui-ssot).
 
 **M2 (Institutional Gateway & CCXT Adapter — $10k):** CCXT-compatible asynchronous order-key state machine, Docker Sidecar (`:8080`) execution daemon, multi-market rebalance router, automated on-chain `claimUiFees` integration.
 
@@ -103,7 +103,7 @@ curl -s "https://bedeltawater.slivervine.xyz/api/telemetry/health" | jq .success
 | Citadel JSON | `GET /api/grant-audit` |
 | Sidecar health | `GET /localhost:8787/health` (see DOCKER_README) |
 
-**Regression bar:** 117 test files · 630 Vitest PASS · production build clean.
+**Regression bar:** 686 Vitest tests pass clean (126 test files, grant-ui-ssot) · production build clean.
 
 ---
 

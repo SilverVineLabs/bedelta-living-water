@@ -11,7 +11,13 @@ const AT = new Date("2026-08-13T08:40:00.000Z");
 
 describe("zerodev-smoke audit artifact", () => {
   it("builds disabled dry-run metrics with isolation verified", () => {
-    const report: ZeroDevSmokeReport = { enabled: false, configPresent: false, errors: [] };
+    const report: ZeroDevSmokeReport = {
+      enabled: false,
+      configPresent: false,
+      errors: [],
+      sponsored: true,
+      paymasterAttached: false,
+    };
     const artifact = buildZeroDevAaMetrics(report, false, null, AT);
     expect(artifact.timestamp).toBe(AT.toISOString());
     expect(artifact.chainId).toBe(ARBITRUM_ONE_CHAIN_ID);
@@ -25,7 +31,13 @@ describe("zerodev-smoke audit artifact", () => {
   });
 
   it("builds enabled dry-run metrics without kernel address", () => {
-    const report: ZeroDevSmokeReport = { enabled: true, configPresent: true, errors: [] };
+    const report: ZeroDevSmokeReport = {
+      enabled: true,
+      configPresent: true,
+      errors: [],
+      sponsored: true,
+      paymasterAttached: true,
+    };
     const artifact = buildZeroDevAaMetrics(
       report,
       false,
@@ -47,6 +59,8 @@ describe("zerodev-smoke audit artifact", () => {
       bundlerReachable: true,
       smartAccountAddress: "0xE988eD280D24204Bdcf24A5d85ad154f8817e042",
       errors: [],
+      sponsored: true,
+      paymasterAttached: true,
     };
     const artifact = buildZeroDevAaMetrics(
       report,

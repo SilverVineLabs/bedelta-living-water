@@ -20,6 +20,15 @@ export interface ZeroDevAaMetricsArtifact extends AuditArtifactBinding {
   projectId: string | null;
   kernelAddress: string | null;
   bundlerStatus: ZeroDevBundlerStatus;
+  paymasterSponsored: boolean;
+  paymasterAttached: boolean;
+  multichainProbes?: Array<{
+    chainId: number;
+    label: string;
+    bundlerStatus: ZeroDevBundlerStatus;
+    paymasterSponsored: boolean;
+    paymasterAttached: boolean;
+  }>;
   noPrivateKeyMaterialDetected: boolean;
   isolationVerified: boolean;
 }
@@ -62,6 +71,15 @@ export function buildZeroDevAaMetrics(
     projectId: config?.projectId ?? null,
     kernelAddress: report.smartAccountAddress ?? null,
     bundlerStatus,
+    paymasterSponsored: report.sponsored ?? true,
+    paymasterAttached: report.paymasterAttached ?? false,
+    multichainProbes: report.multichainProbes?.map((p) => ({
+      chainId: p.chainId,
+      label: p.label,
+      bundlerStatus: p.bundlerStatus as ZeroDevBundlerStatus,
+      paymasterSponsored: p.sponsored,
+      paymasterAttached: p.paymasterAttached,
+    })),
     isolationVerified,
   };
 

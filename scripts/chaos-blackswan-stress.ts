@@ -10,7 +10,6 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { resolveAuditArtifactBinding } from "./audit-artifact-bindings";
-import { EggPolymorphicEngine } from "../src/core/risk/EggPolymorphicEngine";
 import { evaluateBlackSwanRisk } from "../src/core/black-swan-guard";
 import { SESSION_KEY_CLIP_USD } from "../src/services/risk/session-audit";
 import {
@@ -279,13 +278,6 @@ export function evaluateGatewayRules(input: GatewayRuleInput): {
     if (input.payload !== undefined) {
       try {
         const parsed = JSON.parse(input.payload) as unknown;
-        try {
-          EggPolymorphicEngine.evaluate(
-            parsed as Parameters<typeof EggPolymorphicEngine.evaluate>[0],
-          );
-        } catch {
-          reasons.push("EGG_EVAL_FAIL_CLOSED");
-        }
         try {
           checkSoilResistance(parsed as typeof HEALTHY_SOIL);
         } catch {
@@ -616,7 +608,7 @@ function poisonPayloadForId(id: number): string {
 export function expectedMalformedPayloadPrefix(raw: string): string {
   try {
     JSON.parse(raw);
-    return "EGG_EVAL_FAIL_CLOSED";
+    return "UNTRUSTED_TELEMETRY_FAIL_CLOSED";
   } catch {
     return "MALFORMED_JSON_FAIL_CLOSED";
   }

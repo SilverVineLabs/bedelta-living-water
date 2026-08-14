@@ -1,7 +1,7 @@
 # SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway
 
 [![Grant Audit](https://img.shields.io/badge/Grant_Audit-Passed-0052FF.svg)](https://bedeltawater.slivervine.xyz/api/grant-audit)
-[![Vitest](https://img.shields.io/badge/Vitest-630%2F630_PASS_(117_test_files)-brightgreen.svg)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![Vitest](https://img.shields.io/badge/Vitest-686%2F686_PASS_(126_test_files)-brightgreen.svg)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict_0_Errors-blue.svg)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![License](https://img.shields.io/badge/License-BUSL--1.1-orange.svg)](LICENSE)
 
@@ -15,7 +15,7 @@
 **Ecosystem DApp:** [slivervine.xyz](https://slivervine.xyz) · **Live HUD:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) · **Architect:** qum0x (20+ Year Enterprise Web & Systems Architect) — All claims verifiable via CLI (`pnpm test`) and live JSON telemetry (`/api/grant-audit`).
 
-**Regression bar:** **117 Test Files | 630 Vitest PASS (100% Clean)** · **`npx tsc --noEmit` CLEAN**
+**Regression bar:** **686 Vitest tests pass clean (126 test files, grant-ui-ssot)** · **`npx tsc --noEmit` CLEAN**
 
 **Primary venue:** GMX v2 Arbitrum Citadel Gateway · Live Proof via [`/api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit)
 
@@ -36,7 +36,7 @@
 ```bash
 # 1. Install dependencies & run full Vitest suite
 pnpm install
-pnpm test    # 630 Vitest PASS (117 test files, 100% Clean)
+pnpm test    # 686 Vitest tests pass clean (126 test files, grant-ui-ssot)
 
 # 2. Typecheck (0 errors)
 pnpm typecheck

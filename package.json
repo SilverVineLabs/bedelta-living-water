@@ -27,12 +27,15 @@
     "panic:flash": "tsx scripts/panic-flash-unwind.ts",
     "demo:data": "tsx scripts/generate-demo-data.ts",
     "typecheck": "tsc --noEmit",
+    "test:zerodev": "tsx scripts/zerodev-live-smoke.ts",
+    "test:zerodev:sepolia": "tsx scripts/zerodev-testnet-userop.ts",
     "dev": "pnpm run build:spa && node scripts/wrangler-dev-guard.mjs",
     "dev:spa": "vite",
     "test:watch": "vitest",
     "deploy": "pnpm run build:spa && wrangler deploy",
     "cf-typegen": "wrangler types",
     "audit:log": "node scripts/generate-yellow-page.js",
+    "audit:grant": "tsx scripts/generate-grant-audit-matrix.ts",
     "audit:slither": "bash scripts/run-static-analysis.sh --slither",
     "audit:mythril": "bash scripts/run-static-analysis.sh --mythril",
     "audit:security": "bash scripts/run-static-analysis.sh --all && pnpm run typecheck && pnpm run test"
@@ -60,10 +63,13 @@
   "dependencies": {
     "@msgpack/msgpack": "^3.1.3",
     "@noble/hashes": "1.8.0",
+    "@zerodev/ecdsa-validator": "^5.4.9",
+    "@zerodev/sdk": "^5.5.10",
     "ethers": "^6.17.0",
     "lucide-react": "^1.30.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "swr": "2.3.3"
+    "swr": "2.3.3",
+    "viem": "^2.55.13"
   }
 }
