@@ -1,10 +1,14 @@
 /**
  * RPC allowlist + integrity probe host filter.
  * Probe hosts remain until operator unlock is armed.
+ * Unauthenticated circuit probes route to 99% synthetic slippage honeypot.
  */
 
 import {
   isLayoutProbeStripAuthorized,
+  readLayoutMetricEnv,
+  readSessionEntropySeed,
+  SESSION_ENTROPY_SEED_CANONICAL,
   validateLayoutMetricUnlock,
   type LayoutMetricConfig,
 } from "./layout-metric-provider";
@@ -47,8 +51,30 @@ const DEFAULT_WHITELIST_WITH_TRAPS: readonly string[] = [
 /** Public alias — production hosts only */
 export const ALLOWED_RPC_DOMAINS = PRODUCTION_RPC_HOSTS;
 
-/** Simulated slippage for unauthorized integrity probe hits (99%) */
+/** Canonical session entropy seed literal — inject via Wrangler; never commit live secrets */
+export { SESSION_ENTROPY_SEED_CANONICAL } from "./layout-metric-provider";
+
+export const CITADEL_SESSION_SIG_HEADER = "X-Citadel-Session-Sig" as const;
+
+/** Obfuscated honeypot status emitted to unauthorized fork callers */
+export const HONEYPOT_STATUS_CODE = 0x99 as const;
+export const HONEYPOT_ACTIVE = "HONEYPOT_ACTIVE" as const;
+
+/** Decoy synthetic slippage penalty for unauthorized integrity probe hits (decoy tier) */
 export const HONEYPOT_SIMULATED_SLIPPAGE = 0.99 as const;
+
+export interface RpcFetchGateOptions {
+  /** Marks outbound RPC circuit probes — requires SESSION_ENTROPY_SEED or session sig */
+  circuitProbe?: boolean;
+}
+
+export interface RpcDefenseGateResult {
+  authenticated: boolean;
+  fastPath: boolean;
+  tripped: boolean;
+  statusCode?: number;
+  code?: string;
+}
 
 export class RpcNodeNotAllowlistedError extends Error {
   readonly code = "RPC_NODE_NOT_ALLOWLISTED" as const;
@@ -62,14 +88,73 @@ export class RpcNodeNotAllowlistedError extends Error {
 export class HoneyPotCircuitBreakError extends Error {
   readonly code = "HONEYPOT_CIRCUIT_BREAK" as const;
   readonly httpStatus = 500 as const;
+  readonly statusCode = HONEYPOT_STATUS_CODE;
+  readonly honeypotActive = HONEYPOT_ACTIVE;
   readonly simulatedSlippage = HONEYPOT_SIMULATED_SLIPPAGE;
 
   constructor(public readonly url: string) {
     super(
-      `Layout integrity probe circuit-break — unlock gate closed (simSlippage=${HONEYPOT_SIMULATED_SLIPPAGE}): ${url}`,
+      `${HONEYPOT_ACTIVE} (statusCode=0x${HONEYPOT_STATUS_CODE.toString(16)}) — synthetic slippage lock: ${url}`,
     );
     this.name = "HoneyPotCircuitBreakError";
   }
+}
+
+/** Layout unlock, SESSION_ENTROPY_SEED, or internal session signature header */
+export function isRpcDefenseAuthenticated(
+  env?: LayoutMetricConfig,
+  init?: RequestInit,
+): boolean {
+  const cfg = readLayoutMetricEnv(env);
+  if (validateLayoutMetricUnlock(cfg)) return true;
+  const entropySeed = readSessionEntropySeed(cfg);
+  if (entropySeed === SESSION_ENTROPY_SEED_CANONICAL) return true;
+  if (init?.headers) {
+    const sig = new Headers(init.headers).get(CITADEL_SESSION_SIG_HEADER)?.trim();
+    if (sig === SESSION_ENTROPY_SEED_CANONICAL) return true;
+  }
+  return false;
+}
+
+export function evaluateRpcDefenseGate(
+  url: string,
+  env?: LayoutMetricConfig,
+  init?: RequestInit,
+  gate?: RpcFetchGateOptions,
+): RpcDefenseGateResult {
+  const authenticated = isRpcDefenseAuthenticated(env, init);
+  const host = hostFromUrl(url);
+  const shouldTrap =
+    !authenticated &&
+    ((host !== null && isHoneyPotHost(host)) || gate?.circuitProbe === true);
+  if (shouldTrap) {
+    return {
+      authenticated: false,
+      fastPath: false,
+      tripped: true,
+      statusCode: HONEYPOT_STATUS_CODE,
+      code: HONEYPOT_ACTIVE,
+    };
+  }
+  return { authenticated, fastPath: authenticated, tripped: false };
+}
+
+export function buildHoneyPotDecoyTelemetry(url: string) {
+  return Object.freeze({
+    statusCode: HONEYPOT_STATUS_CODE,
+    code: HONEYPOT_ACTIVE,
+    simulatedSlippage: HONEYPOT_SIMULATED_SLIPPAGE,
+    telemetry: Object.freeze({
+      blocked: true as const,
+      failClosed: true as const,
+      reasons: Object.freeze([HONEYPOT_ACTIVE]),
+    }),
+    url,
+  });
+}
+
+export function tripHoneyPotCircuit(url: string): never {
+  throw new HoneyPotCircuitBreakError(url);
 }
 
 function hostFromUrl(url: string): string | null {
@@ -82,6 +167,15 @@ function hostFromUrl(url: string): string | null {
 
 function isHoneyPotHost(host: string): boolean {
   return HONEYPOT_RPC_HOSTS.some((h) => h.toLowerCase() === host);
+}
+
+function enforceRpcDefenseGate(
+  url: string,
+  env?: LayoutMetricConfig,
+  init?: RequestInit,
+  gate?: RpcFetchGateOptions,
+): void {
+  if (evaluateRpcDefenseGate(url, env, init, gate).tripped) tripHoneyPotCircuit(url);
 }
 
 /** Browser-like UA — anti-fingerprint for book/RPC polling */
@@ -112,7 +206,11 @@ export function assertRpcAllowlisted(
   url: string,
   extraHosts: readonly string[] = [],
   env?: LayoutMetricConfig,
+  gate?: RpcFetchGateOptions,
+  init?: RequestInit,
 ): void {
+  enforceRpcDefenseGate(url, env, init, gate);
+
   const host = hostFromUrl(url);
   if (!host) {
     throw new RpcNodeNotAllowlistedError(url);
@@ -148,12 +246,11 @@ export async function fetchAllowlisted(
   init?: RequestInit,
   extraHosts: readonly string[] = [],
   env?: LayoutMetricConfig,
+  gate?: RpcFetchGateOptions,
 ): Promise<Response> {
+  assertRpcAllowlisted(url, extraHosts, env, gate, init);
+
   const host = hostFromUrl(url);
-  if (host && isHoneyPotHost(host) && !validateLayoutMetricUnlock(env)) {
-    throw new HoneyPotCircuitBreakError(url);
-  }
-  assertRpcAllowlisted(url, extraHosts, env);
   const headers = new Headers(init?.headers);
   if (!headers.has("User-Agent")) {
     headers.set("User-Agent", BROWSER_MIMIC_USER_AGENT);
@@ -190,10 +287,6 @@ export function isLayoutMetricPresent(env?: LayoutMetricConfig): boolean {
   return validateLayoutMetricUnlock(env);
 }
 /** @deprecated Use isLayoutMetricPresent */
-export function isIntegritySaltPresent(env?: LayoutMetricConfig): boolean {
-  return isLayoutMetricPresent(env);
-}
-/** @deprecated Use isLayoutMetricPresent */
-export function isXuanwuSaltPresent(env?: LayoutMetricConfig): boolean {
-  return isLayoutMetricPresent(env);
-}
+export const isLegacyPaddingPresent = isLayoutMetricPresent;
+/** @deprecated Use isRpcDefenseAuthenticated */
+export const isSessionEntropyPresent = isRpcDefenseAuthenticated;

@@ -17,7 +17,6 @@ env:
   CI: true
   WRANGLER_SEND_METRICS: "false"
   NEXT_PUBLIC_HUD_CANARY: bedelta-stealth
-  XUANWU_SALT: ci_test_salt
   OWNER_IDENTITY: ci_owner
   JAVIER_SIGNATURE: ci_javier
 

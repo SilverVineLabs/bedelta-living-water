@@ -8,6 +8,7 @@
     "build": "pnpm run build:worker",
     "build:spa": "vite build",
     "build:worker": "pnpm run build:spa && pnpm exec tsc --noEmit && WRANGLER_WRITE_LOGS=false wrangler deploy --dry-run --outdir=dist-worker",
+    "bundle:measure": "tsx scripts/measure-worker-bundle.ts",
     "test": "vitest run --dir . --coverage",
     "grant:hl-testnet": "tsx scripts/verify-hl-testnet.ts",
     "verify:5tx": "tsx scripts/verify-5tx.ts",

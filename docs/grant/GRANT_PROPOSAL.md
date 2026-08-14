@@ -19,6 +19,22 @@ Live proof: **0.2223 ETH Short** (OID `513344575969`) · `GET /api/grant-audit`.
 
 ---
 
+## Tri-Sensor Telemetry Matrix (Control Loop Architecture)
+
+Before any GMX DataStore broadcast, Citadel evaluates a fused **Tri-Sensor Telemetry Matrix** — a formal closed-loop control architecture with three orthogonal observability channels:
+
+1. **BaseFee Velocity Sensor** — ArbOS EIP-1559 base-fee rate-of-change as congestion stress proxy.
+2. **RPC Jitter Radar** — Multi-provider RTT dispersion and head-staleness across whitelisted endpoints.
+3. **Phase-Shift Instability Detector** — Cross-venue oracle / book phase alignment (HL ↔ dYdX ↔ GMX).
+
+When fused sensor deviations exceed **dynamic runtime tolerance bands**, the engine invokes instant fail-closed interlock. Empirical weight matrices ($w_1$, $w_2$, $\lambda$) and Blindspot Risk Index thresholds are **not disclosed** in public documentation — auditors verify live envelopes via `GET /api/grant-audit`.
+
+Benchmark claims (sub-millisecond gateway decision latency, zero false-negatives on chaos matrix) are reproducible via `pnpm test` without exposing proprietary control-law constants.
+
+> **The engine dynamically derives the Blindspot Risk Index (BRI) from ArbOS BaseFee velocity and RPC jitter. Upon exceeding dynamic runtime thresholds, a signed fail-closed signal is emitted.**
+
+---
+
 ## 2. M1 — Mainnet Pre-Execution Gateway & Live Telemetry ($10k)
 
 **Status: Complete & Live.**

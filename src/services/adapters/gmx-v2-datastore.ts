@@ -2,22 +2,26 @@
  * GMX v2 DataStore — keccak key-hash + split long/short borrow rate reads.
  */
 
-import { AbiCoder, getBytes, keccak256 } from "ethers";
+import { encodeAbiParameters, keccak256 } from "viem";
 import { GMX_V2_DATASTORE } from "../../adapters/gmx";
 import { fetchArbitrumRpc } from "./arbitrum-rpc-fallback";
 import type { GmxV2AdapterOptions } from "./gmx-v2-adapter.types";
 
-const coder = AbiCoder.defaultAbiCoder();
 const GET_UINT_SELECTOR = "0xbd02d0f5";
 const GMX_RATE_PRECISION = 1e30;
 const SECONDS_PER_HOUR = 3600;
 
+function encodeAbi(types: string[], values: readonly unknown[]): `0x${string}` {
+  const params = types.map((type) => ({ type })) as Parameters<typeof encodeAbiParameters>[0];
+  return encodeAbiParameters(params, values as never);
+}
+
 export function hashString(value: string): string {
-  return keccak256(getBytes(coder.encode(["string"], [value])));
+  return keccak256(encodeAbi(["string"], [value]));
 }
 
 export function hashData(types: string[], values: unknown[]): string {
-  return keccak256(getBytes(coder.encode(types, values)));
+  return keccak256(encodeAbi(types, values));
 }
 
 export const SAVED_LONG_PAYOUT_BUFFER = hashString("SAVED_LONG_PAYOUT_BUFFER");
