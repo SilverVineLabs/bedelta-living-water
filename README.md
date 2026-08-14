@@ -5,7 +5,7 @@
 [TypeScript](https://github.com/SilverVineLabs/bedelta-living-water)
 [License](LICENSE)
 
-
+<p align="center"><img src="public/brand/Detox_Sanctuary_wm.webp" alt="SliverVine Citadel Gate - Detox Sanctuary" width="600" style="border-radius: 8px;"></p>
 
 > **Off-Chain Zero-Trust Pre-Execution Safety Gateway & Dynamic Rebalancer for GMX v2 GM Pools on Arbitrum One.**  
 > **Risk engine:** v0.8 Multi-Layer Risk Engine (internal code name: Santenmoku)
