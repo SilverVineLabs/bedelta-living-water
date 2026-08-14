@@ -2,7 +2,7 @@
 import { DEFAULT_HYPERLIQUID_MAINNET_USER_ADDRESS } from "../../env-grant-defaults";
 
 export const GRANT_VITEST_SSOT_LABEL =
-  "623 Vitest PASS (115 test files, 100% Clean)" as const;
+  "630 Vitest PASS (117 test files, 100% Clean)" as const;
 
 export const GRANT_TOXIC_FILL_MITIGATION_LABEL =
   "Toxic-Fill & Stale-Book Mitigation" as const;
