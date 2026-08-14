@@ -3,6 +3,11 @@
  */
 
 import {
+  GMX_REFERRAL_CODE_BYTES32,
+  GMX_UI_FEE_BPS,
+  GMX_UI_FEE_RECEIVER,
+} from "../../config/gmx-revenue";
+import {
   DEFAULT_GMX_EXECUTION_FEE_WEI,
   estimateGmxKeeperExecutionFeeWei,
 } from "../risk/arbitrum-gas-guard";
@@ -16,13 +21,16 @@ import type { GmxV2AdapterOptions, GmxV2OrderType, GmxV2UnsignedOrderPayload } f
 export { DEFAULT_GMX_EXECUTION_FEE_WEI };
 
 export const GMX_ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as const;
-/** Live treasury — Wallet B uiFeeReceiver (5 bps UI fee accrual). */
-export const GMX_DEFAULT_UI_FEE_RECEIVER =
-  "0xc9BddABD80982d2201376195DD9B85fb7951546f" as const;
-export const GMX_UI_FEE_BPS = 5 as const;
+/** Live treasury — re-exported from gmx-revenue SSOT. */
+export const GMX_DEFAULT_UI_FEE_RECEIVER = GMX_UI_FEE_RECEIVER;
+export { GMX_UI_FEE_BPS };
 export const GMX_ZERO_REFERRAL_CODE =
   "0x0000000000000000000000000000000000000000000000000000000000000000" as const;
-export const GMX_DEFAULT_MIN_OUTPUT_AMOUNT = "0" as const;
+/** Registered SILVERVINE referral — re-exported from gmx-revenue SSOT. */
+export const GMX_DEFAULT_REFERRAL_CODE = GMX_REFERRAL_CODE_BYTES32;
+/** System-wide slippage ceiling — unauthenticated callers cannot exceed. */
+export const GMX_MAX_SLIPPAGE_BPS = 100 as const;
+export const GMX_DEFAULT_SLIPPAGE_BPS = 30 as const;
 export const GMX_DEFAULT_CALLBACK_GAS_LIMIT = "0" as const;
 export const USDC_DECIMALS = 6 as const;
 
@@ -79,7 +87,12 @@ export function resolveGmxReferralCode(
   opts: GmxV2AdapterOptions = {},
   input: GmxV2OrderFeeConfig = {},
 ): string {
-  return input.referralCode?.trim() || opts.referralCode?.trim() || GMX_ZERO_REFERRAL_CODE;
+  return (
+    input.referralCode?.trim() ||
+    opts.referralCode?.trim() ||
+    readEnv("GMX_REFERRAL_CODE") ||
+    GMX_DEFAULT_REFERRAL_CODE
+  );
 }
 
 export function resolveGmxExecutionFeeWei(
@@ -88,6 +101,43 @@ export function resolveGmxExecutionFeeWei(
 ): string {
   const explicit = input.executionFeeWei?.trim() || opts.executionFeeWei?.trim();
   return explicit || estimateGmxKeeperExecutionFeeWei();
+}
+
+export function clampGmxMaxSlippageBps(requested?: number): number {
+  const raw = requested ?? GMX_DEFAULT_SLIPPAGE_BPS;
+  if (!Number.isFinite(raw) || raw < 0) return GMX_DEFAULT_SLIPPAGE_BPS;
+  return Math.min(raw, GMX_MAX_SLIPPAGE_BPS);
+}
+
+/** Non-zero min-output floor from size + slippage + adverse impact bps. */
+export function estimateGmxMinOutputAmount(input: {
+  sizeUsd: number;
+  slippageBps: number;
+  signedImpactBps: number;
+  reduceOnly: boolean;
+}): string {
+  const adverseBps = input.slippageBps + Math.max(0, input.signedImpactBps);
+  const protectionFactor = Math.max(0.0001, 1 - adverseBps / 10_000);
+  const minUsd = input.sizeUsd * protectionFactor;
+  const atomic = Math.max(1, Math.floor(minUsd * 10 ** USDC_DECIMALS));
+  return String(atomic);
+}
+
+export function resolveGmxMinOutputAmount(
+  input: GmxV2BuildUnsignedOrderInput,
+  slippageBps: number,
+  signedImpactBps: number,
+): string {
+  const estimated = estimateGmxMinOutputAmount({
+    sizeUsd: input.sizeUsd,
+    slippageBps,
+    signedImpactBps,
+    reduceOnly: input.reduceOnly ?? false,
+  });
+  if (input.minOutputAmount === undefined) return estimated;
+  const requested = BigInt(input.minOutputAmount);
+  const floor = BigInt(estimated);
+  return (requested > floor ? requested : floor).toString();
 }
 
 function requireMidPriceUsd(midPriceUsd: number): number {
@@ -135,12 +185,13 @@ export function buildGmxV2UnsignedOrderPayload(
   input: GmxV2BuildUnsignedOrderInput,
   opts: GmxV2AdapterOptions = {},
 ): GmxV2UnsignedOrderPayload {
-  const slippageBps = input.maxSlippageBps ?? 30;
+  const slippageBps = clampGmxMaxSlippageBps(input.maxSlippageBps);
   const isLong = input.side === "long";
   const px = requireMidPriceUsd(input.midPriceUsd);
   const signedImpactBps = resolveSignedImpactBps(input, isLong);
   const acceptablePrice = computeGmxAcceptablePrice(px, isLong, slippageBps, signedImpactBps);
   const orderType = resolveGmxOrderType(input);
+  const minOutputAmount = resolveGmxMinOutputAmount(input, slippageBps, signedImpactBps);
 
   return {
     action: input.reduceOnly ? "decrease" : "increase",
@@ -151,7 +202,7 @@ export function buildGmxV2UnsignedOrderPayload(
     sizeDeltaUsd: input.sizeUsd.toFixed(2),
     acceptablePrice: acceptablePrice.toFixed(4),
     executionFee: resolveGmxExecutionFeeWei(opts, input),
-    minOutputAmount: input.minOutputAmount ?? GMX_DEFAULT_MIN_OUTPUT_AMOUNT,
+    minOutputAmount,
     initialCollateralDeltaAmount: resolveInitialCollateralDeltaAmount(input),
     callbackGasLimit: input.callbackGasLimit ?? GMX_DEFAULT_CALLBACK_GAS_LIMIT,
     reduceOnly: input.reduceOnly ?? false,

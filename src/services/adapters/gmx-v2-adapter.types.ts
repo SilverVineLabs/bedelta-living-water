@@ -3,6 +3,7 @@
  */
 
 import type { GmxMarketInfo } from "../../adapters/gmx";
+import type { Env } from "../../env";
 import type { ArbitrumDexFetchOptions } from "./arbitrum-adapter";
 
 export const GMX_V2_ADAPTER_ID = "gmx-v2" as const;
@@ -19,6 +20,8 @@ export interface GmxV2AdapterOptions extends ArbitrumDexFetchOptions {
   referralCode?: string;
   /** Override GMX keeper executionFee (wei string). */
   executionFeeWei?: string;
+  /** Worker env slice for uiFeeReceiver / referral resolution in edge contexts. */
+  workerEnv?: Pick<Env, "GMX_UI_FEE_RECEIVER">;
 }
 
 export interface GmxV2ResolvedMarket {

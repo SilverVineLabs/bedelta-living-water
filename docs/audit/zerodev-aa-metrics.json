@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-08-13T08:56:10.200Z",
+  "chainId": 42161,
+  "gitCommitHash": "c9536cf6f16fa64efa1ac7d9d4de5c00239b7f0b",
+  "featureFlag": false,
+  "projectId": null,
+  "kernelAddress": null,
+  "bundlerStatus": "DISABLED",
+  "isolationVerified": true,
+  "noPrivateKeyMaterialDetected": true
+}

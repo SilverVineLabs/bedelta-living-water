@@ -1,9 +1,11 @@
 {
+  "timestamp": "2026-08-13T08:56:09.473Z",
+  "chainId": 42161,
+  "gitCommitHash": "c9536cf6f16fa64efa1ac7d9d4de5c00239b7f0b",
   "totalScenarios": 255,
   "blockedToxicAttacks": 255,
   "failClosedRate": "100.00%",
   "reasonPrefixMismatches": 0,
   "isolateCrashes": 0,
-  "capitalLossUsd": 0,
-  "timestamp": "2026-08-13T08:29:28.118Z"
+  "capitalLossUsd": 0
 }

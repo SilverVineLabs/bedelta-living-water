@@ -25,6 +25,8 @@ import {
 } from "./gmx-v2-adapter.utils";
 import { fetchSplitBorrowRates, setGmxDataStoreStatusCache } from "./gmx-v2-datastore";
 import { poolWeightsFromGmxMarket } from "../yield/gmx-v2-price-impact";
+import { resolveGmxAdapterOptsFromEnv } from "../yield/multi-wallet-yield-router";
+import type { MultiWalletYieldEnv } from "../yield/multi-wallet-yield-router";
 
 const DEFAULT_ORDER_TTL_MS = 120_000;
 
@@ -160,3 +162,10 @@ export class GmxV2ArbitrumAdapter implements IArbitrumDexAdapter {
 }
 
 export const gmxV2ArbitrumAdapter = new GmxV2ArbitrumAdapter();
+
+/** Factory — binds GMX v2 adapter to worker env (uiFeeReceiver + referral SSOT). */
+export function createGmxV2ArbitrumAdapterFromEnv(
+  env: Pick<MultiWalletYieldEnv, "GMX_UI_FEE_RECEIVER">,
+): GmxV2ArbitrumAdapter {
+  return new GmxV2ArbitrumAdapter(resolveGmxAdapterOptsFromEnv(env));
+}

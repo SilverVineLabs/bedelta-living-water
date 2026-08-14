@@ -9,6 +9,7 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveAuditArtifactBinding } from "./audit-artifact-bindings";
 import { EggPolymorphicEngine } from "../src/core/risk/EggPolymorphicEngine";
 import { evaluateBlackSwanRisk } from "../src/core/black-swan-guard";
 import { SESSION_KEY_CLIP_USD } from "../src/services/risk/session-audit";
@@ -781,18 +782,19 @@ export function runChaosBlackSwanStress(
 }
 
 export function writeChaosMetrics(report: ChaosAuditReport): void {
+  const binding = resolveAuditArtifactBinding(new Date(report.timestamp));
   mkdirSync(dirname(CHAOS_METRICS_PATH), { recursive: true });
   writeFileSync(
     CHAOS_METRICS_PATH,
     `${JSON.stringify(
       {
+        ...binding,
         totalScenarios: report.total,
         blockedToxicAttacks: report.blocked,
         failClosedRate: `${((report.blocked / report.total) * 100).toFixed(2)}%`,
         reasonPrefixMismatches: report.prefixMismatches,
         isolateCrashes: report.crashed,
         capitalLossUsd: report.capitalLossUsd,
-        timestamp: report.timestamp,
       },
       null,
       2,

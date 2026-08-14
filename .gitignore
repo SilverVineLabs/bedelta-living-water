@@ -68,4 +68,5 @@ docs/**
 !docs/audit/
 !docs/audit/negative-proofs-artifact.json
 !docs/audit/chaos-blackswan-metrics.json
+!docs/audit/zerodev-aa-metrics.json
 
