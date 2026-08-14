@@ -7,7 +7,6 @@ import { hashData, hashString } from "./gmx-v2-datastore";
 
 export const DATASTORE_GET_UINT_SELECTOR = "0xbd02d0f5" as const;
 
-export const GMX_V2_READER = "0xfA26cBb46e2614609406de08CA1Dc7f70a684184" as const;
 export const GMX_ETH_USD_LONG_TOKEN = "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1" as const;
 export const GMX_ETH_USD_SHORT_TOKEN = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831" as const;
 

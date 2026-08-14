@@ -141,14 +141,6 @@ export function evaluateSponsoredGasLimits(input: {
   };
 }
 
-export function isDailySponsorshipExhausted(
-  snapshot?: GasLedgerSnapshot,
-  nowMs = Date.now(),
-): boolean {
-  const s = normalizeGasLedgerSnapshot(snapshot ?? getGasLedgerSnapshot(nowMs), nowMs);
-  return s.cumulativeSpentUsd >= DAILY_SPONSORSHIP_LIMIT_USD;
-}
-
 export function recordSponsoredGasSpend(usd: number, nowMs = Date.now()): GasLedgerSnapshot {
   if (!Number.isFinite(usd) || usd <= 0) return getGasLedgerSnapshot(nowMs);
   const snap = getGasLedgerSnapshot(nowMs);

@@ -1,5 +1,5 @@
 /**
- * GMX v2 Arbitrum adapter — IArbitrumDexAdapter (RPC fallback + stale degradation).
+ * GMX v2 Arbitrum adapter — IArbitrumDexAdapter (RPC fallback + DataStore reader bindings).
  */
 
 import type {
@@ -16,17 +16,35 @@ import {
   GMX_V2_ADAPTER_ID,
   type GmxV2AdapterOptions,
   type GmxV2ExtendedMarketInfo,
+  type GmxV2ResolvedMarket,
 } from "./gmx-v2-adapter.types";
-import { buildGmxV2UnsignedOrderPayload } from "./gmx-v2-order-payload";
 import {
   fetchGmxLiveContext,
   resolveGmxMarket,
   spreadBpsFromLiquidity,
+  type GmxV2LiveContext,
 } from "./gmx-v2-adapter.utils";
+import {
+  getMarket,
+  getMarketPrices,
+  getMarketReserveMemory,
+  type GmxDataStoreMarketPrices,
+  type GmxDataStoreMarketView,
+} from "./gmx-v2-adapter-reader";
+import { buildGmxV2UnsignedOrderPayload } from "./gmx-v2-order-payload";
 import { fetchSplitBorrowRates, setGmxDataStoreStatusCache } from "./gmx-v2-datastore";
 import { poolWeightsFromGmxMarket } from "../yield/gmx-v2-price-impact";
 import { resolveGmxAdapterOptsFromEnv } from "../yield/multi-wallet-yield-router";
 import type { MultiWalletYieldEnv } from "../yield/multi-wallet-yield-router";
+
+export {
+  getMarket,
+  getMarketPrices,
+  getMarketReserveMemory,
+  type GmxDataStoreMarketPrices,
+  type GmxDataStoreMarketView,
+  type GmxDataStoreReserveMemory,
+} from "./gmx-v2-adapter-reader";
 
 const DEFAULT_ORDER_TTL_MS = 120_000;
 
@@ -36,19 +54,29 @@ export class GmxV2ArbitrumAdapter implements IArbitrumDexAdapter {
 
   constructor(private readonly opts: GmxV2AdapterOptions = {}) {}
 
-  async getMarketDepth(input: ArbitrumMarketDepthInput): Promise<ArbitrumMarketDepthSnapshot> {
+  private async resolveLiveMarket(symbol: string): Promise<{
+    ctx: GmxV2LiveContext;
+    resolved: GmxV2ResolvedMarket;
+    market: GmxDataStoreMarketView;
+    prices: GmxDataStoreMarketPrices;
+  }> {
     const ctx = await fetchGmxLiveContext(this.opts);
-    const resolved = resolveGmxMarket(ctx, input.symbol);
-    const half = resolved.poolLiquidityUsd / 2;
+    const resolved = resolveGmxMarket(ctx, symbol);
+    return { ctx, resolved, market: getMarket(resolved), prices: getMarketPrices(resolved) };
+  }
+
+  async getMarketDepth(input: ArbitrumMarketDepthInput): Promise<ArbitrumMarketDepthSnapshot> {
+    const { resolved, market } = await this.resolveLiveMarket(input.symbol);
+    const half = market.poolLiquidityUsd / 2;
     return {
       venue: this.venueId,
-      symbol: resolved.symbol,
+      symbol: market.symbol,
       market: input.market ?? "perp",
       bidDepthUsd: half,
       askDepthUsd: half,
       midPriceUsd: resolved.midPriceUsd,
-      spreadBps: spreadBpsFromLiquidity(resolved.poolLiquidityUsd),
-      gmPoolLiquidityUsd: resolved.poolLiquidityUsd,
+      spreadBps: spreadBpsFromLiquidity(market.poolLiquidityUsd),
+      gmPoolLiquidityUsd: market.poolLiquidityUsd,
       fetchedAt: resolved.staleTimestamp ?? new Date().toISOString(),
     };
   }
@@ -56,15 +84,15 @@ export class GmxV2ArbitrumAdapter implements IArbitrumDexAdapter {
   async getFundingAndBorrowRates(
     input: ArbitrumFundingBorrowInput,
   ): Promise<ArbitrumFundingBorrowRates> {
-    const ctx = await fetchGmxLiveContext(this.opts);
-    const resolved = resolveGmxMarket(ctx, input.symbol);
-    const side = input.side ?? "short";
+    const { resolved, market, prices } = await this.resolveLiveMarket(input.symbol);
     const info = resolved.info as GmxV2ExtendedMarketInfo;
+    await getMarketReserveMemory(market, prices, info, this.opts);
+    const side = input.side ?? "short";
     const split = await fetchSplitBorrowRates({
       market: {
-        marketToken: info.marketToken ?? info.name ?? resolved.symbol,
-        longToken: info.longToken ?? "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
-        shortToken: info.shortToken ?? "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+        marketToken: market.marketToken,
+        longToken: market.longToken,
+        shortToken: market.shortToken,
       },
       opts: this.opts,
       fallback: {
@@ -78,8 +106,8 @@ export class GmxV2ArbitrumAdapter implements IArbitrumDexAdapter {
       side === "long" ? split.longBorrowRateHourly : split.shortBorrowRateHourly;
     const fetchedAt = resolved.staleTimestamp ?? new Date().toISOString();
     setGmxDataStoreStatusCache({
-      symbol: resolved.symbol,
-      marketToken: info.marketToken ?? info.name ?? resolved.symbol,
+      symbol: market.symbol,
+      marketToken: market.marketToken,
       longBorrowRateHourly: split.longBorrowRateHourly,
       shortBorrowRateHourly: split.shortBorrowRateHourly,
       fundingRateHourly: split.fundingRateHourly,
@@ -88,7 +116,7 @@ export class GmxV2ArbitrumAdapter implements IArbitrumDexAdapter {
     });
     return {
       venue: this.venueId,
-      symbol: resolved.symbol,
+      symbol: market.symbol,
       side,
       fundingRateHourly: split.fundingRateHourly,
       borrowRateHourly,
@@ -102,8 +130,7 @@ export class GmxV2ArbitrumAdapter implements IArbitrumDexAdapter {
   async buildUnsignedHedgeOrder(
     input: ArbitrumUnsignedHedgeOrderInput,
   ): Promise<ArbitrumUnsignedHedgeOrder> {
-    const ctx = await fetchGmxLiveContext(this.opts);
-    const resolved = resolveGmxMarket(ctx, input.symbol);
+    const { resolved, market } = await this.resolveLiveMarket(input.symbol);
     const now = this.opts.now?.() ?? Date.now();
     const ttl = this.opts.orderTtlMs ?? DEFAULT_ORDER_TTL_MS;
     const pool = poolWeightsFromGmxMarket(resolved.info, resolved.midPriceUsd);
@@ -114,7 +141,7 @@ export class GmxV2ArbitrumAdapter implements IArbitrumDexAdapter {
         reduceOnly: input.reduceOnly,
         maxSlippageBps: input.maxSlippageBps,
         clientOrderId: input.clientOrderId,
-        marketToken: resolved.info.name ?? resolved.symbol,
+        marketToken: market.marketToken,
         midPriceUsd: resolved.midPriceUsd,
         pool,
         uiFeeReceiver: input.uiFeeReceiver,
@@ -125,7 +152,7 @@ export class GmxV2ArbitrumAdapter implements IArbitrumDexAdapter {
 
     return {
       venue: this.venueId,
-      symbol: resolved.symbol,
+      symbol: market.symbol,
       side: input.side,
       sizeUsd: input.sizeUsd,
       estimatedNotionalUsd: input.sizeUsd,

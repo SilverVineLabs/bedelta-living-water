@@ -74,7 +74,9 @@ async function main(): Promise<void> {
   ]);
 
   const marketToken =
-    typeof order.payload.marketToken === "string" ? order.payload.marketToken : cli.symbol;
+    typeof order.payload.addresses?.market === "string"
+      ? order.payload.addresses.market
+      : cli.symbol;
   const deposit = buildGmxV2UnsignedDepositPayload({ marketToken, sizeUsd: cli.sizeUsd });
 
   const metrics = {
@@ -100,14 +102,12 @@ async function main(): Promise<void> {
       order: order.payload,
       orderMeta: { venue: order.venue, side: order.side, sizeUsd: order.sizeUsd, expiresAtMs: order.expiresAtMs },
       createOrderParams: {
+        addresses: order.payload.addresses,
+        numbers: order.payload.numbers,
         orderType: order.payload.orderType,
-        minOutputAmount: order.payload.minOutputAmount,
-        initialCollateralDeltaAmount: order.payload.initialCollateralDeltaAmount,
-        callbackGasLimit: order.payload.callbackGasLimit,
-        acceptablePrice: order.payload.acceptablePrice,
-        executionFee: order.payload.executionFee,
-        uiFeeReceiver: order.payload.uiFeeReceiver,
+        isLong: order.payload.isLong,
         referralCode: order.payload.referralCode,
+        uiFeeReceiver: order.payload.addresses.uiFeeReceiver,
       },
     },
     refs: { deposit: guardRef(deposit), order: guardRef(order.payload) },
