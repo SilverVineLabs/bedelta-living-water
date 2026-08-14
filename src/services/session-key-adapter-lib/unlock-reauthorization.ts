@@ -2,7 +2,8 @@
  * EIP-712 master re-authorization — SSOT for clearing R17/R20 hardlocks.
  */
 
-import { verifyTypedData, type TypedDataField } from "ethers";
+import { recoverTypedDataAddress, type Hex } from "viem";
+import type { Eip712TypedField } from "../../adapters/hl/eip712-signer";
 import { normalizeAddress } from "../../adapters/hl/crypto";
 import { buildUserSignedDomain } from "../../adapters/hl/auth/chain-id";
 import { HL_USER_SIGNED_CHAIN_ID } from "../../adapters/hl/auth/domains";
@@ -26,8 +27,11 @@ export const REAUTH_MAX_AGE_MS = 5 * 60 * 1000;
 /** Allowed future clock drift when validating timestampMs. */
 export const REAUTH_CLOCK_DRIFT_MS = 30_000;
 
-export const HL_RELEASE_HARDLOCK_TYPES: Record<string, TypedDataField[]> = {
-  "HyperliquidTransaction:ReleaseHardlock": [
+export const HL_RELEASE_HARDLOCK_PRIMARY_TYPE =
+  "HyperliquidTransaction:ReleaseHardlock" as const;
+
+export const HL_RELEASE_HARDLOCK_TYPES: Record<string, Eip712TypedField[]> = {
+  [HL_RELEASE_HARDLOCK_PRIMARY_TYPE]: [
     { name: "masterAddress", type: "address" },
     { name: "timestampMs", type: "uint64" },
   ],
@@ -84,12 +88,12 @@ export function isReauthorizationTimestampFresh(
   return nowMs - timestampMs <= REAUTH_MAX_AGE_MS;
 }
 
-export function verifyHardlockReleaseSignature(
+export async function verifyHardlockReleaseSignature(
   masterAddress: string,
   timestampMs: number,
   eip712Signature: string,
   signatureChainId?: string,
-): boolean {
+): Promise<boolean> {
   try {
     const normalizedMaster = normalizeAddress(masterAddress);
     const chainId = signatureChainId ?? HL_USER_SIGNED_CHAIN_ID;
@@ -98,7 +102,18 @@ export function verifyHardlockReleaseSignature(
       timestampMs,
       chainId,
     );
-    const recovered = verifyTypedData(domain, types, message, eip712Signature);
+    const recovered = await recoverTypedDataAddress({
+      domain: {
+        name: domain.name,
+        version: domain.version,
+        chainId: domain.chainId,
+        verifyingContract: domain.verifyingContract as Hex,
+      },
+      types,
+      primaryType: HL_RELEASE_HARDLOCK_PRIMARY_TYPE,
+      message,
+      signature: eip712Signature as Hex,
+    });
     return normalizeAddress(recovered) === normalizedMaster;
   } catch {
     return false;
@@ -150,7 +165,7 @@ export async function verifyAndReleaseHardlock(
     return { ok: false, reason: "MASTER_ADDRESS_INVALID" };
   }
 
-  const signatureOk = verifyHardlockReleaseSignature(
+  const signatureOk = await verifyHardlockReleaseSignature(
     normalizedMaster,
     params.timestampMs,
     params.eip712Signature,
