@@ -17,6 +17,13 @@ import {
   type ZeroDevChainHealthStatus,
 } from "./zerodev-aa-failover";
 import {
+  assertCitadelRiskGate as assertGatewayCitadelRiskGate,
+  evaluateGatewayRules,
+  type CitadelRiskGateVerdict,
+  type GatewayRulesInput,
+  type GatewayRulesResult,
+} from "../../../core/risk-engine";
+import {
   evaluateStaticBreakerMatrix,
   tripStaticCircuitBreaker,
   ZERODEV_GAS_LIMIT_EXCEEDED_TRIP,
@@ -184,4 +191,38 @@ export function evaluateZeroDevAaGatewayBadge(
     secured: gatePass,
     label: gatePass ? AA_GATEWAY_SECURED_LABEL : AA_GATEWAY_DISABLED_LABEL,
   };
+}
+
+/** Santenmoku v0.9 — ZeroDev AA pre-broadcast Citadel gate (lean hot-path, no spread). */
+
+export interface ZeroDevAaGateInput {
+  symbol: string;
+  soil: SoilResistanceInput;
+  smartAccount?: string;
+  paymaster?: string;
+  estimatedLossUsd?: number;
+  accountBalanceUsd?: number;
+  criHardlock?: boolean;
+  payloadPoison?: boolean;
+}
+
+function toGatewayInput(input: ZeroDevAaGateInput): GatewayRulesInput {
+  const gateway: GatewayRulesInput = { symbol: input.symbol, soil: input.soil };
+  if (input.estimatedLossUsd !== undefined) gateway.estimatedLossUsd = input.estimatedLossUsd;
+  if (input.accountBalanceUsd !== undefined) gateway.accountBalanceUsd = input.accountBalanceUsd;
+  if (input.criHardlock !== undefined) gateway.criHardlock = input.criHardlock;
+  if (input.payloadPoison !== undefined) gateway.payloadPoison = input.payloadPoison;
+  return gateway;
+}
+
+/** ZeroDev ERC-4337 UserOp preflight — fail-closed soil + oracle gate. */
+export function evaluateZeroDevAaGate(input: ZeroDevAaGateInput): GatewayRulesResult {
+  return evaluateGatewayRules(toGatewayInput(input));
+}
+
+export function assertZeroDevAaRiskGate(
+  input: ZeroDevAaGateInput,
+  expectTrip: boolean,
+): CitadelRiskGateVerdict {
+  return assertGatewayCitadelRiskGate(toGatewayInput(input), expectTrip);
 }
