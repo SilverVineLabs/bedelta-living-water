@@ -1,12 +1,19 @@
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  buildHoneyPotDecoyTelemetry,
+  evaluateRpcDefenseGate,
   HoneyPotCircuitBreakError,
+  HONEYPOT_ACTIVE,
   HONEYPOT_RPC_HOSTS,
   HONEYPOT_SIMULATED_SLIPPAGE,
+  HONEYPOT_STATUS_CODE,
+  isRpcDefenseAuthenticated,
+  SESSION_ENTROPY_SEED_CANONICAL,
   assertRpcAllowlisted,
   fetchAllowlisted,
   listInternalRpcHosts,
   RpcNodeNotAllowlistedError,
+  tripHoneyPotCircuit,
 } from "../../src/services/defense/rpc-whitelist";
 import {
   JAVIER_SIGNATURE_LITERAL,
@@ -18,6 +25,7 @@ import {
   enforceLayoutMetricGate,
   resolveLayoutMetricThresholds,
   validateLayoutMetricUnlock,
+  deriveDynamicEntropyJitter,
   LAYOUT_METRIC_ENC_BLOB,
 } from "../../src/services/defense/layout-metric-provider";
 import {
@@ -138,8 +146,60 @@ describe("Integrity probe rpc-whitelist", () => {
     ).rejects.toMatchObject({
       name: "HoneyPotCircuitBreakError",
       httpStatus: 500,
+      statusCode: HONEYPOT_STATUS_CODE,
+      honeypotActive: HONEYPOT_ACTIVE,
       simulatedSlippage: HONEYPOT_SIMULATED_SLIPPAGE,
     });
+  });
+
+  it("trips circuit probe on production host without SESSION_ENTROPY_SEED", () => {
+    expect(() =>
+      assertRpcAllowlisted(
+        "https://api.hyperliquid.xyz/info",
+        [],
+        {},
+        { circuitProbe: true },
+      ),
+    ).toThrow(HoneyPotCircuitBreakError);
+  });
+
+  it("allows circuit probe fast-path when SESSION_ENTROPY_SEED is valid", () => {
+    __setLayoutMetricConfigForTests({
+      SESSION_ENTROPY_SEED: SESSION_ENTROPY_SEED_CANONICAL,
+    });
+    expect(isRpcDefenseAuthenticated()).toBe(true);
+    expect(() =>
+      assertRpcAllowlisted(
+        "https://api.hyperliquid.xyz/info",
+        [],
+        { SESSION_ENTROPY_SEED: SESSION_ENTROPY_SEED_CANONICAL },
+        { circuitProbe: true },
+      ),
+    ).not.toThrow();
+  });
+
+  it("deriveDynamicEntropyJitter applies phase-entropy compensation", () => {
+    const base = 0.78;
+    const a = deriveDynamicEntropyJitter(base, SESSION_ENTROPY_SEED_CANONICAL, 1_700_000_000_000);
+    const b = deriveDynamicEntropyJitter(base, SESSION_ENTROPY_SEED_CANONICAL, 1_700_000_000_000);
+    expect(a).toBeGreaterThan(base);
+    expect(a).toBe(b);
+  });
+
+  it("evaluateRpcDefenseGate returns HONEYPOT_ACTIVE for unauthenticated trap host", () => {
+    const verdict = evaluateRpcDefenseGate(`https://${HONEYPOT_RPC_HOSTS[0]}/v1/rpc`);
+    expect(verdict).toMatchObject({
+      authenticated: false,
+      tripped: true,
+      statusCode: HONEYPOT_STATUS_CODE,
+      code: HONEYPOT_ACTIVE,
+    });
+    expect(buildHoneyPotDecoyTelemetry("https://trap.test/rpc")).toMatchObject({
+      statusCode: HONEYPOT_STATUS_CODE,
+      code: HONEYPOT_ACTIVE,
+      simulatedSlippage: HONEYPOT_SIMULATED_SLIPPAGE,
+    });
+    expect(() => tripHoneyPotCircuit("https://trap.test/rpc")).toThrow(HoneyPotCircuitBreakError);
   });
 
   it("allows production RPC hosts regardless of unlock state", () => {

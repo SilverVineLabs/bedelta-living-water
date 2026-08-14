@@ -10,11 +10,18 @@ import {
   buildGrantAuditPayload,
   handleGrantAuditRequest,
 } from "../../src/routes/grant-audit";
+import { __resetGrantAuditResponseCacheForTests } from "../../src/api/routes/grant-audit";
+import {
+  GRANT_AUDIT_PAYLOAD_KV_KEY,
+  writeGrantAuditPrecomputedPayload,
+} from "../../src/routes/grant-audit-lib/grant-audit-kv";
 import * as guardRefresh from "../../src/routes/grant-audit-lib/grant-audit-guard-refresh";
 import type { Env } from "../../src/env";
+import { mockKv } from "./grant-audit-fixtures";
 
 afterEach(() => {
   vi.restoreAllMocks();
+  __resetGrantAuditResponseCacheForTests();
 });
 
 describe("/api/grant-audit fetch resilience", () => {
@@ -56,5 +63,25 @@ describe("/api/grant-audit fetch resilience", () => {
     expect(payload.arbitrumCitadel.gmxSwrIsCached).toBe(true);
     expect(payload.arbitrumCitadel.gmxSwrProofLabel).toBe(GMX_SWR_PROOF_LABEL);
     expect(payload.error).toContain("EXECUTION_LOGS_KV");
+  });
+
+  it("serves precomputed KV payload without rebuilding on cache hit", async () => {
+    const kv = mockKv({});
+    const cached = await buildGrantAuditPayload({ EXECUTION_LOGS_KV: kv } as Env);
+    cached.fetchedAt = "2099-01-01T00:00:00.000Z";
+    await writeGrantAuditPrecomputedPayload(kv, cached, new Date().toISOString());
+
+    const buildSpy = vi.spyOn(
+      await import("../../src/routes/grant-audit-lib/grant-audit-payload"),
+      "buildGrantAuditPayload",
+    );
+
+    const res = await handleGrantAuditRequest({ EXECUTION_LOGS_KV: kv } as Env);
+    const body = (await res.json()) as { fetchedAt: string };
+
+    expect(res.status).toBe(200);
+    expect(body.fetchedAt).toBe("2099-01-01T00:00:00.000Z");
+    expect(buildSpy).not.toHaveBeenCalled();
+    expect(kv.get).toHaveBeenCalledWith(GRANT_AUDIT_PAYLOAD_KV_KEY);
   });
 });

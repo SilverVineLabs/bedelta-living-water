@@ -1,5 +1,9 @@
 /** 300ms hard-cap external RPC / Vertex probes — fail-soft SWR eligible. */
-import { fetchAllowlisted } from "./rpc-whitelist";
+import type { LayoutMetricConfig } from "./layout-metric-provider";
+import {
+  fetchAllowlisted,
+  type RpcFetchGateOptions,
+} from "./rpc-whitelist";
 
 export const EXTERNAL_FETCH_TIMEOUT_MS = 300 as const;
 export const API_DATA_HOT_PATH_BUDGET_MS = 80 as const;
@@ -54,10 +58,12 @@ export async function fetchAllowlistedWithTimeout(
   init?: RequestInit,
   extraHosts: readonly string[] = [],
   timeoutMs: number = EXTERNAL_FETCH_TIMEOUT_MS,
+  env?: LayoutMetricConfig,
+  gate?: RpcFetchGateOptions,
 ): Promise<Response> {
   const { init: timedInit, cleanup } = withFetchAbortTimeout(init, timeoutMs);
   try {
-    return await fetchAllowlisted(url, timedInit, extraHosts);
+    return await fetchAllowlisted(url, timedInit, extraHosts, env, gate);
   } catch (err) {
     if (!isNetworkLossError(err)) throw err;
     return new Response(
@@ -78,8 +84,10 @@ export async function fetchWithTimeout(
   init?: RequestInit,
   extraHosts: readonly string[] = [],
   timeoutMs: number = EXTERNAL_FETCH_TIMEOUT_MS,
+  env?: LayoutMetricConfig,
+  gate?: RpcFetchGateOptions,
 ): Promise<Response> {
-  return fetchAllowlistedWithTimeout(url, init, extraHosts, timeoutMs).catch(
+  return fetchAllowlistedWithTimeout(url, init, extraHosts, timeoutMs, env, gate).catch(
     () =>
       new Response(
         JSON.stringify({

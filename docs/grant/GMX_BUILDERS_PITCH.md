@@ -28,7 +28,7 @@ HUD and API telemetry use **Provenance Verified** or **Estimated Yield** badges 
 | **Two-Tier RPC Radar** | Tier 1: multi-provider RPC/WS failover · Tier 2: `SEQUENCER_OUTAGE_CONFIRMED` when all heads stale >5s · trips `checkSoilResistance()` | `rpc-radar.ts` |
 | **Arbiscan Sepolia On-Chain Proof** | Dual-leg Sepolia validation artifact · `sepoliaTxHash` + Arbiscan URL in `GET /api/grant-audit` · bundled Worker-safe JSON | `sepolia-dual-leg-proof.types.ts` |
 | **Telemetry HUD** | Live Grant Audit dashboard · Citadel metrics JSON · sidecar health relay | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` |
-| **Dynamic Slippage & Execution Conservation** | Pre-trade soil fuse · adaptive slippage envelopes · 500ms decision SLO · fail-closed when latency or depth trips | `checkSoilResistance()` · `arbitrum-gas-guard.ts` |
+| **Dynamic Slippage & Execution Conservation** | Pre-trade soil fuse · adaptive slippage envelopes · dynamic decision SLO (machine-readable via `/api/grant-audit`) · fail-closed when latency or depth trips | `checkSoilResistance()` · `arbitrum-gas-guard.ts` |
 
 ---
 
@@ -56,13 +56,13 @@ SliverVine operates **Arbitrum Citadel** (primary GMX v2 path) and **Hyperliquid
 
 | Layer | Module | Behavior |
 |-------|--------|----------|
-| Chainlink Sequencer | `sequencer-guard.ts` | 600s grace · fail-closed |
+| Chainlink Sequencer | `sequencer-guard.ts` | Dynamic grace window · fail-closed |
 | Statuspage Sentinel | `arbitrum-status-sentinel.ts` | `SEQUENCER_ANOMALY_DETECTED` |
 | **Two-Tier RPC Radar** | `rpc-radar.ts` | Tier 1 failover · Tier 2 `SEQUENCER_OUTAGE_CONFIRMED` |
 | Soil Resistance | `checkSoilResistance()` | Dynamic slippage · depth · cross-spread fuse |
 | Escalation Ladder | `escalation-ladder.ts` | Pre-emptive de-lever · RED → `panic:flash` |
 
-Badge: `[ ⚡ 500ms DECISION DEADLINE SLO : FAIL-CLOSED ARMED ]` · Dynamic Max SL = `Balance × 1% + $100`.
+Badge: `[ ⚡ DECISION DEADLINE SLO : FAIL-CLOSED ARMED ]` · Dynamic Max SL = `Balance × 1% + $100` · live thresholds via `GET /api/grant-audit`.
 
 ---
 

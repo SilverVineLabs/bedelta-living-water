@@ -26,7 +26,7 @@
 | HL Session Key Hedge Margin | ~$199.80 USDC |
 | Combined Monitored Citadel TVL | ~$1,302.39 USDC |
 | Zero-Δ Dynamic Shield · MDD Guard | **0.00% MDD** (90d window · ~$1.3k monitored Citadel TVL) |
-| GMX Ecosystem Defenses | OI Imbalance Absorbed · Price Impact Rebate Optimizer (+0.02% Saved) · Canonical Oracle Lag Shield (<30s / 30,000ms FAIL-CLOSED) · Zero-429 SWR Storage Guard |
+| GMX Ecosystem Defenses | OI Imbalance Absorbed · Price Impact Rebate Optimizer (+0.02% Saved) · Canonical Oracle Lag Shield (dynamic runtime threshold · machine-readable via `/api/grant-audit`) · Zero-429 SWR Storage Guard |
 | Builder Monetization (`GMX_UI_FEE_RECEIVER`) | **Protocol-Standard Builder Fee Routing Configured (+5 bps)** on every unsigned GMX v2 payload via `uiFeeReceiver` |
 
 ---
@@ -43,7 +43,7 @@ pnpm typecheck
 
 # 3. GMX v2 canonical order payload & DataStore view reader
 npx tsx scripts/test-gmx-v2-execution.ts --live-read
-# Optional: bypass 30s Oracle Lag fail-closed gate for dry-run payload inspection only
+# Optional: bypass Oracle Lag fail-closed gate for dry-run payload inspection only
 npx tsx scripts/test-gmx-v2-execution.ts --live-read --allow-stale-oracle
 
 # 4. Live telemetry inspection
@@ -59,7 +59,7 @@ npx tsx scripts/test-gmx-v2-execution.ts --help
 npx tsx scripts/test-gmx-v2-execution.ts --live-read [--allow-stale-oracle]
 ```
 
-Default execution enforces the strict **30s Oracle Lag fail-closed Citadel gate** (`ORACLE_LAG_DEADLOCK_MS = 30,000`). When Chainlink timestamp lag exceeds 30s vs L2 block headers, payload generation is blocked.
+Default execution enforces the strict **Oracle Lag fail-closed Citadel gate** (dynamic runtime threshold — machine-readable via [`/api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit)). When canonical oracle timestamp lag exceeds the active tolerance band vs L2 block headers, payload generation is blocked.
 
 `--allow-stale-oracle` bypasses only the oracle lag deadlock filter for **dry-run / live-read payload inspection** (prints `[BYPASS_WARNING]`). Sequencer guard and gas surcharge checks remain armed. Use to verify `uiFeeReceiver` routing (e.g. `0xc9BddABD80982d2201376195DD9B85fb7951546f`) during elevated Chainlink lag — not for production broadcast.
 
@@ -67,17 +67,31 @@ Default execution enforces the strict **30s Oracle Lag fail-closed Citadel gate*
 
 | Module | Path | Role |
 |--------|------|------|
-| **Sequencer Guard** | `src/services/risk/sequencer-guard.ts` | Chainlink Arbitrum One Sequencer Uptime Feed (`0xFdB631F5EE196F0ed6FAa767959853A9F217697D`) · 600s grace · zero-trust fail-closed |
-| **Oracle Lag Shield** | `src/services/risk/arbitrum-gas-guard.ts` | Halts dispatch when Chainlink timestamp lag exceeds **30s** vs L2 block headers (fail-closed) |
+| **Sequencer Guard** | `src/services/risk/sequencer-guard.ts` | Chainlink Arbitrum One Sequencer Uptime Feed · dynamic grace window · zero-trust fail-closed |
+| **Oracle Lag Shield** | `src/services/risk/arbitrum-gas-guard.ts` | Halts dispatch when canonical oracle lag exceeds dynamic runtime threshold vs L2 block headers (fail-closed · machine-readable via `/api/grant-audit`) |
 | **GMX Balancer Engine** | `src/services/yield/gmx-v2-balancer.ts` | Pre-trade underweight-side qualification · `isGmxBalancerQualified` · `expectedPriceImpactRebateBps` — canonical reward eligibility determined on-chain by GMX |
-| **Price-Impact Gate** | `src/services/yield/gmx-v2-price-impact.ts` | `estimatePreliminaryImpact()` · subsidy vs penalty bps · soil trip on >50 bps penalty |
+| **Price-Impact Gate** | `src/services/yield/gmx-v2-price-impact.ts` | `estimatePreliminaryImpact()` · subsidy vs penalty bps · soil trip on penalty exceeding dynamic runtime fuse (machine-readable via `/api/grant-audit`) |
 | **Canonical Payload Builder** | `src/services/adapters/gmx-v2-order-payload.ts` | GMX v2 `CreateOrderParams` alignment — `orderType`, `minOutputAmount`, `initialCollateralDeltaAmount`, `callbackGasLimit`, dynamic `executionFeeWei` |
 | **GMX v2 Adapter** | `src/services/adapters/gmx-v2-adapter.ts` | DataStore read-path · unsigned hedge order assembly |
 | **Grant Audit** | `src/routes/grant-audit.ts` | Live Zero-Trust JSON — Balancer + Citadel metrics · `<50ms` serialize |
 
 **Builder monetization:** every unsigned increase/decrease/deposit payload injects **`uiFeeReceiver`** (SliverVine Treasury via `GMX_UI_FEE_RECEIVER`) with **Protocol-Standard Builder Fee Routing Configured (+5 bps)**, plus configurable **`referralCode`**.
 
-**Fail-closed posture:** **500ms** Decision SLO applies to local Sidecar RTT; on-chain RPC network timeout enforced at **3000ms** fail-closed · Two-Phase Saga compensation · Dynamic Max SL = `Account Balance × 1% + $100`. Emergency Liquidity Sponge (`cross-venue-fail-safe.ts`) is a **routing policy** for HL L2 hedge fallback — not an on-chain fuse.
+**Fail-closed posture:** Decision SLO and on-chain RPC network timeout are **dynamic runtime thresholds** (machine-readable via [`/api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit)) · Two-Phase Saga compensation · Dynamic Max SL = `Account Balance × 1% + $100`. Emergency Liquidity Sponge (`cross-venue-fail-safe.ts`) is a **routing policy** for HL L2 hedge fallback — not an on-chain fuse.
+
+---
+
+## Tri-Sensor Telemetry Matrix (Control Loop Architecture)
+
+The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matrix** before any GMX broadcast. Three orthogonal observability channels feed a fused control decision — **no static weight constants** ($w_1$, $w_2$, $\lambda$) are published in open documentation.
+
+| Sensor Channel | Observability Domain | Control Action |
+|----------------|---------------------|----------------|
+| **BaseFee Velocity Sensor** | ArbOS EIP-1559 base-fee acceleration / deceleration as congestion stress proxy | Throttle dispatch when fee velocity exceeds dynamic tolerance band |
+| **RPC Jitter Radar** | Multi-provider RTT dispersion and head-staleness across whitelisted endpoints | Fail-closed when jitter radar flags endpoint phase desync |
+| **Phase-Shift Instability Detector** | Cross-venue oracle / book phase alignment (HL ↔ dYdX ↔ GMX) | Invoke instant circuit breaker on cross-sensor phase-shift anomaly |
+
+Fused sensor deviations exceeding **dynamic runtime tolerance bands** trigger fail-closed interlock. Live threshold envelopes, guard states, and benchmark latencies are machine-readable via `GET /api/grant-audit` — empirical constants remain in compiled Worker bindings and environment secrets only.
 
 **Zero migration tax:** mount `@SagaProtected` or `silvervine-proxy` at `localhost:8080` — existing Python/TS alpha unchanged.
 
@@ -94,7 +108,7 @@ Full sidecar testlist: **[DOCKER_README.md](./DOCKER_README.md)**.
 
 ## B2B Infrastructure
 
-Institutional funds and market makers deploy the **SliverVine Citadel Telemetry Sidecar** as a local zero-GC relay with 500ms fail-closed SLO alignment.
+Institutional funds and market makers deploy the **SliverVine Citadel Telemetry Sidecar** as a local zero-GC relay with fail-closed SLO alignment (dynamic runtime threshold · machine-readable via `/api/grant-audit`).
 
 | Resource | Purpose |
 |----------|---------|
