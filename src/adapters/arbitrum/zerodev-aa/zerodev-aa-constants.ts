@@ -23,7 +23,3 @@ export function resolveZeroDevBundlerRpc(
   const projectId = env.ZERODEV_PROJECT_ID;
   return projectId ? buildZeroDevRpcUrl(projectId, chainId) : undefined;
 }
-
-export function resolveKernelVersion(envVersion?: string): typeof ZERODEV_KERNEL_VERSION {
-  return envVersion === "0.3.1" || !envVersion ? ZERODEV_KERNEL_VERSION : ZERODEV_KERNEL_VERSION;
-}

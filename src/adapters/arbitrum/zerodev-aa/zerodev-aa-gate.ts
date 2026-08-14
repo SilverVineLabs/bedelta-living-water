@@ -2,11 +2,9 @@
 
 import { checkSoilResistance, RiskLimitExceeded } from "../../../services/risk-control";
 import type { SoilResistanceInput } from "../../../services/risk-control-lib/soil-resistance";
-import type { RiskLogPayload } from "../../../services/risk-control-lib/logging";
 import {
-  DAILY_SPONSORSHIP_LIMIT_USD,
+  evaluateSponsoredGasLimits,
   getGasLedgerSnapshot,
-  isDailySponsorshipExhausted,
   loadGasLedgerFromKv,
   MAX_GAS_COST_PER_USEROP_USD,
   type GasLedgerSnapshot,
@@ -18,6 +16,11 @@ import {
   type AaProbeRouteDecision,
   type ZeroDevChainHealthStatus,
 } from "./zerodev-aa-failover";
+import {
+  evaluateStaticBreakerMatrix,
+  tripStaticCircuitBreaker,
+  ZERODEV_GAS_LIMIT_EXCEEDED_TRIP,
+} from "./zerodev-aa-static-breaker";
 
 export {
   ARBITRUM_ONE_RPC_FAILOVER_LATENCY_MS,
@@ -35,44 +38,24 @@ export {
   MAX_GAS_COST_PER_USEROP_USD as maxGasCostPerUserOpUSD,
 } from "./zerodev-aa-gas-ledger";
 
-export const TRIP_SOIL_RESISTANCE = "TRIP_SOIL_RESISTANCE" as const;
-export const ZERODEV_GAS_LIMIT_EXCEEDED_TRIP = "ZERODEV_GAS_LIMIT_EXCEEDED_TRIP" as const;
-
-function zerodevGateRiskContext(
-  symbol: string,
-  message: string,
-  event: RiskLogPayload["event"],
-  details: Record<string, number | string | boolean | null>,
-): RiskLogPayload {
-  return {
-    level: "warn",
-    module: "risk-control",
-    event,
-    symbol,
-    timestamp: new Date().toISOString(),
-    message,
-    details,
-  };
-}
-
-function throwSoilResistanceTrip(symbol: string, reasons: string[]): never {
-  throw new RiskLimitExceeded(
-    `${TRIP_SOIL_RESISTANCE}:${reasons.join("|")}`,
-    zerodevGateRiskContext(symbol, TRIP_SOIL_RESISTANCE, "SOIL_RESISTANCE_TRIP", {
-      reasons: reasons.join("|"),
-      gate: "zerodev-aa",
-    }),
-  );
-}
+export { TRIP_SOIL_RESISTANCE, ZERODEV_GAS_LIMIT_EXCEEDED_TRIP } from "./zerodev-aa-static-breaker";
 
 function throwGasLimitExceededTrip(estimatedGasCostUsd: number): never {
   throw new RiskLimitExceeded(
     `${ZERODEV_GAS_LIMIT_EXCEEDED_TRIP}:${estimatedGasCostUsd.toFixed(4)}>${MAX_GAS_COST_PER_USEROP_USD}`,
-    zerodevGateRiskContext("AA", ZERODEV_GAS_LIMIT_EXCEEDED_TRIP, "ROOT_PROTECTION_TRIP", {
-      estimatedGasCostUsd,
-      maxGasCostPerUserOpUsd: MAX_GAS_COST_PER_USEROP_USD,
-      gate: "zerodev-aa",
-    }),
+    {
+      level: "warn",
+      module: "risk-control",
+      event: "ROOT_PROTECTION_TRIP",
+      symbol: "AA",
+      timestamp: new Date().toISOString(),
+      message: ZERODEV_GAS_LIMIT_EXCEEDED_TRIP,
+      details: {
+        estimatedGasCostUsd,
+        maxGasCostPerUserOpUsd: MAX_GAS_COST_PER_USEROP_USD,
+        gate: "zerodev-aa",
+      },
+    },
   );
 }
 
@@ -87,11 +70,8 @@ export function isZeroDevAAEnabled(env?: Record<string, string>): boolean {
 }
 
 export interface CitadelRiskGateInput extends SoilResistanceInput {
-  /** Estimated sponsored gas cost (USD) for this UserOp — required for per-op cap. */
   estimatedGasCostUsd?: number;
-  /** Whether caller intends paymaster sponsorship. */
   requestedSponsorship?: boolean;
-  /** Evaluation timestamp (tests / replay). */
   atMs?: number;
   kv?: KVNamespace;
 }
@@ -104,14 +84,6 @@ export interface CitadelRiskGateResult {
   aaProbeRoute?: AaProbeRouteDecision;
 }
 
-/** Sequencer + Oracle health snapshot for telemetry (read-only; does not bypass soil). */
-export function evaluateZeroDevChainHealth(
-  rpcLatencyMs?: number,
-  nowMs?: number,
-): ZeroDevChainHealthStatus {
-  return evaluateArbitrumOneHealth(nowMs ?? Date.now(), rpcLatencyMs);
-}
-
 export function evaluateZeroDevGasGuards(input: {
   estimatedGasCostUsd?: number;
   requestedSponsorship?: boolean;
@@ -119,75 +91,70 @@ export function evaluateZeroDevGasGuards(input: {
   nowMs?: number;
 }): CitadelRiskGateResult {
   const nowMs = input.nowMs ?? Date.now();
-  const requested = input.requestedSponsorship === true;
   const snapshot = input.snapshot ?? getGasLedgerSnapshot(nowMs);
-
-  if (
-    input.estimatedGasCostUsd !== undefined &&
-    Number.isFinite(input.estimatedGasCostUsd) &&
-    input.estimatedGasCostUsd > MAX_GAS_COST_PER_USEROP_USD
-  ) {
-    throwGasLimitExceededTrip(input.estimatedGasCostUsd);
+  const gas = evaluateSponsoredGasLimits({
+    estimatedGasCostUsd: input.estimatedGasCostUsd,
+    requestedSponsorship: input.requestedSponsorship,
+    snapshot,
+    nowMs,
+  });
+  if (gas.perUserOp.exceeded && gas.perUserOp.estimatedGasCostUsd !== undefined) {
+    throwGasLimitExceededTrip(gas.perUserOp.estimatedGasCostUsd);
   }
-
-  if (requested && isDailySponsorshipExhausted(snapshot, nowMs)) {
-    return {
-      sponsored: false,
-      gasGuardReason: `ZERODEV_DAILY_SPONSORSHIP_EXHAUSTED:${snapshot.cumulativeSpentUsd.toFixed(4)}>=${DAILY_SPONSORSHIP_LIMIT_USD}`,
-      dailySpentUsd: snapshot.cumulativeSpentUsd,
-    };
-  }
-
-  return { sponsored: requested, dailySpentUsd: snapshot.cumulativeSpentUsd };
+  return {
+    sponsored: gas.sponsored,
+    gasGuardReason: gas.gasGuardReason,
+    dailySpentUsd: gas.dailySpentUsd,
+  };
 }
 
 /**
- * AA execution MUST pass v0.8 soil gate first — never bypass risk-control.ts.
+ * Static circuit breaker — pure matrix evaluation, fail-fast trip, then telemetry enrich.
  * Gas soft-limits: per-UserOp hard reject ($0.50); daily sponsorship fallback ($10/24h).
  */
 export function assertCitadelRiskGate(input: CitadelRiskGateInput): CitadelRiskGateResult {
   const nowMs = input.atMs ?? (input.at ? input.at.getTime() : Date.now());
-  const chainHealth = evaluateArbitrumOneHealth(nowMs);
-  const aaProbeRoute = resolveAaProbeRoute(undefined, nowMs);
-
-  const result = checkSoilResistance(input);
-  if (result.tripped) {
-    throwSoilResistanceTrip(input.symbol, result.reasons);
-  }
-
-  const snapshot = getGasLedgerSnapshot(nowMs);
-  const gas = evaluateZeroDevGasGuards({
+  const matrix = evaluateStaticBreakerMatrix({
+    soil: input,
     estimatedGasCostUsd: input.estimatedGasCostUsd,
     requestedSponsorship: input.requestedSponsorship,
-    snapshot,
+    snapshot: getGasLedgerSnapshot(nowMs),
     nowMs,
   });
+  tripStaticCircuitBreaker(matrix, input.symbol);
 
-  return { ...gas, chainHealth, aaProbeRoute };
+  return {
+    sponsored: matrix.sponsored,
+    gasGuardReason: matrix.gasGuardReason,
+    dailySpentUsd: matrix.dailySpentUsd,
+    chainHealth: evaluateArbitrumOneHealth(nowMs),
+    aaProbeRoute: resolveAaProbeRoute(undefined, nowMs),
+  };
 }
 
-/** KV-backed gate path for Edge Workers — loads ledger before guard evaluation. */
+/** KV-backed gate path — ledger load, then static breaker (same fail-fast semantics). */
 export async function assertCitadelRiskGateAsync(
   input: CitadelRiskGateInput,
 ): Promise<CitadelRiskGateResult> {
   const nowMs = input.atMs ?? (input.at ? input.at.getTime() : Date.now());
-  const aaProbeRoute = await resolveAaProbeRouteAsync(undefined, nowMs);
-  const chainHealth = aaProbeRoute.health;
-
-  const result = checkSoilResistance(input);
-  if (result.tripped) {
-    throwSoilResistanceTrip(input.symbol, result.reasons);
-  }
-
   const snapshot = input.kv ? await loadGasLedgerFromKv(input.kv, nowMs) : getGasLedgerSnapshot(nowMs);
-  const gas = evaluateZeroDevGasGuards({
+  const matrix = evaluateStaticBreakerMatrix({
+    soil: input,
     estimatedGasCostUsd: input.estimatedGasCostUsd,
     requestedSponsorship: input.requestedSponsorship,
     snapshot,
     nowMs,
   });
+  tripStaticCircuitBreaker(matrix, input.symbol);
 
-  return { ...gas, chainHealth, aaProbeRoute };
+  const aaProbeRoute = await resolveAaProbeRouteAsync(undefined, nowMs);
+  return {
+    sponsored: matrix.sponsored,
+    gasGuardReason: matrix.gasGuardReason,
+    dailySpentUsd: matrix.dailySpentUsd,
+    chainHealth: aaProbeRoute.health,
+    aaProbeRoute,
+  };
 }
 
 export const AA_GATEWAY_SECURED_LABEL =
@@ -201,7 +168,7 @@ export interface ZeroDevAaGatewayBadgeStatus {
   label: typeof AA_GATEWAY_SECURED_LABEL | typeof AA_GATEWAY_DISABLED_LABEL;
 }
 
-/** HUD badge resolver — mirrors assertCitadelRiskGate without throwing. */
+/** HUD badge resolver — mirrors soil leg of static breaker without throwing. */
 export function evaluateZeroDevAaGatewayBadge(
   soil: SoilResistanceInput,
   env?: Record<string, string>,

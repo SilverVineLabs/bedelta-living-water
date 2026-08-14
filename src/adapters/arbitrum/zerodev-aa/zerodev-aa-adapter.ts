@@ -182,8 +182,8 @@ export async function runZeroDevSmokeProbe(
     });
     paymasterAttached = Boolean(draft.paymasterMiddleware);
     userOpDraft = {
-      sender: draft.sender,
-      callDataLength: draft.callData.length,
+      sender: draft.userOperation.sender,
+      callDataLength: draft.userOperation.callData.length,
       entryPoint: draft.entryPoint,
       kernelVersion: draft.kernelVersion,
       sponsored: draft.sponsored,
