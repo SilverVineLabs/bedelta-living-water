@@ -1,4 +1,4 @@
-# SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway
+# BeΔLivingWater SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway
 
 [![Grant Audit](https://img.shields.io/badge/Grant_Audit-Passed-0052FF.svg)](https://bedeltawater.slivervine.xyz/api/grant-audit)
 [![Vitest](https://img.shields.io/badge/Vitest-630%2F630_PASS_(117_test_files)-brightgreen.svg)](https://github.com/SilverVineLabs/bedelta-living-water)
