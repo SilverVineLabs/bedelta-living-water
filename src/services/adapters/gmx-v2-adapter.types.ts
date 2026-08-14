@@ -34,31 +34,47 @@ export interface GmxV2ResolvedMarket {
   degraded: boolean;
 }
 
-/** GMX v2 CreateOrderParams.orderType — canonical contract enum. */
+/** GMX v2 CreateOrderParams.orderType — canonical contract enum index. */
 export type GmxV2OrderType =
   | "MarketIncrease"
   | "MarketDecrease"
   | "LimitIncrease"
   | "LimitDecrease";
 
-/** Unsigned GMX v2 increase/decrease order wire — aligned with CreateOrderParams. */
-export interface GmxV2UnsignedOrderPayload {
-  action: "increase" | "decrease";
-  orderType: GmxV2OrderType;
-  marketToken: string;
-  collateralToken: string;
-  isLong: boolean;
+/** IBaseOrderUtils.CreateOrderParamsAddresses — gmx-synthetics field order. */
+export interface GmxV2CreateOrderParamsAddresses {
+  receiver: string;
+  cancellationReceiver: string;
+  callbackContract: string;
+  uiFeeReceiver: string;
+  market: string;
+  initialCollateralToken: string;
+  swapPath: string[];
+}
+
+/** IBaseOrderUtils.CreateOrderParamsNumbers — gmx-synthetics field order. */
+export interface GmxV2CreateOrderParamsNumbers {
   sizeDeltaUsd: string;
+  initialCollateralDeltaAmount: string;
+  triggerPrice: string;
   acceptablePrice: string;
   executionFee: string;
-  minOutputAmount: string;
-  initialCollateralDeltaAmount: string;
   callbackGasLimit: string;
-  reduceOnly: boolean;
-  clientOrderId?: string;
-  slippageBps: number;
-  uiFeeReceiver: string;
+  minOutputAmount: string;
+  validFromTime: string;
+}
+
+/** IBaseOrderUtils.CreateOrderParams — unsigned hedge order wire. */
+export interface GmxV2UnsignedOrderPayload {
+  addresses: GmxV2CreateOrderParamsAddresses;
+  numbers: GmxV2CreateOrderParamsNumbers;
+  orderType: number;
+  decreasePositionSwapType: number;
+  isLong: boolean;
+  shouldUnwrapNativeToken: boolean;
+  autoCancel: boolean;
   referralCode: string;
+  dataList: string[];
 }
 
 export interface GmxV2MarketsInfoResponse {
