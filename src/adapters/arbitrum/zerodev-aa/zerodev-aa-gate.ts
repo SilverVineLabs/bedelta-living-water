@@ -1,5 +1,6 @@
-import { checkSoilResistance } from "../../../services/risk-control";
+import { checkSoilResistance, RiskLimitExceeded } from "../../../services/risk-control";
 import type { SoilResistanceInput } from "../../../services/risk-control-lib/soil-resistance";
+import type { RiskLogPayload } from "../../../services/risk-control-lib/logging";
 import {
   DAILY_SPONSORSHIP_LIMIT_USD,
   getGasLedgerSnapshot,
@@ -31,6 +32,47 @@ export {
   DAILY_SPONSORSHIP_LIMIT_USD as dailySponsorshipLimitUSD,
   MAX_GAS_COST_PER_USEROP_USD as maxGasCostPerUserOpUSD,
 } from "./zerodev-aa-gas-ledger";
+
+export const TRIP_SOIL_RESISTANCE = "TRIP_SOIL_RESISTANCE" as const;
+export const ZERODEV_GAS_LIMIT_EXCEEDED_TRIP = "ZERODEV_GAS_LIMIT_EXCEEDED_TRIP" as const;
+
+function zerodevGateRiskContext(
+  symbol: string,
+  message: string,
+  event: RiskLogPayload["event"],
+  details: Record<string, number | string | boolean | null>,
+): RiskLogPayload {
+  return {
+    level: "warn",
+    module: "risk-control",
+    event,
+    symbol,
+    timestamp: new Date().toISOString(),
+    message,
+    details,
+  };
+}
+
+function throwSoilResistanceTrip(symbol: string, reasons: string[]): never {
+  throw new RiskLimitExceeded(
+    `${TRIP_SOIL_RESISTANCE}:${reasons.join("|")}`,
+    zerodevGateRiskContext(symbol, TRIP_SOIL_RESISTANCE, "SOIL_RESISTANCE_TRIP", {
+      reasons: reasons.join("|"),
+      gate: "zerodev-aa",
+    }),
+  );
+}
+
+function throwGasLimitExceededTrip(estimatedGasCostUsd: number): never {
+  throw new RiskLimitExceeded(
+    `${ZERODEV_GAS_LIMIT_EXCEEDED_TRIP}:${estimatedGasCostUsd.toFixed(4)}>${MAX_GAS_COST_PER_USEROP_USD}`,
+    zerodevGateRiskContext("AA", ZERODEV_GAS_LIMIT_EXCEEDED_TRIP, "ROOT_PROTECTION_TRIP", {
+      estimatedGasCostUsd,
+      maxGasCostPerUserOpUsd: MAX_GAS_COST_PER_USEROP_USD,
+      gate: "zerodev-aa",
+    }),
+  );
+}
 
 function readEnv(env?: Record<string, string>): Record<string, string> {
   if (env) return env;
@@ -83,9 +125,7 @@ export function evaluateZeroDevGasGuards(input: {
     Number.isFinite(input.estimatedGasCostUsd) &&
     input.estimatedGasCostUsd > MAX_GAS_COST_PER_USEROP_USD
   ) {
-    throw new Error(
-      `Citadel risk gate blocked: ZERODEV_GAS_PER_USEROP:${input.estimatedGasCostUsd.toFixed(4)}>${MAX_GAS_COST_PER_USEROP_USD}`,
-    );
+    throwGasLimitExceededTrip(input.estimatedGasCostUsd);
   }
 
   if (requested && isDailySponsorshipExhausted(snapshot, nowMs)) {
@@ -110,7 +150,7 @@ export function assertCitadelRiskGate(input: CitadelRiskGateInput): CitadelRiskG
 
   const result = checkSoilResistance(input);
   if (result.tripped) {
-    throw new Error(`Citadel risk gate blocked: ${result.reasons.join("|")}`);
+    throwSoilResistanceTrip(input.symbol, result.reasons);
   }
 
   const snapshot = getGasLedgerSnapshot(nowMs);
@@ -134,7 +174,7 @@ export async function assertCitadelRiskGateAsync(
 
   const result = checkSoilResistance(input);
   if (result.tripped) {
-    throw new Error(`Citadel risk gate blocked: ${result.reasons.join("|")}`);
+    throwSoilResistanceTrip(input.symbol, result.reasons);
   }
 
   const snapshot = input.kv ? await loadGasLedgerFromKv(input.kv, nowMs) : getGasLedgerSnapshot(nowMs);
