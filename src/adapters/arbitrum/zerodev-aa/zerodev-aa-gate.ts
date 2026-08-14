@@ -1,3 +1,5 @@
+/** @module ZeroDevAA — Opt-in CLI/SDK Citadel Risk Gate (Not mounted on Worker hot path) */
+
 import { checkSoilResistance, RiskLimitExceeded } from "../../../services/risk-control";
 import type { SoilResistanceInput } from "../../../services/risk-control-lib/soil-resistance";
 import type { RiskLogPayload } from "../../../services/risk-control-lib/logging";

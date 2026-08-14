@@ -67,6 +67,9 @@ async function main(): Promise<void> {
   seedCitadelProbes(Date.now());
   const probeRoute = await resolveAaProbeRouteAsync();
 
+  assertCitadelRiskGate(HEALTHY_SOIL);
+  console.log("[zerodev:live] Citadel risk gate: PASS (checkSoilResistance)");
+
   if (probeRoute.citadelGmxBlocked) {
     console.log(
       `[zerodev:live] Citadel GMX: FAIL-CLOSED (${probeRoute.failoverReason ?? "unhealthy"})`,
@@ -78,9 +81,6 @@ async function main(): Promise<void> {
       console.log(
         `[zerodev:live] AA failover → chain ${probeRoute.primaryChainId} (${probeRoute.failoverReason})`,
       );
-    } else {
-      assertCitadelRiskGate(HEALTHY_SOIL);
-      console.log("[zerodev:live] Citadel risk gate: PASS (checkSoilResistance)");
     }
   } else {
     console.error("[zerodev:live] AA probe blocked — no failover route available");

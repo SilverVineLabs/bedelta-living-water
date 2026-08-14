@@ -13,6 +13,7 @@ import {
 import type { LocalAccount } from "viem/accounts";
 import type { SmartAccount } from "viem/account-abstraction";
 import { buildZeroDevRpcUrl } from "./zerodev-aa-constants";
+import { withBundlerFailClosedTimeout } from "./zerodev-aa-bundler";
 import { recordSponsoredGasSpend, recordSponsoredGasSpendKv } from "./zerodev-aa-gas-ledger";
 import { buildKernelAccount, type ZeroDevViemChain } from "./zerodev-aa-kernel";
 import { ZERODEV_SPONSORED_DEFAULT } from "./zerodev-aa-userop";
@@ -94,13 +95,20 @@ export async function sendZeroDevUserOp(input: SendUserOpInput): Promise<SendUse
   const userOpHash = await kernelClient.sendUserOperation({
     calls: [{ to: zeroAddress, value: 0n, data: "0x" }],
   });
-  const receipt = await kernelClient.waitForUserOperationReceipt({ hash: userOpHash });
+  const receipt = await withBundlerFailClosedTimeout(
+    kernelClient.waitForUserOperationReceipt({ hash: userOpHash }),
+    "waitForUserOperationReceipt",
+  );
 
   if (sponsored && receipt.success && input.estimatedGasCostUsd !== undefined) {
-    if (input.gasLedgerKv) {
-      await recordSponsoredGasSpendKv(input.estimatedGasCostUsd, input.gasLedgerKv);
-    } else {
-      recordSponsoredGasSpend(input.estimatedGasCostUsd);
+    try {
+      if (input.gasLedgerKv) {
+        await recordSponsoredGasSpendKv(input.estimatedGasCostUsd, input.gasLedgerKv);
+      } else {
+        recordSponsoredGasSpend(input.estimatedGasCostUsd);
+      }
+    } catch (err) {
+      console.warn("[zerodev:gas-ledger] KV record failed", err);
     }
   }
 
