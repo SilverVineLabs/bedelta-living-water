@@ -1,5 +1,6 @@
 /** GMX Wallet B ETH delta → Wallet A Hyperliquid ETH perp short (0-Δ cross-wallet). */
-import { Wallet } from "ethers";
+import type { Hex } from "viem";
+import { createViemEip712Signer } from "../adapters/hl/viem-eip712-signer";
 import { HL_EXCHANGE_URL, HL_INFO_URL } from "../config/constants";
 import { executeHlSessionKeyOrder } from "../adapters/hl/session-key-executor";
 import { formatHlPerpPrice } from "../adapters/hl/execution-wire";
@@ -107,12 +108,12 @@ export async function runGmxCrossWalletEthHedge(input: {
       delta,
     };
   }
-  const wallet = new Wallet(input.sessionPk);
+  const signer = createViemEip712Signer(input.sessionPk as Hex);
   const leg: IntentLeg = { venue: "HL", side: "SHORT", sizeUsd: orderUsd, symbol: "ETH" };
   const riskBalanceUsd = Math.max(orderUsd / 0.01, delta.gmLiquidityUsd, 10_000);
 
   const result = await executeHlSessionKeyOrder(leg, {
-    signer: wallet,
+    signer,
     dryRun: !live,
     isTestnet: false,
     exchangeUrl: HL_EXCHANGE_URL,
@@ -123,7 +124,7 @@ export async function runGmxCrossWalletEthHedge(input: {
     fetchFn: input.fetchFn,
     sessionKey: sanitizeSessionKeyForMasterWalletTrading(
       {
-        agentAddress: wallet.address,
+        agentAddress: signer.address,
         expiresAt: Date.now() + 7 * 24 * 3600 * 1000,
         masterWalletAddress: walletA,
       },

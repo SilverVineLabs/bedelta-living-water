@@ -7,6 +7,8 @@
 
 export { splitHyperliquidSignature } from "./crypto";
 export type { Eip712Signer } from "./eip712-signer";
+export { createViemEip712Signer } from "./viem-eip712-signer";
+export type { ViemEip712Signer } from "./viem-eip712-signer";
 
 export * from "./auth/domains";
 export * from "./auth/chain-id";
