@@ -1,7 +1,7 @@
 # SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway
 
 [![Grant Audit](https://img.shields.io/badge/Grant_Audit-Passed-0052FF.svg)](https://bedeltawater.slivervine.xyz/api/grant-audit)
-[![Vitest](https://img.shields.io/badge/Vitest-686%2F686_PASS_(126_test_files)-brightgreen.svg)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![Vitest](https://img.shields.io/badge/Vitest-630%2F630_PASS_(117_test_files)-brightgreen.svg)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict_0_Errors-blue.svg)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![License](https://img.shields.io/badge/License-BUSL--1.1-orange.svg)](LICENSE)
 
@@ -12,10 +12,10 @@
 
 **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`  
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal & landing page  
-**Ecosystem DApp:** [slivervine.xyz](https://slivervine.xyz) · **Live HUD:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
-**Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) · **Architect:** qum0x (20+ Year Enterprise Web & Systems Architect) — All claims verifiable via CLI (`pnpm test`) and live JSON telemetry (`/api/grant-audit`).
+**Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) · **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
+**Architect:** qum0x (20+ Year Enterprise Web & Systems Architect) — All claims verifiable via CLI (`pnpm test`) and live JSON telemetry (`/api/grant-audit`).
 
-**Regression bar:** **686 Vitest tests pass clean (126 test files, grant-ui-ssot)** · **`npx tsc --noEmit` CLEAN**
+**Regression bar:** **117 Test Files | 630 Vitest PASS (100% Clean)** · **`npx tsc --noEmit` CLEAN**
 
 **Primary venue:** GMX v2 Arbitrum Citadel Gateway · Live Proof via [`/api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit)
 
@@ -36,7 +36,7 @@
 ```bash
 # 1. Install dependencies & run full Vitest suite
 pnpm install
-pnpm test    # 686 Vitest tests pass clean (126 test files, grant-ui-ssot)
+pnpm test    # 630 Vitest PASS (117 test files, 100% Clean)
 
 # 2. Typecheck (0 errors)
 pnpm typecheck
@@ -88,7 +88,7 @@ curl -s localhost:8080/health | jq .sidecar && curl -s -o /dev/null -w "intent H
 
 Full sidecar testlist: **[DOCKER_README.md](./DOCKER_README.md)**.
 
-**CCXT-standard roadmap:** Phase 1 exposes `fetchTicker` · `createOrder` · `fetchPositions` over GMX v2 + HL hedge; M2 ships a CCXT-compatible adapter behind the same Citadel fail-closed gate. See [docs/grant/GRANT_PROPOSAL.md](./docs/grant/GRANT_PROPOSAL.md) §3.
+**CCXT-standard roadmap:** Phase 1 exposes `fetchTicker` · `createOrder` · `fetchPositions` over GMX v2 + HL hedge; M2 ships a CCXT-compatible adapter behind the same Citadel fail-closed gate. See [docs/GRANT_PROPOSAL.md](./docs/GRANT_PROPOSAL.md) §3.
 
 ---
 
@@ -108,26 +108,49 @@ Institutional funds and market makers deploy the **SliverVine Citadel Telemetry 
 
 | Document | Purpose |
 |----------|---------|
-| [**docs/grant/**](./docs/grant/) | **Primary SSOT** — GMX Builders Program & Arbitrum DAO grant applications |
 | [docs/grant/GMX_BUILDERS_PITCH.md](./docs/grant/GMX_BUILDERS_PITCH.md) | GMX Builders Program application & Telegram outreach |
-| [docs/grant/GRANT_PROPOSAL.md](./docs/grant/GRANT_PROPOSAL.md) | M1–M3 scope · done / NOT-done criteria |
-| [docs/grant/ARCHITECTURE.md](./docs/grant/ARCHITECTURE.md) | KV isolation · MDD guard scope · regression bar history |
-| [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Full dual-engine topology · 20-root defense matrix |
 | [docs/ARBITRUM_ONE_PAGER.md](./docs/ARBITRUM_ONE_PAGER.md) | Arbitrum Citadel technical one-pager |
-
-**Official Site:** [silvervinelabs.com](https://silvervinelabs.com) · **Ecosystem DApp:** [slivervine.xyz](https://slivervine.xyz) · **Live HUD:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
+| [docs/GRANT_PROPOSAL.md](./docs/GRANT_PROPOSAL.md) | Full scope & strategic roadmap |
+| [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Dual-engine topology · SRP (<200 LOC per file) |
 
 ---
 
-## v0.9 Strategic Roadmap (Planned — Out of Current v0.8 Scope)
+## v0.9 Roadmap (Planned — Out of Current v0.8 Scope)
 
-**Planned v0.9 ZeroDev AA (ERC-4337) Integration:** Introducing Gas Sponsorship & Paymaster Onboarding on Arbitrum for seamless friction-free B2B quant execution.
+- **ZeroDev AA (ERC-4337)** integration on Arbitrum — gas sponsorship & paymaster onboarding for institutional session-key flows
+- Distinct from v0.8 Citadel fail-closed gateway; no change to current pre-execution guard SSOT until v0.9 ships
 
-Distinct from v0.8 Citadel fail-closed gateway; no change to current pre-execution guard SSOT until v0.9 ships.
+## V1.0 Strategic Roadmap & Planned Pillars (Out of Current Scope)
 
-### Architectural Horizon
 
-**Phase 2 Roadmap:** Expanding from Cloudflare Edge probes to AWS us-east-1 Co-located Bare-Metal & ZK/TEE Co-processors for sub-millisecond execution.
+
+ V0.9 establishes the foundational risk engine and ZeroDev AA adapters for Grant submissions. The following expansion pillars and side products are in active planning for V1.0:
+
+
+
+### Pillar 1 — ZeroDev AA & Multi-Chain Kernel Account
+
+- in v0.9 (Kernel v0.3.1 / EntryPoint v0.7 with ZeroDev AA Paymaster gas sponsorship).
+
+- Full institutional Session Key scoped permissions and policy validators targeted for v1.0.
+
+
+
+### Pillar 2 — Robinhood Chain Idle Yield Router (RWA Refraction Engine)
+
+- **RWA Asset Bridge & Arbitrage Engine**: Extends vault adapter interfaces to support Robinhood Chain (chain `46630`, contracts pre-delivered).
+
+- **Across Protocol Routing**: Automatically routes idle Treasury and RWA assets (US Treasury Bills, Gold RWA) from Robinhood Chain via Across Protocol directly to Arbitrum One.
+
+- **Asymmetric Yield Capture**: Deploys bridged RWA liquidity into Arbitrum GM pools for asymmetric yield optimization without manual intervention.
+
+
+
+### Pillar 3 — Agent-Gate Pre-Execution Safety Core (AI Agent Armor)
+
+- **AI Agent Pre-Execution Shield**: Built using ZeroDev Kernel v3 Session Keys and custom on-chain plugins to provide pre-execution level fail-closed protection for autonomous AI Agents.
+
+- **RPC & Front-Running Defense**: Enforces strict local validation gates (`checkSoilResistance`) prior to signing, preventing AI Agent smart accounts from getting stuck in lagging RPC nodes or drained by hostile sandwich attacks on-chain."
 
 ---
 
