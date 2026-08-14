@@ -120,6 +120,38 @@ Institutional funds and market makers deploy the **SliverVine Citadel Telemetry 
 - **ZeroDev AA (ERC-4337)** integration on Arbitrum — gas sponsorship & paymaster onboarding for institutional session-key flows
 - Distinct from v0.8 Citadel fail-closed gateway; no change to current pre-execution guard SSOT until v0.9 ships
 
+## V1.0 Strategic Roadmap & Planned Pillars (Out of Current Scope)
+
+
+
+ V0.9 establishes the foundational risk engine and ZeroDev AA adapters for Grant submissions. The following expansion pillars and side products are in active planning for V1.0:
+
+
+
+### Pillar 1 — ZeroDev AA & Multi-Chain Kernel Account
+
+- in v0.9 (Kernel v0.3.1 / EntryPoint v0.7 with ZeroDev AA Paymaster gas sponsorship).
+
+- Full institutional Session Key scoped permissions and policy validators targeted for v1.0.
+
+
+
+### Pillar 2 — Robinhood Chain Idle Yield Router (RWA Refraction Engine)
+
+- **RWA Asset Bridge & Arbitrage Engine**: Extends vault adapter interfaces to support Robinhood Chain (chain `46630`, contracts pre-delivered).
+
+- **Across Protocol Routing**: Automatically routes idle Treasury and RWA assets (US Treasury Bills, Gold RWA) from Robinhood Chain via Across Protocol directly to Arbitrum One.
+
+- **Asymmetric Yield Capture**: Deploys bridged RWA liquidity into Arbitrum GM pools for asymmetric yield optimization without manual intervention.
+
+
+
+### Pillar 3 — Agent-Gate Pre-Execution Safety Core (AI Agent Armor)
+
+- **AI Agent Pre-Execution Shield**: Built using ZeroDev Kernel v3 Session Keys and custom on-chain plugins to provide pre-execution level fail-closed protection for autonomous AI Agents.
+
+- **RPC & Front-Running Defense**: Enforces strict local validation gates (`checkSoilResistance`) prior to signing, preventing AI Agent smart accounts from getting stuck in lagging RPC nodes or drained by hostile sandwich attacks on-chain."
+
 ---
 
 ## License
