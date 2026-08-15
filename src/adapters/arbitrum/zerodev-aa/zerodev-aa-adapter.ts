@@ -6,8 +6,8 @@ import {
   isZeroDevAAEnabled,
   resolveAaProbeRouteAsync,
 } from "./zerodev-aa-gate";
-import { buildKernelAccount } from "./zerodev-aa-kernel";
-import { buildUserOpDraft, ZERODEV_SPONSORED_DEFAULT } from "./zerodev-aa-userop";
+import { buildKernelUserOpDraft } from "../../../services/aa-adapter/zerodev-kernel-adapter";
+import { ZERODEV_SPONSORED_DEFAULT } from "./zerodev-aa-userop";
 import type {
   ZeroDevAAConfigOptions,
   ZeroDevFailoverStatus,
@@ -72,15 +72,14 @@ async function probeChain(
   let paymasterAttached = false;
 
   if (errors.length === 0 && bundlerRpc) {
-    const kernel = await buildKernelAccount({
-      chainId,
-      ownerPrivateKey: readOwnerKey(env),
-      kernelVersion: opts.kernelVersion,
-    });
-    const draft = await buildUserOpDraft(kernel, {
-      sponsored: true,
-      bundlerRpc,
-      chainId,
+    const draft = await buildKernelUserOpDraft({
+      kernel: {
+        chainId,
+        ownerPrivateKey: readOwnerKey(env),
+        kernelVersion: opts.kernelVersion,
+      },
+      userOp: { sponsored: true, bundlerRpc, chainId },
+      env,
     });
     paymasterAttached = Boolean(draft.paymasterMiddleware);
 
@@ -169,17 +168,16 @@ export async function runZeroDevSmokeProbe(
   let paymasterAttached = false;
 
   if (errors.length === 0) {
-    const kernel = await buildKernelAccount({
-      chainId,
-      ownerPrivateKey: readOwnerKey(env),
-      kernelVersion: opts.kernelVersion,
+    const draft = await buildKernelUserOpDraft({
+      kernel: {
+        chainId,
+        ownerPrivateKey: readOwnerKey(env),
+        kernelVersion: opts.kernelVersion,
+      },
+      userOp: { sponsored: true, bundlerRpc: bundlerRpc!, chainId },
+      env,
     });
-    smartAccountAddress = kernel.address;
-    const draft = await buildUserOpDraft(kernel, {
-      sponsored: true,
-      bundlerRpc: bundlerRpc!,
-      chainId,
-    });
+    smartAccountAddress = draft.userOperation.sender;
     paymasterAttached = Boolean(draft.paymasterMiddleware);
     userOpDraft = {
       sender: draft.userOperation.sender,

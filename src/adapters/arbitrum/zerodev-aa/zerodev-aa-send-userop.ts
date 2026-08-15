@@ -15,7 +15,9 @@ import type { SmartAccount } from "viem/account-abstraction";
 import { buildZeroDevRpcUrl } from "./zerodev-aa-constants";
 import { withBundlerFailClosedTimeout } from "./zerodev-aa-bundler";
 import { recordSponsoredGasSpend, recordSponsoredGasSpendKv } from "./zerodev-aa-gas-ledger";
-import { buildKernelAccount, type ZeroDevViemChain } from "./zerodev-aa-kernel";
+import { buildKernelAccountWithRiskGate } from "../../../services/aa-adapter/zerodev-kernel-adapter";
+import type { ZeroDevViemChain } from "./zerodev-aa-kernel";
+import { assertRiskOracleUserOpGateOnChain } from "../../../services/aa-adapter/risk-oracle-gate";
 import { ZERODEV_SPONSORED_DEFAULT } from "./zerodev-aa-userop";
 
 export interface SendUserOpInput {
@@ -58,12 +60,20 @@ export async function sendZeroDevUserOp(input: SendUserOpInput): Promise<SendUse
   const bundlerRpc = buildZeroDevRpcUrl(input.projectId, input.chainId);
   const prefundWei = input.prefundWei ?? parseEther("0.00015");
   const sponsored = input.sponsored ?? ZERODEV_SPONSORED_DEFAULT;
+  const env = typeof process !== "undefined" ? (process.env as Record<string, string>) : {};
 
-  const kernel = await buildKernelAccount({
+  await assertRiskOracleUserOpGateOnChain({
+    chainId: input.chainId,
+    rpcUrl: input.rpcUrl,
+    env,
+  });
+
+  const kernel = await buildKernelAccountWithRiskGate({
     chainId: input.chainId,
     chain: input.chain,
     rpcUrl: input.rpcUrl,
     ownerPrivateKey: input.ownerPrivateKey,
+    env,
   });
 
   if (!sponsored) {
