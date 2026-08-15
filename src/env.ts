@@ -58,6 +58,8 @@ export interface Env {
   HYPERLIQUID_MAINNET_USER_ADDRESS?: string;
   /** Arbitrum GMX v2 user address — wrangler secret put */
   ARB_MAINNET_USER_ADDRESS?: string;
+  /** Deployed SilverVineRiskOracle — AA UserOp fail-closed read SSOT */
+  SILVERVINE_RISK_ORACLE_ADDRESS?: string;
   /** Arbitrum session key — empty = read-only GM telemetry (no signing) */
   ARB_MAINNET_SESSION_PK?: string;
   /** SRV-200 Wallet B session key — HL auto-hedge for GMX GM */
