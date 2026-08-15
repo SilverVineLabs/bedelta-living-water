@@ -39,7 +39,8 @@
     "audit:grant": "tsx scripts/generate-grant-audit-matrix.ts",
     "audit:slither": "bash scripts/run-static-analysis.sh --slither",
     "audit:mythril": "bash scripts/run-static-analysis.sh --mythril",
-    "audit:security": "bash scripts/run-static-analysis.sh --all && pnpm run typecheck && pnpm run test"
+    "audit:security": "bash scripts/run-static-analysis.sh --all && pnpm run typecheck && pnpm run test",
+    "test:grant-v09-sim": "vitest run tests/v09/grant-v09-risk.test.ts tests/v09/opsec-boundary.test.ts tests/v09/aa-pipeline-opsec.test.ts"
   },
   "keywords": [],
   "author": "SilverVine Labs",
