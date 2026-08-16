@@ -136,7 +136,7 @@ export async function executeHlSessionKeyOrder(
   try {
     const result = await executeSignedAction(action, ctx, {
       preTrade: opts.preTrade,
-      skipPreTrade: reduceOnly,
+      skipPreTrade: reduceOnly || opts.skipPreTrade === true,
     });
 
     if (result.dryRun) {

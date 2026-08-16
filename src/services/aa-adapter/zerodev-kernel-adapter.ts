@@ -1,4 +1,4 @@
-/** ZeroDev Kernel v3 adapter — UserOp builder + on-chain SilverVineRiskOracle fail-closed gate. */
+/** ZeroDev Kernel v3 adapter — UserOp builder + on-chain SliverVineRiskOracle fail-closed gate. */
 import type { Address } from "viem";
 import { buildKernelAccount, type KernelBuildInput, type KernelBuildResult } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-kernel";
 import {
@@ -17,7 +17,9 @@ export {
   assertRiskOracleUserOpGateOnChain,
   evaluateRiskOracleUserOpGate,
   isRiskOracleUserOpBlocked,
+  readSliverVineRiskOracleState,
   readSilverVineRiskOracleState,
+  resolveSliverVineRiskOracleAddress,
   resolveSilverVineRiskOracleAddress,
   RISK_ORACLE_FAIL_CLOSED_STATUS_CODE,
   RISK_ORACLE_FAIL_CLOSED_TRIP,

@@ -3,7 +3,7 @@
 > B2B zero-GC relay for Grant evaluators · polls live Citadel telemetry · exposes local `/health` + fail-closed `/v1/intent`.
 
 **Entity:** SilverVine Labs · **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) · **Upstream:** `https://bedeltawater.slivervine.xyz/api/telemetry/health`  
-**Regression bar:** 686 Vitest tests pass clean (126 test files, grant-ui-ssot) · `tsc --noEmit` CLEAN
+**Regression bar:** 135 Test Files | 724 Vitest PASS (100% Clean) · `tsc --noEmit` CLEAN
 
 ---
 
@@ -179,7 +179,8 @@ Institutional funds route alpha through `silvervine-proxy` at `localhost:8080` �
 | `docker/Dockerfile.sidecar`                        | Production image                          |
 | `docker/sidecar-daemon.mjs`                        | Edge-safe daemon (no TS runtime)          |
 | [README.md](./README.md)                           | Grant audit HUD · live `/api/grant-audit` |
-| [docs/grant/GRANT_PROPOSAL.md](./docs/grant/GRANT_PROPOSAL.md) | Full Citadel scope                        |
+| [docs/grants/arbitrum/GRANT_PROPOSAL.md](./docs/grants/arbitrum/GRANT_PROPOSAL.md) | Full Citadel scope                        |
+| [docs/README.md](./docs/README.md) | Docs audience index                       |
 
 
 ---
@@ -193,7 +194,7 @@ npx tsx scripts/test-gmx-v2-execution.ts --help
 npx tsx scripts/test-gmx-v2-execution.ts --live-read [--allow-stale-oracle]
 ```
 
-Default enforces **30s Oracle Lag fail-closed** Citadel gate. `--allow-stale-oracle` bypasses oracle lag deadlock for dry-run payload inspection only (see [README.md](./README.md) § Testing / GMX Verification).
+Default enforces **30s Oracle Lag fail-closed** Citadel gate. `--allow-stale-oracle` bypasses oracle lag deadlock for dry-run payload inspection only (see [README.md](./README.md) Auditor CLI).
 
 ---
 

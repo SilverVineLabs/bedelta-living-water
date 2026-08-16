@@ -15,6 +15,7 @@ export {
   RISK_ORACLE_STATUS,
   ROBINHOOD_SAFETY_SWITCH_ABI,
   SILVERVINE_RISK_ORACLE_ABI,
+  SLIVERVINE_RISK_ORACLE_ABI,
   type ComplianceGateSnapshot,
   type RiskOracleLogCode,
   type RiskOracleSnapshot,
@@ -34,7 +35,7 @@ export interface ComplianceAdapterVerdict extends RiskOracleAdapterVerdict {
 }
 
 export function mirrorRiskOracleLog(code: RiskOracleLogCode, actor: string): void {
-  console.warn(`[SilverVineRiskOracle] ErrorTriggered code=${code} actor=${actor}`);
+  console.warn(`[SliverVineRiskOracle] ErrorTriggered code=${code} actor=${actor}`);
 }
 
 export function evaluateRiskOracleAdapter(snapshot: RiskOracleSnapshot): RiskOracleAdapterVerdict {

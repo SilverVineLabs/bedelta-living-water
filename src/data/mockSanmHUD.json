@@ -1,6 +1,6 @@
 {
   "schema": "sanm-hud-v0.9",
-  "defaultStep": 2,
+  "defaultStep": 0,
   "frames": [
     {
       "minute": 0,

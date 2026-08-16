@@ -1,6 +1,8 @@
 /** Pillar 2 — R-Chain Idle Yield Router Stub (Robinhood Testnet · no bridge · no deploy). */
 
-export const ROBINHOOD_TESTNET_CHAIN_ID = 46630 as const;
+import { ROBINHOOD_TESTNET_CHAIN_ID } from "../../sdk/constants";
+
+export { ROBINHOOD_TESTNET_CHAIN_ID };
 export const R_CHAIN_ZERODEV_PROJECT_ID = "e93db466-d580-4e15-9cc1-ce50f1541ca2" as const;
 export const R_CHAIN_ZERODEV_BUNDLER_RPC =
   `https://rpc.zerodev.app/api/v3/${R_CHAIN_ZERODEV_PROJECT_ID}/chain/${ROBINHOOD_TESTNET_CHAIN_ID}` as const;

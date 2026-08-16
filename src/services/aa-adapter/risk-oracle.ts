@@ -21,7 +21,7 @@ export const RISK_ORACLE_LOG_CODES = {
 export type RiskOracleLogCode =
   (typeof RISK_ORACLE_LOG_CODES)[keyof typeof RISK_ORACLE_LOG_CODES];
 
-export const SILVERVINE_RISK_ORACLE_ABI = [
+export const SLIVERVINE_RISK_ORACLE_ABI = [
   {
     type: "function",
     name: "isSystemFlushed",
@@ -88,6 +88,9 @@ export const SILVERVINE_RISK_ORACLE_ABI = [
     ],
   },
 ] as const satisfies Abi;
+
+/** @deprecated Use SLIVERVINE_RISK_ORACLE_ABI — protocol brand SSOT is SliverVine. */
+export const SILVERVINE_RISK_ORACLE_ABI = SLIVERVINE_RISK_ORACLE_ABI;
 
 export const ROBINHOOD_SAFETY_SWITCH_ABI = [
   {

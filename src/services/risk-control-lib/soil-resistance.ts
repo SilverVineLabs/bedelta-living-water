@@ -3,10 +3,6 @@
  * Copyright (c) 2026 SilverVine Labs. All Rights Reserved.
  */
 
-import {
-  computeOrderAwareMaxSlUsd,
-  computeSoilRiskUsd,
-} from "../effective-max-sl";
 import { emitRiskLog, formatTripReasons, isoNow } from "./logging";
 import {
   isAllowedTelemetrySymbol,
@@ -31,129 +27,60 @@ import {
   getSoftConfirmationUnsafeReason,
   isSoftConfirmationSafe,
 } from "../risk/soft-confirmation-guard";
-import { evaluateCrossSpreadSoilGate, type CrossSpreadSoilInput } from "../yield/cross-spread";
+import { evaluateCrossSpreadSoilGate } from "../yield/cross-spread";
+import { evaluateGmxPriceImpactSoilGate } from "../yield/gmx-v2-price-impact";
 import {
-  evaluateGmxPriceImpactSoilGate,
-  type GmxV2PriceImpactSoilInput,
-} from "../yield/gmx-v2-price-impact";
+  applySoilRiskCaps,
+  computeSoilSlippageMetrics,
+} from "./soil-resistance-math";
+import {
+  MAX_SLIPPAGE,
+  resolveSoilMinDepthUsd,
+  VINE_SOIL_MAX_SLIPPAGE,
+  type SoilResistanceInput,
+  type SoilResistanceResult,
+} from "./soil-resistance-types";
 
-/** Cross-venue / cross-book slippage trip threshold (0.5%) */
-export const MAX_SLIPPAGE = 0.005;
+export {
+  HL_TESTNET_MIN_DEPTH_USD,
+  MAX_SLIPPAGE,
+  MIN_DEPTH_USD,
+  resolveSoilMinDepthUsd,
+  VINE_SOIL_MAX_SLIPPAGE,
+  type SoilResistanceInput,
+  type SoilResistanceResult,
+} from "./soil-resistance-types";
 
-/**
- * Minimum liquidity depth (USD notional proxy). Rows without an explicit
- * depth reading are judged by dual-venue price presence only.
- */
-export const MIN_DEPTH_USD = 100_000;
-
-/** Relaxed depth gate for HL HyperEVM testnet (chainId 998) low-liquidity books. */
-export const HL_TESTNET_MIN_DEPTH_USD = 5_000;
-
-/** Vine soil fuse — L2 slippage isolation threshold (0.3%) */
-export const VINE_SOIL_MAX_SLIPPAGE = 0.003;
-
-export interface SoilResistanceInput {
-  symbol: string;
-  hlSpot: number;
-  hlPerp: number;
-  dydxPerp: number;
-  /** Optional order-book / volume depth in USD */
-  depthUsd?: number;
-  /** Optional slippage fuse override (default MAX_SLIPPAGE) */
-  maxSlippage?: number;
-  /** Optional order notional — enables soil-risk Max SL cap */
-  orderSizeUsd?: number;
-  /** Optional account equity — enables soil-risk Max SL cap */
-  accountBalanceUsd?: number;
-  /** Override MIN_DEPTH_USD — HL testnet uses HL_TESTNET_MIN_DEPTH_USD ($5K). */
-  minDepthUsd?: number;
-  /** HyperEVM testnet (chainId 998) — relaxes depth gate to HL_TESTNET_MIN_DEPTH_USD. */
-  isTestnet?: boolean;
-  /** Optional evaluation timestamp (tests / replay) */
-  at?: Date;
-  /** Optional requested leverage — HIP-3 gap guard scales 3x → 1x during RWA windows */
-  requestedLeverage?: number;
-  /** Cross-DEX funding spread gate (GMX v2 vs HL/Vertex) */
-  crossSpread?: CrossSpreadSoilInput;
-  /** GMX v2 GM pool price-impact penalty / subsidy probe */
-  gmxPriceImpact?: GmxV2PriceImpactSoilInput;
-}
-
-/** Resolve effective depth floor — $5K on HL testnet, $100K mainnet unless overridden. */
-export function resolveSoilMinDepthUsd(input: SoilResistanceInput): number {
-  if (input.minDepthUsd !== undefined) return input.minDepthUsd;
-  if (input.isTestnet) return HL_TESTNET_MIN_DEPTH_USD;
-  return MIN_DEPTH_USD;
-}
-
-export interface SoilResistanceResult {
-  ok: boolean;
-  tripped: boolean;
-  /** Absolute cross-venue perp slippage ratio */
-  crossVenueSlippage: number;
-  /** Absolute HL spot–perp basis ratio */
-  spotPerpSlippage: number;
-  crossSpreadBps?: number;
-  isSpreadProfitable?: boolean;
-  priceImpactSubsidiesBps?: number;
-  priceImpactPenaltyBps?: number;
-  gmxReducesImbalance?: boolean;
-  reasons: string[];
-  /** Measured slippage loss USD when orderSizeUsd is provided */
-  soilRiskUsd?: number;
-  /** min(dynamic Max SL, orderSize×fuse) when order + balance provided */
-  cappedMaxSlUsd?: number;
-}
-
-/**
- * Soil resistance — slippage & depth circuit breaker.
- * Trips when cross-venue / cross-book slippage > 0.5%, or liquidity depth is insufficient.
- * Spot–perp basis is reported for telemetry only (it is often the arb edge, not a fuse).
- * On trip: refuse actionable trade signals (caller must not trigger execution).
- *
- * @theory Kyle (1985) — Kyle's Lambda (λ) linear price-impact coefficient.
- * @theory Almgren & Chriss (2000) — transient market impact / optimal execution model.
- */
-export function checkSoilResistance(
-  input: SoilResistanceInput,
-): SoilResistanceResult {
-  const { symbol, hlSpot, hlPerp, dydxPerp, depthUsd } = input;
+function collectExternalSoilReasons(input: SoilResistanceInput): string[] {
   const reasons: string[] = [];
+  const { symbol, depthUsd } = input;
 
   if (isTsunamiShieldWindow(input.at)) {
     reasons.push("TSUNAMI_SHIELD_LOCKED_HKT_21_23");
   }
-
   if (!isSequencerSafe(input.at?.getTime())) {
     reasons.push(getSequencerUnsafeReason() ?? "ARBITRUM_SEQUENCER_UNSAFE");
   }
-
   if (!isArbitrumStatusSequencerHealthy(input.at?.getTime())) {
     reasons.push(getArbitrumStatusAnomalyReason() ?? "SEQUENCER_ANOMALY_DETECTED");
   }
-
   if (!isRpcRadarSequencerHealthy(input.at?.getTime())) {
     reasons.push(getRpcRadarOutageReason() ?? "SEQUENCER_OUTAGE_CONFIRMED");
   }
-
   if (isArbitrumGasGuardBlocked()) {
     reasons.push(getArbitrumGasGuardReason() ?? "ARBITRUM_GAS_GUARD_BLOCKED");
   }
-
   if (!isSoftConfirmationSafe(input.at?.getTime())) {
     reasons.push(getSoftConfirmationUnsafeReason() ?? "SOFT_CONFIRMATION_DRIFT_UNSAFE");
   }
-
   if (input.crossSpread) {
     const spreadGate = evaluateCrossSpreadSoilGate(input.crossSpread);
     if (spreadGate.triggered) reasons.push(...spreadGate.reasons);
   }
-
   if (input.gmxPriceImpact) {
     const impactGate = evaluateGmxPriceImpactSoilGate(input.gmxPriceImpact);
     if (impactGate.triggered) reasons.push(...impactGate.reasons);
   }
-
   const hlOrderbookGap = evaluateHlOrderbookGapGuard({
     symbol,
     depthUsd,
@@ -161,47 +88,34 @@ export function checkSoilResistance(
     requestedLeverage: input.requestedLeverage,
     at: input.at,
   });
-  if (hlOrderbookGap.triggered) {
-    reasons.push(...hlOrderbookGap.reasons);
-  }
-
+  if (hlOrderbookGap.triggered) reasons.push(...hlOrderbookGap.reasons);
   const rwaSettlement = evaluateRwaSettlementLock({ symbol, at: input.at });
-  if (rwaSettlement.locked) {
-    reasons.push(...rwaSettlement.reasons);
-  }
+  if (rwaSettlement.locked) reasons.push(...rwaSettlement.reasons);
+  return reasons;
+}
 
-  const crossVenueSlippage =
-    hlPerp > 0 && dydxPerp > 0
-      ? Math.abs(dydxPerp - hlPerp) / hlPerp
-      : Number.POSITIVE_INFINITY;
-
-  const spotPerpSlippage =
-    hlSpot > 0 ? Math.abs(hlPerp - hlSpot) / hlSpot : Number.POSITIVE_INFINITY;
-
-  if (hlPerp <= 0 || dydxPerp <= 0) {
-    reasons.push("INSUFFICIENT_DEPTH_DUAL_VENUE");
-  }
-
+/**
+ * Soil resistance — slippage & depth circuit breaker.
+ * Trips when cross-venue / cross-book slippage > 0.5%, or liquidity depth is insufficient.
+ */
+export function checkSoilResistance(
+  input: SoilResistanceInput,
+): SoilResistanceResult {
+  const { symbol, depthUsd } = input;
   const slippageFuse = input.maxSlippage ?? MAX_SLIPPAGE;
-  if (hlPerp > 0 && dydxPerp > 0 && crossVenueSlippage > slippageFuse) {
-    reasons.push(
-      `CROSS_VENUE_SLIPPAGE=${(crossVenueSlippage * 100).toFixed(4)}%>${slippageFuse * 100}%`,
-    );
-  }
-
-  if (depthUsd !== undefined && depthUsd < resolveSoilMinDepthUsd(input)) {
-    const minDepthUsdResolved = resolveSoilMinDepthUsd(input);
-    reasons.push(`DEPTH_USD=${depthUsd}<${minDepthUsdResolved}`);
-  }
+  const metrics = computeSoilSlippageMetrics(input);
+  const reasons = [...collectExternalSoilReasons(input), ...metrics.reasons];
 
   const tripped = reasons.length > 0;
   const result: SoilResistanceResult = {
     ok: !tripped,
     tripped,
-    crossVenueSlippage: Number.isFinite(crossVenueSlippage)
-      ? crossVenueSlippage
+    crossVenueSlippage: Number.isFinite(metrics.crossVenueSlippage)
+      ? metrics.crossVenueSlippage
       : -1,
-    spotPerpSlippage: Number.isFinite(spotPerpSlippage) ? spotPerpSlippage : -1,
+    spotPerpSlippage: Number.isFinite(metrics.spotPerpSlippage)
+      ? metrics.spotPerpSlippage
+      : -1,
     crossSpreadBps: input.crossSpread?.crossSpreadBps,
     isSpreadProfitable: input.crossSpread?.isSpreadProfitable,
     priceImpactSubsidiesBps: input.gmxPriceImpact?.priceImpactSubsidiesBps,
@@ -210,22 +124,7 @@ export function checkSoilResistance(
     reasons,
   };
 
-  const orderSize = Number(input.orderSizeUsd);
-  const balance = Number(input.accountBalanceUsd);
-  if (Number.isFinite(orderSize) && orderSize > 0) {
-    const slipForRisk =
-      Number.isFinite(result.crossVenueSlippage) && result.crossVenueSlippage >= 0
-        ? result.crossVenueSlippage
-        : slippageFuse;
-    result.soilRiskUsd = computeSoilRiskUsd(orderSize, slipForRisk);
-    if (Number.isFinite(balance) && balance >= 0) {
-      result.cappedMaxSlUsd = computeOrderAwareMaxSlUsd(
-        balance,
-        orderSize,
-        slippageFuse,
-      );
-    }
-  }
+  applySoilRiskCaps(input, result, slippageFuse);
 
   if (tripped) {
     if (isAllowedTelemetrySymbol(symbol)) {
@@ -256,10 +155,7 @@ export function checkSoilResistance(
   return result;
 }
 
-/**
- * Vine soil gate — live L2 slippage/spread fuse at 0.3%.
- * Trips when cross-venue slippage exceeds VINE_SOIL_MAX_SLIPPAGE.
- */
+/** Vine soil gate — live L2 slippage/spread fuse at 0.3%. */
 export function checkSoilResistanceWithVine(
   input: SoilResistanceInput,
 ): SoilResistanceResult {

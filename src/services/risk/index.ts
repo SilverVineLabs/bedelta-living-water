@@ -23,10 +23,12 @@ export {
   FLASH_UNWIND_BUDGET_MS,
   buildFlashUnwindPlan,
   executeFlashUnwindPlan,
+  dispatchEscalationFlashUnwind,
   type FlashUnwindPlan,
   type FlashUnwindTimingResult,
   type OpenOrderSnapshot,
   type PositionLegSnapshot,
+  type EscalationFlashUnwindInput,
 } from "./flash-unwind";
 
 export {
@@ -49,6 +51,7 @@ export {
   maxLeverageForState,
   computeLeverageReduction,
   evaluateEscalationLadder,
+  shouldDispatchFlashUnwind,
   type EscalationRiskState,
   type EscalationLadderInput,
   type EscalationLadderResult,

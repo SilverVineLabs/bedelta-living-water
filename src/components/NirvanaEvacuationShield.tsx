@@ -2,13 +2,19 @@
 import { useEffect, useState, type ReactNode } from "react";
 import {
   isEvacuationTriggered,
+  isExplicitSanmEvacuationDemo,
   resolveSanmHudFrame,
   useSanmHudFrame,
   type SanmHudFrame,
 } from "./hud/use-sanm-hud-frame";
 
 export type { SanmHudFrame } from "./hud/use-sanm-hud-frame";
-export { resolveSanmHudFrame, useSanmHudFrame, isEvacuationTriggered };
+export {
+  resolveSanmHudFrame,
+  useSanmHudFrame,
+  isEvacuationTriggered,
+  isExplicitSanmEvacuationDemo,
+};
 
 export interface NirvanaEvacuationShieldProps {
   currentFrame?: SanmHudFrame;
@@ -32,10 +38,12 @@ export function NirvanaEvacuationShield({
   const [active, setActive] = useState(false);
 
   useEffect(() => {
-    const triggered = isEvacuationTriggered(frame);
+    const triggered =
+      isEvacuationTriggered(frame) &&
+      (currentFrame != null || isExplicitSanmEvacuationDemo(step));
     setActive(triggered);
     if (triggered) emitEvacuationLogs(frame);
-  }, [frame]);
+  }, [frame, currentFrame, step]);
 
   if (!active) return null;
 

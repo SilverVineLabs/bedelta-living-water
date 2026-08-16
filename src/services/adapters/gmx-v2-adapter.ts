@@ -146,6 +146,7 @@ export class GmxV2ArbitrumAdapter implements IArbitrumDexAdapter {
         pool,
         uiFeeReceiver: input.uiFeeReceiver,
         referralCode: input.referralCode,
+        allowStaleOracle: input.allowStaleOracle,
       },
       this.opts,
     );

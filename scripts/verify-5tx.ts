@@ -7,6 +7,7 @@
  * Usage:
  *   pnpm verify:5tx
  *   HL_LIVE=1 pnpm verify:5tx   # reads HL_TESTNET_PRIVATE_KEY from .env.local
+ *   SKIP_SOIL_CHECK=1 pnpm verify:5tx --skip-soil   # testnet smoke: bypass soil probe abort
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -37,9 +38,23 @@ function loadEnvLocal(): void {
   }
 }
 
+function isSkipSoilRequested(argv: string[]): boolean {
+  if (argv.includes("--skip-soil")) return true;
+  const envKeys = ["SKIP_SOIL_PROBE_CHECK", "SKIP_SOIL_CHECK"] as const;
+  return envKeys.some((k) => process.env[k] === "1" || process.env[k] === "true");
+}
+
 async function main(): Promise<void> {
   loadEnvLocal();
-  const report = await runVerify5Tx();
+  const argv = process.argv.slice(2);
+  const skipSoil = isSkipSoilRequested(argv);
+  if (skipSoil) {
+    console.error("[verify:5tx] soil probe abort bypassed (--skip-soil / SKIP_SOIL_CHECK)");
+  }
+  const report = await runVerify5Tx({
+    abortOnSoilTrip: skipSoil ? false : undefined,
+    skipSoilProbe: skipSoil,
+  });
   mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
   writeFileSync(OUTPUT_PATH, `${JSON.stringify(report, null, 2)}\n`, "utf8");
 

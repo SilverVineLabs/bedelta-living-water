@@ -2,6 +2,7 @@
 
 import { HardlockError, RiskLimitExceeded } from "../risk-control";
 import {
+  buildArbitrumGasGuardMetrics,
   getArbitrumGasGuardReason,
   isArbitrumGasGuardBlocked,
 } from "../risk/arbitrum-gas-guard";
@@ -28,6 +29,24 @@ function riskContext(symbol: string, message: string) {
   };
 }
 
+export function isAllowStaleOracleEnabled(explicit?: boolean): boolean {
+  if (explicit === true) return true;
+  const v = typeof process !== "undefined" ? process.env.ALLOW_STALE_ORACLE : undefined;
+  return v === "1" || v === "true";
+}
+
+/** Oracle-lag-only blocks may be bypassed for Sepolia / dry-run smoke; gas blocks stay hard. */
+export function resolveGasGuardHardlockReason(allowStaleOracle?: boolean): string | null {
+  if (!isArbitrumGasGuardBlocked()) return null;
+  const reason = getArbitrumGasGuardReason() ?? "ARBITRUM_GAS_GUARD_BLOCKED";
+  const metrics = buildArbitrumGasGuardMetrics();
+  if (!isAllowStaleOracleEnabled(allowStaleOracle) || !metrics?.oracleLagDeadlock) {
+    return reason;
+  }
+  const remaining = reason.split("|").filter((part) => !part.includes("ORACLE_LAG"));
+  return remaining.length ? remaining.join("|") : null;
+}
+
 export function toGmxUsd30(usd: number): string {
   if (!Number.isFinite(usd) || usd < 0) {
     throw new RiskLimitExceeded("GMX_PAYLOAD_INVALID_USD", riskContext("GMX", GMX_PAYLOAD_EXECUTION_FEE_TRIP));
@@ -43,18 +62,16 @@ export function toGmxPrice30(priceUsd: number): string {
 
 export function assertGmxPayloadFailClosed(input: {
   skipFailClosedGuards?: boolean;
+  /** Aligns with HL `skipPreTrade: reduceOnly` — emergency closes skip oracle-lag / impact gates. */
+  reduceOnly?: boolean;
+  /** Sepolia / dry-run smoke: allow oracle lag >30s without CRI_HARDLOCK (env ALLOW_STALE_ORACLE=1). */
+  allowStaleOracle?: boolean;
   sizeUsd: number;
   isLong: boolean;
   pool?: GmxV2PoolWeights;
   executionFee: string;
 }): void {
   if (input.skipFailClosedGuards) return;
-  if (isArbitrumGasGuardBlocked()) {
-    throw new HardlockError(
-      getArbitrumGasGuardReason() ?? "ARBITRUM_GAS_GUARD_BLOCKED",
-      { ...riskContext("GMX", "ARBITRUM_GAS_GUARD_BLOCKED"), level: "error", event: "CRI_HARDLOCK" },
-    );
-  }
   let fee = 0n;
   try {
     fee = BigInt(input.executionFee);
@@ -65,6 +82,14 @@ export function assertGmxPayloadFailClosed(input: {
     throw new RiskLimitExceeded(
       `${GMX_PAYLOAD_EXECUTION_FEE_TRIP}:invalid`,
       riskContext("GMX", GMX_PAYLOAD_EXECUTION_FEE_TRIP),
+    );
+  }
+  if (input.reduceOnly) return;
+  const hardlockReason = resolveGasGuardHardlockReason(input.allowStaleOracle);
+  if (hardlockReason) {
+    throw new HardlockError(
+      hardlockReason,
+      { ...riskContext("GMX", "ARBITRUM_GAS_GUARD_BLOCKED"), level: "error", event: "CRI_HARDLOCK" },
     );
   }
   if (!input.pool) return;

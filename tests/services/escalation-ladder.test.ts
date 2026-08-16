@@ -5,6 +5,7 @@ import {
   computeLeverageReduction,
   evaluateEscalationLadder,
   resolveEscalationState,
+  shouldDispatchFlashUnwind,
 } from "../../src/services/risk/escalation-ladder";
 
 describe("escalation-ladder", () => {
@@ -59,6 +60,20 @@ describe("escalation-ladder", () => {
     expect(result.leverage.unwindRequired).toBe(true);
     expect(result.leverage.targetShortNotionalUsd).toBe(0);
     expect(result.enteredRed).toBe(true);
+  });
+
+  it("shouldDispatchFlashUnwind is true on RED or soil trip", () => {
+    const red = evaluateEscalationLadder({
+      liquidationDistancePct: 20,
+      shortNotionalUsd: 400,
+    });
+    expect(shouldDispatchFlashUnwind(red)).toBe(true);
+    const green = evaluateEscalationLadder({
+      liquidationDistancePct: 200,
+      shortNotionalUsd: 100,
+    });
+    expect(shouldDispatchFlashUnwind(green)).toBe(false);
+    expect(shouldDispatchFlashUnwind(green, true)).toBe(true);
   });
 
   it("detects ORANGE entry transition from YELLOW", () => {
