@@ -28,7 +28,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 * **Runtime Bytecode**: 📦 **8,716 Bytes (8.71 KiB)** — Zero External Dependencies (`Assembly-optimized`)
 
 ### 2. Off-Chain Pre-Execution Radar (TypeScript / V8 Runtime)
-* **Vitest Suite**: 🧪 **128 Test Files | 677 PASS (100% Clean)**
+* **Vitest Suite**: 🧪 **128 Test Files | 677 Vitest PASS (100% Clean)**
 * **Chaos Matrix**: 🌪️ **262 Severe Failure Cases | 0 Crashes**
 * **Edge Decision Latency**: ⏱️ **SLO < 1.0ms | p50 ~106 μs (0.106 ms) | Pure Math: 0.0002 ms (200 ns)**
 * **Worker Bundle**: 📦 **158.99 KiB gzip** (Zero-Cold-Start Edge Deployment)
@@ -41,7 +41,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 |-----------|--------|-----------------------------|
 | **M0: Operational Foundation** | ✅ Delivered | WSL / PNPM Monorepo, Cloudflare Edge Worker pipeline, and CI/CD strict typecheck. |
 | **M1: On-Chain Citadel Gate** | ✅ Delivered | `SliverVineGate.sol` core invariant locks, 327,675 Property Fuzzing, 25k gas bounds. |
-| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, 630 Vitest PASS, 158.99 KiB gzip bundle, sub-ms latency. |
+| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, 128 Test Files | 677 Vitest PASS (100% Clean), 158.99 KiB gzip bundle, sub-ms latency. |
 | **M3: Dual-Chain & ZeroDev AA** | 🔄 In Progress | ZeroDev Kernel v3.0 AA Adapter, Arbitrum Sepolia & Robinhood Chain (`46630`) deployment. |
 | **M4: WASM Engine & IP Moat** | ⏳ Planned | `< 28kb` Rust `#![no_std]` Wasm core compilation for Cloudflare V8 runtime security. |
 | **M5: TCA Data & Hyperliquid** | ⏳ Planned | Historical TCA product suite & Hyperliquid Testnet cross-venue 5-trade validation. |
@@ -52,7 +52,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 ## 🛡️ Auditor — 30-Second Verification
 
 ```bash
-# 1. Install dependencies & run full Vitest suite (630 PASS)
+# 1. Install dependencies & run full Vitest suite (128 Test Files | 677 Vitest PASS (100% Clean))
 pnpm install
 pnpm test
 

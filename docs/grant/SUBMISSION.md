@@ -66,12 +66,12 @@ Live threshold envelopes and guard states: `GET /api/grant-audit`.
 
 ```bash
 pnpm install
-pnpm test    # 686 Vitest tests pass clean (126 test files, grant-ui-ssot)
+pnpm test    # 128 Test Files | 677 Vitest PASS (100% Clean)
 npx tsc --noEmit
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel
 ```
 
-**Regression bar:** **686 Vitest tests pass clean (126 test files, grant-ui-ssot)** · **`npx tsc --noEmit` CLEAN**
+**Regression bar:** **128 Test Files | 677 Vitest PASS (100% Clean)** · **60/60 Foundry Tests Passed | 327,675 Fuzzing Executions** · **p50 ~106 μs (pure risk math mean: 0.0002 ms / 200 ns)** · **158.99 KiB gzip** · **verifyAndConsume: 25,853 min / 28,043 median gas** · **`npx tsc --noEmit` CLEAN**
 
 ---
 
@@ -85,7 +85,7 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCita
 
 | Milestone | Scope | Status |
 |-----------|-------|--------|
-| **M1** — Mainnet Pre-Execution Gateway & Live Telemetry ($10k) | Off-chain Citadel Edge Gateway · Arbitrum One + Sepolia dual-leg provenance · Live HUD · machine-readable +5 bps `uiFeeReceiver` routing · `/api/grant-audit` certificate endpoint · **686 Vitest tests pass clean (126 test files, grant-ui-ssot)** | **Complete & Live** |
+| **M1** — Mainnet Pre-Execution Gateway & Live Telemetry ($10k) | Off-chain Citadel Edge Gateway · Arbitrum One + Sepolia dual-leg provenance · Live HUD · machine-readable +5 bps `uiFeeReceiver` routing · `/api/grant-audit` certificate endpoint · **128 Test Files | 677 Vitest PASS (100% Clean)** | **Complete & Live** |
 | **M2** — Institutional Gateway & CCXT Adapter ($10k) | CCXT-compatible asynchronous order-key state machine · Docker Sidecar (`:8080`) execution daemon · multi-market rebalance router · automated on-chain `claimUiFees` integration | Planned |
 | **M3** — B2B Scaling & Cross-Venue Compensation ($10k) | Single-writer high-frequency nonce queue · multi-tenant rate-limiting & mTLS · cross-venue automated liquidation compensation · institutional B2B SLA framework | Planned |
 
@@ -97,5 +97,5 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCita
 |----------|---------|
 | [GMX_BUILDERS_PITCH.md](./GMX_BUILDERS_PITCH.md) | GMX Builders Program pack |
 | [ARBITRUM_ONE_PAGER.md](../ARBITRUM_ONE_PAGER.md) | Arbitrum DAO one-pager |
-| [GRANT_PROPOSAL.md](./GRANT_PROPOSAL.md) | Full scope & roadmap |
+| [GRANT_PROPOSAL.md](../GRANT_PROPOSAL.md) | Full scope & roadmap |
 | [ARCHITECTURE.md](../ARCHITECTURE.md) | Dual-engine topology |

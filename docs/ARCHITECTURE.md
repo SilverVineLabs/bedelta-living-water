@@ -1,7 +1,7 @@
 # SliverVine Protocol — Architecture (v0.8 Multi-Layer Risk Engine)
 
 > **Risk engine:** v0.8 Multi-Layer Risk Engine (internal code name: **Santenmoku**) — Tri-Layer Quantitative Risk Architecture.  
-> **Grant-specific SSOT** (KV isolation · MDD scope · test-count history): [`docs/grant/ARCHITECTURE.md`](./grant/ARCHITECTURE.md)  
+> **Grant-specific SSOT** (KV isolation · MDD scope · test-count history): [`docs/ARCHITECTURE.md`](./ARCHITECTURE.md)  
 > **Grant application SSOT directory:** [`docs/grant/`](./grant/)
 
 **Entity:** SilverVine Labs · **Official Site:** [silvervinelabs.com](https://silvervinelabs.com)  
@@ -54,6 +54,6 @@ Every unsigned GMX v2 increase/decrease/deposit payload injects `uiFeeReceiver` 
 | Document | Purpose |
 |----------|---------|
 | [**docs/grant/**](./grant/) | **Primary SSOT** — GMX Builders & Arbitrum DAO grant applications |
-| [grant/ARCHITECTURE.md](./grant/ARCHITECTURE.md) | KV key-prefix isolation · MDD guard scope · regression bar history |
-| [grant/GRANT_PROPOSAL.md](./grant/GRANT_PROPOSAL.md) | M1–M3 scope · done / NOT-done criteria |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | KV key-prefix isolation · MDD guard scope · regression bar history |
+| [GRANT_PROPOSAL.md](./GRANT_PROPOSAL.md) | M1–M3 scope · done / NOT-done criteria |
 | [../DOCKER_README.md](../DOCKER_README.md) | B2B sidecar install |

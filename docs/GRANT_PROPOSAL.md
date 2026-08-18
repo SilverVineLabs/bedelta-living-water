@@ -4,7 +4,7 @@
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal  
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)  
 **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
-**Regression bar:** **117 Test Files | 630 Vitest PASS** · **`npx tsc --noEmit` CLEAN**
+**Regression bar:** **128 Test Files | 677 Vitest PASS (100% Clean)** · **60/60 Foundry Tests Passed | 327,675 Fuzzing Executions** · **p50 ~106 μs (pure risk math mean: 0.0002 ms / 200 ns)** · **158.99 KiB gzip** · **verifyAndConsume: 25,853 min / 28,043 median gas** · **`npx tsc --noEmit` CLEAN**
 
 ---
 
@@ -24,7 +24,7 @@ Live proof: **0.2223 ETH Short** (OID `513344575969`) — cross-venue hedge vs G
 | Underweight flow | Qualified rebalance volume attribution |
 | Referral | Optional `referralCode` (bytes32) |
 
-**M1 (Mainnet Pre-Execution Gateway & Live Telemetry — $10k):** **Complete & Live.** Off-chain Citadel Edge Gateway, Arbitrum One + Sepolia dual-leg provenance, Live HUD, machine-readable +5 bps `uiFeeReceiver` routing, `/api/grant-audit` certificate endpoint, 117 test files / 630 Vitest PASS.
+**M1 (Mainnet Pre-Execution Gateway & Live Telemetry — $10k):** **Complete & Live.** Off-chain Citadel Edge Gateway, Arbitrum One + Sepolia dual-leg provenance, Live HUD, machine-readable +5 bps `uiFeeReceiver` routing, `/api/grant-audit` certificate endpoint, 128 Test Files | 677 Vitest PASS (100% Clean).
 
 **M2 (Institutional Gateway & CCXT Adapter — $10k):** CCXT-compatible asynchronous order-key state machine, Docker Sidecar (`:8080`) execution daemon, multi-market rebalance router, automated on-chain `claimUiFees` integration.
 
@@ -93,7 +93,7 @@ Single-writer high-frequency nonce queue · multi-tenant rate-limiting & mTLS ·
 
 ```bash
 pnpm install
-pnpm test    # 630 Vitest PASS (117 test files, 100% Clean)
+pnpm test    # 128 Test Files | 677 Vitest PASS (100% Clean)
 pnpm typecheck
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel
 ```

@@ -8,7 +8,7 @@
 | Official Site | [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal |
 | Repo | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) |
 | Live DApp | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) |
-| Regression bar | 686 Vitest tests pass clean (126 test files, grant-ui-ssot) · `tsc --noEmit` clean |
+| Regression bar | 128 Test Files \| 677 Vitest PASS (100% Clean) · 60/60 Foundry Tests Passed \| 327,675 Fuzzing Executions · p50 ~106 μs (pure risk math mean: 0.0002 ms / 200 ns) · 158.99 KiB gzip · verifyAndConsume: 25,853 min / 28,043 median gas · `tsc --noEmit` clean |
 | License | BUSL-1.1 → Apache-2.0 at M2 / $10M TVL or 24 months |
 
 ---
@@ -31,7 +31,7 @@ Before any GMX DataStore broadcast, the Citadel edge evaluates sequencer health,
 | Canonical Oracle Lag | <30s (30,000ms) vs L2 block headers · fail-closed |
 | Dynamic Max SL | `Balance × 1% + $100` |
 | Daily Loss Breaker | 1.5% MDD · Root lockout |
-| Decision SLO | 500ms · fail-closed |
+| Decision SLO | 500ms · fail-closed · p50 ~106 μs (pure risk math mean: 0.0002 ms / 200 ns) |
 | Cron Auto-Rebalancer | 5-min · $10 drift gate · circuit breaker |
 
 ## Why GMX Benefits
