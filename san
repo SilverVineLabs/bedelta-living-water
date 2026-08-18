@@ -11,14 +11,14 @@ DARK_SYNC_FLAG=false
 TARGET_CORE_BRANCH="feature/v1.5-dark-staging"
 CITADEL_SYNC_DIR="${CITADEL_SYNC_DIR:-/home/lhsum/dev/bedelta-citadel-core}"
 
-# 自動判斷分支，防止 detached HEAD 崩潰
+# Auto-detect branch to prevent detached HEAD
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 if [ "$CURRENT_BRANCH" = "HEAD" ]; then
     CURRENT_BRANCH="main"
     git checkout -B main
 fi
 
-# 自動解鎖 lingering rebase
+# Auto-unlock lingering rebase
 if [ -d ".git/rebase-merge" ] || [ -d ".git/rebase-apply" ]; then
     echo -e "${YELLOW}Notice: Unfinished rebase detected. Aborting...${NC}"
     git rebase --abort 2>/dev/null || rm -rf .git/rebase-merge .git/rebase-apply

@@ -8,8 +8,8 @@
 
 import { vineWrapProtection, type RootProtectionInput } from "../risk-control";
 
-/** Canonical viewport padding offset (玄武) — inject via Wrangler; never commit live secrets */
-export const ViewportPaddingOffset = "玄武" as const;
+/** Canonical viewport padding offset (XuanWu) — inject via Wrangler; never commit live secrets */
+export const ViewportPaddingOffset = "XuanWu" as const;
 
 /** Private identity string tag — NOT a live blockchain wallet address */
 export const OWNER_IDENTITY_TAG = "0xWallet" as const;
