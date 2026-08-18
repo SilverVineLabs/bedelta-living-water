@@ -31,7 +31,7 @@ Source: `GET /api/grant-audit` · SWR-bound Grant Audit HUD.
 | GMX GM ETH/USD Pool TVL | ~$802.43 USDC (489.716 GM · `0xc9BddABD80982d2201376195DD9B85fb7951546f`) |
 | HL Session Key Hedge Margin | ~$199.80 USDC |
 | Combined Monitored Citadel TVL | ~$1,302.39 USDC |
-| Zero-Δ Dynamic Shield · MDD Guard | **0.00% MDD** (90d window · ~$1.3k monitored Citadel TVL) |
+| Zero-Δ Dynamic Shield · MDD Guard | **0.00% MDD** Dual-leg net delta · (Live Pilot · ~$1.3k TVL) |
 | GMX Ecosystem Defenses | OI Imbalance Absorbed · Price Impact Rebate Optimizer (+0.02% Saved) · Canonical Oracle Lag Shield (dynamic runtime threshold · machine-readable via `/api/grant-audit`) · Zero-429 SWR Storage Guard |
 
 ---
@@ -41,7 +41,7 @@ Source: `GET /api/grant-audit` · SWR-bound Grant Audit HUD.
 | Badge | Surface | Behavior |
 |-------|---------|----------|
 | `[ 🛡️ GMX v2 DATASTORE CIRCUIT BREAKER: ARMED ]` | Section 2 | DataStore fail-closed gate |
-| Zero-Δ Dynamic Shield | Citadel panel | Dual-leg net delta · 0.00% MDD (90d · ~$1.3k TVL) |
+| Zero-Δ Dynamic Shield | Citadel panel | Dual-leg net delta · **0.00% MDD** (Live Pilot · ~$1.3k TVL)|
 | Execution History | Logs panel | 5-TX Verified Testnet Suite + 1 Live Mainnet Order (OID: `513344575969`) |
 
 ---
