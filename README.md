@@ -1,9 +1,8 @@
-# 🛡️ SilverVine Protocol — Citadel Pre-Execution Safety Shield
+# 🛡️ BeΔLivingWater SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway
 
-[![Grant Audit](https://img.shields.io/badge/Grant_Audit-Passed-0052FF.svg)](https://bedeltawater.slivervine.xyz/api/grant-audit)
-[![Vitest](https://img.shields.io/badge/Vitest-630%2F630_PASS_(117_test_files)-brightgreen.svg)](https://github.com/SilverVineLabs/bedelta-living-water)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict_0_Errors-blue.svg)](https://github.com/SilverVineLabs/bedelta-living-water)
-[![License](https://img.shields.io/badge/License-BUSL--1.1-orange.svg)](LICENSE)
+[![Vitest](https://img.shields.io/badge/Vitest-677%20PASS%20%28117%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water) [![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts) [![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-262%2F262%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water) [![Property Fuzzing](https://img.shields.io/badge/Property%20Fuzzing-65%2C535%20Passed-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water) [![Telemetry](https://img.shields.io/badge/Telemetry-%2Fapi%2Fgrant--audit-blueviolet)](https://bedeltawater.slivervine.xyz/api/grant-audit) [![TypeScript](https://img.shields.io/badge/TypeScript-0%20errors-blue?logo=typescript)](https://github.com/SilverVineLabs/bedelta-living-water) [![License](https://img.shields.io/badge/License-BSL%201.1-orange)](LICENSE)![Benchmark Latency](https://img.shields.io/badge/Benchmark-0.0002ms_(p50_106μs)-blueviolet?logo=speedtest)
+![Foundry Citadel Gate](https://img.shields.io/badge/Foundry-Forge_Test_Passed-brightgreen?logo=solidity)
+
 
 <p align="center"><img src="public/brand/Detox_Sanctuary_wm.webp" alt="SliverVine Citadel Gate - Detox Sanctuary" width="600" style="border-radius: 8px;"></p>
 
@@ -29,7 +28,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 * **Runtime Bytecode**: 📦 **8,716 Bytes (8.71 KiB)** — Zero External Dependencies (`Assembly-optimized`)
 
 ### 2. Off-Chain Pre-Execution Radar (TypeScript / V8 Runtime)
-* **Vitest Suite**: 🧪 **117 Test Files | 630 PASS (100% Clean)**
+* **Vitest Suite**: 🧪 **128 Test Files | 677 PASS (100% Clean)**
 * **Chaos Matrix**: 🌪️ **262 Severe Failure Cases | 0 Crashes**
 * **Edge Decision Latency**: ⏱️ **SLO < 1.0ms | p50 ~106 μs (0.106 ms) | Pure Math: 0.0002 ms (200 ns)**
 * **Worker Bundle**: 📦 **158.99 KiB gzip** (Zero-Cold-Start Edge Deployment)

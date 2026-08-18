@@ -36,10 +36,23 @@ export function resolveSanmHudFrame(step?: number): SanmHudFrame {
   return catalog.frames[index] ?? catalog.frames[catalog.defaultStep] ?? catalog.frames[0]!;
 }
 
-export function useSanmHudFrame(step?: number): SanmHudFrame {
-  return useMemo(() => resolveSanmHudFrame(step), [step]);
-}
-
 export function isEvacuationTriggered(frame: SanmHudFrame): boolean {
   return frame.nirvana_rwa_evacuation_triggered === true;
+}
+
+/** Explicit reviewer demo — never infer evacuation from catalog default alone. */
+export function isExplicitSanmEvacuationDemo(step?: number): boolean {
+  if (step !== undefined) {
+    return isEvacuationTriggered(resolveSanmHudFrame(step));
+  }
+  if (typeof window === "undefined") return false;
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("sanm_evac") === "1") return true;
+  const queryStep = readStepFromQuery();
+  if (queryStep == null) return false;
+  return isEvacuationTriggered(resolveSanmHudFrame(queryStep));
+}
+
+export function useSanmHudFrame(step?: number): SanmHudFrame {
+  return useMemo(() => resolveSanmHudFrame(step), [step]);
 }

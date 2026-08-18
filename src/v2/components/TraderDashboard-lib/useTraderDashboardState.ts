@@ -62,17 +62,20 @@ export function useTraderDashboardState({
   const rotateIndexRef = useRef(0);
   const reviewBootRef = useRef(false);
   const protocolVersion = comboToProtocolVersion(scaleDownCombo);
-  const { payload: hudStream, error: hudStreamError } = useHudStream(true);
+  const { payload: hudStream, error: hudStreamError, loading: hudStreamLoading } =
+    useHudStream(true);
 
   const isLocked = step1Result.status === "LOCKED" || liveView?.hardlock === true;
   const isStale = liveView?.systemState?.isStale === true || hudStream?.isStale === true;
   const sessionKeyStatus: SessionKeyStatusTag = sessionKeyRevoked
     ? "SESSION_KEY_REVOKED"
     : liveView?.systemState?.sessionKeyStatus ?? "OK";
-  const circuitBreakerTripped =
-    isLocked ||
-    hudStream?.leftEyeDefense.hardlock === true ||
-    hudStream?.leftEyeDefense.status === "LOCKED";
+  const hudStreamHardlockConfirmed =
+    !hudStreamLoading &&
+    hudStream != null &&
+    (hudStream.leftEyeDefense.hardlock === true ||
+      hudStream.leftEyeDefense.status === "LOCKED");
+  const circuitBreakerTripped = isLocked || hudStreamHardlockConfirmed;
   const telemetryDisconnected =
     Boolean(apiSync?.error) || Boolean(hudStreamError) || isStale;
   const physicalDeadlock = sessionKeyRevoked || circuitBreakerTripped;
@@ -148,6 +151,7 @@ export function useTraderDashboardState({
   useTraderDashboardEffects({
     circuitBreakerTripped,
     sessionKeyRevoked,
+    sessionKeyBound,
     hudStream,
     setTerminalLogs,
     setFeedPaused,

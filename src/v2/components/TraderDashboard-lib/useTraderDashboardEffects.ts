@@ -17,6 +17,7 @@ import {
 export function useTraderDashboardEffects({
   circuitBreakerTripped,
   sessionKeyRevoked,
+  sessionKeyBound,
   hudStream,
   setTerminalLogs,
   setFeedPaused,
@@ -27,6 +28,7 @@ export function useTraderDashboardEffects({
 }: {
   circuitBreakerTripped: boolean;
   sessionKeyRevoked: boolean;
+  sessionKeyBound: boolean;
   hudStream: HudStreamPayload | null | undefined;
   setTerminalLogs: React.Dispatch<React.SetStateAction<TerminalLogLine[]>>;
   setFeedPaused: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,10 +38,10 @@ export function useTraderDashboardEffects({
   handleAutoDemo: () => void;
 }): void {
   useEffect(() => {
-    if (circuitBreakerTripped && !sessionKeyRevoked) {
+    if (circuitBreakerTripped && sessionKeyBound && !sessionKeyRevoked) {
       enterReadOnlyObserver("SESSION_KEY_INVALID");
     }
-  }, [circuitBreakerTripped, sessionKeyRevoked]);
+  }, [circuitBreakerTripped, sessionKeyRevoked, sessionKeyBound]);
 
   useEffect(() => {
     const severLogs = hudStream?.circuitBreakerTerminalLogs;
