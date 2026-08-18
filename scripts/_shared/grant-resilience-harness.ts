@@ -1,9 +1,11 @@
 /** Santenmoku v0.8/v0.9 — Grant resilience harness (opt-in telemetry, no prod side-effects). */
 import {
+  assertCitadelRiskGate,
   evaluateGatewayRules,
   checkSoilResistance,
   type GatewayRulesInput,
   type GatewayRulesResult,
+  type CitadelRiskGateVerdict,
 } from "../../src/core/risk-engine";
 import type { SoilResistanceInput } from "../../src/services/risk-control";
 import { GMX_RPC_PROVIDERS } from "../../src/services/adapters/gmx-v2-rpc-constants";
@@ -22,12 +24,7 @@ export interface AaProbeRouteResult {
   statusCode: number;
 }
 
-export interface CitadelRiskGateVerdict {
-  pass: boolean;
-  failClosed: boolean;
-  falseNegatives: number;
-  result: GatewayRulesResult;
-}
+export type { CitadelRiskGateVerdict };
 
 export interface GmxToctouResult {
   phase1Pass: boolean;
@@ -119,16 +116,7 @@ export async function resolveAaProbeRouteAsync(
   throw new Error("AA_PROBE_ROUTE_EXHAUSTED");
 }
 
-/** Fail-closed Citadel risk gate assertion — 0 false negatives on toxic inputs. */
-export function assertCitadelRiskGate(
-  input: GatewayRulesInput,
-  expectTrip: boolean,
-): CitadelRiskGateVerdict {
-  const result = evaluateGatewayRules(input);
-  const failClosed = result.failClosed && result.tripped;
-  const falseNegatives = expectTrip && !result.tripped ? 1 : 0;
-  return { pass: expectTrip ? failClosed : !result.tripped, failClosed, falseNegatives, result };
-}
+export { assertCitadelRiskGate };
 
 /** GMX v2 two-phase lifecycle — TOCTOU async consistency with Saga compensation. */
 export async function runGmxTwoPhaseToctou(

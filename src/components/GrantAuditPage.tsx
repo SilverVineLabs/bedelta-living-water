@@ -10,6 +10,7 @@ import { AuditTopBar } from "./hud/v0/AuditTopBar";
 import { resolveFullGrantAuditView } from "./hud/v0/grant-audit-view-adapter";
 import { GrantAuditDashboard } from "./hud/v0/GrantAuditDashboard";
 import { useArbitrumCitadelAudit } from "./hud/use-arbitrum-citadel-audit";
+import { NirvanaEvacuationShield } from "./NirvanaEvacuationShield";
 
 export interface GrantAuditPageProps {
   className?: string;
@@ -50,6 +51,7 @@ export function GrantAuditPage({ className = "" }: GrantAuditPageProps): ReactNo
         <div className="grant-audit-v0-root flex min-h-screen flex-col">
           <AuditTopBar view={venueView} />
           <GrantAuditDashboard view={venueView} />
+          <NirvanaEvacuationShield />
         </div>
       )}
     </div>

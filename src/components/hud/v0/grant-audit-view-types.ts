@@ -63,6 +63,8 @@ export interface FullGrantAuditVenueView extends GrantAuditVenueView {
   sepoliaTxHash: string | null;
   sepoliaTxExplorerUrl: string | null;
   sepoliaLatencyMs: number | null;
+  aaGatewaySecured: boolean;
+  aaGatewayLabel: string;
 }
 
 export type { GrantAuditVenueView };

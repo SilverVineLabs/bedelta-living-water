@@ -57,18 +57,16 @@ docs/**
 !DOCKER_README.md
 !docs/ARCHITECTURE.md
 !docs/ARBITRUM_ONE_PAGER.md
+!docs/Buildaton.md
 !docs/map_Index.md
 !docs/SLA.md
 !docs/TCA_Data_Product.md
 !docs/README.md
-!docs/grant/GRANT_PROPOSAL.md
-!docs/audit/chaos-blackswan-metrics.json
-!docs/audit/grant-resilience-benchmark-metrics.json
 !docs/grant/
 !docs/grant/**
 !SECURITY.md
 !docs/audit/
 !docs/audit/negative-proofs-artifact.json
-!docs/logging/
-!docs/logging/**
+!docs/audit/chaos-blackswan-metrics.json
+!docs/audit/zerodev-aa-metrics.json
 

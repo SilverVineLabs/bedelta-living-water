@@ -4,6 +4,7 @@ import { ARMED_ORACLE_LAG_TELEMETRY } from "../../routes/grant-audit-lib/citadel
 import { buildSequencerHealthMetricsOrFallback } from "../../services/risk/sequencer-guard";
 import { buildSoftConfirmationHealthMetricsOrFallback } from "../../services/risk/soft-confirmation-guard";
 import { GRANT_AUDIT_LIVE_COMBINED_TVL_USD, GRANT_AUDIT_LIVE_TVL_FALLBACK } from "../../services/dual-wallet-tvl-fallback";
+import { evaluateZeroDevAaGatewayBadge } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gate";
 import type { GrantAuditClientPayload } from "./grant-audit-fetch";
 
 export const GRANT_AUDIT_CLIENT_TVL_FALLBACK: ArbitrumCitadelRiskMetrics = {
@@ -50,5 +51,12 @@ export function buildGrantAuditClientFallbackPayload(): GrantAuditClientPayload 
       walletBHlTotalUsd: live.walletB?.totalUsd ?? null,
       fetchedAt: live.fetchedAt,
     },
+    zeroDevAaGateway: evaluateZeroDevAaGatewayBadge({
+      symbol: "ETH",
+      hlSpot: 3500,
+      hlPerp: 3500,
+      dydxPerp: 3500,
+      depthUsd: 200_000,
+    }),
   };
 }

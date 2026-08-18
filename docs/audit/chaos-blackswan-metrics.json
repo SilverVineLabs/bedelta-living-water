@@ -1,79 +1,11 @@
 {
-  "protocol": "Santenmoku v0.9",
-  "matrix": "Blackswan Chaos A–K",
-  "totalCases": 262,
-  "crashes": 0,
-  "failClosedTrips": 256,
-  "mismatches": 0,
-  "pass": true,
-  "groups": {
-    "A": {
-      "total": 26,
-      "trips": 24,
-      "crashes": 0,
-      "mismatches": 0
-    },
-    "B": {
-      "total": 26,
-      "trips": 25,
-      "crashes": 0,
-      "mismatches": 0
-    },
-    "C": {
-      "total": 26,
-      "trips": 26,
-      "crashes": 0,
-      "mismatches": 0
-    },
-    "D": {
-      "total": 26,
-      "trips": 24,
-      "crashes": 0,
-      "mismatches": 0
-    },
-    "E": {
-      "total": 26,
-      "trips": 26,
-      "crashes": 0,
-      "mismatches": 0
-    },
-    "F": {
-      "total": 25,
-      "trips": 25,
-      "crashes": 0,
-      "mismatches": 0
-    },
-    "G": {
-      "total": 25,
-      "trips": 25,
-      "crashes": 0,
-      "mismatches": 0
-    },
-    "H": {
-      "total": 25,
-      "trips": 25,
-      "crashes": 0,
-      "mismatches": 0
-    },
-    "I": {
-      "total": 25,
-      "trips": 25,
-      "crashes": 0,
-      "mismatches": 0
-    },
-    "J": {
-      "total": 25,
-      "trips": 25,
-      "crashes": 0,
-      "mismatches": 0
-    },
-    "K": {
-      "total": 7,
-      "trips": 6,
-      "crashes": 0,
-      "mismatches": 0
-    }
-  },
-  "durationMs": 89,
-  "generatedAt": "2026-08-14T14:55:29.940Z"
+  "timestamp": "2026-08-14T01:13:08.257Z",
+  "chainId": 42161,
+  "gitCommitHash": "acd680dec946b8cfd47491d2fc0b69b5cf4f2732",
+  "totalScenarios": 255,
+  "blockedToxicAttacks": 255,
+  "failClosedRate": "100.00%",
+  "reasonPrefixMismatches": 0,
+  "isolateCrashes": 0,
+  "capitalLossUsd": 0
 }

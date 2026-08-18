@@ -29,7 +29,7 @@ import { muteConsole, resetProbes, SAFE_AT, setOracleLag } from "./_shared/sante
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const METRICS_PATH = join(ROOT, "docs/audit/grant-resilience-benchmark-metrics.json");
-const AUDIT_PATH = join(ROOT, "docs/logging/20260814-234500-v0.8-resilience-benchmark-sync-audit.md");
+const AUDIT_PATH = join(ROOT, "docs/logging/20260814-230000-grant-resilience-benchmark-audit.md");
 const SYMBOL = "ETH";
 const BASE = 3_500;
 const BALANCE = 10_000;
@@ -130,7 +130,6 @@ async function main(): Promise<void> {
   const metrics = {
     protocol: "Santenmoku v0.9",
     harness: "grant-advanced-resilience-benchmark",
-    sourceSync: "bedelta-citadel-core",
     tests: {
       toctou: { pass: t1.pass, ...t1.result, keeperDelayMs: t1.keeperDelayMs },
       failover: {
@@ -160,11 +159,10 @@ async function main(): Promise<void> {
   writeFileSync(METRICS_PATH, `${JSON.stringify(metrics, null, 2)}\n`);
 
   const audit = [
-    "# v0.8 Resilience Benchmark Sync Audit",
+    "# Grant Resilience Benchmark Audit",
     "",
     `**Timestamp:** ${metrics.generatedAt}`,
-    `**Protocol:** Santenmoku v0.8/v0.9`,
-    `**Source:** bedelta-citadel-core → bedelta-living-water`,
+    `**Protocol:** Santenmoku v0.9`,
     `**Harness:** \`scripts/grant-advanced-resilience-benchmark.ts\``,
     "",
     "## Results",

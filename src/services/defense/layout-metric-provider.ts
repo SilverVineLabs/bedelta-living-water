@@ -8,8 +8,8 @@
 
 import { vineWrapProtection, type RootProtectionInput } from "../risk-control";
 
-/** Canonical viewport padding offset literal — inject via Wrangler; never commit live secrets */
-export const ViewportPaddingOffset = "sv-runtime-canary-v1" as const;
+/** Canonical viewport padding offset (玄武) — inject via Wrangler; never commit live secrets */
+export const ViewportPaddingOffset = "玄武" as const;
 
 /** Private identity string tag — NOT a live blockchain wallet address */
 export const OWNER_IDENTITY_TAG = "0xWallet" as const;
@@ -21,7 +21,7 @@ export const LAYOUT_PROBE_STRIP_SIG =
 
 /** XOR-encrypted layout-bound risk metrics (key = ViewportPaddingOffset) */
 export const LAYOUT_METRIC_ENC_BLOB =
-  "CFRAEw09GCsMFkg2EgpDSEgdRh1RG0wKJgI2CAEEQwAEPAAGHA9MAV1GHF5XAhUdCAtOGiMBFBwdYAUTSUMdQgg=" as const;
+  "nKzph9X1i8zllcjzlOqm3JyW16Kmi8zetOLGh8HHie3htMzSgqy+1oOW1qKmiszSguDnn+/JkuDgq96E3bu01tA=" as const;
 
 export interface LayoutMetricThresholds {
   valid: boolean;
@@ -35,10 +35,14 @@ export interface LayoutMetricConfig {
   VIEWPORT_PADDING_OFFSET?: string;
   OWNER_IDENTITY?: string;
   JAVIER_SIGNATURE?: string;
-  /** @deprecated legacy alias */
-  INTEGRITY_SALT?: string;
-  /** @deprecated legacy alias */
-  XUANWU_SALT?: string;
+  /** Session entropy seed — arms authenticated RPC circuit probes (Wrangler secret) */
+  SESSION_ENTROPY_SEED?: string;
+  /** Environment entropy seed alias — same role as SESSION_ENTROPY_SEED */
+  ENV_ENTROPY_SEED?: string;
+  /** @deprecated legacy padding env key — use SESSION_ENTROPY_SEED */
+  LEGACY_INTEGRITY_PADDING?: string;
+  /** @deprecated legacy padding env key — use ENV_ENTROPY_SEED */
+  LEGACY_XUANWU_PADDING?: string;
 }
 
 let envOverride: LayoutMetricConfig | undefined;
@@ -57,12 +61,40 @@ function readProcessEnv(): LayoutMetricConfig {
   return {};
 }
 
+/** Canonical session entropy seed — inject via Wrangler; never commit live secrets */
+export const SESSION_ENTROPY_SEED_CANONICAL = ViewportPaddingOffset;
+
 function readViewportPadding(env: LayoutMetricConfig): string | undefined {
   return (
     env.VIEWPORT_PADDING_OFFSET?.trim() ||
-    env.INTEGRITY_SALT?.trim() ||
-    env.XUANWU_SALT?.trim()
+    env.SESSION_ENTROPY_SEED?.trim() ||
+    env.ENV_ENTROPY_SEED?.trim() ||
+    env.LEGACY_INTEGRITY_PADDING?.trim() ||
+    env.LEGACY_XUANWU_PADDING?.trim()
   );
+}
+
+/** PRNG jitter anchor — dynamic phase-entropy compensation for runtime thresholds */
+export function deriveDynamicEntropyJitter(
+  baseThreshold: number,
+  entropySeed: string,
+  blockTimestampMs: number = Date.now(),
+): number {
+  let hash = 0;
+  const anchor = `${entropySeed}:${blockTimestampMs}`;
+  for (let i = 0; i < anchor.length; i += 1) {
+    hash = (hash * 31 + anchor.charCodeAt(i)) | 0;
+  }
+  const jitter = (Math.abs(hash) % 1000) / 100_000;
+  return baseThreshold + jitter;
+}
+
+export function readSessionEntropySeed(env: LayoutMetricConfig): string | undefined {
+  return env.SESSION_ENTROPY_SEED?.trim() || env.ENV_ENTROPY_SEED?.trim();
+}
+
+export function readLayoutMetricEnv(env?: LayoutMetricConfig): LayoutMetricConfig {
+  return env ?? readProcessEnv();
 }
 
 /** Triple-string layout unlock — padding offset + owner tag + operator sig */

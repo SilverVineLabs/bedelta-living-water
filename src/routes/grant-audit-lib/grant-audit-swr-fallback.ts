@@ -12,6 +12,8 @@ import { attachCitadelFields, attachGrantAuditExtensions, emptyCitadelMetrics } 
 import { attachProvenanceVerifiedTrades } from "./grant-audit-provenance";
 import type { GrantAuditPayload } from "./grant-audit.types";
 import { attachSepoliaDualLegProof } from "./grant-audit-v0-telemetry-fallback";
+import { buildZeroDevAaGatewayStatus } from "./grant-audit-zerodev-aa";
+import { evaluateZeroDevAaGatewayBadge } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gate";
 import {
   buildGrantAuditSwrL1GasSurcharge,
   buildGrantAuditSwrSequencerHealth,
@@ -48,6 +50,7 @@ function buildSwrCitadelMetrics(): ArbitrumCitadelRiskMetrics {
 export function buildGrantAuditSwrFallbackPayload(
   request?: Request | null,
   error?: string,
+  env?: import("../../env").Env,
 ): GrantAuditPayload {
   const fetchedAt = new Date().toISOString();
   const engineMode = engineModeForGrantAudit(request);
@@ -95,5 +98,12 @@ export function buildGrantAuditSwrFallbackPayload(
     engineMode,
     fetchedAt,
     error,
+    zeroDevAaGateway: env ? buildZeroDevAaGatewayStatus(env) : evaluateZeroDevAaGatewayBadge({
+      symbol: "ETH",
+      hlSpot: 3500,
+      hlPerp: 3500,
+      dydxPerp: 3500,
+      depthUsd: 200_000,
+    }),
   }));
 }

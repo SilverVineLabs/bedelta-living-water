@@ -18,7 +18,7 @@ export interface StagnationResult {
   reason?: string;
 }
 
-/** Force 1500ms timeout on unacknowledged pending orders — auto-cancel + lock. */
+/** Force dynamic stagnation timeout on unacknowledged pending orders — auto-cancel + lock. */
 export function evaluatePendingOrderStagnation(
   orders: PendingOrderState[],
   now = Date.now(),

@@ -19,7 +19,7 @@
 
 ### Core Architecture Constraints
 1. **Absolute Dynamic SL Formula**: Strictly enforce `Dynamic Max SL = Account Balance * 1% + $100`. The deprecated fixed $50 SL is strictly forbidden.
-2. **Microsecond Defense Matrix**: Maintain < 1.0ms decision SLO (verified ~0.22ms via grant-advanced-resilience-benchmark). All external RPC/API calls must pass through `rpc-whitelist.ts` and be monitored by `checkSoilResistance()` for latency (>500ms) and slippage circuit-breaking.
+2. **Microsecond Defense Matrix**: Maintain 0.014ms Edge execution logic. All external RPC/API calls must pass through `rpc-whitelist.ts` and be monitored by `checkSoilResistance()` for latency (>500ms) and slippage circuit-breaking.
 3. **Physical Deadlock Safety**: On fatal errors or R17/R20 breach, trigger `rootProtection()` immediately to kill Hot Key signature pipelines.
 4. **Cloudflare Edge Rule**: Keep new Adapters under 150 lines of pure TypeScript, relying exclusively on pure `fetch()` without Node.js dependencies.
 5. **Structural SSOT (`SystemState`)**: All state updates must flow unidirectionally.

@@ -1,94 +1,62 @@
 /**
- * GMX v2 unsigned order/deposit payload builders — uiFeeReceiver + referralCode.
+ * GMX v2 unsigned order/deposit payload builders — IBaseOrderUtils.CreateOrderParams alignment.
  */
 
+import { estimatePreliminaryImpact } from "../yield/gmx-v2-price-impact";
+import type {
+  GmxV2AdapterOptions,
+  GmxV2OrderType,
+  GmxV2UnsignedOrderPayload,
+} from "./gmx-v2-adapter.types";
+import { assertGmxPayloadFailClosed, toGmxPrice30, toGmxUsd30 } from "./gmx-v2-order-payload-guards";
 import {
+  GMX_DEFAULT_CALLBACK_GAS_LIMIT,
+  GMX_USDC_ARBITRUM,
+  GMX_ZERO_ADDRESS,
+  USDC_DECIMALS,
+} from "./gmx-v2-order-payload-constants";
+
+export {
   DEFAULT_GMX_EXECUTION_FEE_WEI,
-  estimateGmxKeeperExecutionFeeWei,
-} from "../risk/arbitrum-gas-guard";
+  GMX_DEFAULT_REFERRAL_CODE,
+  GMX_DEFAULT_UI_FEE_RECEIVER,
+  GMX_FLOAT_PRECISION,
+  GMX_MAX_SLIPPAGE_BPS,
+  GMX_PAYLOAD_EXECUTION_FEE_TRIP,
+  GMX_PAYLOAD_PRICE_IMPACT_TRIP,
+  GMX_UI_FEE_BPS,
+  GMX_USDC_ARBITRUM,
+  GMX_ZERO_ADDRESS,
+  GMX_ZERO_REFERRAL_CODE,
+  toGmxPrice30,
+  toGmxUsd30,
+  USDC_DECIMALS,
+} from "./gmx-v2-order-payload-constants";
+
+export {
+  clampGmxMaxSlippageBps,
+  estimateGmxMinOutputAmount,
+  resolveGmxExecutionFeeWei,
+  resolveGmxMinOutputAmount,
+  resolveGmxReferralCode,
+  resolveGmxUiFeeReceiver,
+} from "./gmx-v2-order-payload-fees";
+
+export {
+  GMX_ORDER_TYPE_INDEX,
+  type GmxV2BuildDepositPayloadInput,
+  type GmxV2BuildUnsignedOrderInput,
+  type GmxV2OrderFeeConfig,
+} from "./gmx-v2-order-payload.types";
+
 import {
-  estimatePreliminaryImpact,
-  type GmxV2PoolWeights,
-} from "../yield/gmx-v2-price-impact";
-import type { ArbitrumHedgeSide } from "./arbitrum-adapter";
-import type { GmxV2AdapterOptions, GmxV2OrderType, GmxV2UnsignedOrderPayload } from "./gmx-v2-adapter.types";
-
-export { DEFAULT_GMX_EXECUTION_FEE_WEI };
-
-export const GMX_ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as const;
-/** Live treasury — Wallet B uiFeeReceiver (5 bps UI fee accrual). */
-export const GMX_DEFAULT_UI_FEE_RECEIVER =
-  "0xc9BddABD80982d2201376195DD9B85fb7951546f" as const;
-export const GMX_UI_FEE_BPS = 5 as const;
-export const GMX_ZERO_REFERRAL_CODE =
-  "0x0000000000000000000000000000000000000000000000000000000000000000" as const;
-export const GMX_DEFAULT_MIN_OUTPUT_AMOUNT = "0" as const;
-export const GMX_DEFAULT_CALLBACK_GAS_LIMIT = "0" as const;
-export const USDC_DECIMALS = 6 as const;
-
-export interface GmxV2OrderFeeConfig {
-  uiFeeReceiver?: string;
-  referralCode?: string;
-  executionFeeWei?: string;
-}
-
-export interface GmxV2BuildUnsignedOrderInput extends GmxV2OrderFeeConfig {
-  side: ArbitrumHedgeSide;
-  sizeUsd: number;
-  reduceOnly?: boolean;
-  maxSlippageBps?: number;
-  clientOrderId?: string;
-  marketToken: string;
-  /** Live index mid — required; no hardcoded symbol fallback. */
-  midPriceUsd: number;
-  pool?: GmxV2PoolWeights;
-  signedImpactBps?: number;
-  orderType?: GmxV2OrderType;
-  limitOrder?: boolean;
-  minOutputAmount?: string;
-  initialCollateralDeltaAmount?: string;
-  callbackGasLimit?: string;
-}
-
-export interface GmxV2BuildDepositPayloadInput extends GmxV2OrderFeeConfig {
-  marketToken: string;
-  sizeUsd: number;
-  collateralToken?: string;
-  receiver?: string;
-}
-
-function readEnv(key: string): string | undefined {
-  const raw = typeof process !== "undefined" ? process.env?.[key] : undefined;
-  const trimmed = raw?.trim();
-  return trimmed || undefined;
-}
-
-export function resolveGmxUiFeeReceiver(
-  opts: GmxV2AdapterOptions = {},
-  input: GmxV2OrderFeeConfig = {},
-): string {
-  return (
-    input.uiFeeReceiver?.trim() ||
-    opts.uiFeeReceiver?.trim() ||
-    readEnv("GMX_UI_FEE_RECEIVER") ||
-    GMX_DEFAULT_UI_FEE_RECEIVER
-  );
-}
-
-export function resolveGmxReferralCode(
-  opts: GmxV2AdapterOptions = {},
-  input: GmxV2OrderFeeConfig = {},
-): string {
-  return input.referralCode?.trim() || opts.referralCode?.trim() || GMX_ZERO_REFERRAL_CODE;
-}
-
-export function resolveGmxExecutionFeeWei(
-  opts: GmxV2AdapterOptions = {},
-  input: GmxV2OrderFeeConfig = {},
-): string {
-  const explicit = input.executionFeeWei?.trim() || opts.executionFeeWei?.trim();
-  return explicit || estimateGmxKeeperExecutionFeeWei();
-}
+  clampGmxMaxSlippageBps,
+  resolveGmxExecutionFeeWei,
+  resolveGmxMinOutputAmount,
+  resolveGmxReferralCode,
+  resolveGmxUiFeeReceiver,
+} from "./gmx-v2-order-payload-fees";
+import { GMX_ORDER_TYPE_INDEX, type GmxV2BuildDepositPayloadInput, type GmxV2BuildUnsignedOrderInput } from "./gmx-v2-order-payload.types";
 
 function requireMidPriceUsd(midPriceUsd: number): number {
   if (!Number.isFinite(midPriceUsd) || midPriceUsd <= 0) {
@@ -135,30 +103,42 @@ export function buildGmxV2UnsignedOrderPayload(
   input: GmxV2BuildUnsignedOrderInput,
   opts: GmxV2AdapterOptions = {},
 ): GmxV2UnsignedOrderPayload {
-  const slippageBps = input.maxSlippageBps ?? 30;
+  const slippageBps = clampGmxMaxSlippageBps(input.maxSlippageBps);
   const isLong = input.side === "long";
   const px = requireMidPriceUsd(input.midPriceUsd);
   const signedImpactBps = resolveSignedImpactBps(input, isLong);
   const acceptablePrice = computeGmxAcceptablePrice(px, isLong, slippageBps, signedImpactBps);
-  const orderType = resolveGmxOrderType(input);
+  const orderTypeLabel = resolveGmxOrderType(input);
+  const executionFee = resolveGmxExecutionFeeWei(opts, input);
+  assertGmxPayloadFailClosed({ ...input, isLong, executionFee });
 
   return {
-    action: input.reduceOnly ? "decrease" : "increase",
-    orderType,
-    marketToken: input.marketToken,
-    collateralToken: "USDC",
+    addresses: {
+      receiver: input.receiver ?? GMX_ZERO_ADDRESS,
+      cancellationReceiver: GMX_ZERO_ADDRESS,
+      callbackContract: GMX_ZERO_ADDRESS,
+      uiFeeReceiver: resolveGmxUiFeeReceiver(opts, input),
+      market: input.marketToken,
+      initialCollateralToken: GMX_USDC_ARBITRUM,
+      swapPath: [],
+    },
+    numbers: {
+      sizeDeltaUsd: toGmxUsd30(input.sizeUsd),
+      initialCollateralDeltaAmount: resolveInitialCollateralDeltaAmount(input),
+      triggerPrice: "0",
+      acceptablePrice: toGmxPrice30(acceptablePrice),
+      executionFee,
+      callbackGasLimit: input.callbackGasLimit ?? GMX_DEFAULT_CALLBACK_GAS_LIMIT,
+      minOutputAmount: resolveGmxMinOutputAmount(input, slippageBps, signedImpactBps),
+      validFromTime: "0",
+    },
+    orderType: GMX_ORDER_TYPE_INDEX[orderTypeLabel],
+    decreasePositionSwapType: 0,
     isLong,
-    sizeDeltaUsd: input.sizeUsd.toFixed(2),
-    acceptablePrice: acceptablePrice.toFixed(4),
-    executionFee: resolveGmxExecutionFeeWei(opts, input),
-    minOutputAmount: input.minOutputAmount ?? GMX_DEFAULT_MIN_OUTPUT_AMOUNT,
-    initialCollateralDeltaAmount: resolveInitialCollateralDeltaAmount(input),
-    callbackGasLimit: input.callbackGasLimit ?? GMX_DEFAULT_CALLBACK_GAS_LIMIT,
-    reduceOnly: input.reduceOnly ?? false,
-    clientOrderId: input.clientOrderId,
-    slippageBps,
-    uiFeeReceiver: resolveGmxUiFeeReceiver(opts, input),
+    shouldUnwrapNativeToken: false,
+    autoCancel: false,
     referralCode: resolveGmxReferralCode(opts, input),
+    dataList: input.clientOrderId ? [input.clientOrderId] : [],
   };
 }
 

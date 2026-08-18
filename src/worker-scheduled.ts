@@ -9,6 +9,7 @@ import {
 import { configureFlattenHardlockKv } from "./core/intent-ledger/flatten-hardlock";
 import { configureUnlockReauthorizationKv } from "./services/session-key-adapter-lib/unlock-reauthorization";
 import { runMainnetMonitorTick } from "./services/mainnet-monitor";
+import { refreshGrantAuditPayloadCache } from "./routes/grant-audit-lib/grant-audit-precache";
 
 async function runScheduledSoakTelemetry(env: Env): Promise<void> {
   await runSoakTelemetryTick({ kv: env.SLIVERVINE_KV });
@@ -81,6 +82,14 @@ export async function runScheduledJobs(
       },
       cron,
     );
+    try {
+      await refreshGrantAuditPayloadCache(env);
+    } catch (err) {
+      console.warn(
+        "[bedelta] grant audit KV precompute failed",
+        err instanceof Error ? err.message : err,
+      );
+    }
   } else {
     console.warn(
       "[bedelta] mainnet monitor skipped — EXECUTION_LOGS_KV or USER_ADDRESS secret missing",

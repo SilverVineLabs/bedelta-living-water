@@ -9,8 +9,8 @@ import {
   readActiveSystemState,
 } from "../../src/core/state";
 
-const INDEX_SOURCE = readFileSync(
-  resolve(import.meta.dirname, "../../src/index.ts"),
+const SDK_SOURCE = readFileSync(
+  resolve(import.meta.dirname, "../../src/sdk.ts"),
   "utf8",
 );
 
@@ -54,9 +54,9 @@ afterEach(() => {
   __setSystemStateForTests(null);
 });
 
-describe("security audit — index.ts export surface", () => {
-  it("index.ts source re-exports no private keys or raw secrets", () => {
-    expect(INDEX_SOURCE).not.toMatch(FORBIDDEN_SOURCE_REEXPORT);
+describe("security audit — sdk.ts export surface", () => {
+  it("sdk.ts source re-exports no private keys or raw secrets", () => {
+    expect(SDK_SOURCE).not.toMatch(FORBIDDEN_SOURCE_REEXPORT);
   });
 
   it("exports zero private keys or raw secrets", () => {

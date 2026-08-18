@@ -131,9 +131,10 @@ export const TIER2_L2_TOP_N = 10 as const;
 export const MAX_TARGETS = 3 as const;
 
 // ── MDD guard HUD scope (grant-audit live Citadel TVL envelope) ─────────────
+export const MDD_GUARD_WINDOW_DAYS = 90 as const;
 export const MDD_GUARD_MONITORED_TVL_USD = 1302.39 as const;
 export const MDD_GUARD_SCOPE_NOTE =
-  `Santenmoku Verified Window · Machine-Readable Telemetry · ~$${(MDD_GUARD_MONITORED_TVL_USD / 1000).toFixed(1)}k Monitored Citadel TVL` as const;
+  `${MDD_GUARD_WINDOW_DAYS}d window · ~$${(MDD_GUARD_MONITORED_TVL_USD / 1000).toFixed(1)}k monitored Citadel TVL` as const;
 export const MDD_ZERO_PCT_LABEL = `0.00% MDD (${MDD_GUARD_SCOPE_NOTE})` as const;
 export const MDD_DRAWDOWN_GUARD_ACTIVE_LABEL =
   `0.00% Drawdown Guard Active (${MDD_GUARD_SCOPE_NOTE})` as const;

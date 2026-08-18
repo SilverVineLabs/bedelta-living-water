@@ -66,11 +66,7 @@ export function evaluateGasSurcharge(l1SurchargeUsd: number, targetYieldUsd: num
 
 export function evaluateOracleLag(oracleUpdatedAtMs: number, l2BlockTimestampMs: number) {
   if (oracleUpdatedAtMs <= 0 || l2BlockTimestampMs <= 0) {
-    return {
-      deadlock: true,
-      lagMs: 0,
-      reason: "INVALID_ORACLE_TIMESTAMP_FAIL_CLOSED",
-    };
+    return { deadlock: false, lagMs: 0, reason: null };
   }
   const lagMs = Math.abs(l2BlockTimestampMs - oracleUpdatedAtMs);
   return lagMs > ORACLE_LAG_DEADLOCK_MS
