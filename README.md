@@ -1,6 +1,6 @@
 # 🛡️ BeΔLivingWater SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway
 
-[![Vitest](https://img.shields.io/badge/Vitest-677%20PASS%20%28128%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water) [![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts) [![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-262%2F262%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water) [![Property Fuzzing](https://img.shields.io/badge/Property%20Fuzzing-65%2C535%20Passed-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water) [![Telemetry](https://img.shields.io/badge/Telemetry-%2Fapi%2Fgrant--audit-blueviolet)](https://bedeltawater.slivervine.xyz/api/grant-audit) [![TypeScript](https://img.shields.io/badge/TypeScript-0%20errors-blue?logo=typescript)](https://github.com/SilverVineLabs/bedelta-living-water) [![License](https://img.shields.io/badge/License-BSL%201.1-orange)](LICENSE)![Benchmark Latency](https://img.shields.io/badge/Benchmark-0.0002ms_(p50_106μs)-blueviolet?logo=speedtest)
+[![Vitest](https://img.shields.io/badge/Vitest-705%20PASS%20%28131%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water) [![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts) [![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-262%2F262%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water) [![Property Fuzzing](https://img.shields.io/badge/Property%20Fuzzing-65%2C535%20Passed-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water) [![Telemetry](https://img.shields.io/badge/Telemetry-%2Fapi%2Fgrant--audit-blueviolet)](https://bedeltawater.slivervine.xyz/api/grant-audit) [![TypeScript](https://img.shields.io/badge/TypeScript-0%20errors-blue?logo=typescript)](https://github.com/SilverVineLabs/bedelta-living-water) [![License](https://img.shields.io/badge/License-BSL%201.1-orange)](LICENSE)![Benchmark Latency](https://img.shields.io/badge/Benchmark-0.0002ms_(p50_106μs)-blueviolet?logo=speedtest)
 ![Foundry Citadel Gate](https://img.shields.io/badge/Foundry-Forge_Test_Passed-brightgreen?logo=solidity)
 
 
@@ -28,7 +28,8 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 * **Runtime Bytecode**: 📦 **8,716 Bytes (8.71 KiB)** — Zero External Dependencies (`Assembly-optimized`)
 
 ### 2. Off-Chain Pre-Execution Radar (TypeScript / V8 Runtime)
-* **Vitest Suite**: 🧪 **128 Test Files | 677 Vitest PASS (100% Clean)**
+* **Vitest Suite**: 🧪 **131 Test Files | 705 Vitest PASS (100% Clean)**
+* **v0.9 Regression Bar**: 🎯 **131 Test Files | 705 Vitest PASS (100% Clean)** (`pnpm test:grant-v09-sim` + full suite)
 * **Chaos Matrix**: 🌪️ **262 Severe Failure Cases | 0 Crashes**
 * **Edge Decision Latency**: ⏱️ **SLO < 1.0ms | p50 ~106 μs (0.106 ms) | Pure Math: 0.0002 ms (200 ns)**
 * **Worker Bundle**: 📦 **158.99 KiB gzip** (Zero-Cold-Start Edge Deployment)
@@ -41,7 +42,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 |-----------|--------|-----------------------------|
 | **M0: Operational Foundation** | ✅ Delivered | WSL / PNPM Monorepo, Cloudflare Edge Worker pipeline, and CI/CD strict typecheck. |
 | **M1: On-Chain Citadel Gate** | ✅ Delivered | `SliverVineGate.sol` core invariant locks, 327,675 Property Fuzzing, 25k gas bounds. |
-| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, 128 Test Files | 677 Vitest PASS (100% Clean), 158.99 KiB gzip bundle, sub-ms latency. |
+| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, 131 Test Files | 705 Vitest PASS (100% Clean), 158.99 KiB gzip bundle, sub-ms latency. |
 | **M3: Dual-Chain & ZeroDev AA** | 🔄 In Progress | ZeroDev Kernel v3.0 AA Adapter, Arbitrum Sepolia & Robinhood Chain (`46630`) deployment. |
 | **M4: WASM Engine & IP Moat** | ⏳ Planned | `< 28kb` Rust `#![no_std]` Wasm core compilation for Cloudflare V8 runtime security. |
 | **M5: TCA Data & Hyperliquid** | ⏳ Planned | Historical TCA product suite & Hyperliquid Testnet cross-venue 5-trade validation. |
@@ -49,10 +50,10 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 
 ---
 
-## 🛡️ Auditor — 30-Second Verification
+## 🛡️ Auditor — 30-Second CLI & API Verification
 
 ```bash
-# 1. Install dependencies & run full Vitest suite (128 Test Files | 677 Vitest PASS (100% Clean))
+# 1. Full Vitest suite (705 PASS / 131 files)
 pnpm install
 pnpm test
 
@@ -65,6 +66,12 @@ forge test --gas-report
 
 # 4. Run Off-chain Resilience & Latency Benchmark
 npx tsx scripts/grant-advanced-resilience-benchmark.ts
+
+# 5. HL Testnet 5-trade provenance (grant-audit /api/grant-audit payload)
+pnpm exec vitest run tests/services/hl-5-trade-provenance.test.ts
+
+# 6. Robinhood Chain (46630) → Arbitrum unidirectional Across bridge edge cases
+pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts
 ```
 
 ---
