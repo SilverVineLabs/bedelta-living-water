@@ -46,17 +46,24 @@ export {
   GMX_ORDER_TYPE_INDEX,
   type GmxV2BuildDepositPayloadInput,
   type GmxV2BuildUnsignedOrderInput,
+  type GmxV2BuildWithdrawPayloadInput,
   type GmxV2OrderFeeConfig,
 } from "./gmx-v2-order-payload.types";
 
 import {
   clampGmxMaxSlippageBps,
+  estimateGmxMinOutputAmount,
   resolveGmxExecutionFeeWei,
   resolveGmxMinOutputAmount,
   resolveGmxReferralCode,
   resolveGmxUiFeeReceiver,
 } from "./gmx-v2-order-payload-fees";
-import { GMX_ORDER_TYPE_INDEX, type GmxV2BuildDepositPayloadInput, type GmxV2BuildUnsignedOrderInput } from "./gmx-v2-order-payload.types";
+import {
+  GMX_ORDER_TYPE_INDEX,
+  type GmxV2BuildDepositPayloadInput,
+  type GmxV2BuildUnsignedOrderInput,
+  type GmxV2BuildWithdrawPayloadInput,
+} from "./gmx-v2-order-payload.types";
 
 function requireMidPriceUsd(midPriceUsd: number): number {
   if (!Number.isFinite(midPriceUsd) || midPriceUsd <= 0) {
@@ -157,5 +164,79 @@ export function buildGmxV2UnsignedDepositPayload(
     receiver: input.receiver ?? GMX_ZERO_ADDRESS,
     uiFeeReceiver: resolveGmxUiFeeReceiver(opts, input),
     referralCode: resolveGmxReferralCode(opts, input),
+  };
+}
+
+function toGmxGmToken18(tokens: number): string {
+  if (!Number.isFinite(tokens) || tokens < 0) {
+    throw new Error("GMX withdraw payload requires finite gm token amount >= 0");
+  }
+  const [whole, frac = ""] = tokens.toFixed(6).split(".");
+  const micro = BigInt(whole + (frac + "000000").slice(0, 6));
+  return (micro * 10n ** 12n).toString();
+}
+
+function resolveGmxMarketTokenAmount(input: GmxV2BuildWithdrawPayloadInput): string {
+  if (input.gmTokenAmount !== undefined) return input.gmTokenAmount;
+  const gmPriceUsd = input.gmPriceUsd;
+  if (!gmPriceUsd || !Number.isFinite(gmPriceUsd) || gmPriceUsd <= 0) {
+    return toGmxGmToken18(input.sizeUsd);
+  }
+  return toGmxGmToken18(input.sizeUsd / gmPriceUsd);
+}
+
+function resolveWithdrawSignedImpactBps(input: GmxV2BuildWithdrawPayloadInput): number {
+  if (input.signedImpactBps !== undefined) return input.signedImpactBps;
+  if (!input.pool) return 0;
+  return estimatePreliminaryImpact({
+    orderSizeUsd: input.sizeUsd,
+    isLong: false,
+    pool: input.pool,
+  }).signedImpactBps;
+}
+
+export function buildGmxV2UnsignedWithdrawPayload(
+  input: GmxV2BuildWithdrawPayloadInput,
+  opts: GmxV2AdapterOptions = {},
+): Record<string, unknown> {
+  const slippageBps = clampGmxMaxSlippageBps(input.maxSlippageBps);
+  const signedImpactBps = resolveWithdrawSignedImpactBps(input);
+  const executionFee = resolveGmxExecutionFeeWei(opts, input);
+  assertGmxPayloadFailClosed({
+    ...input,
+    isLong: false,
+    executionFee,
+  });
+  const halfUsd = input.sizeUsd / 2;
+  const minHalfUsd = estimateGmxMinOutputAmount({
+    sizeUsd: halfUsd,
+    slippageBps,
+    signedImpactBps,
+    reduceOnly: true,
+  });
+  const marketTokenAmount = resolveGmxMarketTokenAmount(input);
+
+  return {
+    action: "withdraw",
+    addresses: {
+      receiver: input.receiver ?? GMX_ZERO_ADDRESS,
+      callbackContract: GMX_ZERO_ADDRESS,
+      uiFeeReceiver: resolveGmxUiFeeReceiver(opts, input),
+      market: input.marketToken,
+      longTokenSwapPath: [],
+      shortTokenSwapPath: [],
+    },
+    numbers: {
+      marketTokenAmount,
+      minLongTokenAmount: minHalfUsd,
+      minShortTokenAmount: minHalfUsd,
+      executionFee,
+      callbackGasLimit: input.callbackGasLimit ?? GMX_DEFAULT_CALLBACK_GAS_LIMIT,
+    },
+    shouldUnwrapNativeToken: false,
+    referralCode: resolveGmxReferralCode(opts, input),
+    gmTokenAmountUsd: input.sizeUsd.toFixed(2),
+    longTokenAmountUsd: halfUsd.toFixed(2),
+    shortTokenAmountUsd: halfUsd.toFixed(2),
   };
 }

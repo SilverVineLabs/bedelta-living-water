@@ -40,3 +40,18 @@ export interface GmxV2BuildDepositPayloadInput extends GmxV2OrderFeeConfig {
   collateralToken?: string;
   receiver?: string;
 }
+
+export interface GmxV2BuildWithdrawPayloadInput extends GmxV2OrderFeeConfig {
+  marketToken: string;
+  sizeUsd: number;
+  maxSlippageBps?: number;
+  /** GM market token amount (18-decimal uint string). Overrides sizeUsd/gmPriceUsd derivation. */
+  gmTokenAmount?: string;
+  /** GM token USD mark for marketTokenAmount derivation when gmTokenAmount omitted. */
+  gmPriceUsd?: number;
+  receiver?: string;
+  pool?: GmxV2PoolWeights;
+  signedImpactBps?: number;
+  skipFailClosedGuards?: boolean;
+  callbackGasLimit?: string;
+}

@@ -6,9 +6,11 @@ import {
   estimateGmxKeeperExecutionFeeWei,
 } from "../../src/services/risk/arbitrum-gas-guard";
 import { RiskLimitExceeded } from "../../src/services/risk-control";
+import { assertGmxPayloadFailClosed } from "../../src/services/adapters/gmx-v2-order-payload-guards";
 import {
   buildGmxV2UnsignedDepositPayload,
   buildGmxV2UnsignedOrderPayload,
+  buildGmxV2UnsignedWithdrawPayload,
   clampGmxMaxSlippageBps,
   computeGmxAcceptablePrice,
   DEFAULT_GMX_EXECUTION_FEE_WEI as PAYLOAD_DEFAULT_FEE,
@@ -193,6 +195,58 @@ describe("gmx-v2-order-payload", () => {
     }
   });
 
+  it("reduceOnly bypasses toxic price impact and oracle-lag hardlock", () => {
+    const toxic = {
+      sizeUsd: 5_000_000,
+      isLong: false,
+      executionFee: PAYLOAD_DEFAULT_FEE,
+      pool: { longTokenUsd: 1_000_000, shortTokenUsd: 500_000 },
+    };
+    expect(() => assertGmxPayloadFailClosed(toxic)).toThrow(RiskLimitExceeded);
+    expect(() => assertGmxPayloadFailClosed({ ...toxic, reduceOnly: true })).not.toThrow();
+
+    const decrease = buildGmxV2UnsignedOrderPayload({
+      side: "long",
+      sizeUsd: 250,
+      reduceOnly: true,
+      marketToken: "0x70d95587d40A2caf56bd97485aB3Eec10Bee6336",
+      midPriceUsd: 3500,
+      pool: { longTokenUsd: 1_000_000, shortTokenUsd: 500_000 },
+    });
+    expect(decrease.orderType).toBe(GMX_ORDER_TYPE_INDEX.MarketDecrease);
+
+    __setArbitrumGasGuardForTests({
+      l1BaseFeeWei: 0n,
+      l1SurchargeWei: 0n,
+      l1SurchargeUsd: 0,
+      targetYieldUsd: 0.1,
+      gasYieldRatio: 0,
+      gasBlocked: false,
+      oracleUpdatedAtMs: 1_000,
+      l2BlockTimestampMs: 32_000,
+      oracleLagMs: 31_000,
+      oracleLagDeadlock: true,
+      reason: "ORACLE_LAG_DEADLOCK:31000ms>30000ms",
+      fetchedAtMs: Date.now(),
+    });
+    expect(() =>
+      buildGmxV2UnsignedOrderPayload({
+        side: "long",
+        sizeUsd: 100,
+        marketToken: "0x70d95587d40A2caf56bd97485aB3Eec10Bee6336",
+        midPriceUsd: 3500,
+      }),
+    ).toThrow(/ORACLE_LAG|ARBITRUM_GAS_GUARD/);
+    const emergency = buildGmxV2UnsignedOrderPayload({
+      side: "long",
+      sizeUsd: 100,
+      reduceOnly: true,
+      marketToken: "0x70d95587d40A2caf56bd97485aB3Eec10Bee6336",
+      midPriceUsd: 3500,
+    });
+    expect(emergency.orderType).toBe(GMX_ORDER_TYPE_INDEX.MarketDecrease);
+  });
+
   it("buildGmxV2UnsignedOrderPayload aligns CreateOrderParams address/number tuple order", () => {
     const increase = buildGmxV2UnsignedOrderPayload(
       {
@@ -249,5 +303,48 @@ describe("gmx-v2-order-payload", () => {
     expect(deposit.referralCode).toBe(REFERRAL);
     expect(deposit.executionFee).toBe(PAYLOAD_DEFAULT_FEE);
     expect(deposit.longTokenAmountUsd).toBe("50.00");
+  });
+
+  it("buildGmxV2UnsignedWithdrawPayload aligns CreateWithdrawalParams with fail-closed guards", () => {
+    const withdraw = buildGmxV2UnsignedWithdrawPayload(
+      {
+        marketToken: "0x70d95587d40A2caf56bd97485aB3Eec10Bee6336",
+        sizeUsd: 100,
+        gmTokenAmount: "500000000000000000",
+        uiFeeReceiver: TREASURY,
+        referralCode: REFERRAL,
+        skipFailClosedGuards: true,
+      },
+      {},
+    );
+    expect(withdraw.action).toBe("withdraw");
+    expect(withdraw.addresses).toEqual({
+      receiver: GMX_ZERO_ADDRESS,
+      callbackContract: GMX_ZERO_ADDRESS,
+      uiFeeReceiver: TREASURY,
+      market: "0x70d95587d40A2caf56bd97485aB3Eec10Bee6336",
+      longTokenSwapPath: [],
+      shortTokenSwapPath: [],
+    });
+    expect(withdraw.numbers).toMatchObject({
+      marketTokenAmount: "500000000000000000",
+      executionFee: PAYLOAD_DEFAULT_FEE,
+      callbackGasLimit: "0",
+    });
+    expect(BigInt(String(withdraw.numbers.minLongTokenAmount))).toBeGreaterThan(0n);
+    expect(BigInt(String(withdraw.numbers.minShortTokenAmount))).toBeGreaterThan(0n);
+    expect(withdraw.referralCode).toBe(REFERRAL);
+    expect(withdraw.shouldUnwrapNativeToken).toBe(false);
+    expect(withdraw.gmTokenAmountUsd).toBe("100.00");
+  });
+
+  it("buildGmxV2UnsignedWithdrawPayload throws RiskLimitExceeded on toxic price impact", () => {
+    expect(() =>
+      buildGmxV2UnsignedWithdrawPayload({
+        marketToken: "0x70d95587d40A2caf56bd97485aB3Eec10Bee6336",
+        sizeUsd: 5_000_000,
+        pool: { longTokenUsd: 1_000_000, shortTokenUsd: 500_000 },
+      }),
+    ).toThrow(RiskLimitExceeded);
   });
 });

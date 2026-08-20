@@ -19,21 +19,44 @@ export const AUDITOR_ORACLE_LAG_NOTE =
 export interface GmxV2ExecutionCliOpts {
   liveRead: boolean;
   allowStaleOracle: boolean;
+  reduceOnly: boolean;
+  withdraw: boolean;
   symbol: string;
   sizeUsd: number;
   side: "long" | "short";
 }
 
+export type GmxV2ExecutionPath = "increase-deposit" | "decrease" | "withdraw";
+
+export function resolveGmxV2ExecutionPath(cli: GmxV2ExecutionCliOpts): GmxV2ExecutionPath {
+  if (cli.withdraw) return "withdraw";
+  if (cli.reduceOnly) return "decrease";
+  return "increase-deposit";
+}
+
 export function parseGmxV2ExecutionCli(argv: string[]): GmxV2ExecutionCliOpts {
   const liveRead = argv.includes("--live-read");
   const allowStaleOracle = argv.includes("--allow-stale-oracle");
+  const reduceOnly = argv.includes("--reduce-only");
+  const withdraw = argv.includes("--withdraw");
+  if (reduceOnly && withdraw) {
+    throw new Error("INVALID_CLI_FLAGS: --reduce-only and --withdraw are mutually exclusive");
+  }
   const symbol = argv.find((a, i) => argv[i - 1] === "--symbol") ?? DEFAULT_SYMBOL;
   const sizeRaw = argv.find((a, i) => argv[i - 1] === "--size");
   const sideRaw = argv.find((a, i) => argv[i - 1] === "--side") ?? DEFAULT_SIDE;
   const sizeUsd = sizeRaw ? Number.parseFloat(sizeRaw) : DEFAULT_SIZE_USD;
   const side = sideRaw === "long" ? "long" : "short";
   if (!Number.isFinite(sizeUsd) || sizeUsd <= 0) throw new Error("INVALID_SIZE_USD");
-  return { liveRead, allowStaleOracle, symbol: symbol.toUpperCase(), sizeUsd, side };
+  return {
+    liveRead,
+    allowStaleOracle,
+    reduceOnly,
+    withdraw,
+    symbol: symbol.toUpperCase(),
+    sizeUsd,
+    side,
+  };
 }
 
 export function isGmxV2ExecutionHelpRequested(argv: string[]): boolean {
@@ -51,6 +74,8 @@ export function printGmxV2ExecutionHelp(): void {
       "Options:",
       "  --live-read            Direct Arbitrum One RPC live read; export payloads to docs/audit/",
       "  --allow-stale-oracle   Bypass Citadel Oracle Lag deadlock (dry-run payload testing only)",
+      "  --reduce-only          Dry-run MarketDecrease unsigned order payload (position unwind)",
+      "  --withdraw             Dry-run GM Pool withdrawal unsigned payload (liquidity un-stake)",
       "  --symbol <SYMBOL>      Market symbol (default: ETH)",
       "  --size <USD>           Order size in USD (default: 100)",
       "  --side <long|short>    Hedge side (default: short)",
@@ -58,6 +83,8 @@ export function printGmxV2ExecutionHelp(): void {
       "",
       "Examples:",
       "  npx tsx scripts/test-gmx-v2-execution.ts --live-read",
+      "  npx tsx scripts/test-gmx-v2-execution.ts --reduce-only --size 250",
+      "  npx tsx scripts/test-gmx-v2-execution.ts --withdraw --size 100",
       "  npx tsx scripts/test-gmx-v2-execution.ts --live-read --allow-stale-oracle",
     ].join("\n"),
   );
