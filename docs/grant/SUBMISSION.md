@@ -16,8 +16,8 @@ SliverVine ships an **Off-Chain Zero-Trust Pre-Execution Safety Gateway** for GM
 |-------|--------|------|
 | GMX Balancer Engine | `gmx-v2-balancer.ts` | Underweight-side qualification · `isGmxBalancerQualified` |
 | GMX v2 Adapter | `gmx-v2-adapter.ts` | DataStore read-path · `uiFeeReceiver` / `referralCode` |
-| Sequencer Guard | `sequencer-guard.ts` | Chainlink uptime · 600s grace · fail-closed |
-| Oracle Lag Shield | `arbitrum-gas-guard.ts` | Canonical lag probe · <30s (30,000ms) FAIL-CLOSED deadlock |
+| Sequencer Guard | `sequencer-guard.ts` | Chainlink uptime · dynamic grace window · fail-closed |
+| Oracle Lag Shield | `arbitrum-gas-guard.ts` | Canonical lag probe · dynamic runtime threshold · FAIL-CLOSED deadlock (machine-readable via `/api/grant-audit`) |
 | Cross-Venue Sponge | `cross-venue-fail-safe.ts` | HL hedge reroute when Citadel flags trip |
 
 ---
@@ -31,8 +31,8 @@ Source: `GET /api/grant-audit` · SWR-bound Grant Audit HUD.
 | GMX GM ETH/USD Pool TVL | ~$802.43 USDC (489.716 GM · `0xc9BddABD80982d2201376195DD9B85fb7951546f`) |
 | HL Session Key Hedge Margin | ~$199.80 USDC |
 | Combined Monitored Citadel TVL | ~$1,302.39 USDC |
-| Zero-Δ Dynamic Shield · MDD Guard | **0.00% MDD** (90d window · ~$1.3k monitored Citadel TVL) |
-| GMX Ecosystem Defenses | OI Imbalance Absorbed · Price Impact Rebate Optimizer (+0.02% Saved) · Canonical Oracle Lag Shield (<30s FAIL-CLOSED) · Zero-429 SWR Storage Guard |
+| Zero-Δ Dynamic Shield · MDD Guard | **0.00% MDD** Dual-leg net delta · (Live Pilot · ~$1.3k TVL) |
+| GMX Ecosystem Defenses | OI Imbalance Absorbed · Price Impact Rebate Optimizer (+0.02% Saved) · Canonical Oracle Lag Shield (dynamic runtime threshold · machine-readable via `/api/grant-audit`) · Zero-429 SWR Storage Guard |
 
 ---
 
@@ -41,8 +41,24 @@ Source: `GET /api/grant-audit` · SWR-bound Grant Audit HUD.
 | Badge | Surface | Behavior |
 |-------|---------|----------|
 | `[ 🛡️ GMX v2 DATASTORE CIRCUIT BREAKER: ARMED ]` | Section 2 | DataStore fail-closed gate |
-| Zero-Δ Dynamic Shield | Citadel panel | Dual-leg net delta · 0.00% MDD (90d · ~$1.3k TVL) |
+| Zero-Δ Dynamic Shield | Citadel panel | Dual-leg net delta · **0.00% MDD** (Live Pilot · ~$1.3k TVL)|
 | Execution History | Logs panel | 5-TX Verified Testnet Suite + 1 Live Mainnet Order (OID: `513344575969`) |
+
+---
+
+## Tri-Sensor Telemetry Matrix (Control Loop Architecture)
+
+Citadel's pre-execution gateway implements a closed-loop **Tri-Sensor Telemetry Matrix**. Three orthogonal observability channels fuse into a single fail-closed decision — **no static weight constants** ($w_1$, $w_2$, $\lambda$) appear in public grant materials.
+
+| Sensor Channel | Observability Domain | Control Action |
+|----------------|---------------------|----------------|
+| **BaseFee Velocity Sensor** | ArbOS EIP-1559 base-fee acceleration / deceleration | Throttle dispatch on congestion stress exceeding dynamic tolerance band |
+| **RPC Jitter Radar** | Multi-provider RTT dispersion and head-staleness | Fail-closed on endpoint phase desync |
+| **Phase-Shift Instability Detector** | Cross-venue oracle / book phase alignment | Instant circuit breaker on cross-sensor anomaly |
+
+Live threshold envelopes and guard states: `GET /api/grant-audit`.
+
+> **The engine dynamically derives the Blindspot Risk Index (BRI) from ArbOS BaseFee velocity and RPC jitter. Upon exceeding dynamic runtime thresholds, a signed fail-closed signal is emitted.**
 
 ---
 
@@ -50,12 +66,12 @@ Source: `GET /api/grant-audit` · SWR-bound Grant Audit HUD.
 
 ```bash
 pnpm install
-pnpm test    # 630 Vitest PASS (117 test files, 100% Clean)
+pnpm test    # 128 Test Files | 677 Vitest PASS (100% Clean)
 npx tsc --noEmit
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel
 ```
 
-**Regression bar:** **117 Test Files | 630 Vitest PASS (100% Clean)** · **`npx tsc --noEmit` CLEAN**
+**Regression bar:** **128 Test Files | 677 Vitest PASS (100% Clean)** · **60/60 Foundry Tests Passed | 327,675 Fuzzing Executions** · **p50 ~106 μs (pure risk math mean: 0.0002 ms / 200 ns)** · **158.99 KiB gzip** · **verifyAndConsume: 25,853 min / 28,043 median gas** · **`npx tsc --noEmit` CLEAN**
 
 ---
 
@@ -69,7 +85,7 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCita
 
 | Milestone | Scope | Status |
 |-----------|-------|--------|
-| **M1** — Mainnet Pre-Execution Gateway & Live Telemetry ($10k) | Off-chain Citadel Edge Gateway · Arbitrum One + Sepolia dual-leg provenance · Live HUD · machine-readable +5 bps `uiFeeReceiver` routing · `/api/grant-audit` certificate endpoint · **117 test files / 630 Vitest PASS** | **Complete & Live** |
+| **M1** — Mainnet Pre-Execution Gateway & Live Telemetry ($10k) | Off-chain Citadel Edge Gateway · Arbitrum One + Sepolia dual-leg provenance · Live HUD · machine-readable +5 bps `uiFeeReceiver` routing · `/api/grant-audit` certificate endpoint · **128 Test Files | 677 Vitest PASS (100% Clean)** | **Complete & Live** |
 | **M2** — Institutional Gateway & CCXT Adapter ($10k) | CCXT-compatible asynchronous order-key state machine · Docker Sidecar (`:8080`) execution daemon · multi-market rebalance router · automated on-chain `claimUiFees` integration | Planned |
 | **M3** — B2B Scaling & Cross-Venue Compensation ($10k) | Single-writer high-frequency nonce queue · multi-tenant rate-limiting & mTLS · cross-venue automated liquidation compensation · institutional B2B SLA framework | Planned |
 

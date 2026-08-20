@@ -16,12 +16,17 @@ export type GmxUnderweightSide = "long" | "short" | "balanced";
 
 export interface GmxV2BalancerInput extends GmxV2PriceImpactInput {
   symbol?: string;
+  /** When true, qualify decrease / de-lever on the overweight GM leg. */
+  reduceOnly?: boolean;
 }
 
 export interface GmxV2BalancerResult {
   underweightSide: GmxUnderweightSide;
+  overweightSide: GmxUnderweightSide;
   isUnderweightSideOrder: boolean;
+  isOverweightSideOrder: boolean;
   isGmxBalancerQualified: boolean;
+  isGmxDecreaseQualified: boolean;
   expectedPriceImpactRebateBps: number;
   poolUsd: number;
   longWeight: number;
@@ -43,9 +48,12 @@ export interface GmxV2BalancerSnapshot extends GmxV2BalancerResult {
 
 export interface GmxV2BalancerMetrics {
   isGmxBalancerQualified: boolean | null;
+  isGmxDecreaseQualified: boolean | null;
   expectedPriceImpactRebateBps: number | null;
   underweightSide: GmxUnderweightSide | null;
+  overweightSide: GmxUnderweightSide | null;
   isUnderweightSideOrder: boolean | null;
+  isOverweightSideOrder: boolean | null;
   gmxUserAddress: string | null;
   gmxReadOnlyMode: boolean | null;
   gmxGmBalanceGm: number | null;
@@ -79,16 +87,36 @@ export function isOrderOnUnderweightSide(isLong: boolean, underweight: GmxUnderw
   return underweight === "long" ? isLong : !isLong;
 }
 
+export function resolveGmxOverweightSide(pool: GmxV2PoolWeights): GmxUnderweightSide {
+  const under = resolveGmxUnderweightSide(pool);
+  if (under === "balanced") return "balanced";
+  return under === "long" ? "short" : "long";
+}
+
+export function isOrderOnOverweightSide(isLong: boolean, overweight: GmxUnderweightSide): boolean {
+  if (overweight === "balanced") return false;
+  return overweight === "long" ? isLong : !isLong;
+}
+
 export function evaluateGmxBalancerQualification(input: GmxV2BalancerInput): GmxV2BalancerResult {
   const impact = estimatePreliminaryImpact(input);
   const underweightSide = resolveGmxUnderweightSide(input.pool);
+  const overweightSide = resolveGmxOverweightSide(input.pool);
   const isUnderweightSideOrder = isOrderOnUnderweightSide(input.isLong, underweightSide);
+  const isOverweightSideOrder = isOrderOnOverweightSide(input.isLong, overweightSide);
   const isGmxBalancerQualified =
-    isUnderweightSideOrder && impact.reducesImbalance && impact.priceImpactSubsidiesBps > 0;
+    !input.reduceOnly &&
+    isUnderweightSideOrder &&
+    impact.reducesImbalance &&
+    impact.priceImpactSubsidiesBps > 0;
+  const isGmxDecreaseQualified = isOverweightSideOrder && overweightSide !== "balanced";
   return {
     underweightSide,
+    overweightSide,
     isUnderweightSideOrder,
+    isOverweightSideOrder,
     isGmxBalancerQualified,
+    isGmxDecreaseQualified,
     expectedPriceImpactRebateBps: isGmxBalancerQualified ? impact.priceImpactSubsidiesBps : 0,
     poolUsd: impact.poolUsd,
     longWeight: impact.longWeight,
@@ -147,9 +175,12 @@ export function buildGmxBalancerMetrics(
   const binding = env ? resolveArbMainnetEnvBinding(env) : null;
   return {
     isGmxBalancerQualified: snap?.isGmxBalancerQualified ?? null,
+    isGmxDecreaseQualified: snap?.isGmxDecreaseQualified ?? null,
     expectedPriceImpactRebateBps: snap?.expectedPriceImpactRebateBps ?? null,
     underweightSide: snap?.underweightSide ?? null,
+    overweightSide: snap?.overweightSide ?? null,
     isUnderweightSideOrder: snap?.isUnderweightSideOrder ?? null,
+    isOverweightSideOrder: snap?.isOverweightSideOrder ?? null,
     gmxUserAddress: binding?.userAddress ?? gmSnap?.userAddress ?? null,
     gmxReadOnlyMode: binding?.readOnlyMode ?? null,
     gmxGmBalanceGm: gmSnap?.gmBalance ?? null,

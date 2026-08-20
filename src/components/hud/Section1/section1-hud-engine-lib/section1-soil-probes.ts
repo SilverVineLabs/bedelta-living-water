@@ -23,7 +23,7 @@ export function runMevSoilProbe(): SoilResistanceLogEntry {
   };
 }
 
-/** Chaos engineering probe — simulates 500ms RPC delay then fail-closed soil trip. */
+/** Chaos engineering probe — simulates elevated RPC latency then fail-closed soil trip. */
 export function runChaosRpcDelayProbe(): {
   soilLog: SoilResistanceLogEntry;
   terminalLine: string;

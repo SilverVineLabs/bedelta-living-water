@@ -154,3 +154,11 @@ export function evaluateEscalationLadder(
     reasons,
   };
 }
+
+/** RED unwind or severe soil trip → worker must dispatch `executeFlashUnwindPlan()`. */
+export function shouldDispatchFlashUnwind(
+  ladder: Pick<EscalationLadderResult, "state" | "leverage">,
+  soilTripped = false,
+): boolean {
+  return soilTripped || ladder.state === "RED" || ladder.leverage.unwindRequired;
+}

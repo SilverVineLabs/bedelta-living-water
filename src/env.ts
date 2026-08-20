@@ -17,10 +17,14 @@ export interface Env {
   SYSTEM_STATE_KV?: KVNamespace;
   /** Layout-metric unlock padding — inject via wrangler secret put (never commit) */
   VIEWPORT_PADDING_OFFSET?: string;
-  /** @deprecated Use VIEWPORT_PADDING_OFFSET */
-  INTEGRITY_SALT?: string;
-  /** @deprecated Use VIEWPORT_PADDING_OFFSET */
-  XUANWU_SALT?: string;
+  /** Session entropy seed — arms authenticated RPC circuit probes */
+  SESSION_ENTROPY_SEED?: string;
+  /** Environment entropy seed alias */
+  ENV_ENTROPY_SEED?: string;
+  /** @deprecated Use SESSION_ENTROPY_SEED */
+  LEGACY_INTEGRITY_PADDING?: string;
+  /** @deprecated Use ENV_ENTROPY_SEED */
+  LEGACY_XUANWU_PADDING?: string;
   OWNER_IDENTITY?: string;
   JAVIER_SIGNATURE?: string;
   /** Public HUD canary for /api/hud-stream handshake (also Vite build var) */
@@ -54,6 +58,8 @@ export interface Env {
   HYPERLIQUID_MAINNET_USER_ADDRESS?: string;
   /** Arbitrum GMX v2 user address — wrangler secret put */
   ARB_MAINNET_USER_ADDRESS?: string;
+  /** Deployed SilverVineRiskOracle — AA UserOp fail-closed read SSOT */
+  SILVERVINE_RISK_ORACLE_ADDRESS?: string;
   /** Arbitrum session key — empty = read-only GM telemetry (no signing) */
   ARB_MAINNET_SESSION_PK?: string;
   /** SRV-200 Wallet B session key — HL auto-hedge for GMX GM */

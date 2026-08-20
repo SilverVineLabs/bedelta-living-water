@@ -11,6 +11,10 @@ import {
   formatHlSize,
 } from "../../adapters/hl/execution-wire";
 import type { HlOrderWire } from "../../adapters/hl/execution-types";
+import {
+  shouldDispatchFlashUnwind,
+  type EscalationLadderResult,
+} from "./escalation-ladder";
 
 /** Hard latency budget for panic broadcast (ms). */
 export const FLASH_UNWIND_BUDGET_MS = 1_000 as const;
@@ -167,4 +171,22 @@ export async function executeFlashUnwindPlan(
     plan,
     errors,
   };
+}
+
+export interface EscalationFlashUnwindInput {
+  ladder: EscalationLadderResult;
+  soilTripped?: boolean;
+  plan: FlashUnwindPlan;
+  broadcast: (action: Record<string, unknown>) => Promise<void>;
+  options?: { budgetMs?: number; now?: () => number };
+}
+
+/** Worker orchestrator — RED / unwindRequired / severe soil → executeFlashUnwindPlan. */
+export async function dispatchEscalationFlashUnwind(
+  input: EscalationFlashUnwindInput,
+): Promise<FlashUnwindTimingResult | null> {
+  if (!shouldDispatchFlashUnwind(input.ladder, input.soilTripped === true)) {
+    return null;
+  }
+  return executeFlashUnwindPlan(input.plan, input.broadcast, input.options);
 }

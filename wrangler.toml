@@ -1,64 +1,22 @@
-# wrangler.toml — Sole SSOT for Worker `bedelta-living-water`
-# Custom domain: bedeltawater.slivervine.xyz
-# Local secrets SSOT: .env.production (gitignored) + `wrangler secret put`
-# Deprecated: wrangler.jsonc (removed to eliminate dual-config deadlock)
-#
-# KV ISOLATION (single namespace ID, strict key-prefix tenancy)
-# All four bindings below share one Cloudflare KV namespace ID in production.
-# Logical isolation is enforced in application code via mandatory key prefixes —
-# never rely on separate namespace IDs for tenancy at current scale.
-#   exec:*  — EXECUTION_LOGS_KV: grant audit logs, mainnet monitor snapshots
-#             (e.g. exec:log_latest, exec:history_7d; legacy unprefixed keys retiring)
-#   state:* — SYSTEM_STATE_KV: SystemState SSOT, intent ledger, R20 hardlock flags
-#             (e.g. state:system:state via KV_KEYS.SYSTEM_STATE)
-#   sys:*   — BEDELTA_WATER_KV / SLIVERVINE_KV: heartbeat, demo snapshot, matrix,
-#             market telemetry, rolling risk logs (e.g. sys:heartbeat, sys:matrix:latest)
-# Cross-prefix writes are forbidden; kv-lib/keys.ts is the SSOT for key constants.
+# SSOT — bedelta-living-water → bedeltawater.slivervine.xyz
+# Secrets: wrangler secret put · local: .env.production (gitignored)
 
-name = "bedeltalivingwater"
-main = "src/index.ts"
-compatibility_date = "2026-07-26"
-workers_dev = false
-
-[[kv_namespaces]]
-binding = "BEDELTA_WATER_KV"
-id = "60db4bcba35248dba594ef109e4065b1"
-remote = true
-
-[[kv_namespaces]]
-binding = "SLIVERVINE_KV"
-id = "60db4bcba35248dba594ef109e4065b1"
-remote = true
-
-[[kv_namespaces]]
-binding = "SYSTEM_STATE_KV"
-id = "60db4bcba35248dba594ef109e4065b1"
-remote = true
-
-[[kv_namespaces]]
-binding = "EXECUTION_LOGS_KV"
-id = "60db4bcba35248dba594ef109e4065b1"
-preview_id = "60db4bcba35248dba594ef109e4065b1"
-remote = true
-
-[vars]
-ENVIRONMENT = "production"
-NEXT_PUBLIC_HUD_CANARY = "bedelta-stealth"
-
-[assets]
-directory = "./dist"
-binding = "ASSETS"
-run_worker_first = [ "/api/*", "/logs" ]
-not_found_handling = "single-page-application"
-
-[[routes]]
-pattern = "bedeltawater.slivervine.xyz"
-custom_domain = true
-
-# Every 5 minutes — GMX ETH delta vs HL short hedge cron
-[triggers]
-crons = [ "*/5 * * * *" ]
+name = "bedelta-living-water"
+main = "src/worker-entry.ts"
+compatibility_date = "2025-08-01"
+compatibility_flags = ["nodejs_compat"]
 
 [observability]
 enabled = true
-head_sampling_rate = 1
+
+[assets]
+directory = "dist"
+not_found_handling = "single-page-application"
+binding = "ASSETS"
+
+[[routes]]
+pattern = "bedeltawater.slivervine.xyz/*"
+zone_name = "slivervine.xyz"
+
+[triggers]
+crons = ["0 * * * *", "*/5 * * * *"]

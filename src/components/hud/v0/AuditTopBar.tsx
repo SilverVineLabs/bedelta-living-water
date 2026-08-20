@@ -4,6 +4,7 @@ import { BRAND_LIVING_WATER_TITLE } from "../../../config/constants";
 import { SILVERVINE_PROTOCOL_SHIELD_URL } from "../grant-ui-ssot";
 import { FailClosedHeroBadge } from "./FailClosedHeroBadge";
 import { GmxCitadelBadgePopover } from "./GmxCitadelBadgePopover";
+import { ZeroDevAaSecuredBadge } from "./ZeroDevAaSecuredBadge";
 import type { FullGrantAuditVenueView } from "./grant-audit-view-types";
 
 export interface AuditTopBarProps {
@@ -72,6 +73,7 @@ export function AuditTopBar({ view }: AuditTopBarProps): ReactNode {
           data-testid="grant-audit-hero-status-bar"
         >
           <GmxCitadelBadgePopover />
+          <ZeroDevAaSecuredBadge secured={view.aaGatewaySecured} label={view.aaGatewayLabel} />
           <FailClosedHeroBadge maxDrawdownPct={view.maxDrawdownPct} />
           <span
             className="inline-flex items-center rounded-md border border-emerald-400/55 bg-emerald-950/35 px-3 py-1.5 font-mono text-[10px] font-semibold text-emerald-300 shadow-[0_0_16px_rgba(52,211,153,0.35)]"

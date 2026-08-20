@@ -2,6 +2,7 @@
 import type { ArbitrumCitadelRiskMetrics } from "../../routes/grant-audit-lib/grant-audit-citadel-metrics";
 import type { HlTelemetryMetrics } from "../../routes/grant-audit-lib/grant-audit.types";
 import type { SepoliaDualLegProof } from "../../routes/grant-audit-lib/sepolia-dual-leg-proof.types";
+import type { ZeroDevAaGatewayBadgeStatus } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gate";
 import type { SequencerHealthMetrics } from "../../services/risk/sequencer-guard";
 import { buildGrantAuditClientFallbackPayload } from "./grant-audit-client-fallback";
 
@@ -11,6 +12,7 @@ export type GrantAuditClientPayload = {
   sequencerHealth?: SequencerHealthMetrics | null;
   l1GasSurcharge?: ArbitrumCitadelRiskMetrics["l1GasSurcharge"];
   sepoliaDualLegProof?: SepoliaDualLegProof | null;
+  zeroDevAaGateway?: ZeroDevAaGatewayBadgeStatus;
   success?: boolean;
   error?: string;
 };

@@ -1,5 +1,6 @@
 /** GMX Wallet B ETH delta → Wallet A Hyperliquid ETH perp short (0-Δ cross-wallet). */
-import { Wallet } from "ethers";
+import type { Hex } from "viem";
+import { createViemEip712Signer } from "../adapters/hl/viem-eip712-signer";
 import { HL_EXCHANGE_URL, HL_INFO_URL } from "../config/constants";
 import { executeHlSessionKeyOrder } from "../adapters/hl/session-key-executor";
 import { formatHlPerpPrice } from "../adapters/hl/execution-wire";
@@ -70,12 +71,16 @@ export async function runGmxCrossWalletEthHedge(input: {
   walletB?: string;
   dryRun?: boolean;
   fetchFn?: typeof fetch;
+  /** When true, reduce HL short to match GMX ETH delta (over-hedge unwind). */
+  unwind?: boolean;
 }): Promise<GmxCrossWalletHedgeResult> {
   const walletA = (input.walletA ?? HL_WALLET_A_DEFAULT).trim();
   const walletB = (input.walletB ?? GMX_WALLET_B_DEFAULT).trim();
   const delta = await fetchGmxEthDeltaForWallet(walletB, { fetchFn: input.fetchFn });
   const existingShort = await fetchWalletAEthShortSize(walletA, input.fetchFn);
-  const orderEthSize = Math.max(0, delta.ethDeltaSize - existingShort);
+  const uncovered = delta.ethDeltaSize - existingShort;
+  const orderEthSize = input.unwind ? Math.max(0, -uncovered) : Math.max(0, uncovered);
+  const reduceOnly = input.unwind === true;
 
   if (orderEthSize <= 0) {
     return {
@@ -85,7 +90,7 @@ export async function runGmxCrossWalletEthHedge(input: {
       ethDeltaUsd: delta.ethDeltaUsd,
       orderEthSize: 0,
       orderUsd: 0,
-      reason: "ETH_HEDGE_ALREADY_COVERED",
+      reason: reduceOnly ? "ETH_UNWIND_NOT_OVERHEDGED" : "ETH_HEDGE_ALREADY_COVERED",
       delta,
     };
   }
@@ -93,7 +98,8 @@ export async function runGmxCrossWalletEthHedge(input: {
   await refreshSoilArbitrumProbesWithFallback();
   const live = input.dryRun !== true;
   const ethMarkUsd = await fetchHlEthMarkUsdStrict(input.fetchFn);
-  const shortLimitPx = formatHlPerpPrice(ethMarkUsd * 0.99, HL_ETH_SZ_DECIMALS);
+  const slipPx = reduceOnly ? ethMarkUsd * 1.01 : ethMarkUsd * 0.99;
+  const shortLimitPx = formatHlPerpPrice(slipPx, HL_ETH_SZ_DECIMALS);
   const orderUsd = orderEthSize * shortLimitPx;
   if (!(orderUsd > 0)) {
     return {
@@ -107,23 +113,29 @@ export async function runGmxCrossWalletEthHedge(input: {
       delta,
     };
   }
-  const wallet = new Wallet(input.sessionPk);
-  const leg: IntentLeg = { venue: "HL", side: "SHORT", sizeUsd: orderUsd, symbol: "ETH" };
+  const signer = createViemEip712Signer(input.sessionPk as Hex);
+  const leg: IntentLeg = {
+    venue: "HL",
+    side: reduceOnly ? "LONG" : "SHORT",
+    sizeUsd: orderUsd,
+    symbol: "ETH",
+  };
   const riskBalanceUsd = Math.max(orderUsd / 0.01, delta.gmLiquidityUsd, 10_000);
 
   const result = await executeHlSessionKeyOrder(leg, {
-    signer: wallet,
+    signer,
     dryRun: !live,
     isTestnet: false,
     exchangeUrl: HL_EXCHANGE_URL,
     marketIoc: true,
     limitPx: shortLimitPx,
     szDecimals: HL_ETH_SZ_DECIMALS,
+    reduceOnly,
     resolveAssetIndex: () => HL_ETH_PERP_ASSET_INDEX,
     fetchFn: input.fetchFn,
     sessionKey: sanitizeSessionKeyForMasterWalletTrading(
       {
-        agentAddress: wallet.address,
+        agentAddress: signer.address,
         expiresAt: Date.now() + 7 * 24 * 3600 * 1000,
         masterWalletAddress: walletA,
       },
@@ -162,3 +174,12 @@ export async function runGmxCrossWalletEthHedge(input: {
 
 /** Cron / worker alias — cross-wallet GMX→HL ETH hedge execution. */
 export const executeGmxCrossWalletHedge = runGmxCrossWalletEthHedge;
+
+/** Over-hedge unwind — reduce-only HL buy-to-cover to restore 0-Δ. */
+export function runGmxCrossWalletEthUnwind(
+  input: Omit<Parameters<typeof runGmxCrossWalletEthHedge>[0], "unwind">,
+): Promise<GmxCrossWalletHedgeResult> {
+  return runGmxCrossWalletEthHedge({ ...input, unwind: true });
+}
+
+export const executeGmxCrossWalletUnwind = runGmxCrossWalletEthUnwind;

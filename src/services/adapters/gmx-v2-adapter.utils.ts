@@ -71,16 +71,6 @@ export function deriveGmxMidPriceUsd(
   return longUsd / longTokens;
 }
 
-export function hourlyFundingRate(market: GmxMarketInfo): number {
-  const perSecond = parseFloat(market.fundingFactorPerSecond ?? "0");
-  return Number.isFinite(perSecond) ? perSecond * 3600 : 0;
-}
-
-export function hourlyBorrowRate(market: GmxMarketInfo): number {
-  const perSecond = parseFloat(market.borrowingFactorPerSecondForLongs ?? "0");
-  return Number.isFinite(perSecond) ? perSecond * 3600 : 0;
-}
-
 export async function fetchGmxLiveContext(opts: GmxV2AdapterOptions): Promise<GmxV2LiveContext> {
   const [markets, rpc] = await Promise.all([fetchMarketsInfo(opts), fetchGmxRpcProbe(opts)]);
   const degradationReasons = [...rpc.reasons];

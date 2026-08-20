@@ -20,6 +20,7 @@ import type { GrantAuditPayload } from "./grant-audit.types";
 import { buildGrantAuditSwrFallbackPayload } from "./grant-audit-swr-fallback";
 import { attachSepoliaDualLegProof } from "./grant-audit-v0-telemetry-fallback";
 import { extractTxHashes, proveZeroDelta } from "./grant-audit-zero-delta";
+import { buildZeroDevAaGatewayStatus } from "./grant-audit-zerodev-aa";
 
 /** Build Zero-Trust grant audit JSON from EXECUTION_LOGS_KV. */
 export async function buildGrantAuditPayload(
@@ -35,7 +36,7 @@ export async function buildGrantAuditPayload(
 
     if (!kv) {
       void ensureGrantAuditGuardsFresh(grantEnv, nowMs).catch(() => {});
-      return buildGrantAuditSwrFallbackPayload(request, "EXECUTION_LOGS_KV binding missing");
+      return buildGrantAuditSwrFallbackPayload(request, "EXECUTION_LOGS_KV binding missing", env);
     }
 
     try {
@@ -51,7 +52,7 @@ export async function buildGrantAuditPayload(
       hlTelemetry = buildGrantAuditHlTelemetry();
     } catch (error) {
       const message = error instanceof Error ? error.message : "Citadel metrics build failed";
-      return buildGrantAuditSwrFallbackPayload(request, message);
+      return buildGrantAuditSwrFallbackPayload(request, message, env);
     }
 
     let latest: unknown;
@@ -63,7 +64,7 @@ export async function buildGrantAuditPayload(
       ]);
     } catch (error) {
       const message = error instanceof Error ? error.message : "EXECUTION_LOGS_KV read failed";
-      return buildGrantAuditSwrFallbackPayload(request, message);
+      return buildGrantAuditSwrFallbackPayload(request, message, env);
     }
 
     const executionHistory = collectGrantAuditEntries(history, latest);
@@ -80,7 +81,7 @@ export async function buildGrantAuditPayload(
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : "Block proof resolution failed";
-      return buildGrantAuditSwrFallbackPayload(request, message);
+      return buildGrantAuditSwrFallbackPayload(request, message, env);
     }
 
     return attachProvenanceVerifiedTrades(attachSepoliaDualLegProof({
@@ -104,9 +105,10 @@ export async function buildGrantAuditPayload(
       }),
       engineMode,
       fetchedAt,
+      zeroDevAaGateway: buildZeroDevAaGatewayStatus(env),
     }));
   } catch (error) {
     const message = error instanceof Error ? error.message : "Grant audit assembly failed";
-    return buildGrantAuditSwrFallbackPayload(request, message);
+    return buildGrantAuditSwrFallbackPayload(request, message, env);
   }
 }

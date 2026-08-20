@@ -1,6 +1,11 @@
 # SliverVine Protocol — Architecture (v0.8 Multi-Layer Risk Engine)
 
-> Internal code name: **Santenmoku** — Tri-Layer Quantitative Risk Architecture.
+> **Risk engine:** v0.8 Multi-Layer Risk Engine (internal code name: **Santenmoku**) — Tri-Layer Quantitative Risk Architecture.  
+> **Grant-specific SSOT** (KV isolation · MDD scope · test-count history): [`docs/ARCHITECTURE.md`](./ARCHITECTURE.md)  
+> **Grant application SSOT directory:** [`docs/grant/`](./grant/)
+
+**Entity:** SilverVine Labs · **Official Site:** [silvervinelabs.com](https://silvervinelabs.com)  
+**Ecosystem DApp:** [slivervine.xyz](https://slivervine.xyz) · **Live HUD:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 
 Dual-engine topology behind a single Cloudflare Edge Worker. SRP constraint: <200 LOC per file.
 
@@ -18,7 +23,7 @@ Routing policy: venue selected per risk flags; both paths sit behind the same fa
 ## 2. Request / Cron Flow
 
 1. **Ingress** — `src/index.ts` → `worker-routing.ts` / `worker-fetch.ts`; crons (`*/5 * * * *`) → `worker-scheduled.ts`.
-2. **Pre-execution gate** — `sequencer-guard.ts` (Chainlink uptime, 600s grace) → `arbitrum-gas-guard.ts` (oracle lag <30s (30,000ms) vs L2 headers) → `checkSoilResistance()` (depth, cross-spread, slippage fuse).
+2. **Pre-execution gate** — `sequencer-guard.ts` (Chainlink uptime, 600s grace) → `arbitrum-gas-guard.ts` (oracle lag <30s / 30,000ms vs L2 headers) → `checkSoilResistance()` (depth, cross-spread, slippage fuse).
 3. **Routing** — `gmx-v2-balancer.ts` qualifies underweight side (`isGmxBalancerQualified`); qualified flow builds unsigned payloads via `gmx-v2-order-payload.ts` with `uiFeeReceiver` + `referralCode` injection.
 4. **Hedge leg** — `hl-auto-hedge.ts` / `gmx-cross-wallet-hedge.ts` execute session-key orders; cron drift gate = $10 (`scheduled-gmx-hedge.ts`).
 5. **State** — `SystemState` SSOT, unidirectional updates; 2PC intent ledger persisted to KV (`core/intent-persistence`).
@@ -40,7 +45,7 @@ Every unsigned GMX v2 increase/decrease/deposit payload injects `uiFeeReceiver` 
 
 ## 5. Public Audit Surface
 
-`GET /api/grant-audit` — aggregated guard states, TVL, `provenanceVerified` live-trade artifact, `sepoliaDualLegProof`. No signing material, calldata templates, or proprietary encode paths in JSON responses.
+`GET /api/grant-audit` on [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) — aggregated guard states, TVL, `provenanceVerified` live-trade artifact, `sepoliaDualLegProof`. No signing material, calldata templates, or proprietary encode paths in JSON responses.
 
 ---
 
@@ -48,6 +53,7 @@ Every unsigned GMX v2 increase/decrease/deposit payload injects `uiFeeReceiver` 
 
 | Document | Purpose |
 |----------|---------|
-| [GRANT_PROPOSAL.md](./GRANT_PROPOSAL.md) | Full scope & strategic roadmap |
-| [grant/SUBMISSION.md](./grant/SUBMISSION.md) | Grant submission pack |
+| [**docs/grant/**](./grant/) | **Primary SSOT** — GMX Builders & Arbitrum DAO grant applications |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | KV key-prefix isolation · MDD guard scope · regression bar history |
+| [GRANT_PROPOSAL.md](./GRANT_PROPOSAL.md) | M1–M3 scope · done / NOT-done criteria |
 | [../DOCKER_README.md](../DOCKER_README.md) | B2B sidecar install |

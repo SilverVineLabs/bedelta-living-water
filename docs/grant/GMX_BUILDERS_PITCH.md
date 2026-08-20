@@ -4,7 +4,8 @@
 **Entity:** SilverVine Labs · **Contact:** grants@silvervinelabs.com  
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal  
 **Repository:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)  
-**Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
+**Ecosystem DApp:** [slivervine.xyz](https://slivervine.xyz)  
+**Live HUD:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
 **Grant Audit API:** `curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel`
 
 **GMX Builders Program channel:** [t.me/GMXPartners](https://t.me/GMXPartners)
@@ -27,7 +28,7 @@ HUD and API telemetry use **Provenance Verified** or **Estimated Yield** badges 
 | **Two-Tier RPC Radar** | Tier 1: multi-provider RPC/WS failover · Tier 2: `SEQUENCER_OUTAGE_CONFIRMED` when all heads stale >5s · trips `checkSoilResistance()` | `rpc-radar.ts` |
 | **Arbiscan Sepolia On-Chain Proof** | Dual-leg Sepolia validation artifact · `sepoliaTxHash` + Arbiscan URL in `GET /api/grant-audit` · bundled Worker-safe JSON | `sepolia-dual-leg-proof.types.ts` |
 | **Telemetry HUD** | Live Grant Audit dashboard · Citadel metrics JSON · sidecar health relay | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` |
-| **Dynamic Slippage & Execution Conservation** | Pre-trade soil fuse · adaptive slippage envelopes · 500ms decision SLO · fail-closed when latency or depth trips | `checkSoilResistance()` · `arbitrum-gas-guard.ts` |
+| **Dynamic Slippage & Execution Conservation** | Pre-trade soil fuse · adaptive slippage envelopes · dynamic decision SLO (machine-readable via `/api/grant-audit`) · fail-closed when latency or depth trips | `checkSoilResistance()` · `arbitrum-gas-guard.ts` |
 
 ---
 
@@ -55,13 +56,13 @@ SliverVine operates **Arbitrum Citadel** (primary GMX v2 path) and **Hyperliquid
 
 | Layer | Module | Behavior |
 |-------|--------|----------|
-| Chainlink Sequencer | `sequencer-guard.ts` | 600s grace · fail-closed |
+| Chainlink Sequencer | `sequencer-guard.ts` | Dynamic grace window · fail-closed |
 | Statuspage Sentinel | `arbitrum-status-sentinel.ts` | `SEQUENCER_ANOMALY_DETECTED` |
 | **Two-Tier RPC Radar** | `rpc-radar.ts` | Tier 1 failover · Tier 2 `SEQUENCER_OUTAGE_CONFIRMED` |
 | Soil Resistance | `checkSoilResistance()` | Dynamic slippage · depth · cross-spread fuse |
 | Escalation Ladder | `escalation-ladder.ts` | Pre-emptive de-lever · RED → `panic:flash` |
 
-Badge: `[ ⚡ 500ms DECISION DEADLINE SLO : FAIL-CLOSED ARMED ]` · Dynamic Max SL = `Balance × 1% + $100`.
+Badge: `[ ⚡ DECISION DEADLINE SLO : FAIL-CLOSED ARMED ]` · Dynamic Max SL = `Balance × 1% + $100` · live thresholds via `GET /api/grant-audit`.
 
 ---
 
@@ -79,7 +80,7 @@ Router qualifies flow only when rebalance **reduces GM pool skew** and passes so
 | Underweight flow | Qualified rebalance volume attribution |
 | Referral | Optional `referralCode` (bytes32) |
 
-**M1 (Mainnet Pre-Execution Gateway & Live Telemetry — $10k):** **Complete & Live.** Off-chain Citadel Edge Gateway, Arbitrum One + Sepolia dual-leg provenance, Live HUD, machine-readable +5 bps `uiFeeReceiver` routing, `/api/grant-audit` certificate endpoint, 117 test files / 630 Vitest PASS.
+**M1 (Mainnet Pre-Execution Gateway & Live Telemetry — $10k):** **Complete & Live.** Off-chain Citadel Edge Gateway, Arbitrum One + Sepolia dual-leg provenance, Live HUD, machine-readable +5 bps `uiFeeReceiver` routing, `/api/grant-audit` certificate endpoint, 128 Test Files | 677 Vitest PASS (100% Clean).
 
 **M2 (Institutional Gateway & CCXT Adapter — $10k):** CCXT-compatible asynchronous order-key state machine, Docker Sidecar (`:8080`) execution daemon, multi-market rebalance router, automated on-chain `claimUiFees` integration.
 
@@ -102,7 +103,7 @@ curl -s "https://bedeltawater.slivervine.xyz/api/telemetry/health" | jq .success
 | Citadel JSON | `GET /api/grant-audit` |
 | Sidecar health | `GET /localhost:8787/health` (see DOCKER_README) |
 
-**Regression bar:** 117 test files · 630 Vitest PASS · production build clean.
+**Regression bar:** 128 Test Files | 677 Vitest PASS (100% Clean) · 60/60 Foundry Tests Passed | 327,675 Fuzzing Executions · p50 ~106 μs (pure risk math mean: 0.0002 ms / 200 ns) · 158.99 KiB gzip · verifyAndConsume: 25,853 min / 28,043 median gas · production build clean.
 
 ---
 

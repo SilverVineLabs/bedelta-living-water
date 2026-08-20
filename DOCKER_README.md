@@ -3,7 +3,7 @@
 > B2B zero-GC relay for Grant evaluators · polls live Citadel telemetry · exposes local `/health` + fail-closed `/v1/intent`.
 
 **Entity:** SilverVine Labs · **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) · **Upstream:** `https://bedeltawater.slivervine.xyz/api/telemetry/health`  
-**Regression bar:** 117 test files · 630 Vitest PASS · `tsc --noEmit` CLEAN
+**Regression bar:** 686 Vitest tests pass clean (126 test files, grant-ui-ssot) · `tsc --noEmit` CLEAN
 
 ---
 
@@ -179,7 +179,7 @@ Institutional funds route alpha through `silvervine-proxy` at `localhost:8080` �
 | `docker/Dockerfile.sidecar`                        | Production image                          |
 | `docker/sidecar-daemon.mjs`                        | Edge-safe daemon (no TS runtime)          |
 | [README.md](./README.md)                           | Grant audit HUD · live `/api/grant-audit` |
-| [docs/GRANT_PROPOSAL.md](./docs/GRANT_PROPOSAL.md) | Full Citadel scope                        |
+| [docs/grant/GRANT_PROPOSAL.md](./docs/grant/GRANT_PROPOSAL.md) | Full Citadel scope                        |
 
 
 ---

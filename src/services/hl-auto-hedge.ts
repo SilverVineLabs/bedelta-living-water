@@ -1,5 +1,6 @@
 /** Automated HL Session Key short hedge — GMX GM 0-Δ lock via Wallet A margin. */
-import { Wallet } from "ethers";
+import type { Hex } from "viem";
+import { createViemEip712Signer } from "../adapters/hl/viem-eip712-signer";
 import { HL_EXCHANGE_URL } from "../config/constants";
 import type { Env } from "../env";
 import { executeHlSessionKeyOrder } from "../adapters/hl/session-key-executor";
@@ -138,11 +139,11 @@ export async function runHlAutoHedgeForGmxGm(
   }
 
   const live = env.IS_MAINNET === "true" && opts.dryRun !== true;
-  const wallet = new Wallet(sessionPk);
+  const signer = createViemEip712Signer(sessionPk as Hex);
   const leg: IntentLeg = { venue: "HL", side: "SHORT", sizeUsd, symbol };
   const riskBalanceUsd = resolveHedgeRiskBalanceUsd(gmUsd, marginUsd, sizeUsd);
   const result = await executeHlSessionKeyOrder(leg, {
-    signer: wallet,
+    signer,
     dryRun: !live,
     isTestnet: false,
     exchangeUrl: HL_EXCHANGE_URL,
@@ -153,7 +154,7 @@ export async function runHlAutoHedgeForGmxGm(
     fetchFn: opts.fetchFn,
     sessionKey: sanitizeSessionKeyForMasterWalletTrading(
       {
-        agentAddress: wallet.address,
+        agentAddress: signer.address,
         expiresAt: Date.now() + 7 * 24 * 3600 * 1000,
         masterWalletAddress: userAddress,
       },

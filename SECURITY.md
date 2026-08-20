@@ -57,4 +57,4 @@ SliverVine Citadel is designed **fail-closed** — ambiguous or unsafe states ha
 | Document | Purpose |
 |----------|---------|
 | [docs/grant/ARCHITECTURE.md](./docs/grant/ARCHITECTURE.md) | Topology · KV isolation · regression bar |
-| [docs/GRANT_PROPOSAL.md](./docs/GRANT_PROPOSAL.md) | Scope & roadmap |
+| [docs/grant/GRANT_PROPOSAL.md](./docs/grant/GRANT_PROPOSAL.md) | Scope & roadmap |
