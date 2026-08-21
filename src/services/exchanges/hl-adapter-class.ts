@@ -221,10 +221,6 @@ export class HyperliquidAdapter implements ExchangeAdapter {
     const price = input.limitPrice ?? 0;
     const symbol = input.symbol.toUpperCase();
 
-    console.log(
-      `[ORDER] ${input.side} ${symbol} sizeUsd=${size} limit=${price}`,
-    );
-
     return {
       exchangeId: "hyperliquid",
       symbol,

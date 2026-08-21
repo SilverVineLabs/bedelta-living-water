@@ -1,4 +1,4 @@
-/** SilverVineRiskOracle on-chain read + UserOp fail-closed gate (feature-flagged). */
+/** SliverVineRiskOracle on-chain read + UserOp fail-closed gate (feature-flagged). */
 import { createPublicClient, http, type Address } from "viem";
 import { arbitrum, arbitrumNova, arbitrumSepolia } from "viem/chains";
 import { RiskLimitExceeded } from "../risk-control";
@@ -9,7 +9,7 @@ import {
   RISK_ORACLE_FAIL_CLOSED_STATUS_CODE,
   RISK_ORACLE_FAIL_CLOSED_TRIP,
   RISK_ORACLE_LOG_CODES,
-  SILVERVINE_RISK_ORACLE_ABI,
+  SLIVERVINE_RISK_ORACLE_ABI,
   type RiskOracleSnapshot,
 } from "./risk-oracle";
 import {
@@ -35,13 +35,19 @@ function readEnv(env?: Record<string, string>): Record<string, string> {
   return typeof process !== "undefined" ? (process.env as Record<string, string>) : {};
 }
 
-export function resolveSilverVineRiskOracleAddress(
+export function resolveSliverVineRiskOracleAddress(
   env?: Record<string, string>,
 ): Address | undefined {
-  const raw = readEnv(env).SILVERVINE_RISK_ORACLE_ADDRESS?.trim();
+  const e = readEnv(env);
+  const raw =
+    e.SLIVERVINE_RISK_ORACLE_ADDRESS?.trim() ||
+    e.SILVERVINE_RISK_ORACLE_ADDRESS?.trim();
   if (!raw || !/^0x[0-9a-fA-F]{40}$/.test(raw)) return undefined;
   return raw as Address;
 }
+
+/** @deprecated Use resolveSliverVineRiskOracleAddress */
+export const resolveSilverVineRiskOracleAddress = resolveSliverVineRiskOracleAddress;
 
 export function isRiskOracleUserOpBlocked(snapshot: RiskOracleSnapshot): boolean {
   return snapshot.isSystemFlushed || snapshot.statusCode === RISK_ORACLE_FAIL_CLOSED_STATUS_CODE;
@@ -79,7 +85,7 @@ export function assertRiskOracleUserOpGate(snapshot: RiskOracleSnapshot): void {
   });
 }
 
-export async function readSilverVineRiskOracleState(input: {
+export async function readSliverVineRiskOracleState(input: {
   oracleAddress: Address;
   chainId: number;
   rpcUrl?: string;
@@ -94,25 +100,28 @@ export async function readSilverVineRiskOracleState(input: {
   const [isSystemFlushed, statusCode, lastTimestamp] = await Promise.all([
     client.readContract({
       address: input.oracleAddress,
-      abi: SILVERVINE_RISK_ORACLE_ABI,
+      abi: SLIVERVINE_RISK_ORACLE_ABI,
       functionName: "isSystemFlushed",
     }),
     client.readContract({
       address: input.oracleAddress,
-      abi: SILVERVINE_RISK_ORACLE_ABI,
+      abi: SLIVERVINE_RISK_ORACLE_ABI,
       functionName: "statusCode",
     }),
     client.readContract({
       address: input.oracleAddress,
-      abi: SILVERVINE_RISK_ORACLE_ABI,
+      abi: SLIVERVINE_RISK_ORACLE_ABI,
       functionName: "lastTimestamp",
     }),
   ]);
   return { isSystemFlushed, statusCode: Number(statusCode), lastTimestamp };
 }
 
+/** @deprecated Use readSliverVineRiskOracleState */
+export const readSilverVineRiskOracleState = readSliverVineRiskOracleState;
+
 export function shouldEnforceRiskOracleGate(env?: Record<string, string>): boolean {
-  return isZeroDevAAEnabled(env) && Boolean(resolveSilverVineRiskOracleAddress(env));
+  return isZeroDevAAEnabled(env) && Boolean(resolveSliverVineRiskOracleAddress(env));
 }
 
 export async function assertRiskOracleUserOpGateOnChain(input: {
@@ -125,12 +134,12 @@ export async function assertRiskOracleUserOpGateOnChain(input: {
   const env = readEnv(input.env);
   if (!isZeroDevAAEnabled(env)) return null;
 
-  const oracleAddress = input.oracleAddress ?? resolveSilverVineRiskOracleAddress(env);
+  const oracleAddress = input.oracleAddress ?? resolveSliverVineRiskOracleAddress(env);
   if (!oracleAddress) return null;
 
   const snapshot =
     input.snapshot ??
-    (await readSilverVineRiskOracleState({
+    (await readSliverVineRiskOracleState({
       oracleAddress,
       chainId: input.chainId,
       rpcUrl: input.rpcUrl,

@@ -1,0 +1,5 @@
+{
+  "detectors_to_run": "all",
+  "detectors_to_exclude": "low-level-calls,naming-convention",
+  "filter_paths": "lib"
+}

@@ -5,12 +5,14 @@ import {
   type SoilResistanceInput,
   type SoilResistanceResult,
 } from "../services/risk-control";
+import { ARBITRUM_ONE_CHAIN_ID } from "../sdk/constants";
 
 export const CITADEL_SLIPPAGE_EXCEEDED = "CITADEL_SLIPPAGE_EXCEEDED" as const;
+export const DEADMAN_SWITCH_TRIPPED = "DEADMAN_SWITCH_TRIPPED" as const;
 export const AGENT_DEADMAN_SLIPPAGE_BPS = 50 as const;
 export const AGENT_GUARD_DOMAIN_NAME = "SliverVineAgentCitadelGuard" as const;
 export const AGENT_GUARD_DOMAIN_VERSION = "0.1" as const;
-export const AGENT_GUARD_CHAIN_ID = 42161 as const;
+export const AGENT_GUARD_CHAIN_ID = ARBITRUM_ONE_CHAIN_ID;
 export const AGENT_GUARD_VERIFYING_CONTRACT = "0x0000000000000000000000000000000000000000" as const;
 
 export interface AgentIntentMessage {

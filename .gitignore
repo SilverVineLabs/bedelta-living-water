@@ -69,4 +69,8 @@ docs/**
 !docs/audit/negative-proofs-artifact.json
 !docs/audit/chaos-blackswan-metrics.json
 !docs/audit/zerodev-aa-metrics.json
+!src/sdk/README.md
+
+# Rust Wasm build artifacts (commit pkg/soil_core.wasm only)
+src/wasm/target/
 

@@ -1,7 +1,7 @@
 {
-  "name": "bedelta-living-water",
+  "name": "@slivervine/citadel-sdk",
   "version": "1.0.0",
-  "description": "SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway",
+  "description": "SliverVine Protocol — @slivervine/citadel-sdk · GMX v2 / Arbitrum Citadel Pre-Execution Gateway (SilverVine Labs)",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "build:spa": "vite build",
     "build:worker": "pnpm run build:spa && pnpm exec tsc --noEmit && WRANGLER_WRITE_LOGS=false wrangler deploy --dry-run --outdir=dist-worker",
     "bundle:measure": "tsx scripts/measure-worker-bundle.ts",
-    "test": "vitest run --dir . --coverage",
+    "test": "mkdir -p coverage && vitest run --dir . --coverage",
     "grant:hl-testnet": "tsx scripts/verify-hl-testnet.ts",
     "verify:5tx": "tsx scripts/verify-5tx.ts",
     "verify:grant": "tsx scripts/verify-5tx-runner.ts",
@@ -27,6 +27,9 @@
     "hedge:gmx:dry": "tsx scripts/hedge-gmx.ts --dry-run",
     "panic:flash": "tsx scripts/panic-flash-unwind.ts",
     "demo:data": "tsx scripts/generate-demo-data.ts",
+    "demo:e2e": "tsx scripts/grant-e2e-citadel-demo.ts",
+    "demo:pipeline": "tsx scripts/grant-e2e-citadel-demo.ts",
+    "demo:citadel": "tsx scripts/grant-e2e-citadel-demo.ts",
     "typecheck": "tsc --noEmit",
     "test:zerodev": "tsx scripts/zerodev-live-smoke.ts",
     "test:zerodev:sepolia": "tsx scripts/zerodev-testnet-userop.ts",
@@ -39,8 +42,12 @@
     "audit:grant": "tsx scripts/generate-grant-audit-matrix.ts",
     "audit:slither": "bash scripts/run-static-analysis.sh --slither",
     "audit:mythril": "bash scripts/run-static-analysis.sh --mythril",
-    "audit:security": "bash scripts/run-static-analysis.sh --all && pnpm run typecheck && pnpm run test",
-    "test:grant-v09-sim": "vitest run tests/v09/grant-v09-risk.test.ts tests/v09/opsec-boundary.test.ts tests/v09/aa-pipeline-opsec.test.ts"
+    "audit:fast": "tsx scripts/run-security-matrix.ts --tier=fast",
+    "audit:security": "tsx scripts/run-security-matrix.ts --tier=security",
+    "audit:nightly": "tsx scripts/run-security-matrix.ts --tier=nightly",
+    "test:grant-v09-sim": "vitest run tests/v09/grant-v09-risk.test.ts tests/v09/opsec-boundary.test.ts tests/v09/aa-pipeline-opsec.test.ts",
+    "test:wasm-feasibility": "vitest run tests/services/wasm-feasibility-simulation.test.ts tests/services/wasm-feasibility-lib/soil-core-sim.test.ts",
+    "build:wasm": "cargo build --manifest-path src/wasm/Cargo.toml --release --target wasm32-unknown-unknown && mkdir -p pkg && cp src/wasm/target/wasm32-unknown-unknown/release/soil_core.wasm pkg/soil_core.wasm"
   },
   "keywords": [],
   "author": "SilverVine Labs",

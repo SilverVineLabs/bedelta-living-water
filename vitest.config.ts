@@ -18,6 +18,7 @@ const coverage = {
   provider: "v8" as const,
   include: ["src/services/risk-control.ts"],
   exclude: ["**/*.d.ts"],
+  reportsDirectory: "./coverage",
   reporter: ["text", "json-summary"] as const,
   thresholds: {
     lines: 90,

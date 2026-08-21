@@ -4,7 +4,10 @@ import { createHash } from "node:crypto";
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { gmxV2ArbitrumAdapter } from "../src/services/adapters/gmx-v2-adapter";
-import { buildGmxV2UnsignedDepositPayload } from "../src/services/adapters/gmx-v2-order-payload";
+import {
+  buildGmxV2UnsignedDepositPayload,
+  buildGmxV2UnsignedWithdrawPayload,
+} from "../src/services/adapters/gmx-v2-order-payload";
 import {
   buildArbitrumGasGuardMetrics,
   refreshArbitrumGasGuard,
@@ -17,6 +20,7 @@ import {
   isGmxV2ExecutionHelpRequested,
   parseGmxV2ExecutionCli,
   printGmxV2ExecutionHelp,
+  resolveGmxV2ExecutionPath,
   resolveOracleLagAuditorNote,
   validateGmxExecutionGuards,
 } from "./gmx-v2-execution-cli";
@@ -37,6 +41,7 @@ async function main(): Promise<void> {
   const cli = parseGmxV2ExecutionCli(argv);
   const t0 = performance.now();
   const mode = cli.liveRead ? "live-read" : "dry-run";
+  const executionPath = resolveGmxV2ExecutionPath(cli);
 
   await Promise.all([
     refreshSequencerGuard(),
@@ -60,7 +65,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const [depth, rates, health, order] = await Promise.all([
+  const [depth, rates, health, marketCtx] = await Promise.all([
     gmxV2ArbitrumAdapter.getMarketDepth({ symbol: cli.symbol, market: "perp" }),
     gmxV2ArbitrumAdapter.getFundingAndBorrowRates({ symbol: cli.symbol, side: cli.side }),
     gmxV2ArbitrumAdapter.checkHealth?.() ?? Promise.resolve(null),
@@ -68,21 +73,32 @@ async function main(): Promise<void> {
       symbol: cli.symbol,
       side: cli.side,
       sizeUsd: cli.sizeUsd,
+      reduceOnly: executionPath === "decrease",
       clientOrderId: `gmx-test-${Date.now()}`,
       maxSlippageBps: 30,
     }),
   ]);
 
-  const marketToken =
-    typeof order.payload.addresses?.market === "string"
-      ? order.payload.addresses.market
-      : cli.symbol;
-  const deposit = buildGmxV2UnsignedDepositPayload({ marketToken, sizeUsd: cli.sizeUsd });
+  const marketToken = String(marketCtx.payload.addresses?.market ?? cli.symbol);
+  const order = executionPath === "withdraw" ? null : marketCtx;
+  const deposit =
+    executionPath === "increase-deposit"
+      ? buildGmxV2UnsignedDepositPayload({ marketToken, sizeUsd: cli.sizeUsd })
+      : null;
+  const withdraw =
+    executionPath === "withdraw"
+      ? buildGmxV2UnsignedWithdrawPayload({
+          marketToken,
+          sizeUsd: cli.sizeUsd,
+          skipFailClosedGuards: true,
+        })
+      : null;
 
   const metrics = {
     event: "GMX_V2_EXECUTION_METRICS",
     network: "arbitrum-one",
     mode,
+    executionPath,
     input: cli,
     guards: { sequencer: buildSequencerHealthMetrics(), gas: buildArbitrumGasGuardMetrics() },
     gmx: {
@@ -98,24 +114,48 @@ async function main(): Promise<void> {
       },
     },
     payloads: {
-      deposit,
-      order: order.payload,
-      orderMeta: { venue: order.venue, side: order.side, sizeUsd: order.sizeUsd, expiresAtMs: order.expiresAtMs },
-      createOrderParams: {
-        addresses: order.payload.addresses,
-        numbers: order.payload.numbers,
-        orderType: order.payload.orderType,
-        isLong: order.payload.isLong,
-        referralCode: order.payload.referralCode,
-        uiFeeReceiver: order.payload.addresses.uiFeeReceiver,
-      },
+      ...(deposit ? { deposit } : {}),
+      ...(withdraw ? { withdraw } : {}),
+      ...(order
+        ? {
+            order: order.payload,
+            orderMeta: {
+              venue: order.venue,
+              side: order.side,
+              sizeUsd: order.sizeUsd,
+              expiresAtMs: order.expiresAtMs,
+            },
+            createOrderParams: {
+              addresses: order.payload.addresses,
+              numbers: order.payload.numbers,
+              orderType: order.payload.orderType,
+              isLong: order.payload.isLong,
+              referralCode: order.payload.referralCode,
+              uiFeeReceiver: order.payload.addresses.uiFeeReceiver,
+            },
+          }
+        : {}),
+      ...(withdraw
+        ? {
+            createWithdrawalParams: {
+              addresses: withdraw.addresses,
+              numbers: withdraw.numbers,
+              shouldUnwrapNativeToken: withdraw.shouldUnwrapNativeToken,
+              referralCode: withdraw.referralCode,
+            },
+          }
+        : {}),
     },
-    refs: { deposit: guardRef(deposit), order: guardRef(order.payload) },
+    refs: {
+      ...(deposit ? { deposit: guardRef(deposit) } : {}),
+      ...(withdraw ? { withdraw: guardRef(withdraw) } : {}),
+      ...(order ? { order: guardRef(order.payload) } : {}),
+    },
     elapsedMs: Number((performance.now() - t0).toFixed(2)),
     timestamp: new Date().toISOString(),
     liveNote: cli.liveRead
-      ? "Live-read: unsigned payloads exported — no on-chain broadcast"
-      : "Dry-run only — stdout JSON only",
+      ? `Live-read: ${executionPath} unsigned payloads exported — no on-chain broadcast`
+      : `Dry-run only — ${executionPath} stdout JSON only`,
   };
 
   console.log(JSON.stringify(metrics, null, 2));

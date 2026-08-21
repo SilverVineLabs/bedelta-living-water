@@ -37,7 +37,7 @@ SliverVine Citadel is designed **fail-closed** — ambiguous or unsafe states ha
 
 **No custody:** Worker holds no user private keys. Session keys are client-scoped; mainnet secrets live in Cloudflare Secrets Store / `wrangler secret` — never in repo or KV.
 
-**KV tenancy:** Single namespace ID with strict key-prefix isolation (`exec:*`, `state:*`, `sys:*`). See `wrangler.toml` comments and [docs/grant/ARCHITECTURE.md](./docs/grant/ARCHITECTURE.md).
+**KV tenancy:** Single namespace ID with strict key-prefix isolation (`exec:*`, `state:*`, `sys:*`). See `wrangler.toml` comments and [docs/architecture/TECHNICAL_SPECIFICATION.md](./docs/architecture/TECHNICAL_SPECIFICATION.md).
 
 **Public audit surface:** `GET /api/grant-audit` exposes guard states and telemetry — never signing material, calldata templates, or proprietary encode paths.
 
@@ -56,5 +56,6 @@ SliverVine Citadel is designed **fail-closed** — ambiguous or unsafe states ha
 
 | Document | Purpose |
 |----------|---------|
-| [docs/grant/ARCHITECTURE.md](./docs/grant/ARCHITECTURE.md) | Topology · KV isolation · regression bar |
-| [docs/grant/GRANT_PROPOSAL.md](./docs/grant/GRANT_PROPOSAL.md) | Scope & roadmap |
+| [docs/architecture/TECHNICAL_SPECIFICATION.md](./docs/architecture/TECHNICAL_SPECIFICATION.md) | Topology · R01–R20 · KV isolation |
+| [docs/grants/arbitrum/GRANT_PROPOSAL.md](./docs/grants/arbitrum/GRANT_PROPOSAL.md) | Scope & roadmap |
+| [docs/README.md](./docs/README.md) | Audience router |

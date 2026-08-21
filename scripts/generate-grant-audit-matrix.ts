@@ -123,7 +123,7 @@ function cohortMatrixTable(): string {
     ["ZeroDev AA Paymaster Sponsored", "—", "—", "—", "Yes (One/Nova/Sepolia/R-Chain)"],
     ["Agent EIP-712 Intent Shield", "—", "—", "—", "Yes (Deadman Switch)"],
     ["Multi-Chain Failover", "—", "Limited", "—", "Yes (Nova/Sepolia/R-Chain)"],
-    ["Verifiable Test Matrix", "—", "—", "—", "686 Vitest + chaos spec"],
+    ["Verifiable Test Matrix", "—", "—", "—", "135 files / 724 PASS + Chaos"],
     ["Live JSON Telemetry", "—", "—", "—", "/api/grant-audit"],
   ];
   const header = "| Dimension | Carbon | LayerV | T3tris | SilverVine |";
@@ -161,13 +161,13 @@ function buildMarkdown(at: Date, probes: ProbeRow[], live: boolean): string {
 
 SliverVine Protocol (BeDelta-Living-Water) is a pre-execution risk gateway for GMX v2 GM Pools on Arbitrum One. Fail-closed by construction: oracle lag > 30s, sequencer grace breach, and soil resistance trips block payload generation before router dispatch. Live telemetry: GET /api/grant-audit.
 
-## 3-Pillars Modular Architecture
+## 3-Pillars Modular Architecture — Unified Institutional Pre-Execution Pipeline
 
 | Pillar | Module | Scope |
 | --- | --- | --- |
-| **Pillar 1 — Core Citadel** | zerodev-aa-gate, risk-control | Soil resistance, gas soft-limit, sequencer/oracle guards |
-| **Pillar 2 — Robinhood Yield** | r-chain-yield-stub | RWA/Idle yield router stub (chain 46630) |
-| **Pillar 3 — Agent Gate** | agent-citadel-guard | EIP-712 intent shield + Deadman Switch |
+| **Pillar 1 — The Gatehouse (Auth)** | ZeroDev Kernel v3 Scoped Session Keys | Agent permission scopes · credential-drift elimination · AA paymaster bounds |
+| **Pillar 2 — The Firewall (Compliance)** | Robinhood Unidirectional Escort & AML Block | Outbound-only \`46630\`/\`4663\`→\`42161\` · inbound AML blocked · lostUsd≡0 |
+| **Pillar 3 — The Shield (CORE MOAT)** | Sub-ms Wasm Soil Engine & Restored Deadman Switch (\`agent-citadel-guard\`) | \`checkSoilResistance()\` · Wasm &lt;60µs · Deadman 50 bps fail-closed · RPC/sandwich armor |
 
 ## SilverVine vs. Arbitrum Cohort 1 Winners
 

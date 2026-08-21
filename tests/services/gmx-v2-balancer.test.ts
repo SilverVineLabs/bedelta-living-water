@@ -47,6 +47,21 @@ describe("gmx-v2-balancer", () => {
     expect(result.isUnderweightSideOrder).toBe(false);
     expect(result.isGmxBalancerQualified).toBe(false);
     expect(result.expectedPriceImpactRebateBps).toBe(0);
+    expect(result.overweightSide).toBe("long");
+    expect(result.isOverweightSideOrder).toBe(true);
+    expect(result.isGmxDecreaseQualified).toBe(true);
+  });
+
+  it("qualifies reduceOnly decrease on overweight GM leg", () => {
+    const result = evaluateGmxBalancerQualification({
+      orderSizeUsd: 100_000,
+      isLong: true,
+      reduceOnly: true,
+      pool: { longTokenUsd: 6_000_000, shortTokenUsd: 2_000_000 },
+    });
+    expect(result.isGmxBalancerQualified).toBe(false);
+    expect(result.isGmxDecreaseQualified).toBe(true);
+    expect(result.overweightSide).toBe("long");
   });
 
   it("buildGmxBalancerMetrics reads dedicated cache", () => {

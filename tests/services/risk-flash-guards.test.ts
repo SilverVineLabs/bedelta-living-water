@@ -12,9 +12,11 @@ import {
 } from "../../src/services/risk/session-audit";
 import {
   buildFlashUnwindPlan,
+  dispatchEscalationFlashUnwind,
   executeFlashUnwindPlan,
   FLASH_UNWIND_BUDGET_MS,
 } from "../../src/services/risk/flash-unwind";
+import { evaluateEscalationLadder } from "../../src/services/risk/escalation-ladder";
 import { __resetTelegramAlertForTests } from "../../src/services/telemetry/telegram-alert";
 
 afterEach(() => {
@@ -186,5 +188,60 @@ describe("flash-unwind engine", () => {
     expect(timed.elapsedMs).toBeLessThan(FLASH_UNWIND_BUDGET_MS);
     expect(timed.ok).toBe(true);
     expect(timed.budgetMs).toBe(FLASH_UNWIND_BUDGET_MS);
+  });
+
+  it("dispatchEscalationFlashUnwind executes on RED and skips GREEN", async () => {
+    const plan = buildFlashUnwindPlan({
+      openOrders: [],
+      positions: [
+        { market: "perp", asset: 0, szi: -1, midPx: 50, szDecimals: 2 },
+      ],
+    });
+    const broadcast = vi.fn(async () => {});
+    const red = evaluateEscalationLadder({
+      liquidationDistancePct: 20,
+      shortNotionalUsd: 500,
+    });
+    const redTimed = await dispatchEscalationFlashUnwind({
+      ladder: red,
+      plan,
+      broadcast,
+    });
+    expect(red.state).toBe("RED");
+    expect(redTimed?.ok).toBe(true);
+    expect(broadcast).toHaveBeenCalled();
+
+    broadcast.mockClear();
+    const green = evaluateEscalationLadder({
+      liquidationDistancePct: 200,
+      shortNotionalUsd: 100,
+    });
+    const skipped = await dispatchEscalationFlashUnwind({
+      ladder: green,
+      plan,
+      broadcast,
+    });
+    expect(skipped).toBeNull();
+    expect(broadcast).not.toHaveBeenCalled();
+  });
+
+  it("dispatchEscalationFlashUnwind executes on severe soil trip even if GREEN", async () => {
+    const plan = buildFlashUnwindPlan({
+      openOrders: [{ asset: 0, oid: 1 }],
+      positions: [],
+    });
+    const broadcast = vi.fn(async () => {});
+    const green = evaluateEscalationLadder({
+      liquidationDistancePct: 180,
+      shortNotionalUsd: 50,
+    });
+    const timed = await dispatchEscalationFlashUnwind({
+      ladder: green,
+      soilTripped: true,
+      plan,
+      broadcast,
+    });
+    expect(timed?.ok).toBe(true);
+    expect(broadcast).toHaveBeenCalled();
   });
 });

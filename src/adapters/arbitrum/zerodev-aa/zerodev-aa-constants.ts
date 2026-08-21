@@ -1,6 +1,7 @@
 import { entryPoint07Address } from "viem/account-abstraction";
+import { ARBITRUM_ONE_CHAIN_ID } from "../../../sdk/constants";
 
-export const ARBITRUM_ONE_CHAIN_ID = 42161 as const;
+export { ARBITRUM_ONE_CHAIN_ID };
 export const ARBITRUM_NOVA_CHAIN_ID = 42170 as const;
 export const ZERODEV_KERNEL_VERSION = "0.3.1" as const;
 export const ZERODEV_ENTRY_POINT_VERSION = "0.7" as const;

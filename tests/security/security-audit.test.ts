@@ -9,10 +9,17 @@ import {
   readActiveSystemState,
 } from "../../src/core/state";
 
-const SDK_SOURCE = readFileSync(
-  resolve(import.meta.dirname, "../../src/sdk.ts"),
-  "utf8",
-);
+const SDK_SOURCE = [
+  readFileSync(resolve(import.meta.dirname, "../../src/sdk/index.ts"), "utf8"),
+  readFileSync(
+    resolve(import.meta.dirname, "../../src/sdk/legacy-risk.ts"),
+    "utf8",
+  ),
+  readFileSync(
+    resolve(import.meta.dirname, "../../src/sdk/agent-intent.ts"),
+    "utf8",
+  ),
+].join("\n");
 
 const FORBIDDEN_EXPORT_NAME =
   /private[_-]?key|secret[_-]?key|raw[_-]?secret|signing[_-]?key|api[_-]?secret|mnemonic|seed[_-]?phrase|PRIVATE_KEY|SECRET_KEY/i;
@@ -54,8 +61,8 @@ afterEach(() => {
   __setSystemStateForTests(null);
 });
 
-describe("security audit — sdk.ts export surface", () => {
-  it("sdk.ts source re-exports no private keys or raw secrets", () => {
+describe("security audit — @slivervine/citadel-sdk export surface", () => {
+  it("src/sdk source re-exports no private keys or raw secrets", () => {
     expect(SDK_SOURCE).not.toMatch(FORBIDDEN_SOURCE_REEXPORT);
   });
 

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.24;
 
-import {SilverVineRiskOracle} from "./SilverVineRiskOracle.sol";
+import {SliverVineRiskOracle} from "./SliverVineRiskOracle.sol";
 
 /// @title RobinhoodSafetySwitch — ArbOS 61 compliance filter (oracle flush + institutional blacklist)
 contract RobinhoodSafetySwitch {
-    SilverVineRiskOracle public immutable riskOracle;
+    SliverVineRiskOracle public immutable riskOracle;
     mapping(address => bool) public institutionalBlacklist;
 
     bytes32 public constant ERR_SLO_TIMEOUT = keccak256("SLO_TIMEOUT");
@@ -17,7 +17,7 @@ contract RobinhoodSafetySwitch {
 
     constructor(address oracle_, address[] memory blacklisted_) {
         require(oracle_ != address(0), "ORACLE_ZERO");
-        riskOracle = SilverVineRiskOracle(oracle_);
+        riskOracle = SliverVineRiskOracle(oracle_);
         uint256 len = blacklisted_.length;
         for (uint256 i; i < len; ++i) {
             require(blacklisted_[i] != address(0), "BLACKLIST_ZERO");

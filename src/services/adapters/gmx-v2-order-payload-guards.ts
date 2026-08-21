@@ -43,18 +43,14 @@ export function toGmxPrice30(priceUsd: number): string {
 
 export function assertGmxPayloadFailClosed(input: {
   skipFailClosedGuards?: boolean;
+  /** Aligns with HL `skipPreTrade: reduceOnly` — emergency closes skip oracle-lag / impact gates. */
+  reduceOnly?: boolean;
   sizeUsd: number;
   isLong: boolean;
   pool?: GmxV2PoolWeights;
   executionFee: string;
 }): void {
   if (input.skipFailClosedGuards) return;
-  if (isArbitrumGasGuardBlocked()) {
-    throw new HardlockError(
-      getArbitrumGasGuardReason() ?? "ARBITRUM_GAS_GUARD_BLOCKED",
-      { ...riskContext("GMX", "ARBITRUM_GAS_GUARD_BLOCKED"), level: "error", event: "CRI_HARDLOCK" },
-    );
-  }
   let fee = 0n;
   try {
     fee = BigInt(input.executionFee);
@@ -65,6 +61,13 @@ export function assertGmxPayloadFailClosed(input: {
     throw new RiskLimitExceeded(
       `${GMX_PAYLOAD_EXECUTION_FEE_TRIP}:invalid`,
       riskContext("GMX", GMX_PAYLOAD_EXECUTION_FEE_TRIP),
+    );
+  }
+  if (input.reduceOnly) return;
+  if (isArbitrumGasGuardBlocked()) {
+    throw new HardlockError(
+      getArbitrumGasGuardReason() ?? "ARBITRUM_GAS_GUARD_BLOCKED",
+      { ...riskContext("GMX", "ARBITRUM_GAS_GUARD_BLOCKED"), level: "error", event: "CRI_HARDLOCK" },
     );
   }
   if (!input.pool) return;

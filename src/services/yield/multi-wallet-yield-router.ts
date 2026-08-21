@@ -1,4 +1,4 @@
-/** 雙錢包產量路由 — Wallet A (HL) + Wallet B (GMX GM) SSOT。 */
+/** Multi-wallet yield routing - Wallet A (HL) + Wallet B (GMX GM) SSOT. */
 import type { Env } from "../../env";
 import { resolveDualWalletEnv } from "../../env-grant-defaults";
 import { computeEffectiveMaxSlUsd } from "../effective-max-sl";
@@ -69,7 +69,7 @@ export function computeCombinedWalletEquityUsd(
   );
 }
 
-/** 解析 Wallet A (HL 執行) + Wallet B (GMX GM 背書) 綁定與動態 Max SL。 */
+/** Resolve Wallet A (HL execution) + Wallet B (GMX GM endorsement) binding and dynamic Max SL. */
 export function resolveMultiWalletYieldBindings(
   env: MultiWalletYieldEnv,
   telemetry?: DualWalletTelemetrySnapshot | null,
