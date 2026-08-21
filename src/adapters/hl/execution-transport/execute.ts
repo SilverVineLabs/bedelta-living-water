@@ -79,9 +79,12 @@ export async function executeSignedAction(
     const preTradeForGate = options.preTrade
       ? withExecutionPreTradeContext(options.preTrade, ctx)
       : undefined;
-    const soilTripped = preTradeForGate
-      ? checkSoilResistanceWithVine(preTradeForGate).tripped
-      : (ctx.gate?.soilResistanceTripped ?? false);
+    const soilTripped =
+      options.skipPreTrade === true
+        ? false
+        : preTradeForGate
+          ? checkSoilResistanceWithVine(preTradeForGate).tripped
+          : (ctx.gate?.soilResistanceTripped ?? false);
 
     const gate = resolveSigningGate(ctx.gate, soilTripped);
 

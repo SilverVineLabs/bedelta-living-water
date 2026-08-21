@@ -18,6 +18,8 @@ export interface HlSessionKeyExecutorOptions {
   marketIoc?: boolean;
   /** Asset szDecimals for HL tick/lot formatting (default 4 — ETH testnet). */
   szDecimals?: number;
+  /** Smoke bypass: skip Pgate / soil assert on opening orders (SKIP_SOIL_CHECK). */
+  skipPreTrade?: boolean;
 }
 
 export interface HlOrderExecutionResult {
