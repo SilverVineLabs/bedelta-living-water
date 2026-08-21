@@ -3,7 +3,7 @@
 **Entity:** SilverVine Labs · **Protocol:** SliverVine · **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
 **Contact:** `grants@silvervinelabs.com`
 
-> **Baseline (locked):** Vitest `133 files | 716 PASS (100% Clean)` · Security-tier `5/0/0 PASS` (`docs/audit/static-analysis-report.json`; Vitest, Forge, Slither, Aderyn, pnpm-audit) · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.  
+> **Baseline (locked):** Vitest `135 files | 724 PASS (100% Clean)` · Security-tier `5/0/0 PASS` (`docs/audit/static-analysis-report.json`; Vitest, Forge, Slither, Aderyn, pnpm-audit) · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.  
 > Fast-tier scorecard (`docs/audit/security-scorecard.json`) is overwritten by the last `audit:*` run — do not mix tiers.
 
 Open **one folder** for your role. Do not send reviewers the whole tree.

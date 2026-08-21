@@ -3,7 +3,7 @@
 **License:** Apache-2.0 · see [`LICENSE`](./LICENSE) · **Entity:** SilverVine Labs · **Protocol brand:** SliverVine  
 **EIP-712 domain:** `SliverVineCitadel` · **Gate anchor:** `SLIVERVINE_GATE_ADDRESS`
 
-> **Baseline:** Vitest `133 files | 716 PASS (100% Clean)` · Security-tier `5/0/0 PASS` (`docs/audit/static-analysis-report.json`; Vitest, Forge, Slither, Aderyn, pnpm-audit) · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` / `<60µs`.  
+> **Baseline:** Vitest `135 files | 724 PASS (100% Clean)` · Security-tier `5/0/0 PASS` (`docs/audit/static-analysis-report.json`; Vitest, Forge, Slither, Aderyn, pnpm-audit) · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` / `<60µs`.  
 > Fast-tier scorecard (`docs/audit/security-scorecard.json`) is overwritten by the last `audit:fast|security|nightly` run — do not mix tiers.
 
 > **"Behavioral pass does not imply Web3 security."**  
