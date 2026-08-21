@@ -63,6 +63,8 @@ export interface ArbitrumUnsignedHedgeOrderInput {
   uiFeeReceiver?: string;
   /** GMX v2 referral code (bytes32 hex). */
   referralCode?: string;
+  /** Dry-run / Sepolia smoke: bypass oracle-lag CRI_HARDLOCK (also ALLOW_STALE_ORACLE=1). */
+  allowStaleOracle?: boolean;
 }
 
 /**

@@ -32,6 +32,8 @@ export interface GmxV2BuildUnsignedOrderInput extends GmxV2OrderFeeConfig {
   callbackGasLimit?: string;
   receiver?: string;
   skipFailClosedGuards?: boolean;
+  /** Dry-run / Sepolia smoke: bypass oracle-lag CRI_HARDLOCK (also ALLOW_STALE_ORACLE=1). */
+  allowStaleOracle?: boolean;
 }
 
 export interface GmxV2BuildDepositPayloadInput extends GmxV2OrderFeeConfig {
@@ -53,5 +55,7 @@ export interface GmxV2BuildWithdrawPayloadInput extends GmxV2OrderFeeConfig {
   pool?: GmxV2PoolWeights;
   signedImpactBps?: number;
   skipFailClosedGuards?: boolean;
+  /** Dry-run / Sepolia smoke: bypass oracle-lag CRI_HARDLOCK (also ALLOW_STALE_ORACLE=1). */
+  allowStaleOracle?: boolean;
   callbackGasLimit?: string;
 }

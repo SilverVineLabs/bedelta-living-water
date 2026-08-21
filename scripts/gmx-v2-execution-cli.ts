@@ -36,7 +36,9 @@ export function resolveGmxV2ExecutionPath(cli: GmxV2ExecutionCliOpts): GmxV2Exec
 
 export function parseGmxV2ExecutionCli(argv: string[]): GmxV2ExecutionCliOpts {
   const liveRead = argv.includes("--live-read");
-  const allowStaleOracle = argv.includes("--allow-stale-oracle");
+  const envAllow =
+    process.env.ALLOW_STALE_ORACLE === "1" || process.env.ALLOW_STALE_ORACLE === "true";
+  const allowStaleOracle = argv.includes("--allow-stale-oracle") || envAllow;
   const reduceOnly = argv.includes("--reduce-only");
   const withdraw = argv.includes("--withdraw");
   if (reduceOnly && withdraw) {
@@ -73,7 +75,7 @@ export function printGmxV2ExecutionHelp(): void {
       "",
       "Options:",
       "  --live-read            Direct Arbitrum One RPC live read; export payloads to docs/audit/",
-      "  --allow-stale-oracle   Bypass Citadel Oracle Lag deadlock (dry-run payload testing only)",
+      "  --allow-stale-oracle   Bypass Citadel Oracle Lag deadlock (dry-run / Sepolia; also ALLOW_STALE_ORACLE=1)",
       "  --reduce-only          Dry-run MarketDecrease unsigned order payload (position unwind)",
       "  --withdraw             Dry-run GM Pool withdrawal unsigned payload (liquidity un-stake)",
       "  --symbol <SYMBOL>      Market symbol (default: ETH)",

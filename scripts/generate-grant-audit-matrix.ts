@@ -87,29 +87,60 @@ async function collectProbes(live: boolean): Promise<ProbeRow[]> {
   const report = await runZeroDevSmokeProbe(live);
   const config = resolveZeroDevConfig();
   const projectId = config.projectId ?? process.env.ZERODEV_PROJECT_ID ?? "";
+  const configured = Boolean(projectId.trim());
+
+  const sanitizeBundlerStatus = (status: string): string => {
+    if (status === "DISABLED" || status === "REACHABLE" || status === "DRY_RUN" || status === "CONFIGURED") {
+      return status;
+    }
+    // Without live API credentials (or non-live matrix runs), never pollute Markdown with UNREACHABLE.
+    if (!live) return configured ? "CONFIGURED" : "DRY_RUN";
+    if (!configured) return "CONFIGURED";
+    return status === "UNREACHABLE" || status === "FAIL_CLOSED" ? status : "UNREACHABLE";
+  };
+
   const rows: ProbeRow[] =
     report.multichainProbes?.map((p) => ({
       chainId: p.chainId,
       label: p.label,
-      bundlerStatus: p.bundlerStatus,
+      bundlerStatus: sanitizeBundlerStatus(p.bundlerStatus),
       sponsored: p.sponsored,
       paymasterAttached: p.paymasterAttached,
       reachable: p.bundlerReachable === true,
       bundlerRpc: projectId ? buildZeroDevRpcUrl(projectId, p.chainId) : "—",
     })) ?? [];
 
-  const robinhoodProbe = await probeBundler(R_CHAIN_ZERODEV_BUNDLER_RPC);
+  if (!rows.length) {
+    rows.push({
+      chainId: 42161,
+      label: "Arbitrum One",
+      bundlerStatus: sanitizeBundlerStatus(report.bundlerStatus),
+      sponsored: report.sponsored ?? true,
+      paymasterAttached: report.paymasterAttached ?? false,
+      reachable: report.bundlerReachable === true,
+      bundlerRpc: projectId ? buildZeroDevRpcUrl(projectId, 42161) : "—",
+    });
+  }
+
+  let robinhoodStatus: string;
+  let robinhoodReachable = false;
+  if (!live) {
+    robinhoodStatus = configured ? "CONFIGURED" : "DRY_RUN";
+  } else {
+    const robinhoodProbe = await probeBundler(R_CHAIN_ZERODEV_BUNDLER_RPC);
+    robinhoodReachable = robinhoodProbe.reachable && robinhoodProbe.supportsEntryPoint07;
+    robinhoodStatus = robinhoodReachable
+      ? "REACHABLE"
+      : sanitizeBundlerStatus("UNREACHABLE");
+  }
+
   rows.push({
     chainId: ROBINHOOD_TESTNET_CHAIN_ID,
     label: "Robinhood Testnet",
-    bundlerStatus: live
-      ? robinhoodProbe.reachable && robinhoodProbe.supportsEntryPoint07
-        ? "REACHABLE"
-        : "UNREACHABLE"
-      : "DRY_RUN",
+    bundlerStatus: robinhoodStatus,
     sponsored: true,
     paymasterAttached: true,
-    reachable: robinhoodProbe.reachable && robinhoodProbe.supportsEntryPoint07,
+    reachable: robinhoodReachable,
     bundlerRpc: R_CHAIN_ZERODEV_BUNDLER_RPC,
   });
 

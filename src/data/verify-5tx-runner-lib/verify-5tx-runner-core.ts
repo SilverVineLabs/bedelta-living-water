@@ -55,6 +55,11 @@ export interface Verify5TxRunnerOptions {
   abortOnSoilTrip?: boolean;
   /** Probe live testnet L2 during dry-run (default false — offline-safe synthetic soil). */
   forceLiveSoil?: boolean;
+  /**
+   * Testnet smoke bypass: skip live soil probe abort / use synthetic soil when probe trips.
+   * Set via `--skip-soil` or SKIP_SOIL_CHECK=1 / SKIP_SOIL_PROBE_CHECK=1.
+   */
+  skipSoilProbe?: boolean;
 }
 
 function resolveAssetIndexFallback(symbol: string): number {
@@ -115,6 +120,12 @@ export async function runVerify5Tx(
   const notionalUsd = Math.max(opts.notionalUsd ?? VERIFIED_5TX_NOTIONAL_USD, HL_LIVE_MIN_NOTIONAL_USD);
   const abortOnSoilTrip = opts.abortOnSoilTrip ?? true;
   const forceLiveSoil = opts.forceLiveSoil ?? false;
+  const skipSoilProbe =
+    opts.skipSoilProbe === true ||
+    process.env.SKIP_SOIL_PROBE_CHECK === "1" ||
+    process.env.SKIP_SOIL_PROBE_CHECK === "true" ||
+    process.env.SKIP_SOIL_CHECK === "1" ||
+    process.env.SKIP_SOIL_CHECK === "true";
 
   const wallet = new Wallet(privateKey);
   const runTs = Date.now();
@@ -125,7 +136,7 @@ export async function runVerify5Tx(
   const { assetIndex: testnetAssetIndex, szDecimals } = testnetAssetMeta;
 
   let soilAudit: LiveBookSoilAudit | null = null;
-  if (dryRun && !forceLiveSoil) {
+  if (skipSoilProbe || (dryRun && !forceLiveSoil)) {
     soilAudit = syntheticSoilAudit(symbol);
   } else {
     try {
@@ -144,7 +155,7 @@ export async function runVerify5Tx(
     }
 
     if (!soilAudit || soilAudit.tripped) {
-      if (dryRun) {
+      if (dryRun || skipSoilProbe) {
         soilAudit = syntheticSoilAudit(symbol);
       } else if (abortOnSoilTrip) {
         throw new Error(

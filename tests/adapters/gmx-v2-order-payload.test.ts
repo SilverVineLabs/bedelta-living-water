@@ -237,6 +237,15 @@ describe("gmx-v2-order-payload", () => {
         midPriceUsd: 3500,
       }),
     ).toThrow(/ORACLE_LAG|ARBITRUM_GAS_GUARD/);
+    expect(() =>
+      buildGmxV2UnsignedOrderPayload({
+        side: "long",
+        sizeUsd: 100,
+        marketToken: "0x70d95587d40A2caf56bd97485aB3Eec10Bee6336",
+        midPriceUsd: 3500,
+        allowStaleOracle: true,
+      }),
+    ).not.toThrow();
     const emergency = buildGmxV2UnsignedOrderPayload({
       side: "long",
       sizeUsd: 100,

@@ -39,6 +39,9 @@ async function main(): Promise<void> {
   }
 
   const cli = parseGmxV2ExecutionCli(argv);
+  if (cli.allowStaleOracle) {
+    process.env.ALLOW_STALE_ORACLE = "1";
+  }
   const t0 = performance.now();
   const mode = cli.liveRead ? "live-read" : "dry-run";
   const executionPath = resolveGmxV2ExecutionPath(cli);
@@ -76,6 +79,7 @@ async function main(): Promise<void> {
       reduceOnly: executionPath === "decrease",
       clientOrderId: `gmx-test-${Date.now()}`,
       maxSlippageBps: 30,
+      allowStaleOracle: cli.allowStaleOracle,
     }),
   ]);
 
@@ -91,6 +95,7 @@ async function main(): Promise<void> {
           marketToken,
           sizeUsd: cli.sizeUsd,
           skipFailClosedGuards: true,
+          allowStaleOracle: cli.allowStaleOracle,
         })
       : null;
 

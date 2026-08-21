@@ -139,6 +139,17 @@ describe("gmx-v2-execution-cli", () => {
     expect(warn.mock.calls[0]?.[0]).toContain("--allow-stale-oracle");
   });
 
+  it("parseGmxV2ExecutionCli honors ALLOW_STALE_ORACLE=1 env", () => {
+    const prev = process.env.ALLOW_STALE_ORACLE;
+    process.env.ALLOW_STALE_ORACLE = "1";
+    try {
+      expect(parseGmxV2ExecutionCli([]).allowStaleOracle).toBe(true);
+    } finally {
+      if (prev === undefined) delete process.env.ALLOW_STALE_ORACLE;
+      else process.env.ALLOW_STALE_ORACLE = prev;
+    }
+  });
+
   it("resolveGmxV2ExecutionPath drives decrease and withdraw dry-run payloads", () => {
     const marketToken = "0x70d95587d40A2caf56bd97485aB3Eec10Bee6336";
     const decreaseCli = parseGmxV2ExecutionCli(["--reduce-only", "--size", "250"]);
