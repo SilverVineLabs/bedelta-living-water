@@ -1,0 +1,51 @@
+{
+  "schema": "silvervine.security-scorecard.v4",
+  "protocol": "SliverVine / BeΔLivingWater",
+  "tier": "fast",
+  "generatedAt": "2026-08-22T04:06:34.699Z",
+  "narrative": "behavioral_pass_does_not_imply_web3_security",
+  "overallVerdict": "PASS",
+  "gates": [
+    {
+      "id": "tsc",
+      "label": "TypeScript typecheck",
+      "verdict": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 18214,
+      "detail": "exit 0"
+    },
+    {
+      "id": "vitest-security",
+      "label": "Vitest security slice",
+      "verdict": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 4644,
+      "detail": "      46 │     \"audit:fast\": \"tsx scripts/run-security-matrix.ts --tier=fast\", |          ╵     ~~~~~~~~~~~~ |  |   The original key \"audit:fast\" is here: |  |     package.json:42:4: |       42 │     \"audit:fast\": \"pnpm run typecheck && vitest run --dir . --repo... |          ╵     ~~~~~~~~~~~~"
+    },
+    {
+      "id": "solhint",
+      "label": "Solhint SliverVineGate/src",
+      "verdict": "SKIPPED",
+      "exitCode": null,
+      "elapsedMs": 63,
+      "detail": "solhint not found — SKIPPED (not PASS)"
+    },
+    {
+      "id": "gitleaks",
+      "label": "Gitleaks secret scan",
+      "verdict": "SKIPPED",
+      "exitCode": null,
+      "elapsedMs": 50,
+      "detail": "gitleaks not found — SKIPPED (not PASS)"
+    }
+  ],
+  "summary": {
+    "pass": 2,
+    "fail": 0,
+    "skipped": 2
+  },
+  "reports": {
+    "securityScorecard": "docs/audit/security-scorecard.json"
+  },
+  "zeroKeyCommand": "pnpm run audit:fast"
+}

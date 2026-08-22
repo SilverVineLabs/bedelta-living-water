@@ -72,6 +72,12 @@ export interface Env {
   IS_MAINNET?: string;
   /** GMX v2 ui fee receiver — SliverVine Treasury (wrangler var) */
   GMX_UI_FEE_RECEIVER?: string;
+  /** QuickNode Arbitrum WSS — GMX v2 event stream + sequencer heartbeats */
+  ARBITRUM_WSS_URL?: string;
+  /** Robinhood / R-Chain WSS placeholder */
+  ROBINHOOD_WSS_URL?: string;
+  /** Hyperliquid WSS override (defaults to canonical mainnet HL WS) */
+  HYPERLIQUID_WSS_URL?: string;
 }
 
 export {

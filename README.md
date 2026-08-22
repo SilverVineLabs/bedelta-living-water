@@ -13,6 +13,12 @@
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) · **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
 **Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (**Apache-2.0** · EIP-712 domain `SliverVineCitadel`) · **Architect:** qum0x (20+ Year Enterprise Web & Systems Architect) — All claims verifiable via CLI (`pnpm test`) and live JSON telemetry (`/api/grant-audit`).
 
+**Triangle Liquidity Loop:** `R-Chain (Regulated Source)` ↔ `Arbitrum One (GMX GM Yield Base)` ↔ `Hyperliquid (1x Short Hedge)` — see [`docs/architecture/TECHNICAL_SPECIFICATION.md`](./docs/architecture/TECHNICAL_SPECIFICATION.md) · **Principal Audit:** [`docs/audit/Principal_Audit_Report.md`](./docs/audit/Principal_Audit_Report.md) (**v1.0.0-rc1**).
+
+**Arbitrum Native Execution Premium:** Direct Arbitrum One LPs earn an estimated **+15 ~ 30 bps** vs bridged / multi-hop routes.
+
+**R-Chain status:** Robinhood Testnet (**46630**): **ACTIVE / TESTED** · Robinhood Mainnet (**4663**): **DEPLOYMENT READY**.
+
 ---
 
 ## 🎯 Core Scope & Value Proposition
@@ -132,6 +138,19 @@ Santenmoku is not a fragmented suite of tools—it is a **unified sub-millisecon
 **[Pillar 2: The Firewall — Compliance]** Robinhood Chain Unidirectional Router: Outbound-only state machine escorting tokenized treasuries (Chain `46630` → `42161`) while blocking inbound AML contamination.
 
 **[Pillar 3: The Shield — CORE MOAT]** Sub-ms AI Agent Armor: Signature `checkSoilResistance()` engine executing at p50 ~106 μs (&lt;60µs Wasm warm path) to intercept MEV sandwiches and lagging RPCs BEFORE transaction broadcast.
+
+---
+
+## 📚 Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [docs/audit/Principal_Audit_Report.md](./docs/audit/Principal_Audit_Report.md) | **Principal Audit Report v1.0.0-rc1** — liability decoupling · survival matrix · Gate / tranches · benchmarks |
+| [docs/architecture/TECHNICAL_SPECIFICATION.md](./docs/architecture/TECHNICAL_SPECIFICATION.md) | Triangle Liquidity Loop · Microsecond Moats · tranche / fee / Elara SSOT |
+| [docs/ARBITRUM_ONE_PAGER.md](./docs/ARBITRUM_ONE_PAGER.md) | Arbitrum Citadel technical one-pager |
+| [docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md](./docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md) | Arbitrum grant one-pager (mirror) |
+| [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Dual-engine topology · SRP (<200 LOC per file) |
+| [docs/README.md](./docs/README.md) | Docs index |
 
 ---
 
