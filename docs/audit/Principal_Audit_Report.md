@@ -19,7 +19,7 @@
 
 ### 1.1 Executive Summary
 
-SliverVine Citadel is an **off-chain zero-trust pre-execution safety gateway** and dynamic rebalancer for **GMX v2 GM pools on Arbitrum One**, with a **1× short hedge** on Hyperliquid and a regulated **R-Chain** source leg. The control plane (Cloudflare Edge Worker · `SystemState` SSOT) fail-closes on sequencer downtime, oracle lag, soil / cross-venue slippage, RPC jitter, and root-protection breaches **before** any hot-key signature or unsigned GMX broadcast.
+SliverVine Citadel is an **off-chain zero-trust pre-execution safety gateway** and dynamic rebalancer for **GMX v2 GM pools on Arbitrum One**, with a **1× short hedge** on Hyperliquid and a regulated **Robinhood Chain** source leg. The control plane (Cloudflare Edge Worker · `SystemState` SSOT) fail-closes on sequencer downtime, oracle lag, soil / cross-venue slippage, RPC jitter, and root-protection breaches **before** any hot-key signature or unsigned GMX broadcast.
 
 **Delivered posture (v0.9 SSOT):** fail-closed defense matrix · provenance-verified live hedge · builder `uiFeeReceiver` (+5 bps) · Yield Triangle read API · ZeroDev AA gate scaffolding · `SliverVineGate` EIP-712 attestation path (Foundry M0–M2 sealed).
 
@@ -48,7 +48,7 @@ SliverVine Citadel is an **off-chain zero-trust pre-execution safety gateway** a
 | Scenario | Threat Model | Citadel Response | Evidence |
 |----------|--------------|------------------|----------|
 | **GMX MEV / sandwich** | Hostile L2 searcher extracts on GM deposit / increase | Pre-trade soil · price-impact penalty fuse · underweight-only routing · TWAP when `CrossVenueNetSlippage > 0.5%` · no broadcast on gate deny | `soil-resistance` · `gmx-v2-price-impact` · Root 8 |
-| **AML / tainted ingress** | Blacklisted or non-compliant R-Chain / institutional sender | `RobinhoodSafetySwitch` blacklist · oracle flush · **Elara** protocol-level ingress filter · Chain **4663** inbound blocked | `contracts/RobinhoodSafetySwitch.sol` · Tech Spec § Elara |
+| **AML / tainted ingress** | Blacklisted or non-compliant Robinhood Chain / institutional sender | `RobinhoodSafetySwitch` blacklist · oracle flush · **Elara** protocol-level ingress filter · Chain **4663** inbound blocked | `contracts/RobinhoodSafetySwitch.sol` · Tech Spec § Elara |
 | **Sequencer downtime** | Arbitrum sequencer halt / extended grace | Chainlink Sequencer Uptime Feed · **600s grace** · fail-closed `isSequencerSafe` · signing channel blocked | `sequencer-guard.ts` · `/api/grant-audit` |
 | **Oracle lag deadlock** | Canonical oracle skew vs L2 headers | Fail-closed when lag exceeds dynamic band (baseline &lt;30s) | `arbitrum-gas-guard.ts` |
 | **HL invalid nonce / clock skew** | Stale agent nonce or &gt;200ms NTP drift | `HL_NONCE_AUTO_RESYNC` · heartbeat revoke · `NTP_CLOCK_DRIFT_COMPENSATOR` | `nonce-auto-healing.ts` · Pgate 200ms |
@@ -77,7 +77,7 @@ SliverVine Citadel is an **off-chain zero-trust pre-execution safety gateway** a
 | **Permissioned RWA Tranche** | Robinhood Mainnet **4663** inbound **BLOCKED** | Institutional / RWA-tagged only · SafetySwitch + Elara · no public mint from 4663 |
 | **Permissionless DeFi Tranche** | Arbitrum One + Hyperliquid | Open GM / 1× hedge behind Citadel + Gate attestation |
 
-**R-Chain status:** Testnet **46630** — **ACTIVE / TESTED** · Mainnet **4663** — **DEPLOYMENT READY**.
+**Robinhood Chain status:** Testnet **46630** — **ACTIVE / TESTED** · Mainnet **4663** — **DEPLOYMENT READY**.
 
 Full topology: [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md).
 
@@ -104,7 +104,7 @@ Full topology: [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFIC
 ### 5.1 Triangle Liquidity Loop
 
 ```
-R-Chain (Regulated Source)
+Robinhood Chain (Permissioned Institutional Ingress)
         ↕  Across / AA ingress (fail-closed)
 Arbitrum One (GMX GM Yield Base)
         ↕  1× Δ-neutral hedge
@@ -158,7 +158,7 @@ Hyperliquid (1× Short Hedge)
 |-------|------------------|-----------------|
 | **Regression bar** | **724 PASS** aggregate SSOT claim (Vitest + Gate Foundry / grant suites) · mainline `pnpm audit:fast` Vitest **677 PASS / 128 files** at rc1 cut | Expand coverage for Aave fee accrual + Shadow-DEX proofs |
 | **Risk engine** | Santenmoku v0.8/v0.9 fail-closed · Tri-Sensor matrix · Dynamic Max SL | Stylus WASM parity co-processor |
-| **Venues** | GMX Arbitrum Citadel + HL 1× hedge · R-Chain stub **46630 ACTIVE/TESTED** | **4663** production RWA tranche · Across live bridge |
+| **Venues** | GMX Arbitrum Citadel + HL 1× hedge · Robinhood Chain stub **46630 ACTIVE/TESTED** | **4663** production RWA tranche · Across live bridge |
 | **Gate** | `SilverVineGate` M0–M2 sealed (fuzz 327k+) | M3–M6 Sepolia / 46630 CREATE2 / hosted demo |
 | **AA** | ZeroDev Kernel scaffolding · risk-oracle UserOp gate | Full paymaster + institutional session policies |
 | **Fees** | **+5 bps** `uiFeeReceiver` | **10% excess yield over Aave** performance fee |

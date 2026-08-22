@@ -3,7 +3,7 @@
  */
 
 import {
-  HL_EXCHANGE_MIN_NOTIONAL_USD,
+  VERIFIED_5TX_NOTIONAL_USD,
   VERIFIED_5TX_ORDER_COUNT,
 } from "./verified-5tx-constants";
 import { loadVerified5TxResults } from "./verified-5tx-fill-helpers";
@@ -14,7 +14,8 @@ import type { GrantAuditPayload } from "../../routes/grant-audit-lib/grant-audit
 
 export const HL_5TX_MAX_GATED_SLIPPAGE_BPS = 50;
 export const HL_5TX_FILL_TIME_MAX_GAP_SEC = 30;
-export const HL_5TX_MARGIN_ALLOCATION_USD = HL_EXCHANGE_MIN_NOTIONAL_USD;
+/** Per-leg margin SSOT — matches verified_5tx_results.json ($12, above HL $10 floor). */
+export const HL_5TX_MARGIN_ALLOCATION_USD = VERIFIED_5TX_NOTIONAL_USD;
 
 export interface Hl5TradeSequenceAudit {
   ok: boolean;

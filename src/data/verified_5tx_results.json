@@ -26,7 +26,7 @@
       "explorerUrl": "https://app.hyperliquid-testnet.xyz/explorer/tx/0xe572c998bb2f0779ac19581cd55e094c9ef56929cac0793bbe8ab68e45b33216",
       "soilPassed": true,
       "w01DepthRefillBps": 32,
-      "rawSlippageBps": 0,
+      "rawSlippageBps": 1.0,
       "gatedSlippageBps": 0.5,
       "savedUsd": 0,
       "dryRun": true
@@ -42,7 +42,7 @@
       "explorerUrl": "https://app.hyperliquid-testnet.xyz/explorer/tx/0x2eec203ad549c08179c1231aad98cfb0e952705b85e94b00d82a3871bdf400ae",
       "soilPassed": true,
       "w01DepthRefillBps": 32,
-      "rawSlippageBps": 0,
+      "rawSlippageBps": 1.0,
       "gatedSlippageBps": 0.5,
       "savedUsd": 0,
       "dryRun": true
@@ -58,7 +58,7 @@
       "explorerUrl": "https://app.hyperliquid-testnet.xyz/explorer/tx/0xea8604c7b538c9ead93691cb93872fa885d46b963ec34f7e8dcd226147a3a826",
       "soilPassed": true,
       "w01DepthRefillBps": 32,
-      "rawSlippageBps": 0,
+      "rawSlippageBps": 1.0,
       "gatedSlippageBps": 0.5,
       "savedUsd": 0,
       "dryRun": true
@@ -74,7 +74,7 @@
       "explorerUrl": "https://app.hyperliquid-testnet.xyz/explorer/tx/0x9396d42b5edfe035a531fbd157d5f71ff43fd6ad56491acdb51c047b21b70b4e",
       "soilPassed": true,
       "w01DepthRefillBps": 32,
-      "rawSlippageBps": 0,
+      "rawSlippageBps": 1.0,
       "gatedSlippageBps": 0.5,
       "savedUsd": 0,
       "dryRun": true
@@ -90,7 +90,7 @@
       "explorerUrl": "https://app.hyperliquid-testnet.xyz/explorer/tx/0x0de27761a8f9a66f6fc336414c77d643d13106124b19b5f9f2f7ff1b10bed6d5",
       "soilPassed": true,
       "w01DepthRefillBps": 32,
-      "rawSlippageBps": 0,
+      "rawSlippageBps": 1.0,
       "gatedSlippageBps": 0.5,
       "savedUsd": 0,
       "dryRun": true

@@ -18,11 +18,11 @@
 
 Before any GMX DataStore broadcast, the Citadel edge evaluates sequencer health, oracle lag, soil resistance, and pool skew — then routes qualified flow to GM pool **underweight sides**, reducing imbalance. Hyperliquid session-key hedging is the Emergency Liquidity Sponge fallback.
 
-**Triangle Liquidity Loop:** `R-Chain (Regulated Source)` ↔ `Arbitrum One (GMX GM Yield Base)` ↔ `Hyperliquid (1x Short Hedge)`.
+**Triangle Liquidity Loop:** `Robinhood Chain (Permissioned Institutional Ingress)` ↔ `Arbitrum One (GMX GM Yield Base)` ↔ `Hyperliquid (1× Short Hedge)`.
 
 **Arbitrum Native Execution Premium:** Direct Arbitrum One liquidity providers earn an estimated **+15 ~ 30 bps** execution premium vs bridged / multi-hop routes (Stylus-aligned ingress · lower cross-venue friction · underweight rebate capture).
 
-## R-Chain Status
+## Robinhood Chain Status
 
 | Network | Chain ID | Status |
 |---------|----------|--------|

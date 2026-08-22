@@ -17,6 +17,12 @@ const BASE_AUDIT_PAYLOAD = {
   audit: "ZERO_TRUST_GRANT",
 } as GrantAuditPayload;
 
+/** CI / local default — live HL keys omitted unless HL_LIVE is explicitly armed. */
+function isHlLiveEnv(): boolean {
+  const v = process.env.HL_LIVE?.trim().toLowerCase();
+  return v === "1" || v === "true";
+}
+
 describe("hl-5-trade-provenance", () => {
   it("audits verified_5tx_results.json — 5 fills with OID/time continuity", () => {
     const audit = auditHl5TradeSequence(verifiedResultsJson as never);
@@ -29,7 +35,7 @@ describe("hl-5-trade-provenance", () => {
     expect(audit.reasons).toHaveLength(0);
   });
 
-  it("validates margin allocation at ~$10 per leg and monotonic fill times", () => {
+  it("validates margin allocation at ~$12 per leg and monotonic fill times", () => {
     const fills = verifiedResultsJson.fills;
     expect(fills).toHaveLength(5);
     for (let i = 1; i < fills.length; i++) {
@@ -42,10 +48,21 @@ describe("hl-5-trade-provenance", () => {
 
   it("buildGrantAuditProvenanceBundle exposes provenanceVerified for grant-audit", () => {
     __resetProvenanceVerifiedCacheForTests();
+    const live = isHlLiveEnv();
     const bundle = buildGrantAuditProvenanceBundle(BASE_AUDIT_PAYLOAD);
+
+    // GitHub Actions / default CI: no live keys → dry-run fixture must still audit ok.
     expect(bundle.hl5TradeSequence.ok).toBe(true);
     expect(bundle.testnetSuite.event).toBe("HL_TESTNET_5TX_VERIFY");
     expect(bundle.testnetSuite.aggregate.sampleCount).toBe(5);
+
+    if (!live) {
+      expect(bundle.testnetSuite.dryRun === true || bundle.testnetSuite.livePost === false).toBe(
+        true,
+      );
+      expect(bundle.hl5TradeSequence.ok).toBe(true);
+    }
+
     expect(bundle.provenanceVerified).not.toBeNull();
     expect(bundle.provenanceVerified!.schema).toBe(
       "silvervine.provenance-verified-trades.v1",

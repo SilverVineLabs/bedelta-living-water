@@ -1,32 +1,40 @@
 # SliverVine Citadel — Technical Specification
 
 **Protocol:** SliverVine / BeΔ Living Water · **Risk engine:** v0.8 Santenmoku  
-**Scope:** Triangle Liquidity Loop · Microsecond Moats · Cross-venue fail-closed gate  
+**Scope:** Delta-Neutral GM Yield Engine · Triangle Liquidity Loop · Microsecond Moats · Cross-venue fail-closed gate  
 **Entity:** SilverVine Labs · **Live proof:** [`/api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit)
+
+---
+
+## § Core Product Identity
+
+**Primary product:** **Delta-Neutral GM Yield Engine** — Arbitrum GMX v2 **ETH/USDC** GM pool + Hyperliquid **1× short hedge**, powered by the sub-ms **`checkSoilResistance()`** Pre-Execution Citadel Gateway.
+
+**Robinhood Chain role:** **Permissioned Institutional Ingress Source only** — regulated treasuries enter via outbound escort (`46630`/`4663` → `42161`); Robinhood Chain is **not** a separate product line. Inbound from external chains to Robinhood Chain is AML-blocked by default.
 
 ---
 
 ## § Triangle Liquidity Loop Topology
 
-Closed-loop three-venue routing keeps regulated source capital, GM yield, and hedge legs phase-aligned:
+Closed-loop three-venue routing keeps permissioned ingress capital, GM yield, and hedge legs phase-aligned:
 
 ```
-R-Chain (Regulated Source)
-        ↕  Across / AA ingress (fail-closed)
-Arbitrum One (GMX GM Yield Base)
-        ↕  1x Δ-neutral hedge
-Hyperliquid (1x Short Hedge)
+Robinhood Chain (Permissioned Institutional Ingress)
+        ↕  Across / AA egress (fail-closed · inbound 4663 blocked)
+Arbitrum One (GMX GM Yield Base · ETH/USDC)
+        ↕  1× Δ-neutral hedge
+Hyperliquid (1× Short Hedge)
 ```
 
 | Leg | Venue | Role |
 |-----|-------|------|
-| **Source** | R-Chain (Robinhood) | Regulated RWA / idle USDC origin · permissioned inbound |
+| **Ingress** | Robinhood Chain | Permissioned institutional RWA / idle USDC origin · outbound-only escort to Arbitrum |
 | **Yield base** | Arbitrum One · GMX v2 GM | Underweight-side GM LP · builder `uiFeeReceiver` · Citadel pre-execution gate |
-| **Hedge** | Hyperliquid | Session-key **1x short** Emergency Liquidity Sponge · nonce-healed signing |
+| **Hedge** | Hyperliquid | Session-key **1× short** Emergency Liquidity Sponge · nonce-healed signing |
 
 **Control plane:** Cloudflare Edge Worker (`SystemState` SSOT) evaluates sequencer · oracle lag · soil · RPC radar before any unsigned GMX payload or HL hedge dispatch. Routing is unidirectional into `SystemState`; venue adapters never mutate peer books without a gate pass.
 
-**Read API:** `GET /api/yield/triangle` — structural APY / depth / gate status across HL · GMX (R-Chain stub stacked via ingress).
+**Read API:** `GET /api/yield/triangle` — structural APY / depth / gate status across HL · GMX (Robinhood Chain ingress stub stacked via egress escort).
 
 ---
 
@@ -41,7 +49,7 @@ Solidity vault surface splits capital into two non-fungible risk lanes:
 
 **Invariant:** RWA capital on the permissioned lane cannot be atomically reminted into the permissionless DeFi tranche without an explicit, audited bridge + compliance gate (Across + AA). Chain **4663 → Arbitrum** inbound is denied by default; Testnet **46630** remains the active integration sandbox.
 
-**On-chain anchors:** `contracts/RobinhoodSafetySwitch.sol` · `contracts/SilverVineRiskOracle.sol`.
+**On-chain anchors:** `contracts/RobinhoodSafetySwitch.sol` · `contracts/SliverVineRiskOracle.sol`.
 
 ---
 
@@ -90,10 +98,36 @@ Native execution path targets **ArbOS / Stylus WASM** co-residence with Citadel 
 | Layer | Alignment |
 |-------|-----------|
 | **Stylus WASM core** | Risk filters and ingress predicates compile toward Arbitrum Stylus-native WASM for microsecond on-L2 evaluation (parity with Edge `checkSoilResistance` semantics) |
-| **Elara protocol ingress** | Protocol-level **ingress filtering** (Elara) drops non-compliant R-Chain / blacklisted senders before GM payload construction — complements `RobinhoodSafetySwitch` |
+| **Elara protocol ingress** | Protocol-level **ingress filtering** (Elara) drops non-compliant Robinhood Chain / blacklisted senders before GM payload construction — complements `RobinhoodSafetySwitch` |
 | **ArbOS gas / base-fee sensor** | Tri-Sensor **BaseFee Velocity** channel remains the congestion throttle for dispatch SLO |
 
 **Design rule:** Edge (Cloudflare) remains the pre-broadcast SSOT; Stylus/Elara are the on-chain reinforcement plane — never a weaker substitute for fail-closed Edge gates.
+
+---
+
+## § Standard Compliance & ERC/EIP Wiki
+
+Official infrastructure standards map — each row links a public ERC/EIP (or venue spec) to Citadel implementation anchors and verification.
+
+| Standard | Role in Citadel | Implementation anchor | Verification |
+|----------|-----------------|----------------------|--------------|
+| **[EIP-712](https://eips.ethereum.org/EIPS/eip-712)** | Typed-data attestation · Session Key scopes · Gate digest binding | Domain `SliverVineCitadel` · `SliverVineGate.sol` · `src/sdk/constants.ts` · `src/services/session-key-adapter-lib/unlock-reauthorization.ts` | `SliverVineGate` Forge I1–I12 · `tests/sdk/citadel-sdk.test.ts` |
+| **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)** | Account Abstraction — scoped agent UserOps without hot-wallet custody | ZeroDev Kernel v3 · EntryPoint **v0.7** · `src/adapters/arbitrum/zerodev-aa/` · `src/services/aa-adapter/zerodev-kernel-adapter.ts` | `tests/adapters/zerodev-aa-gate.test.ts` · `tests/services/aa-adapter/*` |
+| **[ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** | Modular smart-account modules — session-key permission scopes | ZeroDev Kernel v3 modular session keys · scoped `ORDER_EXECUTE` clip · daily gas sponsorship limits | `src/sdk/agent-intent.ts` · Pillar 1 Gatehouse (README) |
+| **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** | Dynamic base-fee congestion sensing on Arbitrum One | Tri-Sensor **BaseFee Velocity** channel · `src/services/risk/arbitrum-gas-guard.ts` · keeper execution-fee estimate | `tests/arbitrum-gas-guard.test.ts` · README Tri-Sensor Matrix |
+| **ArbOS 61** | Arbitrum L2 execution / Stylus co-residence alignment | `RobinhoodSafetySwitch.sol` (oracle flush + blacklist) · Elara ingress design · Stylus WASM parity path | `contracts/RobinhoodSafetySwitch.sol` · `docs/audit/R_CHAIN_SAFETY_GATE_AUDIT.md` |
+| **Robinhood Chain Ingress** | Permissioned institutional egress · AML inbound isolation | Chains **46630** (testnet) / **4663** (mainnet filter) · `robinhood-across-bridge.ts` · `RobinhoodSafetySwitch.sol` | `tests/adapters/robinhood-across-bridge.test.ts` (5/5) · `exportRobinhoodAuditSnapshot()` |
+| **WASM Core (`soil_core`)** | Sub-ms pre-execution soil fuse · Cloudflare Edge hot path | `pkg/soil_core.wasm` · `#![no_std]` Rust · `src/sdk/soil-wasm.ts` · budget **&lt;28 KiB** · warm exec **&lt;60 µs** | `tests/services/wasm-feasibility-lib/*` · `pnpm test:wasm-feasibility` |
+
+**Compliance posture:**
+
+- **EIP-712:** All Gate attestations and SDK envelopes bind `chainId` + `verifyingContract` — cross-chain replay denied at `verifyAndConsume`.
+- **ERC-4337 / ERC-7579:** UserOps pass Edge `verifyAgentIntent()` before bundler dispatch; session modules enforce clip + TTL caps.
+- **EIP-1559:** Gas-yield ratio fuse blocks dispatch when L1 surcharge exceeds target yield band.
+- **Robinhood Chain:** Outbound-only escort (`46630`/`4663` → `42161`); inbound AML blocked · `lostUsd ≡ 0`.
+- **WASM:** Hot-path soil evaluation mirrors Edge `checkSoilResistance()` semantics for sub-ms fail-closed.
+
+**Related SDK surface:** [`docs/sdk/CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md) · Audit & Telemetry (`exportRobinhoodAuditSnapshot()`).
 
 ---
 

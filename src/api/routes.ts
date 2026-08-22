@@ -15,6 +15,10 @@ import { handleTelemetryAnalyticsRequest } from "./routes/analytics";
 import { handleBadgeHealthRequest, handleBadgeProofsRequest } from "./routes/badge";
 import { handleTelemetryHealthRequest } from "./routes/telemetry";
 import { handleYieldTriangleRequest } from "./routes/yield";
+import {
+  handleRobinhoodAuditSnapshotRequest,
+  isRobinhoodAuditSnapshotPath,
+} from "./routes/robinhood-audit";
 import { handleSubscribeRequest, isSubscribeApiPath } from "../routes/subscribe";
 import { applyGrantAuditHeaders, handleOgPreviewRequest } from "./middleware/og-preview";
 import {
@@ -82,6 +86,10 @@ export async function routeRequest(
 
     if (url.pathname === "/api/yield/triangle" && request.method === "GET") {
       return applyGrantAuditHeaders(await handleYieldTriangleRequest(request));
+    }
+
+    if (isRobinhoodAuditSnapshotPath(url.pathname) && request.method === "GET") {
+      return applyGrantAuditHeaders(handleRobinhoodAuditSnapshotRequest(request));
     }
 
     if (isSubscribeApiPath(url.pathname) && request.method === "POST") {
