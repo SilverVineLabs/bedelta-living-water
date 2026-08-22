@@ -9,7 +9,6 @@
     "build:spa": "vite build",
     "build:worker": "pnpm run build:spa && pnpm exec tsc --noEmit && WRANGLER_WRITE_LOGS=false wrangler deploy --dry-run --outdir=dist-worker",
     "bundle:measure": "tsx scripts/measure-worker-bundle.ts",
-    "test": "mkdir -p coverage && vitest run --dir . --coverage",
     "grant:hl-testnet": "tsx scripts/verify-hl-testnet.ts",
     "verify:5tx": "tsx scripts/verify-5tx.ts",
     "verify:grant": "tsx scripts/verify-5tx-runner.ts",
@@ -47,7 +46,9 @@
     "audit:nightly": "tsx scripts/run-security-matrix.ts --tier=nightly",
     "test:grant-v09-sim": "vitest run tests/v09/grant-v09-risk.test.ts tests/v09/opsec-boundary.test.ts tests/v09/aa-pipeline-opsec.test.ts",
     "test:wasm-feasibility": "vitest run tests/services/wasm-feasibility-simulation.test.ts tests/services/wasm-feasibility-lib/soil-core-sim.test.ts",
-    "build:wasm": "cargo build --manifest-path src/wasm/Cargo.toml --release --target wasm32-unknown-unknown && mkdir -p pkg && cp src/wasm/target/wasm32-unknown-unknown/release/soil_core.wasm pkg/soil_core.wasm"
+    "build:wasm": "cargo build --manifest-path src/wasm/Cargo.toml --release --target wasm32-unknown-unknown && mkdir -p pkg && cp src/wasm/target/wasm32-unknown-unknown/release/soil_core.wasm pkg/soil_core.wasm",
+    "clean:coverage": "node -e \"require('node:fs').rmSync('./coverage', { recursive: true, force: true })\"",
+    "test": "pnpm clean:coverage && mkdir -p coverage && vitest run --dir . --coverage"
   },
   "keywords": [],
   "author": "SilverVine Labs",
@@ -59,6 +60,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.0.2",
     "@vitest/coverage-v8": "^3.2.4",
+    "solhint": "^6.2.4",
     "tailwindcss": "^4.1.11",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3",

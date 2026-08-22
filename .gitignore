@@ -57,6 +57,10 @@ docs/**
 !DOCKER_README.md
 !docs/ARCHITECTURE.md
 !docs/ARBITRUM_ONE_PAGER.md
+!docs/architecture/
+!docs/architecture/**
+!docs/grants/
+!docs/grants/**
 !docs/Buildaton.md
 !docs/map_Index.md
 !docs/SLA.md
@@ -66,9 +70,16 @@ docs/**
 !docs/grant/**
 !SECURITY.md
 !docs/audit/
+!docs/audit/**
 !docs/audit/negative-proofs-artifact.json
 !docs/audit/chaos-blackswan-metrics.json
 !docs/audit/zerodev-aa-metrics.json
+!docs/GRANT_PROPOSAL.md
+!docs/sdk/
+!docs/sdk/**
+!docs/audit/PROGRESS_TRUTH_CHECK.md
+!docs/audit/Principal_Audit_Report.md
+!docs/audit/R_CHAIN_SAFETY_GATE_AUDIT.md
 !src/sdk/README.md
 
 # Rust Wasm build artifacts (commit pkg/soil_core.wasm only)

@@ -4,4 +4,6 @@
  */
 
 export * from "./ws-heartbeat.types";
+export * from "./ws-heartbeat-ping";
+export * from "./ws-heartbeat-failover";
 export * from "./ws-heartbeat-core";

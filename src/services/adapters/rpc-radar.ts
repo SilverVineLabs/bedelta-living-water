@@ -1,4 +1,5 @@
 /** Two-Tiered RPC Radar — failover race + sequencer outage fuse + zombie heartbeat. */
+import { resolveSequencerHeartbeatWssUrl } from "../../config/citadel-config";
 import { fetchArbitrumRpc } from "./arbitrum-rpc-fallback";
 import { GMX_RPC_EXTRA_HOSTS, GMX_RPC_PROVIDERS } from "./gmx-v2-rpc-constants";
 
@@ -6,10 +7,11 @@ export const RPC_RADAR_STALE_BLOCK_MAX_MS = 5_000 as const;
 export const RPC_RADAR_ZOMBIE_HEARTBEAT_MS = 1_000 as const;
 export const RPC_RADAR_PROBE_TTL_MS = 5_000 as const;
 export const RPC_RADAR_CACHE_MAX_AGE_MS = 30_000 as const;
+const SEQUENCER_WSS = resolveSequencerHeartbeatWssUrl();
 export const RPC_RADAR_WS_FALLBACKS = [
-  { ws: "wss://arb1.arbitrum.io/ws", http: GMX_RPC_PROVIDERS[0] },
-  { ws: "wss://arb1.arbitrum.io/ws", http: GMX_RPC_PROVIDERS[1] },
-  { ws: "wss://arb1.arbitrum.io/ws", http: GMX_RPC_PROVIDERS[2] },
+  { ws: SEQUENCER_WSS, http: GMX_RPC_PROVIDERS[0] },
+  { ws: SEQUENCER_WSS, http: GMX_RPC_PROVIDERS[1] },
+  { ws: SEQUENCER_WSS, http: GMX_RPC_PROVIDERS[2] },
 ] as const;
 
 export interface RpcEndpointProbe {

@@ -11,21 +11,12 @@ import {
 } from "../../adapters/hl/wallet/sessionOrderFillSync";
 import { buildSystemState } from "../../core/state";
 import type { IntentLeg } from "../../core/intent-ledger";
-import { auditHyperliquidLiveSoil } from "../../services/exchanges/hl-l2-book";
-import type { LiveBookSoilAudit } from "../../services/check-soil-resistance";
-import { __resetArbitrumGasGuardForTests } from "../../services/risk/arbitrum-gas-guard";
-import {
-  __setSequencerProbeForTests,
-  SEQUENCER_GRACE_SEC,
-} from "../../services/risk/sequencer-guard";
-import { __setSoftConfirmationProbeForTests } from "../../services/risk/soft-confirmation-guard";
 import {
   VERIFIED_5TX_NOTIONAL_USD,
   VERIFIED_5TX_ORDER_COUNT,
   VERIFIED_5TX_SYMBOL,
   aggregateVerifiedFills,
   applyW01DepthRefillDefense,
-  applyTestnetGrantSoilBoost,
   buildHlTestnetExplorerUrl,
   buildPreTradeFromSoilAudit,
   createBatchExecutionNonce,
@@ -38,18 +29,18 @@ import {
   type Verified5TxFillRecord,
   type Verified5TxResults,
 } from "../verified-5tx";
-
 import { resolveHlTestnetPrivateKey, isFundedHlTestnetPrivateKey } from "../../env/hl-testnet-key";
-
-const ACCOUNT_BALANCE_USD = 50_000;
-
-const ORDER_SIDES: readonly ("BUY" | "SHORT")[] = [
-  "BUY",
-  "SHORT",
-  "BUY",
-  "SHORT",
-  "BUY",
-];
+import {
+  VERIFY_5TX_ACCOUNT_BALANCE_USD,
+  VERIFY_5TX_ORDER_SIDES,
+  resolveAssetIndexFallback,
+  soilAuditSummary,
+} from "./runner-fixture-loader";
+import {
+  isSkipSoilEnvEnabled,
+  resolveRunSoilAudit,
+  seedSkipSoilCitadelProbes,
+} from "./runner-soil-bypass";
 
 export interface Verify5TxRunnerOptions {
   privateKey?: string;
@@ -66,87 +57,6 @@ export interface Verify5TxRunnerOptions {
    * Set via `--skip-soil` or SKIP_SOIL_CHECK=1 / SKIP_SOIL_PROBE_CHECK=1.
    */
   skipSoilProbe?: boolean;
-}
-
-function resolveAssetIndexFallback(symbol: string): number {
-  const map: Record<string, number> = { ETH: 4, BTC: 3, SOL: 0 };
-  return map[symbol.toUpperCase()] ?? 0;
-}
-
-function isSkipSoilEnvEnabled(): boolean {
-  const keys = ["SKIP_SOIL_CHECK", "SKIP_SOIL_PROBE_CHECK"] as const;
-  return keys.some((k) => process.env[k] === "1" || process.env[k] === "true");
-}
-
-/** Clear Arb sequencer / soft-confirm / gas hardlocks so HL_LIVE smoke can post. */
-function seedSkipSoilCitadelProbes(nowMs: number = Date.now()): void {
-  const nowSec = Math.floor(nowMs / 1000);
-  __resetArbitrumGasGuardForTests();
-  __setSequencerProbeForTests({
-    answer: 0,
-    startedAtSec: nowSec - SEQUENCER_GRACE_SEC - 1,
-    updatedAtSec: nowSec,
-    fetchedAtMs: nowMs,
-    safe: true,
-    reason: null,
-  });
-  __setSoftConfirmationProbeForTests({
-    l2LatestBlock: 1_000_020,
-    l1FinalizedBatchBlock: 1_000_000,
-    driftBlocks: 20,
-    fetchedAtMs: nowMs,
-    safe: true,
-    reason: null,
-  });
-}
-
-/** Force tradeAllowed posture — strip sequencer/probe trip reasons for smoke runs. */
-function forceSoilTradeAllowed(audit: LiveBookSoilAudit): LiveBookSoilAudit {
-  return {
-    ...audit,
-    ok: true,
-    tripped: false,
-    reasons: [],
-  };
-}
-
-function syntheticSoilAudit(symbol: string): LiveBookSoilAudit {
-  return forceSoilTradeAllowed({
-    ok: true,
-    tripped: false,
-    crossVenueSlippage: 0.0004,
-    spotPerpSlippage: 0.0003,
-    reasons: [],
-    probe: {
-      symbol,
-      bestBid: 3_499,
-      bestAsk: 3_501,
-      midPx: 3_500,
-      bidDepthUsd: 250_000,
-      askDepthUsd: 250_000,
-      depthUsd: 500_000,
-      spreadBps: 5.7,
-      priceImpactBps: 2.1,
-    },
-    spreadBps: 5.7,
-    priceImpactBps: 2.1,
-  });
-}
-
-function soilAuditSummary(
-  audit: LiveBookSoilAudit | null,
-): Verified5TxResults["soilAudit"] {
-  if (!audit) return null;
-  return {
-    ok: audit.ok,
-    tripped: audit.tripped,
-    crossVenueSlippage: audit.crossVenueSlippage,
-    spotPerpSlippage: audit.spotPerpSlippage,
-    spreadBps: audit.spreadBps,
-    priceImpactBps: audit.priceImpactBps,
-    soilBoostApplied: audit.soilBoostApplied ?? false,
-    originalDepthUsd: audit.originalDepthUsd,
-  };
 }
 
 export async function runVerify5Tx(
@@ -177,52 +87,16 @@ export async function runVerify5Tx(
     : { assetIndex: resolveAssetIndexFallback(symbol), szDecimals: 4 };
   const { assetIndex: testnetAssetIndex, szDecimals } = testnetAssetMeta;
 
-  let soilAudit: LiveBookSoilAudit | null = null;
-  if (skipSoilProbe) {
-    // Prefer live L2 mid for IOC pricing; always force tradeAllowed + clear probe reasons.
-    if (livePost || forceLiveSoil) {
-      try {
-        soilAudit = await auditHyperliquidLiveSoil(symbol, { fetchFn, maxRetries: 1 });
-      } catch {
-        soilAudit = null;
-      }
-    }
-    soilAudit = forceSoilTradeAllowed(soilAudit ?? syntheticSoilAudit(symbol));
-  } else if (dryRun && !forceLiveSoil) {
-    soilAudit = syntheticSoilAudit(symbol);
-  } else {
-    try {
-      soilAudit = await auditHyperliquidLiveSoil(symbol, { fetchFn, maxRetries: 1 });
-    } catch {
-      soilAudit = null;
-    }
-
-    if (!soilAudit || soilAudit.tripped) {
-      if (livePost && soilAudit?.tripped) {
-        const depthOnly = soilAudit.reasons.every((r) => r.startsWith("DEPTH_USD"));
-        if (depthOnly) {
-          soilAudit = applyTestnetGrantSoilBoost(soilAudit, notionalUsd);
-        }
-      }
-    }
-
-    if (!soilAudit || soilAudit.tripped) {
-      if (dryRun) {
-        soilAudit = syntheticSoilAudit(symbol);
-      } else if (abortOnSoilTrip) {
-        throw new Error(
-          `checkSoilResistance() TRIPPED — ${soilAudit?.reasons.join("; ") ?? "L2 book unavailable"}`,
-        );
-      }
-    }
-  }
-
-  if (!soilAudit) {
-    soilAudit = syntheticSoilAudit(symbol);
-  }
-  if (skipSoilProbe) {
-    soilAudit = forceSoilTradeAllowed(soilAudit);
-  }
+  const soilAudit = await resolveRunSoilAudit({
+    symbol,
+    notionalUsd,
+    dryRun,
+    livePost,
+    abortOnSoilTrip,
+    forceLiveSoil,
+    skipSoilProbe,
+    fetchFn,
+  });
 
   const limitPx = Math.round(soilAudit.probe.midPx);
   const fillsBefore = livePost ? await fetchUserFills(wallet.address, fetchFn) : [];
@@ -233,7 +107,7 @@ export async function runVerify5Tx(
   );
 
   const systemState = buildSystemState({
-    accountBalanceUsd: ACCOUNT_BALANCE_USD,
+    accountBalanceUsd: VERIFY_5TX_ACCOUNT_BALANCE_USD,
     currentCri: 100,
     skipHardlockAssert: true,
   });
@@ -241,7 +115,7 @@ export async function runVerify5Tx(
   const records: Verified5TxFillRecord[] = [];
 
   for (let i = 0; i < VERIFIED_5TX_ORDER_COUNT; i += 1) {
-    const side = ORDER_SIDES[i] ?? "BUY";
+    const side = VERIFY_5TX_ORDER_SIDES[i] ?? "BUY";
     const leg: IntentLeg = {
       venue: "HL",
       side,
@@ -252,7 +126,7 @@ export async function runVerify5Tx(
     const basePreTrade = buildPreTradeFromSoilAudit(
       soilAudit,
       notionalUsd,
-      ACCOUNT_BALANCE_USD,
+      VERIFY_5TX_ACCOUNT_BALANCE_USD,
     );
     const preTrade = applyW01DepthRefillDefense(basePreTrade, soilAudit, notionalUsd);
     const w01DepthRefillBps = Math.max(32, Math.round(soilAudit.priceImpactBps));

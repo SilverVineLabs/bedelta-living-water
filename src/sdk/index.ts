@@ -15,6 +15,15 @@ export type {
   BridgeEscortVerdict,
   UnidirectionalBridgeInput,
 } from "./unidirectional-bridge";
+export {
+  buildRobinhoodAuditSnapshot,
+  exportRobinhoodAuditSnapshot,
+} from "./robinhood-audit-snapshot";
+export type {
+  RobinhoodAuditChainId,
+  RobinhoodAuditSnapshot,
+  RobinhoodAuditSnapshotInput,
+} from "./robinhood-audit-snapshot";
 export { AML_INBOUND_TO_ROBINHOOD_BLOCKED } from "../adapters/robinhood/robinhood-across-bridge";
 export { quoteRChainYieldToArbitrumGm } from "../adapters/robinhood/r-chain-yield-router";
 export type {
