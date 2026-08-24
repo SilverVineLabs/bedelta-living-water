@@ -40,10 +40,10 @@ contract GatedExecutor {
     mapping(address => bool) public allowedTarget;
 
     /// @notice Successful gated executions. Read by /api/grant-audit.
-    uint256 public allowedCount;
+    uint256 public allowedCount = 0;
 
     /// @notice Attestations refused at this executor. Read by /api/grant-audit.
-    uint256 public deniedCount;
+    uint256 public deniedCount = 0;
 
     uint256 private _lock = 1;
 

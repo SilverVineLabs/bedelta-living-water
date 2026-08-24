@@ -10,7 +10,6 @@ const GATE = join(ROOT, "SliverVineGate");
 const AUDIT = join(ROOT, "docs/audit");
 const SCORECARD = join(AUDIT, "security-scorecard.json");
 const STATIC = join(AUDIT, "static-analysis-report.json");
-const ADERYN_REPORT = join(GATE, "report.md");
 const HALMOS_JSON = join(AUDIT, "halmos.json");
 const NARRATIVE = "behavioral_pass_does_not_imply_web3_security" as const;
 
@@ -106,14 +105,9 @@ function runGate(
 }
 
 function runAderynGate(): SecurityGateResult {
-  const gate = runGate("aderyn", "Aderyn SliverVineGate", "aderyn", ["."], {
-    cwd: GATE, optional: true,
-  });
-  if (gate.verdict !== "FAIL" || !existsSync(ADERYN_REPORT)) return gate;
-  return {
-    ...gate, verdict: "PASS",
-    detail: "report.md ok; ignore aderyn 0.1.9 solc metadata panic",
-  };
+  return runGate("aderyn", "Aderyn SliverVineGate", "bash", [
+    join(ROOT, "scripts/run-aderyn-gate.sh"),
+  ], { optional: true });
 }
 
 function runEchidnaGate(): SecurityGateResult {
