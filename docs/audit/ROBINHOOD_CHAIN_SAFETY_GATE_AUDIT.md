@@ -164,7 +164,7 @@ The bridge state machine in `evaluateAcrossBridgeTransfer()` enforces:
 ## CLI Reproduction
 
 ```bash
-# Full Vitest suite (725 PASS / 135 files)
+# Full Vitest suite (164 test files | 735 PASS)
 pnpm test
 
 # Targeted Robinhood Chain bridge gate

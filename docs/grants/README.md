@@ -3,7 +3,7 @@
 **Entity:** SilverVine Labs · `grants@silvervinelabs.com`  
 **OpSec:** External-facing grant packs only.
 
-> **Baseline (locked):** Vitest **735 PASS (138 files)** · `pnpm test`.
+> **Baseline (locked):** Vitest **164 test files | 735 PASS (100% Clean)** · `pnpm test`.
 
 | Track | Status | Entry |
 |-------|--------|-------|
