@@ -3,7 +3,7 @@
 **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com`  
 **Protocol:** SliverVine / BeΔ Living Water · **Risk engine:** Santenmoku v0.8/v0.9  
 **Live proof:** [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit)  
-**Regression bar:** **725 Vitest PASS / 135 test files** · `pnpm test` · `pnpm audit:fast`
+**Regression bar:** **735 Vitest PASS / 138 test files** · `pnpm test` · `pnpm audit:fast`
 
 ---
 
@@ -82,7 +82,7 @@ Full topology: [`docs/architecture/TECHNICAL_SPECIFICATION.md`](./architecture/T
 
 ```bash
 pnpm install
-pnpm test          # 725 PASS / 135 files
+pnpm test          # 735 PASS / 138 files
 pnpm audit:fast    # tsc + vitest-security + solhint + gitleaks
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .provenanceVerified
 ```

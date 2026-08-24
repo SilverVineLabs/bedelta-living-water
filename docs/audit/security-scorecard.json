@@ -1,65 +1,51 @@
 {
   "schema": "silvervine.security-scorecard.v4",
   "protocol": "SliverVine / BeΔLivingWater",
-  "tier": "security",
-  "generatedAt": "2026-08-22T05:08:10.040Z",
+  "tier": "fast",
+  "generatedAt": "2026-08-24T03:43:22.432Z",
   "narrative": "behavioral_pass_does_not_imply_web3_security",
   "overallVerdict": "PASS",
   "gates": [
     {
-      "id": "vitest",
-      "label": "Full Vitest suite",
+      "id": "tsc",
+      "label": "TypeScript typecheck",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 93450,
-      "detail": "[SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when isSystemFlushed is true | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when statusCode === 3 even if flush flag is false | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-use",
-      "counterexamples": [
-        "✓ sessionOrderFillSync — waitForNewFill > throws OnChainFillFailedError after max attempts  506ms",
-        "stdout | tests/adapters/hl/execution-transport.test.ts > hl/execution — HTTP transport > handles HTTP error responses",
-        "stderr | tests/defense-matrix.test.ts > Defense Matrix — R20 Physical Deadlock Execution > vineWrapProtection criHardlock throws HardlockError (403 deadlock)"
-      ]
+      "elapsedMs": 7048,
+      "detail": "exit 0"
     },
     {
-      "id": "forge",
-      "label": "Forge unit + invariants",
+      "id": "vitest-security",
+      "label": "Vitest security slice",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 9517,
-      "detail": "|-------------+----------------+-------+---------+----------| | | GateHandler | warp           | 5452  | 0       | 0        | | ╰-------------+----------------+-------+---------+----------╯ |  | [PASS] test_HandlerCanSucceed() (gas: 122069) | Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 9.11s (24.69s CPU time) |  | Ran 4 test suites in 9.11s (19.60s CPU time): 60 tests passed, 0 failed, 0 skipped (60 total tests)"
+      "elapsedMs": 2832,
+      "detail": "RUN  v3.2.7 /home/lhsum/dev/bedelta-citadel-core |  |  ✓ |unit| tests/security/security-audit.test.ts (4 tests) 24ms |  |  Test Files  1 passed (1) |       Tests  4 passed (4) |    Start at  11:43:15 |    Duration  1.93s (transform 839ms, setup 881ms, collect 570ms, tests 24ms, environment 0ms, prepare 103ms)"
     },
     {
-      "id": "slither",
-      "label": "Slither SliverVineGate",
+      "id": "solhint",
+      "label": "Solhint SliverVineGate/src",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 4264,
-      "detail": "GatedExecutor._call(address,bytes) (src/GatedExecutor.sol#159-167) uses assembly | \t- INLINE ASM (src/GatedExecutor.sol#162-164) | SliverVineGate._recover(bytes32,bytes) (src/SliverVineGate.sol#449-467) uses assembly | \t- INLINE ASM (src/SliverVineGate.sol#455-459) | SliverVineGate._revertWith(bytes4) (src/SliverVineGate.sol#471-476) uses assembly | \t- INLINE ASM (src/SliverVineGate.sol#472-475) | Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage | . analyzed (3 contracts with 100 detectors), 10 result(s) found"
+      "elapsedMs": 1806,
+      "detail": "✖ 115 problems (0 errors, 115 warnings) |  | ┌──────────────────────────────────────────────────────────────────────────────────────────────────────┐ | │ ===>      NEW  500+ Formal Verification security checks → Free scan: https://bit.ly/dowsers     <=== │ | └──────────────────────────────────────────────────────────────────────────────────────────────────────┘ | ┌──────────────────────────────────────────────────────────────────────────────────────────────────────┐ | │ ===>  Smart contract Audits by Protofire  |  Book a https://calendly.com/vitaliy-chernov/30min  <=== │ | └───────────────────"
     },
     {
-      "id": "aderyn",
-      "label": "Aderyn SliverVineGate",
-      "verdict": "PASS",
-      "exitCode": 101,
-      "elapsedMs": 1028,
-      "detail": "report.md ok; ignore aderyn 0.1.9 solc metadata panic"
-    },
-    {
-      "id": "pnpm-audit",
-      "label": "pnpm audit --prod",
+      "id": "gitleaks",
+      "label": "Gitleaks secret scan",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 1723,
-      "detail": "No known vulnerabilities found"
+      "elapsedMs": 2969,
+      "detail": "○ |     │╲ |     │ ○ |     ○ ░ |     ░    gitleaks |  | 11:43AM INF scan completed in 2.95s | 11:43AM INF no leaks found"
     }
   ],
   "summary": {
-    "pass": 5,
+    "pass": 4,
     "fail": 0,
     "skipped": 0
   },
   "reports": {
-    "securityScorecard": "docs/audit/security-scorecard.json",
-    "staticAnalysisReport": "docs/audit/static-analysis-report.json"
+    "securityScorecard": "docs/audit/security-scorecard.json"
   },
-  "zeroKeyCommand": "pnpm run audit:security"
+  "zeroKeyCommand": "pnpm run audit:fast"
 }
