@@ -8,7 +8,7 @@
 **Grant Audit:** `curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel`  
 **Channel:** [t.me/GMXPartners](https://t.me/GMXPartners)
 
-> **Baseline (locked):** Vitest `135 files | 724 PASS (100% Clean)` · Security-tier `5/0/0 PASS` (`docs/audit/static-analysis-report.json`) · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` / `<60µs`.  
+> **Baseline (locked):** Vitest `164 test files | 735 PASS (100% Clean)` · Security-tier `5/0/0 PASS` (`docs/audit/static-analysis-report.json`) · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` / `<60µs`.  
 > Fast-tier scorecard (`docs/audit/security-scorecard.json`) is overwritten by the last `audit:*` run — do not mix tiers.
 
 **Audience:** GMX Builders only. Do not lead with ZeroDev / Robinhood / HL grant narratives.
@@ -54,7 +54,7 @@ Every unsigned increase / decrease / deposit payload injects **+5 bps `uiFeeRece
 
 | Milestone | Scope | Status |
 |-----------|-------|--------|
-| **M1** | Mainnet pre-exec gateway · Live HUD · +5 bps routing · `/api/grant-audit` · **135 files \| 724 PASS** | ✅ Complete & Live |
+| **M1** | Mainnet pre-exec gateway · Live HUD · +5 bps routing · `/api/grant-audit` · **164 test files \| 735 PASS (100% Clean)** | ✅ Complete & Live |
 | **M2** | Institutional gateway · sidecar daemon · `claimUiFees` | Planned |
 | **M3** | Multi-tenant B2B · cross-venue compensation SLA | Planned |
 
@@ -68,7 +68,7 @@ pnpm run audit:security   # 5/0/0 PASS target
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel.isGmxBalancerQualified
 ```
 
-**Regression bar:** `135 files | 724 PASS (100% Clean)` · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
+**Regression bar:** `164 test files | 735 PASS (100% Clean)` · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
 
 ---
 

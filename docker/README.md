@@ -5,7 +5,7 @@
 > B2B zero-GC relay for Grant evaluators · polls live Citadel telemetry · exposes local `/health` + fail-closed `/v1/intent`.
 
 **Entity:** SilverVine Labs · **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) · **Upstream:** `https://bedeltawater.slivervine.xyz/api/telemetry/health`  
-**Regression bar:** **735 PASS (138 files)** · `tsc --noEmit` CLEAN
+**Regression bar:** **164 test files | 735 PASS (100% Clean)** · `tsc --noEmit` CLEAN
 
 ---
 

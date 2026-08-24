@@ -9,7 +9,7 @@
 | Official Site  | [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal                        |
 | Repo           | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)   |
 | Live DApp      | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)                              |
-| Regression bar | 724 Vitest tests pass clean (135 test files) · `tsc --noEmit` clean                             |
+| Regression bar | **164 test files | 735 PASS (100% Clean)** · `tsc --noEmit` clean                             |
 | License        | BUSL-1.1 → Apache-2.0 at M2 / $10M TVL or 24 months                                             |
 | Spec SSOT      | `[docs/architecture/TECHNICAL_SPECIFICATION.md](../../architecture/TECHNICAL_SPECIFICATION.md)` |
 
