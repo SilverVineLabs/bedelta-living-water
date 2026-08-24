@@ -124,6 +124,27 @@ No funded Sepolia / mainnet network dependency for this tier.
 
 ---
 
+## On-Chain Contract Topology (`contracts/` vs `SliverVineGate/`)
+
+Automated dependency audit (2026-08-24): **no TS/JS runtime import** of `contracts/*.sol` paths; **no duplicate** Solidity definitions inside `SliverVineGate/`. Two distinct on-chain surfaces:
+
+| Path | Contracts | Role | Forge / TS linkage |
+|------|-----------|------|-------------------|
+| **`SliverVineGate/`** | `SliverVineGate.sol` · `GatedExecutor.sol` | EIP-712 consume-once attestation gate (Tier 3) | `cd SliverVineGate && forge test` · **60/60** · 327k fuzz |
+| **`contracts/`** | `SliverVineRiskOracle.sol` · `RobinhoodSafetySwitch.sol` | Robinhood Chain compliance oracle + institutional firewall | **Not** in Forge testbed · ABI mirrored in TS |
+
+**TypeScript interface SSOT (Edge runtime):**
+
+| Solidity source | TS ABI / adapter | Usage |
+|-----------------|------------------|-------|
+| `contracts/SliverVineRiskOracle.sol` | `src/services/aa-adapter/risk-oracle.ts` → `SLIVERVINE_RISK_ORACLE_ABI` | `risk-oracle-gate.ts` · viem `readContract` when `SLIVERVINE_RISK_ORACLE_ADDRESS` set |
+| `contracts/RobinhoodSafetySwitch.sol` | `risk-oracle.ts` → `ROBINHOOD_SAFETY_SWITCH_ABI` | `risk-oracle-adapter.ts` · `evaluateComplianceAdapter()` (fail-closed logic) |
+
+**Static analysis:** Solhint / Slither scan repo-wide `*.sol` (includes `contracts/`).  
+**Verdict:** `contracts/` is **not** a safe delete — it is the canonical Solidity spec for Robinhood ingress; TS adapters intentionally mirror ABIs (no Forge artifact import at Edge).
+
+---
+
 ## Maintainer Scripts (evaluator-safe)
 
 | Script | Purpose |
