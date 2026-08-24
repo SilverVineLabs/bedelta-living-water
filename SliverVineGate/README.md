@@ -83,5 +83,5 @@ Both runs must print the same addresses. Record them, plus each chain's `domainS
 
 ## Status
 
-See [MILESTONES.md](./MILESTONES.md). M0–M2 complete and measurable; M3–M6 (deployment, engine
+See [SUBMISSION.md](../docs/grants/SUBMISSION.md) for full grant milestones. M0–M2 complete and measurable; M3–M6 (deployment, engine
 integration, public demo) are the committed remaining work.

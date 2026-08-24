@@ -14,7 +14,7 @@
 | Metric | Locked value | Artifact / verifier |
 |--------|--------------|---------------------|
 | **Vitest Baseline** | **164 test files / 735 PASS (100% Clean)** | `pnpm test` · security-tier Vitest in [`static-analysis-report.json`](./static-analysis-report.json) |
-| **Wasm Core Budget** | **`<28kb` Cloudflare budget, `<60µs` execution (`<150µs` P99 tail)** | `pkg/soil_core.wasm` · `src/wasm/soil_core.rs` · `WASM_BUDGET_BYTES` in `src/sdk/soil-wasm.ts` |
+| **Wasm Core Budget** | **`<28kb` Cloudflare budget, `<60µs` execution (`<150µs` P99 tail)** | [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) · [`soil_core.rs`](../../src/wasm/soil_core.rs) · `WASM_BUDGET_BYTES` in [`soil-wasm.ts`](../../src/sdk/soil-wasm.ts) |
 | **Active Guards** | **`agent-citadel-guard` (50 bps Slippage Deadman)** + R01–R20 matrix **17 Active \| 2 Refactored \| 1 Deprecated** | `src/core/agent-citadel-guard.ts` (`AGENT_DEADMAN_SLIPPAGE_BPS = 50`) |
 | **Revenue Integration** | GMX v2 **`uiFeeReceiver` (+5 bps protocol yield accrual)** | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` |
 | **Security Matrix** | **3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)** | `pnpm run audit:security` → [`static-analysis-report.json`](./static-analysis-report.json) `summary.pass=5` |
@@ -103,7 +103,7 @@
 
 | Item | Spec |
 |------|------|
-| Source | `src/wasm/soil_core.rs` (`#![no_std]`, Apache-2.0 SPDX) |
+| Source | [`soil_core.rs`](../../src/wasm/soil_core.rs) (`#![no_std]`, Apache-2.0 SPDX) |
 | Artifact | `pkg/soil_core.wasm` |
 | Cloudflare budget | **`<28kb`** (`WASM_BUDGET_BYTES = 28 * 1024`) |
 | Hot-path exec | **`<60µs`** warm; **`<150µs` P99 tail** |
