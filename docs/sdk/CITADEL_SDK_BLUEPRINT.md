@@ -1,42 +1,73 @@
 # `@slivervine/citadel-sdk` — Integration Blueprint
 
 **License:** Apache-2.0 · **Entity:** SilverVine Labs  
-**Package:** `@slivervine/citadel-sdk` (monorepo: `src/sdk/`)  
+**Package:** `@slivervine/citadel-sdk` (monorepo: [`src/sdk/`](../../src/sdk/))  
 **EIP-712 domain:** `SliverVineCitadel` · **Version:** `1`  
-**Gate anchor:** `SLIVERVINE_GATE_ADDRESS` (`src/sdk/constants.ts`)
+**Primary execution anchor:** **Arbitrum One (`42161`)** — GMX v2 native gateway + Gate domain SSOT  
+**Gate verifyingContract:** `SLIVERVINE_GATE_ADDRESS` ([`src/sdk/constants.ts`](../../src/sdk/constants.ts))
 
 > **Non-inflatable posture:** This SDK performs **stateless pre-execution validation** before UserOp / Session Key signing. Full cryptographic quorum and replay protection are enforced on-chain by `SliverVineGate.verifyAndConsume` — not claimed as complete off-chain ECDSA recovery in this package.
 
 ---
 
-## Architecture
+## Three Pillars — Multi-Venue Topology
+
+| Pillar | Scope | SDK surface |
+|--------|-------|-------------|
+| **Pillar 1 — Anchor** | **Arbitrum One (`42161`)** is the **primary** execution venue — GMX v2 GM pools, EIP-712 Gate domain, Agent-Citadel-Guard chainId | `ARBITRUM_ONE_CHAIN_ID`, `SLIVERVINE_GATE_ADDRESS`, `verifyAgentIntent()` |
+| **Pillar 2 — The Firewall** | Route policy + capital escort. **Robinhood Chain (`46630`/`4663` → `42161`) is one supported ingress example** — not the core anchor. Core firewall also governs Arbitrum-native routes and Arb ↔ Hyperliquid hedge channels | `assertUnidirectionalBridge()`, `exportRobinhoodAuditSnapshot()`, `quoteRChainYieldToArbitrumGm()` |
+| **Pillar 3 — The Shield** | Sub-ms `checkSoilResistance()` semantics (p50 ~106 μs; Wasm warm &lt;60 μs) protect **Arbitrum One (GMX v2) native execution**, **Arb ↔ Hyperliquid cross-venue routing**, and **Arbitrum Edge Worker AI Agents** | `verifyAgentIntent()`, `evaluateSoilCore()`, `guardAgentUserOp()`, legacy-risk re-exports |
 
 ```text
-┌─────────────────────────────────────────────────────────────┐
-│  dApp / AI Agent / Institutional Router                      │
-└───────────────────────────┬─────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│  @slivervine/citadel-sdk (Apache-2.0)                        │
-│  ├─ verifyAgentIntent()     — soil + session + attestation   │
-│  ├─ evaluateSoilCore()      — Wasm soil_core (<60µs warm)    │
-│  ├─ assertUnidirectionalBridge() — Robinhood Chain → Arbitrum only │
-│  ├─ exportRobinhoodAuditSnapshot() — AML cut-off audit cert        │
-│  └─ legacy-risk barrel      — Worker re-exports (internal)         │
-└───────────────────────────┬─────────────────────────────────┘
-                            │ fail-closed deny
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Cloudflare Edge Worker (BUSL-1.1)                           │
-│  checkSoilResistance() · sequencer-guard · grant-audit       │
-└───────────────────────────┬─────────────────────────────────┘
-                            │ unsigned payload / attestation
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│  SliverVineGate.sol (on-chain)                               │
-│  EIP-712 verifyAndConsume · TTL ≤30s · single-use digest     │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│  dApp / AI Agent / Institutional Router                                   │
+└───────────────────────────────┬──────────────────────────────────────────┘
+                                │
+                                ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│  @slivervine/citadel-sdk (Apache-2.0) — PRIMARY ANCHOR: Arbitrum One      │
+│  ├─ verifyAgentIntent()          — soil + session + deadman + armor       │
+│  ├─ evaluateSoilCore()           — Wasm soil_core (p50 ~106μs / <60μs)   │
+│  ├─ guardAgentUserOp()           — Agent-Citadel-Guard (chainId 42161)     │
+│  ├─ assertUnidirectionalBridge() — Robinhood ingress EXAMPLE (→ 42161)     │
+│  ├─ exportRobinhoodAuditSnapshot() — AML cut-off audit cert                │
+│  └─ legacy-risk barrel           — HL Session Key gates (Worker re-export) │
+└───────────────────────────────┬──────────────────────────────────────────┘
+                                │ fail-closed deny
+                                ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│  Cloudflare Edge Worker (BUSL-1.1)                                        │
+│  checkSoilResistance() · buildGmxV2UnsignedOrderPayload() · sequencer-guard│
+└───────────────────────────────┬──────────────────────────────────────────┘
+                                │ unsigned payload / attestation
+                                ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│  SliverVineGate.sol (on-chain, Arbitrum One)                              │
+│  EIP-712 verifyAndConsume · TTL ≤30s · single-use digest                   │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Dependency Audit — Code-Level (2026-08-24)
+
+Audit scope: [`src/sdk/`](../../src/sdk/) · [`tests/sdk/`](../../tests/sdk/)
+
+| Topology | Verified in SDK/tests | Boundary notes |
+|----------|----------------------|----------------|
+| **a) Arbitrum One Native Gateway** | ✅ `verifyAgentIntent()` + `evaluateSoilCore()` + `ARBITRUM_ONE_CHAIN_ID` | GMX v2 **unsigned order payload** + **5 bps `uiFeeReceiver`** live in Worker [`gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts) (BUSL) — **not** exported from `src/sdk/index.ts`. SDK gates signing **before** Worker broadcast. |
+| **b) Arbitrum ↔ Hyperliquid Delta Escort** | ✅ `verifyAgentIntent()` soil `{ hlSpot, hlPerp, dydxPerp }` + `armor.rpcLatencyMs` + deadman; legacy-risk exports `assertSessionKeyExecutionGates`, `signAndExecuteOrder` | 1× short hedge provenance enforced at Worker Session Key adapter + FoolProof/VineShield — SDK pre-sign cross-venue fuse. |
+| **c) Robinhood → Arbitrum Ingress** | ✅ `assertUnidirectionalBridge()` · `exportRobinhoodAuditSnapshot()` · `tests/sdk/citadel-sdk-bridge-armor.test.ts` | Outbound `46630`/`4663` → `42161` only; inbound `42161` → Robinhood ⇒ `AML_INBOUND_TO_ROBINHOOD_BLOCKED`. |
+| **Primary anchor = Arbitrum One** | ✅ `AGENT_GUARD_CHAIN_ID = ARBITRUM_ONE_CHAIN_ID` in [`agent-citadel-guard.ts`](../../src/core/agent-citadel-guard.ts); Gate EIP-712 domain SSOT `42161` | Robinhood is ingress escort only — never secondary execution anchor. |
+
+**Public export SSOT** ([`src/sdk/index.ts`](../../src/sdk/index.ts)):
+
+```ts
+verifyAgentIntent(input: AgentIntentInput): AgentIntentVerdict
+assertUnidirectionalBridge(input: UnidirectionalBridgeInput): BridgeEscortVerdict
+exportRobinhoodAuditSnapshot(input: RobinhoodAuditSnapshotInput): Promise<RobinhoodAuditSnapshot>
+evaluateSoilCore(input: WasmSoilCoreInput): { output; wasmUsed; elapsedUs }
+guardAgentUserOp(input: AgentCitadelGuardInput): Promise<AgentCitadelGuardResult>
 ```
 
 ---
@@ -45,14 +76,206 @@
 
 | Module | Path | Role |
 |--------|------|------|
-| Public entry | `src/sdk/index.ts` | Re-exports SDK surface |
-| Agent armor | `src/sdk/agent-intent.ts` | `verifyAgentIntent()` — sub-ms gate formula |
-| Wasm soil | `src/sdk/soil-wasm.ts` | `pkg/soil_core.wasm` loader · `<28 KiB` budget |
-| Bridge escort | `src/sdk/unidirectional-bridge.ts` | Outbound-only Robinhood Chain → Arbitrum |
-| Constants | `src/sdk/constants.ts` | EIP-712 domain + chain IDs |
-| Attestation | `src/sdk/attestation.ts` | Envelope structural validation |
-| Robinhood audit | `src/sdk/robinhood-audit-snapshot.ts` | `exportRobinhoodAuditSnapshot()` cut-off cert |
-| Tests | `tests/sdk/citadel-sdk.test.ts` | Gap proofs (injection · tamper · AML block) |
+| Public entry | [`src/sdk/index.ts`](../../src/sdk/index.ts) | Re-exports SDK surface + legacy-risk barrel |
+| Agent armor | [`src/sdk/agent-intent.ts`](../../src/sdk/agent-intent.ts) | `verifyAgentIntent()` — sub-ms gate formula |
+| Wasm soil | [`src/sdk/soil-wasm.ts`](../../src/sdk/soil-wasm.ts) | `pkg/soil_core.wasm` loader · &lt;28 KiB budget |
+| Bridge escort | [`src/sdk/unidirectional-bridge.ts`](../../src/sdk/unidirectional-bridge.ts) | Outbound-only Robinhood → Arbitrum |
+| Robinhood audit | [`src/sdk/robinhood-audit-snapshot.ts`](../../src/sdk/robinhood-audit-snapshot.ts) | `exportRobinhoodAuditSnapshot()` cut-off cert |
+| Agent guard | [`src/core/agent-citadel-guard.ts`](../../src/core/agent-citadel-guard.ts) | Deadman Switch · chainId **42161** |
+| GMX payload (Worker) | [`src/services/adapters/gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts) | Unsigned GMX v2 + `uiFeeReceiver` (BUSL — not SDK export) |
+| Tests | [`tests/sdk/citadel-sdk-intent.test.ts`](../../tests/sdk/citadel-sdk-intent.test.ts) · [`tests/sdk/citadel-sdk-bridge-armor.test.ts`](../../tests/sdk/citadel-sdk-bridge-armor.test.ts) | Injection · attestation · bridge · armor |
+
+---
+
+## Pillar 2 — The Firewall (Route Policy)
+
+Robinhood Chain is **one supported ingress example**, not the protocol anchor.
+
+| Route | Policy | SDK call |
+|-------|--------|----------|
+| `46630` / `4663` → `42161` | Outbound escort OK · `lostUsd ≡ 0` | `assertUnidirectionalBridge()` |
+| `42161` → `46630` / `4663` | **Blocked** (AML isolation) | `capitalLabel: AML_INBOUND_TO_ROBINHOOD_BLOCKED` |
+| Arbitrum-native GMX / HL hedge | Session + soil gates before sign | `verifyAgentIntent()` |
+| Yield quote (decision layer) | Size gates + bridge escort + GM destination | `quoteRChainYieldToArbitrumGm()` |
+
+**Inbound reverse blocking is hard-coded** — zero inbound capital to Robinhood is an invariant, not a runtime toggle.
+
+---
+
+## Pillar 3 — The Shield (Multi-Venue AI Armor)
+
+`checkSoilResistance()` (Edge Worker) and SDK `evaluateSoilCore()` / `verifyAgentIntent()` share the same soil fuse semantics:
+
+| Protected surface | Mechanism | Latency SLO |
+|-------------------|-----------|-------------|
+| **Arbitrum One GMX v2 native execution** | Soil depth / slippage fuse before unsigned payload broadcast | p50 ~106 μs · Wasm warm &lt;60 μs |
+| **Arb ↔ Hyperliquid cross-venue routing** | `hlSpot` / `hlPerp` / `dydxPerp` cross-spread + deadman (50 bps default) | `armor.rpcLatencyMs` ≤ `PGATE_MAX_LATENCY_MS` (200 ms) |
+| **Arbitrum Edge Worker AI Agents** | Prompt injection intercept · Session Key clip/TTL · Gate attestation envelope | Sub-ms Wasm path |
+
+Production decision formula:
+
+```text
+allowedToSign = injectionOk ∧ digestOk ∧ soilOk ∧ sessionOk ∧ gasOk ∧ deadmanOk ∧ armorOk ∧ attOk ∧ wasmOk
+```
+
+| Gate | Limit | Module |
+|------|-------|--------|
+| Soil slippage | ≤ 0.5% (`MAX_SLIPPAGE`) | Wasm `soil_core` or TS fallback |
+| Session clip | ≤ $30 default | `agent-intent.ts` |
+| Session TTL | ≤ 7d | `agent-intent.ts` |
+| RPC / Pgate latency | ≤ **200 ms** | `PGATE_MAX_LATENCY_MS` in [`src/config/constants.ts`](../../src/config/constants.ts) |
+| Sandwich risk | ≤ **25 bps** | `AGENT_ARMOR_SANDWICH_MAX_BPS` |
+| Wasm hot path | **&lt; 60 μs** warm · p50 ~106 μs | [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) |
+
+---
+
+## Code Examples — `@slivervine/citadel-sdk`
+
+### 1. Arbitrum One GMX v2 Soil-Protected Order Routing
+
+SDK gates signing on **Arbitrum One (`42161`)**. GMX unsigned payload construction (incl. 5 bps `uiFeeReceiver`) is Worker-side:
+
+```ts
+import {
+  verifyAgentIntent,
+  evaluateSoilCore,
+  ensureSoilWasm,
+  ARBITRUM_ONE_CHAIN_ID,
+  EIP712_DOMAIN_NAME,
+  SLIVERVINE_GATE_ADDRESS,
+} from "@slivervine/citadel-sdk";
+
+// Worker (BUSL monorepo internal — not SDK export):
+// import { buildGmxV2UnsignedOrderPayload } from "../services/adapters/gmx-v2-order-payload";
+// const unsigned = buildGmxV2UnsignedOrderPayload({ ... });
+// unsigned.addresses.uiFeeReceiver → GMX_UI_FEE_RECEIVER (5 bps treasury)
+
+ensureSoilWasm();
+const { hlSpot, hlPerp, dydxPerp, depthUsd } = await fetchGmSoilSnapshot();
+const soil = evaluateSoilCore({
+  hlSpot, hlPerp, dydxPerp, depthUsd,
+  orderSizeUsd: 500, accountBalanceUsd: 10_000,
+  maxSlippage: 0.005, minDepthUsd: 50_000,
+});
+if (soil.output.tripped) throw new Error("SOIL_TRIPPED");
+
+const intentDigest = "0x…"; // keccak256(unsigned GMX v2 order bytes)
+const verdict = verifyAgentIntent({
+  intentDigest,
+  sessionKey: { agentAddress: "0x…", maxOrderClipUsd: 30, expiresAtMs: Date.now() + 86_400_000 },
+  soil: { symbol: "ETH-PERP", hlSpot, hlPerp, dydxPerp, depthUsd },
+  gasBurst: { estimatedGasCostUsd: 0.12, sponsored: true, chainId: ARBITRUM_ONE_CHAIN_ID },
+  attestation: {
+    digest: intentDigest,
+    expiresAtMs: Date.now() + 30_000,
+    sig: "0x…",
+    verifyingContract: SLIVERVINE_GATE_ADDRESS,
+    domainName: EIP712_DOMAIN_NAME,
+  },
+  preset: "production",
+});
+if (!verdict.allowedToSign) throw new Error(verdict.reasons.join("|"));
+// → proceed to GMX broadcast on Arbitrum One only after verdict.ok
+```
+
+### 2. Arbitrum ↔ Hyperliquid Delta Hedge Intent
+
+Cross-venue soil + Session Key clip + RPC latency armor before HL short-leg signing:
+
+```ts
+import {
+  verifyAgentIntent,
+  guardAgentUserOp,
+  AGENT_DEADMAN_SLIPPAGE_BPS,
+  EIP712_DOMAIN_NAME,
+  SLIVERVINE_GATE_ADDRESS,
+} from "@slivervine/citadel-sdk";
+
+const intentDigest = "0x…"; // HL Session Key order digest (1× short hedge leg)
+const verdict = verifyAgentIntent({
+  intentDigest,
+  sessionKey: { agentAddress: "0x…", maxOrderClipUsd: 30, expiresAtMs: Date.now() + 7 * 86_400_000 },
+  soil: {
+    symbol: "ETH-PERP",
+    hlSpot: 3500,
+    hlPerp: 3501.2,   // cross-venue spread monitored
+    dydxPerp: 3500.5,
+    depthUsd: 500_000,
+    isTestnet: false,
+  },
+  deadman: { maxSlippageBps: AGENT_DEADMAN_SLIPPAGE_BPS, soilResistanceThreshold: 50 },
+  armor: { rpcLatencyMs: 85 }, // fail-closed if > PGATE_MAX_LATENCY_MS (200)
+  attestation: {
+    digest: intentDigest,
+    expiresAtMs: Date.now() + 30_000,
+    sig: "0x…",
+    verifyingContract: SLIVERVINE_GATE_ADDRESS,
+    domainName: EIP712_DOMAIN_NAME,
+  },
+  preset: "production",
+});
+if (!verdict.allowedToSign) throw new Error(verdict.reasons.join("|"));
+
+// Optional: Agent-Citadel-Guard deadman reject envelope (chainId 42161)
+const guard = await guardAgentUserOp({
+  intent: { maxSlippageBps: 50, soilResistanceThreshold: 50, targetMarket: "ETH-PERP" },
+  soil: { symbol: "ETH-PERP", hlSpot: 3500, hlPerp: 3501.2, dydxPerp: 3500.5, depthUsd: 500_000 },
+});
+if (!guard.allowed) throw new Error("DEADMAN_SWITCH_TRIPPED");
+```
+
+Legacy-risk barrel (same package) also exports `assertSessionKeyExecutionGates` and `signAndExecuteOrder` for Worker HL pipelines.
+
+### 3. Robinhood Unidirectional Escort
+
+```ts
+import {
+  assertUnidirectionalBridge,
+  exportRobinhoodAuditSnapshot,
+  quoteRChainYieldToArbitrumGm,
+  AML_INBOUND_TO_ROBINHOOD_BLOCKED,
+  ROBINHOOD_TESTNET_CHAIN_ID,
+  ARBITRUM_ONE_CHAIN_ID,
+} from "@slivervine/citadel-sdk";
+
+// Outbound escort: Robinhood → Arbitrum One (primary anchor)
+const escort = assertUnidirectionalBridge({
+  sourceChainId: ROBINHOOD_TESTNET_CHAIN_ID, // or 4663 mainnet
+  destChainId: ARBITRUM_ONE_CHAIN_ID,
+  amountUsd: 2_500,
+  wallet: "0x…",
+  initiatedAtMs: Date.now(),
+});
+if (!escort.ok || escort.lostUsd !== 0) throw new Error(escort.reasons.join("|"));
+
+// Inbound reverse path — always blocked
+const inbound = assertUnidirectionalBridge({
+  sourceChainId: ARBITRUM_ONE_CHAIN_ID,
+  destChainId: ROBINHOOD_TESTNET_CHAIN_ID,
+  amountUsd: 10,
+  wallet: "0x…",
+  initiatedAtMs: Date.now(),
+});
+// inbound.ok === false · inbound.capitalLabel === AML_INBOUND_TO_ROBINHOOD_BLOCKED
+
+const quote = quoteRChainYieldToArbitrumGm({
+  wallet: "0x…",
+  symbol: "USDC",
+  assetKind: "idle",
+  amountUsd: 2_500,
+  sourceChainId: ROBINHOOD_TESTNET_CHAIN_ID,
+});
+// quote.destChainId === 42161 · quote.bridgeEscortOk === true
+
+const cert = await exportRobinhoodAuditSnapshot({
+  robinhoodChainId: ROBINHOOD_TESTNET_CHAIN_ID,
+  amountUsd: 2_500,
+  wallet: "0x…",
+  initiatedAtMs: Date.now(),
+  cutoffTimestamp: new Date().toISOString(),
+});
+// cert.inboundBlocked === true · cert.lostUsd === 0
+```
 
 ---
 
@@ -62,166 +285,45 @@
 |-------|-------|
 | `name` | `SliverVineCitadel` |
 | `version` | `1` |
-| `chainId` | Deployment chain (42161 Arbitrum One SSOT) |
+| `chainId` | **42161** (Arbitrum One — primary anchor) |
 | `verifyingContract` | `SLIVERVINE_GATE_ADDRESS` |
 
-Attestation envelopes must bind:
-
-- `digest` — UserOp / calldata hash
-- `expiresAtMs` — ≤ 30s TTL (aligned with Oracle Lag Shield)
-- `sig` — Gate signer material (L1 quorum at contract)
-- `verifyingContract` — must match `SLIVERVINE_GATE_ADDRESS`
-- `domainName` — must equal `SliverVineCitadel`
-
----
-
-## Sub-Millisecond Gate Integration
-
-Production decision formula (`verifyAgentIntent`):
-
-```text
-allowedToSign = injectionOk ∧ digestOk ∧ soilOk ∧ sessionOk ∧ gasOk ∧ attOk
-```
-
-| Gate | Limit | Module |
-|------|-------|--------|
-| Soil slippage | ≤ 0.5% (`MAX_SLIPPAGE`) | Wasm `soil_core` or TS fallback |
-| Session clip | ≤ $30 default | `agent-intent.ts` |
-| Session TTL | ≤ 7d | `agent-intent.ts` |
-| RPC / Pgate latency | ≤ **200 ms** | `PGATE_MAX_LATENCY_MS` in `src/config/constants.ts` (compile-time, not env) |
-| Wasm hot path | **< 60 µs** warm | `pkg/soil_core.wasm` |
-| Pure math soil | ~0.0002 ms | Grant resilience benchmark |
-
-**Integration sequence:**
-
-1. Build intent digest from unsigned UserOp / GMX payload.
-2. Call `verifyAgentIntent()` with soil snapshot + attestation envelope.
-3. If `allowedToSign === false` → **do not** request wallet / Session Key signature.
-4. Optionally route attestation through `SliverVineGate.verifyAndConsume` on-chain before `GatedExecutor.execute`.
-
----
-
-## Quick Start
-
-```ts
-import {
-  verifyAgentIntent,
-  assertUnidirectionalBridge,
-  EIP712_DOMAIN_NAME,
-  SLIVERVINE_GATE_ADDRESS,
-} from "@slivervine/citadel-sdk";
-
-const verdict = verifyAgentIntent({
-  intentDigest: "0x…",
-  sessionKey: { agentAddress: "0x…", maxOrderClipUsd: 30, expiresAtMs: Date.now() + 86_400_000 },
-  soil: { symbol: "ETH-PERP", hlSpot: 3500, hlPerp: 3501, dydxPerp: 3500.5, depthUsd: 500_000 },
-  attestation: {
-    digest: "0x…",
-    expiresAtMs: Date.now() + 30_000,
-    sig: "0x…",
-    verifyingContract: SLIVERVINE_GATE_ADDRESS,
-    domainName: EIP712_DOMAIN_NAME,
-  },
-  preset: "production",
-});
-
-if (!verdict.allowedToSign) {
-  throw new Error(verdict.reasons.join("|"));
-}
-```
+Attestation envelopes must bind: `digest` · `expiresAtMs` (≤ 30s) · `sig` · `verifyingContract` · `domainName`.
 
 ---
 
 ## Audit & Telemetry
 
-### 5% Emergency Margin Buffer (HL Cross-Margin)
-
-| Constant | Value | Module |
-|----------|-------|--------|
-| `DEFAULT_CROSS_MMR` | `0.05` (5%) | `src/services/risk/liquidation-meter.ts` |
-
-Verified by `tests/risk-control/margin-buffer.test.ts` — asserts SSOT constant, default MMR on liq estimate, and `needsSoilRebalance` when free buffer ≤ 5%.
-
-```bash
-pnpm exec vitest run tests/risk-control/margin-buffer.test.ts
-```
-
 ### `exportRobinhoodAuditSnapshot()`
 
-Immutable **Robinhood Chain audit cut-off certificate** — SHA-256 signed JSON for institutional diligence exports. Records chain status, AML isolation, zero-loss invariant, and cut-off timestamp.
+Immutable Robinhood Chain audit cut-off certificate — SHA-256 signed JSON for institutional diligence exports.
 
-| Field | Type | Meaning |
-|-------|------|---------|
-| `robinhoodChainId` | `46630` \| `4663` | **46630** testnet sandbox active · **4663** mainnet filter state |
-| `mainnetFilterActive` | `true` | Chain **4663** inbound AML filter armed |
-| `inboundBlocked` | `true` | AML isolation proof (`AML_INBOUND_TO_ROBINHOOD_BLOCKED`) |
-| `inFlightCapitalUsd` | `number` | Active Across bridge in-flight notional |
-| `settledCapitalUsd` | `number` | Settled outbound escort notional |
-| `lostUsd` | `0` | Strict zero-loss invariant (`lostUsd ≡ 0`) |
-| `inboundToRobinhoodPermitted` | `false` | Hard invariant — zero inbound capital |
-| `cutoffTimestamp` | ISO-8601 | Audit cut-off instant (immutable snapshot boundary) |
-| `cutoffTimestampUnix` | `number` | UNIX epoch seconds (same cut-off) |
-| `sha256Signature` | hex | Canonical JSON digest |
-
-**Chain status matrix:**
-
-| Network | Chain ID | Snapshot role |
-|---------|----------|---------------|
-| Robinhood Testnet | **46630** | Active integration sandbox — outbound escort to Arbitrum |
-| Robinhood Mainnet | **4663** | Deployment-ready — inbound from 42161 blocked at protocol filter |
+| Field | Meaning |
+|-------|---------|
+| `robinhoodChainId` | `46630` testnet · `4663` mainnet |
+| `inboundBlocked` | AML isolation proof |
+| `lostUsd` | Strict zero-loss invariant (`0`) |
+| `cutoffTimestamp` | Immutable snapshot boundary |
 
 **HTTP mirror:** `GET /api/robinhood-audit-snapshot?chainId=46630&amountUsd=2500`
 
-```ts
-import {
-  exportRobinhoodAuditSnapshot,
-  ROBINHOOD_MAINNET_CHAIN_ID,
-  ROBINHOOD_TESTNET_CHAIN_ID,
-} from "@slivervine/citadel-sdk";
+### 5% Emergency Margin Buffer (HL Cross-Margin)
 
-const cert46630 = await exportRobinhoodAuditSnapshot({
-  robinhoodChainId: ROBINHOOD_TESTNET_CHAIN_ID,
-  amountUsd: 2_500,
-  wallet: "0x…",
-  initiatedAtMs: Date.now(),
-  cutoffTimestamp: new Date().toISOString(),
-});
-
-const cert4663 = await exportRobinhoodAuditSnapshot({
-  robinhoodChainId: ROBINHOOD_MAINNET_CHAIN_ID,
-  amountUsd: 1_000,
-  wallet: "0x…",
-  initiatedAtMs: Date.now(),
-});
-
-// Invariants — must hold on every export
-if (
-  cert46630.inboundBlocked !== true ||
-  cert46630.lostUsd !== 0 ||
-  cert46630.cutoffTimestampUnix !==
-    Math.floor(new Date(cert46630.cutoffTimestamp).getTime() / 1000)
-) {
-  throw new Error("Robinhood audit invariant breach");
-}
-```
-
-**Component + SDK tests:**
-
-```bash
-pnpm exec vitest run tests/components/phase01-audit-certificate-export.test.ts
-pnpm exec vitest run tests/risk-control/margin-buffer.test.ts
-```
+Verified by [`tests/risk-control/margin-buffer.test.ts`](../../tests/risk-control/margin-buffer.test.ts) — `DEFAULT_CROSS_MMR = 0.05`.
 
 ---
 
 ## Verification
 
 ```bash
-pnpm exec vitest run tests/sdk/citadel-sdk.test.ts
-pnpm test
+pnpm exec vitest run tests/sdk/citadel-sdk-intent.test.ts
+pnpm exec vitest run tests/sdk/citadel-sdk-bridge-armor.test.ts
+pnpm test                                    # 164 test files · 735 PASS
 pnpm audit:fast
-pnpm build:wasm   # rebuild pkg/soil_core.wasm
+pnpm build:wasm                              # rebuild pkg/soil_core.wasm
 ```
+
+**Regression bar (locked):** `164 test files | 735 PASS (100% Clean)`
 
 ---
 
@@ -229,4 +331,6 @@ pnpm build:wasm   # rebuild pkg/soil_core.wasm
 
 - SDK README: [`src/sdk/README.md`](../../src/sdk/README.md)
 - Technical Spec: [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md)
+- Wasm core: [`src/wasm/soil_core.rs`](../../src/wasm/soil_core.rs)
 - On-chain Gate: [`SliverVineGate/`](../../SliverVineGate/)
+- Robinhood audit: [`docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](../audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md)

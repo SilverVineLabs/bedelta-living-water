@@ -55,8 +55,8 @@ Every unsigned increase / decrease / deposit payload injects **+5 bps `uiFeeRece
 | Milestone | Scope | Status |
 |-----------|-------|--------|
 | **M1** | Mainnet pre-exec gateway · Live HUD · +5 bps routing · `/api/grant-audit` · **164 test files \| 735 PASS (100% Clean)** | ✅ Complete & Live |
-| **M2** | Institutional gateway · sidecar daemon · `claimUiFees` | Planned |
-| **M3** | Multi-tenant B2B · cross-venue compensation SLA | Planned |
+| **M2** | Institutional gateway · sidecar daemon · `claimUiFees` | ✅ Core Built (Sidecar Daemon Ready / Awaiting Treasury Claim Hook) |
+| **M3** | Multi-tenant B2B · cross-venue compensation SLA | Roadmap (Multi-tenant B2B & Cross-venue SLA) |
 
 ---
 
