@@ -3,7 +3,7 @@
 [![Vitest](https://img.shields.io/badge/Vitest-735%20PASS%20%28164%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts)
 [![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-255%2F255%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water)
-[![Benchmark Latency](https://img.shields.io/badge/Benchmark-0.0002ms_%28p50_106%CE%BCs%29-blueviolet?logo=speedtest)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![Benchmark Latency](https://img.shields.io/badge/Benchmark-p50_106%CE%BCs_E2E_Shield_(Kernel_200ns)-blueviolet?logo=speedtest)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![TypeScript](https://img.shields.io/badge/TypeScript-0%20errors-blue?logo=typescript)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![License](https://img.shields.io/badge/License-BUSL--1.1-orange)](./LICENSE)
 [![Foundry Citadel Gate](https://img.shields.io/badge/Foundry-Forge_Test_Passed-brightgreen?logo=solidity)](./SliverVineGate)
@@ -11,7 +11,7 @@
 
 <p align="center"><img src="public/brand/Detox_Sanctuary_wm.webp" alt="SliverVine Citadel Gate - Detox Sanctuary" width="600" style="border-radius: 8px;"></p>
 
-> **⚡ Sub-Millisecond Risk Decisions (p50 ~106 μs / mean 0.0002 ms) paired with < 1.0ms SLO end-to-end Session Key verification.**
+> **⚡ Sub-Millisecond Risk Decisions — p50 ~106 μs End-to-End Shield Path (Pure-Math Kernel: 200 ns / 0.0002 ms), paired with < 1.0ms SLO end-to-end Session Key verification.**
 >
 > *Primary venue: **Arbitrum One** GMX v2 ETH/USDC GM Pool + Hyperliquid 1× short hedge, protected by Pillar 3 sub-ms Wasm Shield (`checkSoilResistance()`).*
 
@@ -55,7 +55,7 @@ For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API 
 
 | Horizon | Focus |
 |---------|--------|
-| **v0.9 Active Production** | **Arbitrum One** GMX v2 **ETH/USDC GM Pool** (primary) + Hyperliquid **1× short** — eliminates oracle de-peg / FX slippage on the core yield leg. |
+| **v0.9 Production-Ready (Arbitrum Testnet / Dry-Run Verified)** | **Arbitrum One** GMX v2 **ETH/USDC GM Pool** (primary) + Hyperliquid **1× short** — eliminates oracle de-peg / FX slippage on the core yield leg. |
 | **Zero Protocol-Level Lock-Up** | Zero protocol-level lock-up (100% non-custodial); redemption speed is subject only to GMX v2's native 3–5 min async Keeper settlement. Optional ingress AML firewall (e.g. Robinhood **`4663` inbound block**). |
 | **V1.0 Roadmap** | Isomorphic **BTC/USDC GM Pools** and optional **USDG Robinhood Chain Treasury routing** (config-driven; no Wasm rewrite). |
 

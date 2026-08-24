@@ -124,7 +124,7 @@ Solidity vault surface splits capital into two non-fungible risk lanes:
 
 **Invariant:** RWA capital on the permissioned lane cannot be atomically reminted into the permissionless DeFi tranche without an explicit, audited bridge + compliance gate (Across + AA). Chain **4663 → Arbitrum** inbound is denied by default; Testnet **46630** remains the active integration sandbox.
 
-**On-chain anchors:** [`contracts/RobinhoodSafetySwitch.sol`](../contracts/RobinhoodSafetySwitch.sol) · [`contracts/SliverVineRiskOracle.sol`](../contracts/SliverVineRiskOracle.sol).
+**On-chain anchors:** [`contracts/RobinhoodSafetySwitch.sol`](../../contracts/RobinhoodSafetySwitch.sol) · [`contracts/SliverVineRiskOracle.sol`](../../contracts/SliverVineRiskOracle.sol).
 
 ### 2.2 Asset Redemption & Clearing Boundaries
 
