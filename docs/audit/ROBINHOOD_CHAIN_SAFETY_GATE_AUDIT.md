@@ -111,8 +111,8 @@ pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts
 
 ### 2.3 On-Chain Invariants — `RobinhoodSafetySwitch.sol`
 
-**Contract:** `contracts/RobinhoodSafetySwitch.sol`  
-**Oracle anchor:** `contracts/SliverVineRiskOracle.sol`
+**Contract:** [`contracts/RobinhoodSafetySwitch.sol`](../../contracts/RobinhoodSafetySwitch.sol)  
+**Oracle anchor:** [`contracts/SliverVineRiskOracle.sol`](../../contracts/SliverVineRiskOracle.sol)
 
 | Invariant | Mechanism | On Violation |
 |-----------|-----------|--------------|

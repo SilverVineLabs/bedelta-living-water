@@ -180,7 +180,7 @@ Institutional funds route alpha through `silvervine-proxy` at `localhost:8080` â
 | -------------------------------------------------- | ----------------------------------------- |
 | [`Dockerfile.sidecar`](./Dockerfile.sidecar)       | Production image                          |
 | [`sidecar-daemon.mjs`](./sidecar-daemon.mjs)       | Edge-safe daemon (no TS runtime)          |
-| [README.md](../README.md)                          | Grant audit HUD Â· live `/api/grant-audit` |
+| [Root README.md](../README.md)                          | Citadel Core Architecture & Quickstart    |
 | [docs/grants/arbitrum/GRANT_PROPOSAL.md](../docs/grants/arbitrum/GRANT_PROPOSAL.md) | Full Citadel scope                        |
 | [docs/README.md](../docs/README.md) | Docs audience index                       |
 
