@@ -1,6 +1,6 @@
 {
   "schema": "silvervine.static-analysis.v3",
-  "generatedAt": "2026-08-22T05:08:10.040Z",
+  "generatedAt": "2026-08-24T05:32:27.931Z",
   "narrative": "behavioral_pass_does_not_imply_web3_security",
   "tier": "security",
   "tools": {
@@ -9,10 +9,10 @@
       "label": "Full Vitest suite",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 93450,
-      "detail": "[SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when isSystemFlushed is true | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when statusCode === 3 even if flush flag is false | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-use",
+      "elapsedMs": 17543,
+      "detail": "stderr | tests/defense/layout-metric-unlock.test.ts > Layout metric provider — unlock gate > rootProtection deadlock when wrong operator sig | {\"level\":\"error\",\"module\":\"risk-control\",\"event\":\"ROOT_PROTECTION_TRIP\",\"symbol\":\"BTC\",\"timestamp\":\"2026-07-25T06:00:00.000Z\",\"message\":\"Vine wrap protection — estimated loss $1.00 exceeds dynamic Max SL $0.00\",\"details\":{\"estimatedLossUsd\":1,\"maxLossLimit\":0,\"accountBalanceUsd\":10000,\"frictionUsd\":null,\"blocked\":true}} |  | stderr | tests/defense/layout-metric-unlock.test.ts > Layout metric provider — unlock gate > rootProtection deadlock when missing ",
       "counterexamples": [
-        "✓ sessionOrderFillSync — waitForNewFill > throws OnChainFillFailedError after max attempts  506ms",
+        "✓ sessionOrderFillSync — waitForNewFill > throws OnChainFillFailedError after max attempts  504ms",
         "stdout | tests/adapters/hl/execution-transport.test.ts > hl/execution — HTTP transport > handles HTTP error responses",
         "stderr | tests/defense-matrix.test.ts > Defense Matrix — R20 Physical Deadlock Execution > vineWrapProtection criHardlock throws HardlockError (403 deadlock)"
       ]
@@ -22,23 +22,23 @@
       "label": "Forge unit + invariants",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 9517,
-      "detail": "|-------------+----------------+-------+---------+----------| | | GateHandler | warp           | 5452  | 0       | 0        | | ╰-------------+----------------+-------+---------+----------╯ |  | [PASS] test_HandlerCanSucceed() (gas: 122069) | Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 9.11s (24.69s CPU time) |  | Ran 4 test suites in 9.11s (19.60s CPU time): 60 tests passed, 0 failed, 0 skipped (60 total tests)"
+      "elapsedMs": 2682,
+      "detail": "|-------------+----------------+-------+---------+----------| | | GateHandler | warp           | 5360  | 0       | 0        | | ╰-------------+----------------+-------+---------+----------╯ |  | [PASS] test_HandlerCanSucceed() (gas: 122069) | Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 2.26s (6.37s CPU time) |  | Ran 4 test suites in 2.26s (6.93s CPU time): 60 tests passed, 0 failed, 0 skipped (60 total tests)"
     },
     "slither": {
       "id": "slither",
       "label": "Slither SliverVineGate",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 4264,
-      "detail": "GatedExecutor._call(address,bytes) (src/GatedExecutor.sol#159-167) uses assembly | \t- INLINE ASM (src/GatedExecutor.sol#162-164) | SliverVineGate._recover(bytes32,bytes) (src/SliverVineGate.sol#449-467) uses assembly | \t- INLINE ASM (src/SliverVineGate.sol#455-459) | SliverVineGate._revertWith(bytes4) (src/SliverVineGate.sol#471-476) uses assembly | \t- INLINE ASM (src/SliverVineGate.sol#472-475) | Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage | . analyzed (3 contracts with 100 detectors), 10 result(s) found"
+      "elapsedMs": 1407,
+      "detail": "\t- INLINE ASM (src/GatedExecutor.sol#162-164) | SliverVineGate._recover(bytes32,bytes) (src/SliverVineGate.sol#449-467) uses assembly | \t- INLINE ASM (src/SliverVineGate.sol#455-459) | SliverVineGate._revertWith(bytes4) (src/SliverVineGate.sol#471-476) uses assembly | \t- INLINE ASM (src/SliverVineGate.sol#472-475) | Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage | . analyzed (3 contracts with 100 detectors), 10 result(s) found | INFO:Slither:/home/lhsum/dev/bedelta-citadel-core/docs/audit/slither.json exists already, the overwrite is prevented"
     },
     "aderyn": {
       "id": "aderyn",
       "label": "Aderyn SliverVineGate",
       "verdict": "PASS",
       "exitCode": 101,
-      "elapsedMs": 1028,
+      "elapsedMs": 1320,
       "detail": "report.md ok; ignore aderyn 0.1.9 solc metadata panic"
     },
     "pnpm-audit": {
@@ -46,7 +46,7 @@
       "label": "pnpm audit --prod",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 1723,
+      "elapsedMs": 1183,
       "detail": "No known vulnerabilities found"
     }
   },
@@ -56,11 +56,11 @@
       "verdict": "PASS",
       "exploratory": false,
       "counterexamples": [
-        "✓ sessionOrderFillSync — waitForNewFill > throws OnChainFillFailedError after max attempts  506ms",
+        "✓ sessionOrderFillSync — waitForNewFill > throws OnChainFillFailedError after max attempts  504ms",
         "stdout | tests/adapters/hl/execution-transport.test.ts > hl/execution — HTTP transport > handles HTTP error responses",
         "stderr | tests/defense-matrix.test.ts > Defense Matrix — R20 Physical Deadlock Execution > vineWrapProtection criHardlock throws HardlockError (403 deadlock)"
       ],
-      "detail": "[SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when isSystemFlushed is true | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when statusCode === 3 even if flush flag is false | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-use"
+      "detail": "stderr | tests/defense/layout-metric-unlock.test.ts > Layout metric provider — unlock gate > rootProtection deadlock when wrong operator sig | {\"level\":\"error\",\"module\":\"risk-control\",\"event\":\"ROOT_PROTECTION_TRIP\",\"symbol\":\"BTC\",\"timestamp\":\"2026-07-25T06:00:00.000Z\",\"message\":\"Vine wrap protection — estimated loss $1.00 exceeds dynamic Max SL $0.00\",\"details\":{\"estimatedLossUsd\":1,\"maxLossLimit\":0,\"accountBalanceUsd\":10000,\"frictionUsd\":null,\"blocked\":true}} |  | stderr | tests/defense/layout-metric-unlock.test.ts > Layout metric provider — unlock gate > rootProtection deadlock when missing "
     },
     "aderyn": {
       "exitCode": 101,
@@ -77,5 +77,7 @@
   },
   "verdict": "PASS",
   "scorecard": "docs/audit/security-scorecard.json",
-  "artifacts": {}
+  "artifacts": {
+    "halmosJson": "docs/audit/halmos.json"
+  }
 }

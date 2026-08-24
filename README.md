@@ -142,7 +142,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 
 **[Pillar 1: The Gatehouse — Auth]** ZeroDev Modular Session Keys (Kernel v3) — scope agent permissions & prevent credential drift.
 
-**[Pillar 2: The Firewall — Compliance] Institutional Ingress & Cross-Chain AML Firewall** — compliance state machine for permissioned ingress sources (Robinhood Chain is a **supported example**, not the product). Outbound escort into Arbitrum · inbound AML blocked. **Audit:** [`docs/audit/R_CHAIN_SAFETY_GATE_AUDIT.md`](./docs/audit/R_CHAIN_SAFETY_GATE_AUDIT.md).
+**[Pillar 2: The Firewall — Compliance] Institutional Ingress & Cross-Chain AML Firewall** — compliance state machine for permissioned ingress sources (Robinhood Chain is a **supported example**, not the product). Outbound escort into Arbitrum · inbound AML blocked. **Audit:** [`docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md).
 
 **[Pillar 3: The Shield — CORE MOAT]** Sub-ms Wasm Armor — `checkSoilResistance()` at p50 ~106 μs intercepts MEV sandwiches & RPC jitter **before** Arbitrum / HL broadcast. This is the primary technical moat of the Arbitrum One Delta Pool.
 
@@ -154,14 +154,14 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 
 | Document | Purpose |
 |----------|---------|
-| [docs/GRANT_PROPOSAL.md](./docs/GRANT_PROPOSAL.md) | Arbitrum / GMX v0.9 grant scope · Triangle Liquidity Loop |
-| [docs/audit/Principal_Audit_Report.md](./docs/audit/Principal_Audit_Report.md) | **Principal Audit Report v1.0.0-rc1** — liability decoupling · survival matrix · Gate / tranches · benchmarks |
-| [docs/audit/R_CHAIN_SAFETY_GATE_AUDIT.md](./docs/audit/R_CHAIN_SAFETY_GATE_AUDIT.md) | **Robinhood Chain Safety Gate Audit v1.0.0** — Pillar 2 Firewall · 46630/4663 unidirectional escort · AML inbound block · `RobinhoodSafetySwitch.sol` |
-| [docs/architecture/TECHNICAL_SPECIFICATION.md](./docs/architecture/TECHNICAL_SPECIFICATION.md) | Triangle Liquidity Loop · Microsecond Moats · ERC/EIP Standards Wiki · tranche / fee / Elara SSOT |
-| [docs/ARBITRUM_ONE_PAGER.md](./docs/ARBITRUM_ONE_PAGER.md) | Arbitrum Citadel technical one-pager |
-| [docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md](./docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md) | Arbitrum grant one-pager (mirror) |
-| [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Dual-engine topology · SRP (<200 LOC per file) |
-| [docs/README.md](./docs/README.md) | Docs index |
+| [docs/architecture/TECHNICAL_SPECIFICATION.md](./docs/architecture/TECHNICAL_SPECIFICATION.md) | Yellow Paper · Triangle Liquidity Loop · ERC/EIP wiki |
+| [docs/sdk/CITADEL_SDK_BLUEPRINT.md](./docs/sdk/CITADEL_SDK_BLUEPRINT.md) | SDK Integration · `@slivervine/citadel-sdk` |
+| [docs/audit/PRINCIPAL_AUDIT_REPORT.md](./docs/audit/PRINCIPAL_AUDIT_REPORT.md) | **Principal Audit Report** — liability decoupling · Gate / survival matrix |
+| [docs/grants/SUBMISSION.md](./docs/grants/SUBMISSION.md) | Buildathon Main Submission |
+| [docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md](./docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md) | Arbitrum grant one-pager |
+| [docs/grants/arbitrum/GRANT_PROPOSAL.md](./docs/grants/arbitrum/GRANT_PROPOSAL.md) | Arbitrum / GMX v0.9 grant scope |
+| [docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) | Robinhood Chain Safety Gate Audit · Pillar 2 Firewall |
+| [docs/README.md](./docs/README.md) | Docs index (5 canonical docs) |
 
 ---
 

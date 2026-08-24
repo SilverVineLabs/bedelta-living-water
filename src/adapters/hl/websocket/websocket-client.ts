@@ -1,13 +1,8 @@
-/**
- * Hyperliquid WebSocket client — subscriptions, heartbeat, reconnect.
- */
-
 import type {
   HyperliquidWsClientOptions,
   HlWsInboundMessage,
   WsBookData,
   WsHealthSnapshot,
-  WsLike,
   WsUserEventData,
 } from "./types";
 import {
@@ -17,36 +12,19 @@ import {
   sendSubscribe,
   trackSubscription,
 } from "./websocket-subscriptions";
-import {
-  attachWsSocketHandlers,
-  emitWsHealthChange,
-  handleWsConnectFailure,
-  refreshWsSoilTrip,
-} from "./websocket-connection";
+import { emitWsHealthChange, refreshWsSoilTrip } from "./websocket-connection";
 import {
   clearHlWsTimers,
   createHlWsClientRuntime,
+  openHlWsSocket,
   patchHlWsHealth,
   resolveHlWsClientDeps,
   type HlWsClientDeps,
   type HlWsClientRuntime,
-} from "./websocket-client-runtime";
-import {
-  createHlWsSocketHost,
-  handleHlWsRawMessage,
-  onHlWsOpen,
-} from "./websocket-client-handlers";
-import {
-  checkHlWsClientStale,
-  scheduleHlWsClientReconnect,
-  sendHlWsClientPing,
-  startHlWsTimers,
-} from "./websocket-client-timers";
-
-const WS_OPEN = 1;
+} from "./websocket-client-connect";
 
 export class HyperliquidWsClient {
-  private ws: WsLike | null = null;
+  private ws: import("./types").WsLike | null = null;
   private readonly deps: HlWsClientDeps;
   private readonly onHealthChange?: (health: WsHealthSnapshot) => void;
   private readonly onMessage?: (message: HlWsInboundMessage) => void;
@@ -119,79 +97,19 @@ export class HyperliquidWsClient {
   }
 
   private openSocket(): void {
-    if (this.ws && this.ws.readyState === WS_OPEN) return;
-    const { deps } = this;
-    const host = createHlWsSocketHost({
+    openHlWsSocket({
       runtime: this.runtime,
-      autoReconnect: deps.autoReconnect,
+      deps: this.deps,
       ws: this.ws,
       setWs: (ws) => {
         this.ws = ws;
       },
-      onOpen: () => {
-        onHlWsOpen(
-          this.runtime,
-          this.ws,
-          () => this.touchActivity(),
-          (patch) => this.setHealth(patch),
-          () =>
-            startHlWsTimers(
-              this.runtime,
-              deps.setIntervalFn,
-              deps.heartbeatIntervalMs,
-              () => this.sendPing(),
-              () => this.checkStale(),
-              deps.clearIntervalFn,
-            ),
-        );
-      },
-      onRawMessage: (raw) => {
-        handleHlWsRawMessage({
-          runtime: this.runtime,
-          raw,
-          now: deps.now,
-          touchActivity: () => this.touchActivity(),
-          setHealth: (patch) => this.setHealth(patch),
-          onMessage: this.onMessage,
-          refreshSoilTrip: () => this.refreshSoilTrip(),
-        });
-      },
-      clearTimers: () => clearHlWsTimers(this.runtime, deps.clearIntervalFn),
-      scheduleReconnect: () =>
-        scheduleHlWsClientReconnect(
-          this.runtime,
-          deps.setTimeoutFn,
-          () => this.openSocket(),
-          (patch) => this.setHealth(patch),
-        ),
+      getHealth: () => this.getHealth(),
       setHealth: (patch) => this.setHealth(patch),
+      refreshSoilTrip: () => this.refreshSoilTrip(),
+      onMessage: this.onMessage,
+      reconnect: () => this.reconnect(),
     });
-    try {
-      const socket = deps.wsFactory(deps.url);
-      this.ws = socket;
-      attachWsSocketHandlers(host, socket);
-    } catch (err) {
-      handleWsConnectFailure(host, err);
-    }
-  }
-
-  private sendPing(): void {
-    sendHlWsClientPing(this.runtime, this.ws, this.deps.now, (p) => this.setHealth(p));
-  }
-
-  private checkStale(): void {
-    checkHlWsClientStale(
-      this.runtime,
-      this.deps.now,
-      this.deps.staleThresholdMs,
-      (p) => this.setHealth(p),
-      () => this.refreshSoilTrip(),
-      () => this.reconnect(),
-    );
-  }
-
-  private touchActivity(): void {
-    this.setHealth({ lastMessageAt: this.deps.now(), stale: false });
   }
 
   private refreshSoilTrip(): void {

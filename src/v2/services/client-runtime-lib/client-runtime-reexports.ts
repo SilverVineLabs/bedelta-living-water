@@ -1,0 +1,133 @@
+/**
+ * Browser-runtime mirrors for dashboard client script injection.
+ */
+
+import {
+  computeDailyLossCapUsd,
+  computeEffectiveMaxSlUsd,
+  computeOrderAwareMaxSlUsd,
+  DAILY_LOSS_CAP_MULTIPLIER,
+  DEFAULT_ACCOUNT_EQUITY_USD,
+  dynamicMaxSlPct,
+  formatDynSlLockTag,
+  MAX_DAILY_SL_COUNT,
+  sanitizeAccountEquityUsd,
+} from "../../../services/effective-max-sl";
+import {
+  clampTensileScore,
+  computeSoilRiskUsd,
+} from "../../../core/risk";
+import {
+  calculateRootDefenseMatrixFromStatuses,
+  calculateRootDefenseMatrixScore,
+  formatRootDefenseMatrixLabel,
+  normalizeTriggeredRoots,
+  resolveRootDefenseMatrixBand,
+  ROOT_DEFENSE_MATRIX_HUD_CONFIG,
+  ROOT_DEFENSE_SCORE_MAX,
+  ROOT_DEFENSE_SCORE_MIN,
+  ROOT_DEFENSE_TIER_PENALTY_BY_ROOT,
+  trippedRootsFromStatuses,
+} from "../../../services/cri-engine";
+import {
+  calculateRiskScore,
+  calculateRiskScoreFromTrippedRoots,
+  formatRiskIndexLabel,
+  isToxicModeTripped,
+  RISK_INDEX_HUD_CONFIG,
+  statusesFromTrippedRoots,
+  TOXIC_MODE_COOLDOWN_MS,
+  TOXIC_MODE_THRESHOLD,
+  TOXICITY_ELEVATED_THRESHOLD,
+} from "../risk-engine";
+import {
+  checkRoot17DailyLimit,
+  createRoot17DailyState,
+  normalizeRoot17State,
+  recordRoot17SlTrip,
+  utcDayKey,
+  type Root17DailyState,
+} from "../root17-daily";
+import {
+  formatFrictionLabel,
+  formatGatewayLabel,
+  formatPgateStatusLabel,
+  formatTensileLabel,
+  resolveLiveFrictionRatio,
+} from "../../../services/hmi-formatters";
+import {
+  TOPOLOGY_NODE_UI,
+  enrichSystemStateVectorEquilibrium,
+  resolveActiveNode,
+  resolveEquilibriumMode,
+  EQUILIBRIUM_MODE_UI,
+} from "../../../services/vector-equilibrium";
+import {
+  assertFlashHardLocks,
+  checkRoleEligibility,
+  ROLE_LOCK_TIPS,
+  ROLE_TX_THRESHOLDS,
+} from "../step1-engine";
+import {
+  estimateSlipLossUsd,
+  exceedsMaxRiskBoundary,
+  resolveAttackLock,
+  resolveRootTelemetryDisplayStatus,
+} from "../trade-pipeline";
+
+export {
+  calculateRootDefenseMatrixFromStatuses,
+  calculateRootDefenseMatrixScore,
+  formatRootDefenseMatrixLabel,
+  normalizeTriggeredRoots,
+  resolveRootDefenseMatrixBand,
+  ROOT_DEFENSE_MATRIX_HUD_CONFIG,
+  ROOT_DEFENSE_SCORE_MAX,
+  ROOT_DEFENSE_SCORE_MIN,
+  ROOT_DEFENSE_TIER_PENALTY_BY_ROOT,
+  trippedRootsFromStatuses,
+  assertFlashHardLocks,
+  calculateRiskScore,
+  calculateRiskScoreFromTrippedRoots,
+  checkRoleEligibility,
+  checkRoot17DailyLimit,
+  computeDailyLossCapUsd,
+  computeEffectiveMaxSlUsd,
+  computeOrderAwareMaxSlUsd,
+  createRoot17DailyState,
+  DEFAULT_ACCOUNT_EQUITY_USD,
+  DAILY_LOSS_CAP_MULTIPLIER,
+  dynamicMaxSlPct,
+  formatDynSlLockTag,
+  formatRiskIndexLabel,
+  isToxicModeTripped,
+  MAX_DAILY_SL_COUNT,
+  normalizeRoot17State,
+  recordRoot17SlTrip,
+  resolveAttackLock,
+  estimateSlipLossUsd,
+  exceedsMaxRiskBoundary,
+  resolveRootTelemetryDisplayStatus,
+  ROLE_LOCK_TIPS,
+  ROLE_TX_THRESHOLDS,
+  RISK_INDEX_HUD_CONFIG,
+  sanitizeAccountEquityUsd,
+  statusesFromTrippedRoots,
+  TOXIC_MODE_COOLDOWN_MS,
+  TOXIC_MODE_THRESHOLD,
+  TOXICITY_ELEVATED_THRESHOLD,
+  utcDayKey,
+  type Root17DailyState,
+  TOPOLOGY_NODE_UI,
+  EQUILIBRIUM_MODE_UI,
+  enrichSystemStateVectorEquilibrium,
+  resolveActiveNode,
+  resolveEquilibriumMode,
+  formatPgateStatusLabel,
+  formatTensileLabel,
+  formatFrictionLabel,
+  formatGatewayLabel,
+  resolveLiveFrictionRatio,
+  clampTensileScore,
+  computeSoilRiskUsd,
+};

@@ -50,35 +50,28 @@ san
 # Block all root-level and sub-folder markdown files by default
 *.md
 docs/**
+san
 
 # EXPLICITLY ALLOW ONLY PUBLIC GRANT ARTIFACTS
 !README.md
 !LICENSE
-!DOCKER_README.md
-!docs/ARCHITECTURE.md
-!docs/ARBITRUM_ONE_PAGER.md
+!docker/README.md
 !docs/architecture/
 !docs/architecture/**
 !docs/grants/
 !docs/grants/**
-!docs/Buildaton.md
-!docs/map_Index.md
-!docs/SLA.md
-!docs/TCA_Data_Product.md
 !docs/README.md
-!docs/grant/
-!docs/grant/**
+!docs/VERIFICATION_MATRIX.md
 !SECURITY.md
 !docs/audit/
 !docs/audit/**
 !docs/audit/negative-proofs-artifact.json
 !docs/audit/chaos-blackswan-metrics.json
 !docs/audit/zerodev-aa-metrics.json
-!docs/GRANT_PROPOSAL.md
 !docs/sdk/
 !docs/sdk/**
-!docs/audit/Principal_Audit_Report.md
-!docs/audit/R_CHAIN_SAFETY_GATE_AUDIT.md
+!docs/audit/PRINCIPAL_AUDIT_REPORT.md
+!docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md
 !src/sdk/README.md
 
 # Internal scorecards / self-audits (local-only; do not publish)
@@ -87,4 +80,5 @@ docs/audit/BUILDATHON_JUDGE_REVIEW.md
 
 # Rust Wasm build artifacts (commit pkg/soil_core.wasm only)
 src/wasm/target/
+
 

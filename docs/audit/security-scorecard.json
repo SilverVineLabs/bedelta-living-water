@@ -2,7 +2,7 @@
   "schema": "silvervine.security-scorecard.v4",
   "protocol": "SliverVine / BeΔLivingWater",
   "tier": "fast",
-  "generatedAt": "2026-08-24T03:43:22.432Z",
+  "generatedAt": "2026-08-24T05:56:41.087Z",
   "narrative": "behavioral_pass_does_not_imply_web3_security",
   "overallVerdict": "PASS",
   "gates": [
@@ -11,7 +11,7 @@
       "label": "TypeScript typecheck",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 7048,
+      "elapsedMs": 7129,
       "detail": "exit 0"
     },
     {
@@ -19,15 +19,15 @@
       "label": "Vitest security slice",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 2832,
-      "detail": "RUN  v3.2.7 /home/lhsum/dev/bedelta-citadel-core |  |  ✓ |unit| tests/security/security-audit.test.ts (4 tests) 24ms |  |  Test Files  1 passed (1) |       Tests  4 passed (4) |    Start at  11:43:15 |    Duration  1.93s (transform 839ms, setup 881ms, collect 570ms, tests 24ms, environment 0ms, prepare 103ms)"
+      "elapsedMs": 2734,
+      "detail": "RUN  v3.2.7 /home/lhsum/dev/bedelta-citadel-core |  |  ✓ |unit| tests/security/security-audit.test.ts (4 tests) 19ms |  |  Test Files  1 passed (1) |       Tests  4 passed (4) |    Start at  13:56:35 |    Duration  1.83s (transform 834ms, setup 885ms, collect 545ms, tests 19ms, environment 0ms, prepare 93ms)"
     },
     {
       "id": "solhint",
       "label": "Solhint SliverVineGate/src",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 1806,
+      "elapsedMs": 1332,
       "detail": "✖ 115 problems (0 errors, 115 warnings) |  | ┌──────────────────────────────────────────────────────────────────────────────────────────────────────┐ | │ ===>      NEW  500+ Formal Verification security checks → Free scan: https://bit.ly/dowsers     <=== │ | └──────────────────────────────────────────────────────────────────────────────────────────────────────┘ | ┌──────────────────────────────────────────────────────────────────────────────────────────────────────┐ | │ ===>  Smart contract Audits by Protofire  |  Book a https://calendly.com/vitaliy-chernov/30min  <=== │ | └───────────────────"
     },
     {
@@ -35,8 +35,8 @@
       "label": "Gitleaks secret scan",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 2969,
-      "detail": "○ |     │╲ |     │ ○ |     ○ ░ |     ░    gitleaks |  | 11:43AM INF scan completed in 2.95s | 11:43AM INF no leaks found"
+      "elapsedMs": 2528,
+      "detail": "○ |     │╲ |     │ ○ |     ○ ░ |     ░    gitleaks |  | 1:56PM INF scan completed in 2.49s | 1:56PM INF no leaks found"
     }
   ],
   "summary": {
