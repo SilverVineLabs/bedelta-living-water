@@ -66,7 +66,7 @@ SilverVine does not interpret natural-language LLM prompts. The Shield enforces 
 | **V1.0 Isomorphic Extension** | ⏳ Planned | **BTC/USDC GM Pool** — zero bytecode / Wasm changes; config-driven market address mapping |
 | **V1.0 Roadmap (Planned Post-Grant)** | ⏳ Planned | On-chain ECDSA Signer Recovery Verification · Production Smart Contract Deployment for GM Vaults · Native **USDG Robinhood Chain Treasury routing** |
 
-**Demo:** `pnpm demo:pipeline` / `pnpm demo:citadel` — 5-step grant E2E (Intent+Deadman → Robinhood escort → GMX underweight → HL Session hedge → R20 Panic Flash).
+**Demo:** `pnpm run demo:e2e` — 5-step grant E2E (Intent+Deadman → Robinhood escort → GMX underweight → HL Session hedge → R20 Panic Flash).
 
 ---
 

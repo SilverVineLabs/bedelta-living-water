@@ -120,7 +120,7 @@ No funded Sepolia / mainnet network dependency for this tier.
 | Health | `curl -sS http://localhost:8080/health \| jq .` |
 | Fail-closed intent | `POST /v1/intent` → HTTP **403** |
 | Live grant audit | `curl -s https://bedeltawater.slivervine.xyz/api/grant-audit \| jq .provenanceVerified` |
-| Demo pipeline | `pnpm demo:pipeline` / `pnpm demo:citadel` |
+| Demo pipeline | `pnpm run demo:e2e` |
 
 ---
 
@@ -154,7 +154,7 @@ Automated dependency audit (2026-08-24): **no TS/JS runtime import** of `contrac
 | `pnpm test:watch` | Interactive Vitest |
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm audit:fast` / `audit:security` / `audit:nightly` | 3-tier security matrix |
-| `pnpm demo:pipeline` / `demo:citadel` | Grant E2E demonstration |
+| `pnpm run demo:e2e` | Grant E2E demonstration |
 | `pnpm build:wasm` | Rust `soil_core.wasm` |
 | `pnpm verify:5tx` / `verify:grant` / `verify:negative` | Provenance / negative proofs |
 | `pnpm build` / `deploy` / `dev` | Worker / SPA toolchain |

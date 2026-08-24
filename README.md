@@ -5,7 +5,7 @@
 [![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-255%2F255%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![Benchmark Latency](https://img.shields.io/badge/Benchmark-0.0002ms_%28p50_106%CE%BCs%29-blueviolet?logo=speedtest)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![TypeScript](https://img.shields.io/badge/TypeScript-0%20errors-blue?logo=typescript)](https://github.com/SilverVineLabs/bedelta-living-water)
-[![License](https://img.shields.io/badge/License-BSL%201.1-orange)](./LICENSE)
+[![License](https://img.shields.io/badge/License-BUSL--1.1-orange)](./LICENSE)
 [![Foundry Citadel Gate](https://img.shields.io/badge/Foundry-Forge_Test_Passed-brightgreen?logo=solidity)](./SliverVineGate)
 
 
@@ -56,7 +56,7 @@ For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API 
 | Horizon | Focus |
 |---------|--------|
 | **v0.9 Active Production** | **Arbitrum One** GMX v2 **ETH/USDC GM Pool** (primary) + Hyperliquid **1× short** — eliminates oracle de-peg / FX slippage on the core yield leg. |
-| **Zero Protocol Lock-Up** | Zero-lockup liquidity via GMX v2’s **3–5 min async redemption**; optional ingress AML firewall (e.g. Robinhood **`4663` inbound block**). |
+| **Zero Protocol-Level Lock-Up** | Zero protocol-level lock-up (100% non-custodial); redemption speed is subject only to GMX v2's native 3–5 min async Keeper settlement. Optional ingress AML firewall (e.g. Robinhood **`4663` inbound block**). |
 | **V1.0 Roadmap** | Isomorphic **BTC/USDC GM Pools** and optional **USDG Robinhood Chain Treasury routing** (config-driven; no Wasm rewrite). |
 
 **Standards & Infrastructure:** Built on **[EIP-712](https://eips.ethereum.org/EIPS/eip-712)** attestation · **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) / [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** modular session keys (ZeroDev Kernel v3) · **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** base-fee sensing · **ArbOS 61** · Wasm soil core · optional permissioned ingress (e.g. Robinhood Chain) — full wiki: [`TECHNICAL_SPECIFICATION.md` § Standard Compliance](./docs/architecture/TECHNICAL_SPECIFICATION.md#-standard-compliance--erceip-wiki).
