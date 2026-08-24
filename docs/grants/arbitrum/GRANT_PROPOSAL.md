@@ -17,6 +17,8 @@
 
 SliverVine deploys a **Zero-Trust Pre-Execution Citadel** on **Arbitrum One**, with **Sepolia** dual-leg provenance and an L1 **`SliverVineGate.sol`** consume-once attestation lock. Before any Arbitrum broadcast, Edge sensors (sequencer, oracle lag, soil) fail-closed; production attestations bind to Gate `verifyingContract`.
 
+For LP exit semantics, the protocol enforces **zero protocol-level lock-up (100% non-custodial); redemption speed is subject only to GMX v2's native 3–5 min async Keeper settlement.**
+
 Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5/0/0 PASS** lives in `docs/audit/static-analysis-report.json` (Vitest, Forge, Slither, Aderyn, pnpm-audit); `security-scorecard.json` mirrors the last run’s `"tier"`. Nightly adds Echidna / Halmos.
 
 ---
@@ -54,7 +56,7 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 | Phase | Scope | Status |
 |-------|-------|--------|
-| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **164/735** bar · 5-step E2E (`pnpm demo:pipeline`) | ✅ Submitted |
+| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **164/735** bar · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
 | Security Grant pack | Cold audit pack · R01–R20 + Slither/Echidna narrative | ⏳ Planned |
 | Institutional AA | Kernel v3 Session Key (draft: `docs/internal/zerodev/`) | ✅ Delivered in v0.9 |
 
@@ -66,7 +68,7 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 pnpm install
 pnpm test                 # 164 test files | 735 PASS (100% Clean)
 pnpm run audit:security   # 5/0/0 PASS
-pnpm demo:pipeline        # 5-step Citadel E2E (dry-run)
+pnpm run demo:e2e         # 5-step Citadel E2E (dry-run)
 cd SliverVineGate && forge test && cd ..
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualLegProof
 ```
