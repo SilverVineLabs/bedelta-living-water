@@ -1,3 +1,4 @@
+# BUSL-1.1 (Business Source License 1.1) · Copyright (c) 2026 SilverVine Labs
 # SliverVine Citadel Telemetry Sidecar — v0.8-preview
 # Build: docker build -f docker/Dockerfile.sidecar -t silvervine-sidecar .
 # Run:   docker run -d -p 8080:8080 silvervine-sidecar
@@ -6,7 +7,8 @@ FROM node:22-alpine AS runtime
 
 LABEL org.opencontainers.image.title="silvervine-sidecar" \
       org.opencontainers.image.version="v0.8-preview" \
-      org.opencontainers.image.description="Citadel telemetry sidecar daemon"
+      org.opencontainers.image.description="Citadel telemetry sidecar daemon" \
+      org.opencontainers.image.licenses="BUSL-1.1"
 
 WORKDIR /app
 

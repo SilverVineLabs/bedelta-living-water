@@ -66,7 +66,7 @@ SilverVine does not interpret natural-language LLM prompts. The Shield enforces 
 | **V1.0 Isomorphic Extension** | ⏳ Planned | **BTC/USDC GM Pool** — zero bytecode / Wasm changes; config-driven market address mapping |
 | **V1.0 Roadmap (Planned Post-Grant)** | ⏳ Planned | On-chain ECDSA Signer Recovery Verification · Production Smart Contract Deployment for GM Vaults · Native **USDG Robinhood Chain Treasury routing** |
 
-**Demo:** `pnpm demo:pipeline` / `pnpm demo:citadel` / `pnpm demo:e2e` — 5-step grant E2E (Intent+Deadman → Robinhood escort → GMX underweight → HL Session hedge → R20 Panic Flash).
+**Demo:** `pnpm demo:pipeline` / `pnpm demo:citadel` — 5-step grant E2E (Intent+Deadman → Robinhood escort → GMX underweight → HL Session hedge → R20 Panic Flash).
 
 ---
 
@@ -350,11 +350,10 @@ B2B Option B (slippage-savings fee) remains a separate commercial SKU and is not
 |----------|---------|
 | [`docs/README.md`](../README.md) | Audience router |
 | [`docs/grants/`](../grants/) | Public grant submissions (GMX · Arbitrum) |
-| [`docs/internal/`](../internal/) | Confidential pitch drafts (OpSec) |
 | [`CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md) | Apache-2.0 SDK API |
-| [`../audit/`](../audit/) | `security-scorecard.json` · static analysis |
-| [`../../DOCKER_README.md`](../../DOCKER_README.md) | Sidecar |
-| [`../ARBITRUM_ONE_PAGER.md`](../ARBITRUM_ONE_PAGER.md) | Grant one-pager |
+| [`../audit/`](../audit/) | Principal audit · Robinhood Chain safety gate |
+| [`../../docker/README.md`](../../docker/README.md) | Sidecar |
+| [`../grants/arbitrum/ARBITRUM_ONE_PAGER.md`](../grants/arbitrum/ARBITRUM_ONE_PAGER.md) | Grant one-pager |
 | `src/services/risk/liquidation-meter.ts` | `DEFAULT_CROSS_MMR = 0.05` |
 | `src/services/session-key-adapter-lib/nonce-auto-healing.ts` | HL nonce auto-resync |
 | `src/services/execution/twap-engine-v2.ts` | TWAP path planner |

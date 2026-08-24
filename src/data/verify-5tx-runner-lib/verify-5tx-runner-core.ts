@@ -3,36 +3,23 @@
  */
 
 import { Wallet } from "ethers";
-import { executeHlSessionKeyOrder } from "../../adapters/hl/session-key-executor";
 import {
   fetchUserFills,
   resolveTestnetAssetMeta,
-  waitForNewFill,
 } from "../../adapters/hl/wallet/sessionOrderFillSync";
 import { buildSystemState } from "../../core/state";
-import type { IntentLeg } from "../../core/intent-ledger";
 import {
   VERIFIED_5TX_NOTIONAL_USD,
   VERIFIED_5TX_ORDER_COUNT,
   VERIFIED_5TX_SYMBOL,
   aggregateVerifiedFills,
-  applyW01DepthRefillDefense,
-  buildHlTestnetExplorerUrl,
-  buildPreTradeFromSoilAudit,
   createBatchExecutionNonce,
-  estimateSlippageBps,
-  generateUniqueBatchFillHash,
   HL_LIVE_MIN_NOTIONAL_USD,
-  pickFillTxMeta,
-  resolveMarketIocLimitPx,
-  type HlUserFill,
-  type Verified5TxFillRecord,
   type Verified5TxResults,
 } from "../verified-5tx";
 import { resolveHlTestnetPrivateKey, isFundedHlTestnetPrivateKey } from "../../env/hl-testnet-key";
 import {
   VERIFY_5TX_ACCOUNT_BALANCE_USD,
-  VERIFY_5TX_ORDER_SIDES,
   resolveAssetIndexFallback,
   soilAuditSummary,
 } from "./runner-fixture-loader";
@@ -41,6 +28,10 @@ import {
   resolveRunSoilAudit,
   seedSkipSoilCitadelProbes,
 } from "./runner-soil-bypass";
+import {
+  runVerify5TxOrderLoop,
+  seedSeenFillHashes,
+} from "./verify-5tx-runner-order-loop";
 
 export interface Verify5TxRunnerOptions {
   privateKey?: string;
@@ -100,11 +91,7 @@ export async function runVerify5Tx(
 
   const limitPx = Math.round(soilAudit.probe.midPx);
   const fillsBefore = livePost ? await fetchUserFills(wallet.address, fetchFn) : [];
-  const seenFillHashes = new Set<string>(
-    fillsBefore
-      .map((fill: HlUserFill) => String(fill.hash ?? "").trim())
-      .filter(Boolean),
-  );
+  const seenFillHashes = seedSeenFillHashes(fillsBefore);
 
   const systemState = buildSystemState({
     accountBalanceUsd: VERIFY_5TX_ACCOUNT_BALANCE_USD,
@@ -112,96 +99,26 @@ export async function runVerify5Tx(
     skipHardlockAssert: true,
   });
 
-  const records: Verified5TxFillRecord[] = [];
-
-  for (let i = 0; i < VERIFIED_5TX_ORDER_COUNT; i += 1) {
-    const side = VERIFY_5TX_ORDER_SIDES[i] ?? "BUY";
-    const leg: IntentLeg = {
-      venue: "HL",
-      side,
-      sizeUsd: notionalUsd,
+  const records = await runVerify5TxOrderLoop(
+    {
+      wallet,
       symbol,
-    };
-
-    const basePreTrade = buildPreTradeFromSoilAudit(
+      notionalUsd,
       soilAudit,
-      notionalUsd,
-      VERIFY_5TX_ACCOUNT_BALANCE_USD,
-    );
-    const preTrade = applyW01DepthRefillDefense(basePreTrade, soilAudit, notionalUsd);
-    const w01DepthRefillBps = Math.max(32, Math.round(soilAudit.priceImpactBps));
-
-    const orderLimitPx = livePost
-      ? resolveMarketIocLimitPx(soilAudit, side, szDecimals)
-      : limitPx;
-
-    const exec = await executeHlSessionKeyOrder(leg, {
-      signer: wallet,
+      limitPx,
+      livePost,
       dryRun,
-      isTestnet: true,
-      systemState,
-      limitPx: orderLimitPx,
-      preTrade,
-      skipPreTrade: skipSoilProbe,
-      marketIoc: livePost,
+      skipSoilProbe,
+      fetchFn,
+      testnetAssetIndex,
       szDecimals,
-      resolveAssetIndex: () => testnetAssetIndex,
-    });
-
-    if (!exec.ok) {
-      throw new Error(`Order ${i + 1} failed: ${exec.reason ?? "UNKNOWN"}`);
-    }
-
-    let txHash: string;
-    let fillTimeSec: number;
-    let timestamp: string;
-    let fillPx = limitPx;
-
-    if (livePost) {
-      const latest = await waitForNewFill(
-        wallet.address,
-        symbol,
-        seenFillHashes,
-        fetchFn,
-      );
-      seenFillHashes.add(String(latest.hash).trim());
-      const meta = pickFillTxMeta(latest);
-      txHash = meta.txHash;
-      fillTimeSec = meta.fillTimeSec;
-      timestamp = meta.timestamp;
-      fillPx = latest?.px ? Number(latest.px) : limitPx;
-    } else {
-      const fillTs = runTs + i * 2_000 + i;
-      txHash = generateUniqueBatchFillHash(wallet.address, i, executionNonce, fillTs);
-      fillTimeSec = Math.floor(fillTs / 1000);
-      timestamp = new Date(fillTs).toISOString();
-    }
-
-    const { rawSlippageBps, gatedSlippageBps } = estimateSlippageBps(
-      soilAudit.probe.midPx,
-      fillPx,
-    );
-    const savedUsd = Number(
-      (notionalUsd * Math.max(0, rawSlippageBps - gatedSlippageBps) / 10_000).toFixed(4),
-    );
-
-    records.push({
-      index: i + 1,
-      side,
-      symbol,
-      notionalUsd,
-      txHash,
-      fillTimeSec,
-      timestamp,
-      explorerUrl: buildHlTestnetExplorerUrl(txHash),
-      soilPassed: soilAudit.ok && !soilAudit.tripped,
-      w01DepthRefillBps,
-      rawSlippageBps,
-      gatedSlippageBps,
-      savedUsd,
-      dryRun,
-    });
-  }
+      systemState,
+      runTs,
+      executionNonce,
+      seenFillHashes,
+    },
+    VERIFIED_5TX_ORDER_COUNT,
+  );
 
   return {
     event: "HL_TESTNET_5TX_VERIFY",

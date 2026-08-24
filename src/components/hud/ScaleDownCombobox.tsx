@@ -12,68 +12,15 @@ import {
   type ScaleDownComboId,
 } from "./scale-down-presets";
 import { CITADEL_CHAOS_OPERATOR_LOCK } from "./citadel-chaos-store";
-import { BRAND_DELTA_NEUTRAL_LABEL } from "../../config/constants";
-import {
-  PRESET_HOVER_TOOLTIPS,
-  ROOT_PROTECTION_TOOLTIP,
-} from "./scale-down-combobox-tooltips";
 import { HUD_TOOLTIP_PANEL_CLASS } from "./Section1/section1-tooltip-styles";
-
-const MASTER_COMBOS: readonly ScaleDownComboId[] = [
-  "COMBO_A",
-  "COMBO_B",
-  "COMBO_C",
-];
-
-const TREE_PREFIX: Record<ScaleDownComboId, string> = {
-  COMBO_A: "├─",
-  COMBO_B: "├─",
-  COMBO_C: "└─",
-};
-
-const R15_BREAKDOWN_LINE = {
-  label: "R15 Leverage Cap Lock",
-  status: "ARMED",
-  detail: `1x ${BRAND_DELTA_NEUTRAL_LABEL} Collateralized Mode`,
-} as const;
-
-function isRootProtectionLine(label: string): boolean {
-  return label.includes("rootProtection");
-}
-
-function ShieldBreakdownLabel({
-  label,
-}: {
-  label: string;
-}): ReactNode {
-  if (!isRootProtectionLine(label)) {
-    return <span className="text-zinc-300">{label}</span>;
-  }
-
-  return (
-    <span className="group/root relative inline-flex items-center gap-1">
-      <span className="cursor-help text-zinc-300" data-testid="root-protection-breakdown-label">
-        {label}
-      </span>
-      <span
-        role="tooltip"
-        data-testid="root-protection-breakdown-tooltip"
-        className={`${HUD_TOOLTIP_PANEL_CLASS} left-0 whitespace-pre-line group-hover/root:block`}
-      >
-        {ROOT_PROTECTION_TOOLTIP}
-      </span>
-    </span>
-  );
-}
-
-function splitPresetLabelTrail(label: string): {
-  text: string;
-  locked: boolean;
-} {
-  const locked = label.includes("🔒");
-  const text = label.replace(/\s*[🔒ℹ️]/gu, "").trim();
-  return { text, locked };
-}
+import {
+  MASTER_COMBOS,
+  PRESET_HOVER_TOOLTIPS,
+  R15_BREAKDOWN_LINE,
+  ShieldBreakdownLabel,
+  splitPresetLabelTrail,
+  TREE_PREFIX,
+} from "./ScaleDownCombobox-lib/scale-down-combobox-helpers";
 
 export interface ScaleDownComboboxProps {
   defaultCombo?: ScaleDownComboId;
@@ -115,8 +62,8 @@ export function ScaleDownCombobox({
           const comboActive = isPresetUnlocked(comboId, selectedCombo);
           const label = formatMasterPresetLabel(comboId, selectedCombo);
           const { text: labelText, locked } = splitPresetLabelTrail(label);
-          const version = SCALE_DOWN_COMBO_VERSION[comboId];
-          const cascade = PRESET_CASCADE_THEMES[version];
+          const comboVersion = SCALE_DOWN_COMBO_VERSION[comboId];
+          const cascade = PRESET_CASCADE_THEMES[comboVersion];
           const buttonTone = comboActive
             ? isSelected
               ? cascade.selected
