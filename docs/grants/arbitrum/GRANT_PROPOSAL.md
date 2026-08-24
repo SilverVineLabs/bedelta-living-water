@@ -17,7 +17,11 @@
 
 SliverVine deploys a **Zero-Trust Pre-Execution Citadel** on **Arbitrum One**, with **Sepolia** dual-leg provenance and an L1 **`SliverVineGate.sol`** consume-once attestation lock. Before any Arbitrum broadcast, Edge sensors (sequencer, oracle lag, soil) fail-closed; production attestations bind to Gate `verifyingContract`.
 
+**Interceptor Moat:** Deciding transaction execution safety at **p50 ~106 μs** BEFORE MEV bots or Sequencer mempools ever see it. Builder **+5 bps `uiFeeReceiver`** is standard GMX Builders monetization — secondary to the sub-ms risk gateway.
+
 For LP exit semantics, the protocol enforces **zero protocol-level lock-up (100% non-custodial); redemption speed is subject only to GMX v2's native 3–5 min async Keeper settlement.**
+
+**v0.9 Production-Ready (Arbitrum Sepolia Testnet & Dry-Run Verified)** · Mainnet deployment ties to **M6 Grant distribution**.
 
 Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5/0/0 PASS** lives in `docs/audit/static-analysis-report.json` (Vitest, Forge, Slither, Aderyn, pnpm-audit); `security-scorecard.json` mirrors the last run’s `"tier"`. Nightly adds Echidna / Halmos.
 
@@ -51,8 +55,8 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v0.9 Delivered (100% Code & Tested)** | ✅ Live | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX +5 bps UI Fee · **164 test files / 735 PASS (100% Clean)** |
-| **V1.0 Roadmap (Planned Post-Grant)** | ⏳ Planned | On-chain ECDSA Signer Recovery Verification · Production Smart Contract Deployment for GM Vaults |
+| **v0.9 Delivered (100% Code & Tested)** | ✅ Live | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX +5 bps UI Fee (monetization, not moat) · **164 test files / 735 PASS (100% Clean)** · Sepolia / dry-run verified; mainnet ties to M6 |
+| **V1.0 Roadmap (Planned Post-Grant)** | ⏳ Planned | **Citadel-as-a-Service (CaaS)** — productize `@slivervine/citadel-sdk` as an open sub-ms pre-execution risk layer for all Arbitrum dApps & AI Agent frameworks · **Hedge Leg Depth Guard** — dedicated Hyperliquid L2 orderbook depth sensing prior to hedge execution (zero-market-impact 1× short even during flash-liquidity drawdowns) · On-chain ECDSA Signer Recovery · Production GM Vault deployment · BTC/USDC isomorphic pools |
 
 | Phase | Scope | Status |
 |-------|-------|--------|
