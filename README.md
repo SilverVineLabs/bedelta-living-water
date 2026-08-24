@@ -63,9 +63,9 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 | **M0: Operational Foundation** | ✅ Delivered | WSL / PNPM Monorepo, Cloudflare Edge Worker pipeline, and CI/CD strict typecheck. |
 | **M1: On-Chain Citadel Gate** | ✅ Delivered | `SliverVineGate.sol` core invariant locks, 327,675 Property Fuzzing, 25k gas bounds. |
 | **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, 138 Test Files | 735 Vitest PASS (100% Clean), 162.49 KiB gzip bundle, sub-ms latency. |
-| **M3: Dual-Chain & ZeroDev AA** | ✅ Delivered | ZeroDev Kernel v3 AA Adapter · optional Robinhood Chain (`46630`/`4663`) permissioned ingress escort into Arbitrum. |
+| **M3: Dual-Chain & ZeroDev AA** | ✅ Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7) | ZeroDev Kernel v3 AA Adapter · optional Robinhood Chain (`46630`/`4663`) permissioned ingress escort into Arbitrum. |
 | **M4: WASM Engine & IP Moat** | ✅ Delivered | Rust `#![no_std]` Wasm core (`pkg/soil_core.wasm`) — Cloudflare budget `<28kb`, hot-path exec `<60µs` — & `@slivervine/citadel-sdk` shipped. |
-| **M5: TCA Data & Hyperliquid** | ✅ Delivered (evolving) | TCA / grant-audit surfaces & HL Testnet 5-trade provenance — **Live TCA Analytics HUD actively evolving** (see [`PROGRESS_TRUTH_CHECK.md`](./docs/audit/PROGRESS_TRUTH_CHECK.md)). |
+| **M5: TCA Data & Hyperliquid** | ✅ Delivered (evolving) | TCA / grant-audit surfaces & HL Testnet 5-trade provenance — **Live TCA Analytics HUD actively evolving**. |
 | **M6: Institutional Grant Submission** | ⏳ Planned | Final Demo Video & GMX / Arbitrum grant application package. |
 
 ---
@@ -157,7 +157,6 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 | [docs/GRANT_PROPOSAL.md](./docs/GRANT_PROPOSAL.md) | Arbitrum / GMX v0.9 grant scope · Triangle Liquidity Loop |
 | [docs/audit/Principal_Audit_Report.md](./docs/audit/Principal_Audit_Report.md) | **Principal Audit Report v1.0.0-rc1** — liability decoupling · survival matrix · Gate / tranches · benchmarks |
 | [docs/audit/R_CHAIN_SAFETY_GATE_AUDIT.md](./docs/audit/R_CHAIN_SAFETY_GATE_AUDIT.md) | **Robinhood Chain Safety Gate Audit v1.0.0** — Pillar 2 Firewall · 46630/4663 unidirectional escort · AML inbound block · `RobinhoodSafetySwitch.sol` |
-| [docs/audit/PROGRESS_TRUTH_CHECK.md](./docs/audit/PROGRESS_TRUTH_CHECK.md) | 進度真實性核對 · v0.9 vs V1.5 SSOT |
 | [docs/architecture/TECHNICAL_SPECIFICATION.md](./docs/architecture/TECHNICAL_SPECIFICATION.md) | Triangle Liquidity Loop · Microsecond Moats · ERC/EIP Standards Wiki · tranche / fee / Elara SSOT |
 | [docs/ARBITRUM_ONE_PAGER.md](./docs/ARBITRUM_ONE_PAGER.md) | Arbitrum Citadel technical one-pager |
 | [docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md](./docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md) | Arbitrum grant one-pager (mirror) |
