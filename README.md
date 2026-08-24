@@ -1,12 +1,19 @@
 # 🛡️ BeΔLivingWater SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway
 
-[![Vitest](https://img.shields.io/badge/Vitest-735%20PASS%20%28164%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water) [![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts) [![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-255%2F255%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water) [![Property Fuzzing](https://img.shields.io/badge/Property%20Fuzzing-65%2C535%20Passed-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water) [![Telemetry](https://img.shields.io/badge/Telemetry-%2Fapi%2Fgrant--audit-blueviolet)](https://bedeltawater.slivervine.xyz/api/grant-audit) [![TypeScript](https://img.shields.io/badge/TypeScript-0%20errors-blue?logo=typescript)](https://github.com/SilverVineLabs/bedelta-living-water) [![License](https://img.shields.io/badge/License-BSL%201.1-orange)](LICENSE)![Benchmark Latency](https://img.shields.io/badge/Benchmark-0.0002ms_(p50_106μs)-blueviolet?logo=speedtest)
-![Foundry Citadel Gate](https://img.shields.io/badge/Foundry-Forge_Test_Passed-brightgreen?logo=solidity)
+[![Vitest](https://img.shields.io/badge/Vitest-735%20PASS%20%28164%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts)
+[![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-255%2F255%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![Benchmark Latency](https://img.shields.io/badge/Benchmark-0.0002ms_%28p50_106%CE%BCs%29-blueviolet?logo=speedtest)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![TypeScript](https://img.shields.io/badge/TypeScript-0%20errors-blue?logo=typescript)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![License](https://img.shields.io/badge/License-BSL%201.1-orange)](./LICENSE)
+[![Foundry Citadel Gate](https://img.shields.io/badge/Foundry-Forge_Test_Passed-brightgreen?logo=solidity)](./SliverVineGate)
 
 
 <p align="center"><img src="public/brand/Detox_Sanctuary_wm.webp" alt="SliverVine Citadel Gate - Detox Sanctuary" width="600" style="border-radius: 8px;"></p>
 
-> **⚡ Sub-Millisecond Risk Decisions (p50 ~106 μs / mean 0.0002 ms) paired with < 1.0ms SLO End-to-End Session Key Verification.** > *Primary venue: **Arbitrum One** GMX v2 ETH/USDC GM Pool + Hyperliquid 1× Short Hedge — protected by Pillar 3 sub-ms Wasm Shield (`checkSoilResistance()`).*
+> **⚡ Sub-Millisecond Risk Decisions (p50 ~106 μs / mean 0.0002 ms) paired with < 1.0ms SLO end-to-end Session Key verification.**
+>
+> *Primary venue: **Arbitrum One** GMX v2 ETH/USDC GM Pool + Hyperliquid 1× short hedge, protected by Pillar 3 sub-ms Wasm Shield (`checkSoilResistance()`).*
 
 **Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`  
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal & landing page  
@@ -22,6 +29,25 @@
 **Triangle Liquidity Loop:** `Arbitrum One (GMX GM Yield Base — PRIMARY)` ↔ `Hyperliquid (1× Short Hedge)` ← optional permissioned ingress (e.g. Robinhood Chain) — see [`docs/architecture/TECHNICAL_SPECIFICATION.md`](./docs/architecture/TECHNICAL_SPECIFICATION.md).
 
 **Arbitrum Native Execution Premium:** Direct Arbitrum One LPs earn an estimated **+15 ~ 30 bps** vs bridged / multi-hop routes.
+
+---
+
+## ⚡ 30-Second Quick Verification
+
+```bash
+pnpm install
+pnpm run demo:e2e
+pnpm test
+npx tsx scripts/grant-advanced-resilience-benchmark.ts
+```
+
+Canonical interactive demo command for judges:
+
+1. Run `pnpm run demo:e2e` as the single interactive Citadel demo entry point.
+2. `pnpm test` verifies the locked SSOT: `164 test files | 735 PASS`.
+3. `grant-advanced-resilience-benchmark.ts` shows the sub-ms Wasm Shield latency path.
+
+For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API Verification` section below.
 
 ---
 
