@@ -267,7 +267,7 @@ contract SliverVineGate is ISliverVineGate {
         if (halted) return (Halted.selector, bytes32(0)); // I1
         if (caller != att.subject) return (WrongSubject.selector, bytes32(0)); // I8
         if (att.verdict != VERDICT_ALLOW) return (Denied.selector, bytes32(0)); // I2
-        if (att.riskBps > 10_000) return (RiskBpsOutOfRange.selector, bytes32(0)); // I10
+        if (att.riskBps > 1e4) return (RiskBpsOutOfRange.selector, bytes32(0)); // I10
         if (att.expiresAt <= att.issuedAt) return (ExpiryBeforeIssuance.selector, bytes32(0)); // I11
         if (att.expiresAt - att.issuedAt > MAX_TTL) return (TtlTooLong.selector, bytes32(0)); // I4
         // Sequencer-set timestamps are the correct clock here: MAX_FUTURE_SKEW bounds forward drift
