@@ -20,6 +20,7 @@
     "demo:citadel": "tsx scripts/grant-e2e-citadel-demo.ts",
     "demo:e2e": "tsx scripts/grant-e2e-citadel-demo.ts",
     "demo:data": "tsx scripts/generate-demo-data.ts",
+    "telemetry:96h": "tsx scripts/live-96h-telemetry-daemon.ts",
     "build:wasm": "cargo build --manifest-path src/wasm/Cargo.toml --release --target wasm32-unknown-unknown && mkdir -p pkg && cp src/wasm/target/wasm32-unknown-unknown/release/soil_core.wasm pkg/soil_core.wasm",
     "build": "pnpm run build:worker",
     "build:spa": "vite build",
