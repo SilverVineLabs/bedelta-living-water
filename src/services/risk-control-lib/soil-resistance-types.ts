@@ -4,7 +4,7 @@
  * Soil resistance types + depth/slippage constants.
  */
 
-import type { CrossSpreadSoilInput } from "../yield/cross-spread";
+import type { CrossSpreadSoilInput } from "../yield/cross-spread-cache";
 import type { GmxV2PriceImpactSoilInput } from "../yield/gmx-v2-price-impact";
 
 /** Cross-venue / cross-book slippage trip threshold (0.5%) */

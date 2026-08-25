@@ -10,7 +10,7 @@ import {
   type GmxV2PriceImpactResult,
 } from "../yield/gmx-v2-price-impact";
 import type { GmxV2AdapterOptions } from "./gmx-v2-adapter.types";
-import { hashData, hashString } from "./gmx-v2-datastore";
+import { hashData, hashString } from "./gmx-v2-datastore-lib/gmx-v2-datastore-keys";
 import { GMX_RPC_EXTRA_HOSTS, GMX_RPC_PROVIDERS } from "./gmx-v2-rpc-constants";
 
 const GET_UINT_SELECTOR = "0xbd02d0f5";

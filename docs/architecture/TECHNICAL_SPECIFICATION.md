@@ -28,7 +28,8 @@ Santenmoku is a **unified sub-millisecond pre-execution gateway**. **Center of g
                            ▼
     ┌─────────────────────────────────────────────────────────┐
     │ 2. THE FIREWALL (Compliance) — Institutional Ingress &  │
-    │    Cross-Chain AML Firewall (ingress sources optional)  │
+    │    Cross-Chain AML Firewall · ZeroDev Smart Routing Addr │
+    │    (1-Click Crosschain Deposit/Swap → GMX ExchangeRouter)│
     └──────────────────────┬──────────────────────────────────┘
                            │
                            ▼
@@ -44,7 +45,7 @@ Santenmoku is a **unified sub-millisecond pre-execution gateway**. **Center of g
 | Pillar | Role | SSOT / Mechanism |
 |--------|------|------------------|
 | **Gatehouse (Auth)** | ZeroDev scoped session keys | Kernel v3 · `ORDER_EXECUTE` bounds · daily gas sponsorship limits · R06 / R07 |
-| **Firewall (Compliance)** | **Institutional Ingress & Cross-Chain AML Firewall** | Optional permissioned ingress (Robinhood Chain `46630`/`4663` = supported example) → Arbitrum `42161` outbound-only; inbound AML blocked |
+| **Firewall (Compliance)** | **Institutional Ingress & Cross-Chain AML Firewall** + **ZeroDev Smart Routing Address** | Robinhood `46630`/`4663` → Arbitrum `42161` outbound-only; ZeroDev 1-click USDG deposit/swap via `GMX_V2_EXCHANGE_ROUTER_ARBITRUM` (`ZERODEV_SMART_ROUTE_TARGETS`); inbound AML blocked; calldata bound at `GatedExecutor.payloadHash()` |
 | **Shield (CORE MOAT)** | Sub-ms Wasm pre-execution armor — **primary technical moat** | `checkSoilResistance()` p50 ~106 μs · Wasm warm path &lt;60µs · R01 / R04 |
 
 > *While single components like `checkSoilResistance()` formulas are kept standard and open for seamless `@slivervine/citadel-sdk` adoption across Arbitrum, our core moat lies in the production integration complexity—stitching Rust `#![no_std]` Wasm, Edge Worker execution, and EIP-712 Gate into a sub-ms, fail-closed system.*
@@ -121,7 +122,7 @@ Hyperliquid (1× Short Hedge)
 |-----|-------|------|
 | **Yield base (PRIMARY)** | Arbitrum One · GMX v2 GM | Underweight-side GM LP · builder `uiFeeReceiver` · Citadel pre-execution gate |
 | **Hedge** | Hyperliquid | Session-key **1× short** Emergency Liquidity Sponge · nonce-healed signing |
-| **Ingress (optional example)** | Robinhood Chain | Supported permissioned institutional ingress · outbound-only escort into Arbitrum |
+| **Ingress (optional example)** | Robinhood Chain | Supported permissioned institutional ingress · outbound-only escort into Arbitrum · **ZeroDev Smart Routing Address** (USDG → GMX `ExchangeRouter`) |
 
 **Control plane:** Cloudflare Edge Worker (`SystemState` SSOT) evaluates sequencer · oracle lag · soil · RPC radar before any unsigned GMX payload or HL hedge dispatch. Routing is unidirectional into `SystemState`; venue adapters never mutate peer books without a gate pass.
 
@@ -146,6 +147,14 @@ Solidity vault surface splits capital into two non-fungible risk lanes:
 |------|----------|
 | **Arbitrum One Off-ramp** | Native **ETH, BTC, and USDC** supported directly upon GMX v2 async unwind (3–5 min). |
 | **USDG Clearing** | Native USDG treasury redemptions are restricted to Robinhood Chain (`46630`/`4663`) via the unidirectional bridge; Arbitrum USDC is converted on return to preserve compliance bounds. Inbound AML contamination (reverse path) is blocked. |
+
+### 2.3 Pillar 2 — ZeroDev Smart Routing Address (1-Click Crosschain Deposit/Swap)
+
+Robinhood `46630`/`4663` **USDG** ingress routes via ZeroDev Kernel UserOp to **`GMX_V2_EXCHANGE_ROUTER_ARBITRUM`** (`ZERODEV_SMART_ROUTE_TARGETS` · `gmx-revenue.ts`) → **`GM_ETH_USDC`** pool — single-click cross-chain deposit/swap, no hot-wallet custody.
+
+**Payload binding (calldata-level, Gate struct unchanged):** `buildGmxSmartRoutePayloadBinding()` encodes smart-route calldata → `computeGatedExecutorPayloadHash()` mirrors on-chain `GatedExecutor.payloadHash(initiator, target, keccak256(data), nonce)`. The digest fills the existing `RiskAttestation.payloadHash` field — **`SliverVineGate.sol` `ATTESTATION_TYPEHASH` and struct layout are not modified**.
+
+Anchors: [`gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-smart-route-payload-binding.ts) · [`gated-executor-payload.ts`](../../src/sdk/gated-executor-payload.ts) · [`r-chain-yield-router.ts`](../../src/adapters/robinhood/r-chain-yield-router.ts) · [`GatedExecutor.sol`](../../SliverVineGate/src/GatedExecutor.sol).
 
 ---
 
@@ -278,24 +287,90 @@ Routing policy: venue selected per risk flags; both paths share the same fail-cl
 
 ## 4. Standard Compliance & ERC/EIP Wiki
 
-Official infrastructure standards map — each row links a public ERC/EIP (or venue spec) to Citadel implementation anchors and verification.
+Official infrastructure standards map — each row links a public ERC/EIP (or venue spec) to Citadel implementation anchors and verification. Subsection **§4.0** is the formal wiki for AA, attestation, and asset-escrow standards.
 
 | Standard | Role in Citadel | Implementation anchor | Verification |
 |----------|-----------------|----------------------|--------------|
-| **[OpenZeppelin Contracts v5](https://docs.openzeppelin.com/contracts/5.x/)** | On-chain gate access control & reentrancy guard (`Ownable`, `ReentrancyGuard`, EIP-712 digest semantics) | `SliverVineGate.sol` · `RobinhoodSafetySwitch.sol` · inline ECDSA aligned with OZ `ECDSA.tryRecover` | Foundry Gate **60 passed** · Forge property fuzz |
-| **[EIP-712](https://eips.ethereum.org/EIPS/eip-712)** | Typed-data attestation · Session Key scopes · Gate digest binding | Domain `SliverVineCitadel` · `SliverVineGate.sol` · `src/sdk/constants.ts` · unlock-reauthorization | Forge I1–I12 · SDK citadel tests |
-| **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)** | Account Abstraction — scoped agent UserOps without hot-wallet custody | ZeroDev Kernel v3 · EntryPoint **v0.7** · `src/adapters/arbitrum/zerodev-aa/` | ZeroDev AA gate + aa-adapter tests |
+| **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)** | Account Abstraction — scoped agent UserOps without hot-wallet custody | ZeroDev Kernel **v0.3.1** · EntryPoint **v0.7** · `src/adapters/arbitrum/zerodev-aa/` · `zerodev-aa-userop.ts` | ZeroDev AA gate · `eth_supportedEntryPoints` probe · aa-adapter tests |
+| **[EIP-7562](https://eips.ethereum.org/EIPS/eip-7562)** | AA storage-access rules — **Zero-Bundler-Rejection Invariant** | Session-key `callData` whitelist · static breaker · `BUNDLER_TIMEOUT_FAIL_CLOSED` | Bundler smoke probe · `zerodev-aa-bundler.ts` |
+| **[EIP-712](https://eips.ethereum.org/EIPS/eip-712)** | Typed structured data hashing · domain binding `SliverVineCitadel` | `SliverVineGate.sol` · `src/sdk/constants.ts` · `evaluateAttestation()` | Forge I1–I12 · SDK citadel tests |
+| **[ERC-1271](https://eips.ethereum.org/EIPS/eip-1271)** | Contract signature validation for Kernel smart accounts | ZeroDev Kernel `isValidSignature` · Gate ECDSA m-of-n on `RiskAttestation` | Gate Forge suite · agent-intent SDK |
+| **[ERC-20](https://eips.ethereum.org/EIPS/eip-20) / [ERC-777](https://eips.ethereum.org/EIPS/eip-777)** | Non-custodial asset transfer & in-flight escrow semantics | `GMX_USDC_ARBITRUM` · `robinhood-across-bridge.ts` · `GatedExecutor` payload binding | Across bridge tests · GMX payload tests |
+| **[OpenZeppelin Contracts v5](https://docs.openzeppelin.com/contracts/5.x/)** | On-chain gate access control & reentrancy guard | `SliverVineGate.sol` · `RobinhoodSafetySwitch.sol` · OZ `ECDSA.tryRecover` alignment | Foundry Gate **60 passed** · Forge property fuzz |
 | **[ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** | Modular smart-account modules — session-key permission scopes | ZeroDev Kernel v3 modular session keys · scoped `ORDER_EXECUTE` clip · daily gas sponsorship limits | Gatehouse (Pillar 1) · agent-intent SDK |
 | **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** | Dynamic base-fee congestion sensing on Arbitrum One | Tri-Sensor **BaseFee Velocity** channel · `arbitrum-gas-guard.ts` | Gas-guard tests · Tri-Sensor Matrix |
 | **ArbOS 61** | Arbitrum L2 execution / Stylus co-residence alignment (⏳ V1.0 Design Spec) | `RobinhoodSafetySwitch.sol` · Elara ingress design · Stylus WASM parity path | Robinhood safety contracts · audit notes |
 | **Robinhood Chain Ingress** | Permissioned institutional egress · AML inbound isolation | Chains **46630** (testnet) / **4663** (mainnet filter) · Across bridge · `RobinhoodSafetySwitch.sol` | Robinhood Across bridge tests · audit snapshot |
 | **WASM Core (`soil_core`)** | Sub-ms pre-execution soil fuse · Cloudflare Edge hot path | `pkg/soil_core.wasm` · `#![no_std]` Rust · budget **&lt;28 KiB** · warm exec **&lt;60 µs** | Wasm feasibility suite |
 
+### 4.0 ERC/EIP Standards Reference Wiki
+
+#### ERC-4337 — Account Abstraction & UserOperation Structure
+
+| Field | Citadel binding |
+|-------|-----------------|
+| **EntryPoint** | `entryPoint07Address` — SSOT `ZERODEV_ENTRY_POINT_ADDRESS` |
+| **Kernel** | ZeroDev Kernel **v0.3.1** (`ZERODEV_KERNEL_VERSION`) |
+| **UserOp draft** | `sender` · `nonce` · `callData` · optional `factory`/`factoryData` · gas limits · `paymaster`/`paymasterData` · `signature` |
+| **Paymaster** | ZeroDev `zerodev.sponsorUserOperation` middleware (`zerodev-aa-userop.ts`) |
+| **Pre-broadcast gate** | `verifyAgentIntent()` — `AllowedToSign = Injection ∧ Digest ∧ Soil ∧ Session ∧ Gas ∧ Attestation ∧ Armor ∧ Wasm` |
+
+UserOps are drafted locally, sponsored via ZeroDev paymaster middleware, and submitted only after Edge soil + static-breaker evaluation. Bundler RPC MUST advertise EntryPoint v0.7 (`supportsEntryPoint07`).
+
+#### EIP-7562 — Account Abstraction Storage Access Rules
+
+**Zero-Bundler-Rejection Invariant:** Citadel UserOps MUST NOT violate EIP-7562 opcode/storage rules during the validation phase; bundler rejection is treated as a protocol fault, not a retry signal.
+
+| Rule | Enforcement |
+|------|-------------|
+| Validation-phase storage reads | Session-key modules restrict `callData` to whitelisted targets/selectors — no forbidden cross-contract reads |
+| Edge pre-screen | Static breaker matrix + `checkSoilResistance()` before `sendUserOperation()` |
+| Fail-closed | Bundler unreachable, missing EP v0.7, or timeout → `BUNDLER_TIMEOUT_FAIL_CLOSED` (`ZERODEV_BUNDLER_FAIL_CLOSED_TIMEOUT_MS = 3_000`) |
+
+#### EIP-712 — Typed Structured Data Hashing & Domain Binding
+
+| Component | Value |
+|-----------|-------|
+| **Domain `name`** | `SliverVineCitadel` (`EIP712_DOMAIN_NAME`) |
+| **Domain `version`** | `1` (`EIP712_DOMAIN_VERSION`) |
+| **Domain `chainId`** | Live `block.chainid` — cached immutable in Gate constructor |
+| **Domain `verifyingContract`** | `SliverVineGate` address (`SLIVERVINE_GATE_ADDRESS`) |
+| **Primary type** | `RiskAttestation(bytes32 payloadHash, address subject, uint8 verdict, uint16 riskBps, uint64 issuedAt, uint64 expiresAt, uint256 nonce)` |
+| **Digest** | `keccak256("\x19\x01" ‖ domainSeparator ‖ structHash)` — single-use via `consumed[digest]` at `verifyAndConsume` |
+
+SDK envelopes mirror Gate domain binding: `evaluateAttestation()` rejects mismatched `verifyingContract` or `domainName`. Cross-chain replay is denied at L1 consumption.
+
+#### ERC-1271 — Standard Signature Validation Method for Contracts
+
+| Path | Mechanism |
+|------|-----------|
+| **Kernel (ERC-4337)** | ZeroDev Kernel validates session-key proofs via `isValidSignature(bytes32 hash, bytes signature)` — magic value `0x1626ba7e` |
+| **Gate (L1 attestation)** | m-of-n ECDSA on `RiskAttestation` EIP-712 digest — OZ-aligned `ECDSA.tryRecover`, non-malleable `s` |
+| **UserOp `signature`** | Module-bound session proof consumed by Kernel validation hook, not raw EOA sig |
+
+Edge `verifyAgentIntent()` validates attestation envelope shape; on-chain ERC-1271 / ECDSA verification occurs at Kernel validateUserOp and Gate `verifyAndConsume` respectively.
+
+#### ERC-20 / ERC-777 — Non-Custodial Asset Transfer Escrow Semantics
+
+| Semantics | Rule |
+|-----------|------|
+| **Collateral SSOT** | USDC on Arbitrum (`GMX_USDC_ARBITRUM`) — GMX v2 increase/decrease payloads |
+| **No indefinite custody** | Protocol never books user principal as protocol-owned; capital remains in user Kernel account or venue GM position |
+| **In-flight bridge escrow** | Outbound Robinhood → Arbitrum Across legs labelled `IN_FLIGHT_BRIDGE_CAPITAL`; `lostUsd ≡ 0` until timeout (`BRIDGE_TIMEOUT_FAIL_CLOSED`) |
+| **Venue settlement** | GMX async keeper window **3–5 min**; HL withdrawal **15 min** — inventory held in-flight, not escrowed by Gate |
+| **ERC-777** | Not on Citadel hot path; ERC-20 `transfer`/`approve` invoked only via Kernel-scoped UserOp `callData` to whitelisted contracts |
+
+`GatedExecutor.payloadHash()` binds UserOp `callData` to Gate `RiskAttestation.payloadHash` — asset movements without matching attestation revert on-chain.
+
 ### 4.1 Compliance Posture
 
+- **ERC-4337:** UserOps pass Edge `verifyAgentIntent()` before bundler dispatch; EntryPoint v0.7 + Kernel v0.3.1 are canonical; gas ledger caps per-UserOp and daily sponsorship.
+- **EIP-7562:** Zero-Bundler-Rejection Invariant — session modules + Edge pre-screen prevent validation-phase storage violations; bundler failure is fail-closed, not retried blindly.
+- **EIP-712:** All Gate attestations and SDK envelopes bind `chainId` + `verifyingContract` + domain `SliverVineCitadel` — cross-chain replay denied at `verifyAndConsume`.
+- **ERC-1271:** Kernel session-key signatures validated via standard magic value; Gate path uses ECDSA m-of-n — dual validation planes, neither bypasses the other.
+- **ERC-20 / ERC-777:** Non-custodial escort — in-flight capital labelled, never booked as loss; ERC-777 hooks excluded from hot path.
 - **OpenZeppelin Contracts v5:** Gate contracts enforce fail-closed access control and reentrancy-safe execution patterns; `SliverVineGate` ECDSA verification intentionally matches OZ `ECDSA.tryRecover` (strict 65-byte, non-malleable `s`).
-- **EIP-712:** All Gate attestations and SDK envelopes bind `chainId` + `verifyingContract` — cross-chain replay denied at `verifyAndConsume`.
-- **ERC-4337 / ERC-7579:** UserOps pass Edge `verifyAgentIntent()` before bundler dispatch; session modules enforce clip + TTL caps.
+- **ERC-4337 / ERC-7579:** Session modules enforce clip + TTL caps alongside UserOp structure constraints.
 - **EIP-1559:** Gas-yield ratio fuse blocks dispatch when L1 surcharge exceeds target yield band.
 - **Robinhood Chain:** Outbound-only escort (`46630`/`4663` → `42161`); inbound AML blocked · `lostUsd ≡ 0`.
 - **WASM:** Hot-path soil evaluation mirrors Edge `checkSoilResistance()` semantics for sub-ms fail-closed.

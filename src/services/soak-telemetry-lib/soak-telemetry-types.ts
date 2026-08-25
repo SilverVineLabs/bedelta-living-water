@@ -6,7 +6,7 @@ import type { Env } from "../../env";
 import type { CoreSystemState } from "../../core/state";
 import { ALLOWED_SYMBOLS } from "../../services/risk-control";
 import { KV_KEYS } from "../kv-store";
-import type { FetchLiveL2BookOptions } from "../hyperliquid-adapter";
+import type { FetchLiveL2BookOptions } from "../exchanges/hl-l2-book";
 
 export const SOAK_TELEMETRY_KV_KEY = KV_KEYS.SOAK_TELEMETRY;
 export const SOAK_ROLLING_MAX_TICKS = 1440;

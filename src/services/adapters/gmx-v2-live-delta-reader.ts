@@ -5,7 +5,7 @@ import {
   resolveGmxMarketBySymbol,
 } from "../../config/gmx-markets";
 import type { GmxV2AdapterOptions } from "./gmx-v2-adapter.types";
-import { hashData, hashString } from "./gmx-v2-datastore";
+import { hashData, hashString } from "./gmx-v2-datastore-lib/gmx-v2-datastore-keys";
 
 export {
   GMX_ETH_USD_LONG_TOKEN,

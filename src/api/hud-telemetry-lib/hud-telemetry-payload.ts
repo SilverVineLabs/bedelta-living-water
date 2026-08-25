@@ -12,7 +12,7 @@ import {
   auditThreeEyeAdapters,
   TELEMETRY_VENUES,
 } from "../../services/hl-telemetry-probe";
-import { fetchLiveL2Book } from "../../services/hyperliquid-adapter";
+import { fetchLiveL2Book } from "../../services/exchanges/hl-l2-book";
 import {
   HUD_FALLBACK_LIVE_PAIRS,
   HUD_FALLBACK_MARKET_PROBE,

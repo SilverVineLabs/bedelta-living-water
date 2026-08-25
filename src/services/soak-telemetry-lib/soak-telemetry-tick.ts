@@ -12,7 +12,7 @@ import {
 import {
   computeLiveBookMetrics,
   fetchLiveL2Book,
-} from "../hyperliquid-adapter";
+} from "../exchanges/hl-l2-book";
 import { recordSoilViolation, recordSpreadSample } from "../circuit-breaker";
 import { recordTelemetryProbe } from "../telemetry-analytics-lib/telemetry-analytics-core";
 import {

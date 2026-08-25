@@ -21,7 +21,7 @@ import {
   dispatchEscalationFlashUnwind,
   type PositionLegSnapshot,
 } from "../services/risk/flash-unwind";
-import { HL_ETH_PERP_ASSET_INDEX, HL_ETH_SZ_DECIMALS } from "../services/hl-auto-hedge";
+import { HL_ETH_PERP_ASSET_INDEX, HL_ETH_SZ_DECIMALS } from "../services/hl-auto-hedge-status";
 import {
   CRON_FLASH_UNWIND,
   CRON_SKIP_BALANCED,

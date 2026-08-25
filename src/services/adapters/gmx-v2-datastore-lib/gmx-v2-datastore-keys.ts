@@ -1,16 +1,11 @@
-import { encodeAbiParameters, keccak256 } from "viem";
-
-function encodeAbi(types: string[], values: readonly unknown[]): `0x${string}` {
-  const params = types.map((type) => ({ type })) as Parameters<typeof encodeAbiParameters>[0];
-  return encodeAbiParameters(params, values as never);
-}
+import { hashAbiString, hashAbiTuple } from "../../../utils/abi-keccak";
 
 export function hashString(value: string): string {
-  return keccak256(encodeAbi(["string"], [value]));
+  return hashAbiString(value);
 }
 
 export function hashData(types: string[], values: unknown[]): string {
-  return keccak256(encodeAbi(types, values));
+  return hashAbiTuple(types, values);
 }
 
 export const SAVED_LONG_PAYOUT_BUFFER = hashString("SAVED_LONG_PAYOUT_BUFFER");

@@ -37,7 +37,7 @@ function kiB(bytes: number): number {
   return Math.round((bytes / 1024) * 100) / 100;
 }
 
-const BUNDLE_GZIP_LIMIT_KIB = 158.99 as const;
+const BUNDLE_GZIP_LIMIT_KIB = 150.0 as const;
 
 function main(): void {
   const full = process.argv.includes("--full");

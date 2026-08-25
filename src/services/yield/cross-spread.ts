@@ -4,31 +4,33 @@ import { fetchAllowlisted } from "../defense/rpc-whitelist";
 import { gmxV2ArbitrumAdapter, type GmxV2ArbitrumAdapter } from "../adapters/gmx-v2-adapter";
 import type { ArbitrumFundingBorrowRates } from "../adapters/arbitrum-adapter";
 import { fundingHourlyToGrossApy } from "./rebalance-rules";
+import {
+  __readCrossSpreadCacheRef,
+  __writeCrossSpreadCacheRef,
+  computeCrossFundingSpread,
+  crossSpreadForSoil,
+  evaluateCrossSpreadSoilGate,
+  MIN_CROSS_SPREAD_BPS,
+  type CrossSpreadLegSnapshot,
+  type CrossSpreadResult,
+  type CrossSpreadSoilInput,
+  type ExecutionHedgeVenue,
+} from "./cross-spread-cache";
 
-export const MIN_CROSS_SPREAD_BPS = 5 as const;
-export type ExecutionHedgeVenue = "hyperliquid" | "vertex";
+export {
+  MIN_CROSS_SPREAD_BPS,
+  getCrossSpreadCache,
+  __setCrossSpreadCacheForTests,
+  computeCrossFundingSpread,
+  evaluateCrossSpreadSoilGate,
+  crossSpreadForSoil,
+  type CrossSpreadLegSnapshot,
+  type CrossSpreadResult,
+  type CrossSpreadSoilInput,
+  type ExecutionHedgeVenue,
+} from "./cross-spread-cache";
 
-export interface CrossSpreadLegSnapshot {
-  venue: "gmx-v2" | ExecutionHedgeVenue;
-  fundingRateHourly: number;
-  borrowRateHourly: number;
-  netCarryHourly: number;
-  grossApy: number;
-}
-
-export interface CrossSpreadResult {
-  symbol: string;
-  executionVenue: ExecutionHedgeVenue;
-  gmxLeg: CrossSpreadLegSnapshot;
-  executionLeg: CrossSpreadLegSnapshot;
-  crossSpreadApy: number;
-  crossSpreadBps: number;
-  isSpreadProfitable: boolean;
-  fetchedAt: string;
-}
-
-export type CrossSpreadSoilInput = Pick<CrossSpreadResult, "crossSpreadBps" | "isSpreadProfitable">;
-export interface ResolveCrossSpreadInput {
+export type ResolveCrossSpreadInput = {
   symbol: string;
   side?: "long" | "short";
   executionVenue?: ExecutionHedgeVenue;
@@ -37,19 +39,9 @@ export interface ResolveCrossSpreadInput {
   executionFundingHourly?: number;
   executionBorrowHourly?: number;
   fetchFn?: typeof fetch;
-}
+};
 
 const VERTEX_QUERY = "https://gateway.prod.vertexprotocol.com/v1/query";
-
-let spreadCache: CrossSpreadResult | null = null;
-
-export function getCrossSpreadCache(): CrossSpreadResult | null {
-  return spreadCache;
-}
-
-export function __setCrossSpreadCacheForTests(value: CrossSpreadResult | null): void {
-  spreadCache = value;
-}
 
 function legSnapshot(
   venue: CrossSpreadLegSnapshot["venue"],
@@ -64,35 +56,6 @@ function legSnapshot(
     netCarryHourly,
     grossApy: fundingHourlyToGrossApy(netCarryHourly),
   };
-}
-
-export function computeCrossFundingSpread(input: {
-  gmxNetCarryHourly: number;
-  executionNetCarryHourly: number;
-}): Pick<CrossSpreadResult, "crossSpreadApy" | "crossSpreadBps" | "isSpreadProfitable"> {
-  const gmxApy = fundingHourlyToGrossApy(input.gmxNetCarryHourly);
-  const execApy = fundingHourlyToGrossApy(input.executionNetCarryHourly);
-  const crossSpreadApy = Math.abs(gmxApy - execApy);
-  const crossSpreadBps = Math.round(crossSpreadApy * 10_000);
-  return {
-    crossSpreadApy,
-    crossSpreadBps,
-    isSpreadProfitable: crossSpreadBps >= MIN_CROSS_SPREAD_BPS,
-  };
-}
-
-export function evaluateCrossSpreadSoilGate(
-  spread: CrossSpreadSoilInput,
-): { triggered: boolean; reasons: string[] } {
-  if (spread.isSpreadProfitable) return { triggered: false, reasons: [] };
-  return {
-    triggered: true,
-    reasons: [`CROSS_FUNDING_SPREAD=${spread.crossSpreadBps}bps<${MIN_CROSS_SPREAD_BPS}bps`],
-  };
-}
-
-export function crossSpreadForSoil(result: CrossSpreadResult): CrossSpreadSoilInput {
-  return { crossSpreadBps: result.crossSpreadBps, isSpreadProfitable: result.isSpreadProfitable };
 }
 
 async function postJson<T>(url: string, body: unknown, fetchFn?: typeof fetch): Promise<T | null> {
@@ -158,7 +121,7 @@ export async function resolveCrossDexFundingSpread(
     gmxNetCarryHourly: gmxLeg.netCarryHourly,
     executionNetCarryHourly: executionLeg.netCarryHourly,
   });
-  spreadCache = {
+  const next: CrossSpreadResult = {
     symbol: input.symbol.toUpperCase(),
     executionVenue,
     gmxLeg,
@@ -166,5 +129,10 @@ export async function resolveCrossDexFundingSpread(
     ...spread,
     fetchedAt: gmxRates.fetchedAt,
   };
-  return spreadCache;
+  __writeCrossSpreadCacheRef(next);
+  return next;
+}
+
+export function peekCrossSpreadCache(): CrossSpreadResult | null {
+  return __readCrossSpreadCacheRef();
 }

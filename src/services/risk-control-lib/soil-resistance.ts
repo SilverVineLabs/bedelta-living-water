@@ -27,7 +27,7 @@ import {
   getSoftConfirmationUnsafeReason,
   isSoftConfirmationSafe,
 } from "../risk/soft-confirmation-guard";
-import { evaluateCrossSpreadSoilGate } from "../yield/cross-spread";
+import { evaluateCrossSpreadSoilGate } from "../yield/cross-spread-cache";
 import { evaluateGmxPriceImpactSoilGate } from "../yield/gmx-v2-price-impact";
 import {
   applySoilRiskCaps,

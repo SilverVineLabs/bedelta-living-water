@@ -12,7 +12,7 @@ import {
   parseEngineModeHeader,
 } from "./middleware/engine-mode-router";
 import { CORS_JSON_HEADERS } from "./services/config";
-import { severSigningChannel } from "./services/session-key-adapter";
+import { severSigningChannel } from "./services/session-key-adapter-lib/session-key-gates";
 import { configureTelegramAlert } from "./services/telemetry/telegram-alert";
 import { ensureIntentPersistenceBoot } from "./worker-scheduled";
 import { fetchStaticAsset, isWorkerApiPath } from "./worker-routing";

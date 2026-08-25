@@ -47,6 +47,94 @@
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
+### Triangle Liquidity Loop
+
+Closed-loop three-venue routing with **Arbitrum One as the primary yield base**. Hyperliquid provides the Δ-neutral hedge leg; Robinhood Chain is an **optional permissioned ingress** — never a secondary execution anchor.
+
+```text
+                    ┌─────────────────────────────────────┐
+                    │  Robinhood Chain (Optional Ingress)  │
+                    │  46630 testnet · 4663 mainnet filter │
+                    │  outbound-only → 42161               │
+                    └──────────────────┬──────────────────┘
+                                       │ Across escort
+                                       ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│  Arbitrum One (42161) — PRIMARY YIELD BASE                               │
+│  GMX v2 ETH/USDC GM · EIP-712 Gate · uiFeeReceiver · Citadel pre-sign    │
+└───────────────────────────────┬──────────────────────────────────────────┘
+                                │  1× Δ-neutral hedge
+                                ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│  Hyperliquid — 1× Short Emergency Liquidity Sponge                       │
+│  Session-key signing · nonce-healed · soil + deadman cross-venue fuse    │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+| Leg | Venue | SDK / Worker anchor | Role |
+|-----|-------|---------------------|------|
+| **Yield base (PRIMARY)** | Arbitrum One · GMX v2 GM | `verifyAgentIntent()` · `ARBITRUM_ONE_CHAIN_ID` · Worker `gmx-v2-order-payload.ts` | Underweight-side GM LP · builder revenue · Gate attestation |
+| **Hedge** | Hyperliquid | `verifyAgentIntent()` soil `{ hlSpot, hlPerp, dydxPerp }` · legacy-risk `signAndExecuteOrder` | 1× short Δ-neutral sponge · cross-venue slippage fuse |
+| **Ingress (optional)** | Robinhood Chain `46630`/`4663` | `assertUnidirectionalBridge()` · `exportRobinhoodAuditSnapshot()` · `quoteRChainYieldToArbitrumGm()` | Permissioned institutional escort into Arbitrum only |
+
+**Control plane:** Edge Worker (`SystemState` SSOT) evaluates sequencer · oracle lag · soil · RPC radar before any unsigned GMX payload or HL hedge dispatch. **Read API:** `GET /api/yield/triangle`.
+
+---
+
+## Core Architectural Invariants
+
+These invariants are **non-negotiable** across SDK, Edge Worker, and on-chain Gate. Integrators must treat violations as hard failures — never as retryable soft errors.
+
+### 1. Non-Custodial Unidirectional Escort (`lostUsd ≡ 0`)
+
+| Property | Rule |
+|----------|------|
+| **Capital custody** | Protocol never books user principal as protocol-owned; capital remains in user Kernel account or venue GM / HL position |
+| **Bridge direction** | Robinhood `46630`/`4663` → Arbitrum `42161` outbound only; reverse path ⇒ `AML_INBOUND_TO_ROBINHOOD_BLOCKED` |
+| **In-flight accounting** | Pending bridge liquidity labelled `IN_FLIGHT_BRIDGE_CAPITAL`; **`lostUsd` is always `0`** until explicit timeout (`BRIDGE_TIMEOUT_FAIL_CLOSED`) |
+| **SDK enforcement** | `assertUnidirectionalBridge()` · `exportRobinhoodAuditSnapshot()` · `buildRobinhoodAuditSnapshot()` throw on `lostUsd ≠ 0` |
+
+Inbound reverse blocking is **hard-coded** — zero inbound capital to Robinhood is an invariant, not a runtime toggle.
+
+### 2. 30s TTL Nonce-Healed Self-Exploding Session Keys
+
+Ephemeral session keys are designed to **self-destruct** on TTL breach, heartbeat loss, or nonce desync — closing the signing channel rather than retrying with stale authority.
+
+| Layer | Mechanism | Constant / module |
+|-------|-----------|-------------------|
+| **Gate attestation TTL** | EIP-712 `expiresAtMs` envelope bound ≤ **30s** | `SliverVineGate.verifyAndConsume` · SDK `evaluateAttestation()` |
+| **Intent ledger TTL** | Cross-leg 2PC intents expire at **30s** | `intent-ledger/defaults.ts` · `DEFAULT_TTL_MS = 30_000` |
+| **HL session heartbeat** | WS heartbeat interval **30s**; expiry ⇒ revocation lock | `SESSION_KEY_HEARTBEAT_MS` · `nonce-auto-healing.ts` |
+| **Nonce auto-heal** | `Invalid nonce` WS event ⇒ monotonic nonce reset + `signingChannelOpen: false` | `handleInvalidSessionKeyNonce()` · `auditSessionKeyNonceState()` |
+| **Self-explode** | Heartbeat expiry or invalid nonce ⇒ `hardlock: true` · `hudState: BLOCKED` — channel closed, not silently retried | `applyRevocationLock()` |
+
+Session keys are **scoped clips** (default ≤ $30) with bounded TTL — they are not hot-wallet substitutes.
+
+### 3. Zero-Bundler-Rejection Invariant (EIP-7562 Compliance)
+
+Citadel UserOps **must not** trigger bundler rejection under [EIP-7562](https://eips.ethereum.org/EIPS/eip-7562) opcode/storage rules during the validation phase. Bundler failure is a **protocol fault**, not a blind-retry signal.
+
+| Rule | Enforcement |
+|------|-------------|
+| Validation-phase storage reads | ZeroDev Kernel session modules restrict `callData` to whitelisted targets/selectors |
+| Edge pre-screen | `verifyAgentIntent()` + static breaker matrix + `checkSoilResistance()` before `sendUserOperation()` |
+| Bundler probe | `eth_supportedEntryPoints` must include EntryPoint **v0.7** (`supportsEntryPoint07`) |
+| Fail-closed | Bundler unreachable / timeout ⇒ `BUNDLER_TIMEOUT_FAIL_CLOSED` (`ZERODEV_BUNDLER_FAIL_CLOSED_TIMEOUT_MS = 3_000`) |
+
+See also: [`TECHNICAL_SPECIFICATION.md` §4.0](../architecture/TECHNICAL_SPECIFICATION.md) — EIP-7562 wiki entry.
+
+### 4. Skew Neutralizer Premium (`uiFeeReceiver` +5 bps ~ +10 bps)
+
+Citadel routes institutional flow to the **underweight side** of GMX GM pools, capturing builder revenue and positive skew rebates while maintaining Δ-neutral hedge on Hyperliquid.
+
+| Revenue channel | Rate | Module |
+|-----------------|------|--------|
+| **Builder UI fee** | **+5 bps** `uiFeeReceiver` on every unsigned GMX v2 increase / decrease / deposit | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` (Worker BUSL) |
+| **Positive skew rebate** | Up to **~5 bps** price-impact rebate on underweight-side flow (venue-native; separate from `uiFeeReceiver`) | `gmx-v2-balancer` · soil price-impact fuse |
+| **Combined premium band** | **+5 bps ~ +10 bps** total skew-neutralization yield — never conflated with custody or performance fee | Grant audit · `GET /api/grant-audit` |
+
+SDK gates signing **before** Worker injects `uiFeeReceiver`; skew routing decisions live in Edge soil + balancer — not in SDK exports.
+
 ---
 
 ## Dependency Audit — Code-Level (2026-08-24)

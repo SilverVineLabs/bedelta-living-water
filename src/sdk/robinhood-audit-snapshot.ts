@@ -136,3 +136,50 @@ export async function exportRobinhoodAuditSnapshot(
   }
   return snapshot;
 }
+
+/** UTC calendar date label — `YYYY-MM-DD`. */
+export function formatDailyUtcDate(nowMs: number): string {
+  const d = new Date(nowMs);
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+/** UTC midnight cutoff for the report day — `YYYY-MM-DDT00:00:00.000Z`. */
+export function formatDailyUtcCutoff(nowMs: number): string {
+  return `${formatDailyUtcDate(nowMs)}T00:00:00.000Z`;
+}
+
+export interface DailyRobinhoodComplianceReport {
+  reportType: "daily-robinhood-compliance";
+  reportDateUtc: string;
+  generatedAtUtc: string;
+  snapshot: RobinhoodAuditSnapshot;
+}
+
+/** Daily compliance wrapper — binds `buildRobinhoodAuditSnapshot()` to UTC day cutoff. */
+export async function exportDailyRobinhoodComplianceReport(
+  input: RobinhoodAuditSnapshotInput = {},
+): Promise<DailyRobinhoodComplianceReport> {
+  const nowMs = input.nowMs ?? Date.now();
+  const reportDateUtc = formatDailyUtcDate(nowMs);
+  const cutoffTimestamp = formatDailyUtcCutoff(nowMs);
+  const snapshot = buildRobinhoodAuditSnapshot({ ...input, nowMs, cutoffTimestamp });
+  const report: DailyRobinhoodComplianceReport = {
+    reportType: "daily-robinhood-compliance",
+    reportDateUtc,
+    generatedAtUtc: new Date(nowMs).toISOString(),
+    snapshot,
+  };
+  if (typeof document !== "undefined") {
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `Robinhood-Daily-Compliance-${reportDateUtc}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+  return report;
+}

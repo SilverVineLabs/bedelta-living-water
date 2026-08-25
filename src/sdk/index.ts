@@ -17,9 +17,13 @@ export type {
 } from "./unidirectional-bridge";
 export {
   buildRobinhoodAuditSnapshot,
+  exportDailyRobinhoodComplianceReport,
   exportRobinhoodAuditSnapshot,
+  formatDailyUtcCutoff,
+  formatDailyUtcDate,
 } from "./robinhood-audit-snapshot";
 export type {
+  DailyRobinhoodComplianceReport,
   RobinhoodAuditChainId,
   RobinhoodAuditSnapshot,
   RobinhoodAuditSnapshotInput,

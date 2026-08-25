@@ -12,12 +12,12 @@ import {
   buildSoftConfirmationHealthMetricsOrFallback,
   type SoftConfirmationHealthMetrics,
 } from "../../services/risk/soft-confirmation-guard";
-import { getCrossSpreadCache } from "../../services/yield/cross-spread";
+import { getCrossSpreadCache } from "../../services/yield/cross-spread-cache";
 import { buildGmxBalancerMetrics } from "../../services/yield/gmx-v2-balancer";
 import { buildGmxPriceImpactMetrics } from "../../services/yield/gmx-v2-price-impact";
 import { buildDualWalletTelemetryMetrics } from "../../services/dual-wallet-telemetry";
 import { getGmxGmBalanceSwrFlags } from "../../services/adapters/gmx-v2-gm-balance-swr";
-import { readGrantAuditOracleLagFields } from "./grant-audit-guard-refresh";
+import { readGrantAuditOracleLagFields } from "./grant-audit-guard-read";
 import {
   resolveOracleLagTelemetry,
   type OracleLagTelemetry,

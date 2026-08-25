@@ -6,12 +6,6 @@
  * `session-key-adapter-lib/unlock-reauthorization.ts` (EIP-712 master signature).
  */
 
-export {
-  verifyAndReleaseHardlock,
-  type VerifyAndReleaseHardlockParams,
-  type VerifyAndReleaseHardlockResult,
-} from "./session-key-adapter-lib/unlock-reauthorization";
-
 import type { SystemState } from "./systemState";
 import { isSystemStateLike } from "./kv-store";
 

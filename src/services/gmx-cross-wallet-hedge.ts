@@ -11,7 +11,7 @@ import type { IntentLeg } from "../core/intent-ledger";
 import {
   HL_ETH_PERP_ASSET_INDEX,
   HL_ETH_SZ_DECIMALS,
-} from "./hl-auto-hedge";
+} from "./hl-auto-hedge-status";
 import {
   fetchGmxEthDeltaForWallet,
   fetchHlEthMarkUsdStrict,
