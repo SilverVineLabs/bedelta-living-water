@@ -30,6 +30,8 @@ describe("r-chain-yield-router escort", () => {
     expect(q.decisionReady).toBe(true);
     expect(q.contractDeployed).toBe(false);
     expect(q.gmPoolTarget).toBe("GM_ETH_USDC");
+    expect(q.targetRoute).toBe("GM_ETH_USDC");
+    expect(q.smartRoutingAddress).toBeTruthy();
   });
 
   it("accepts Robinhood mainnet alias 4663 as source", () => {

@@ -12,14 +12,14 @@ afterEach(() => {
 });
 
 describe("risk-control — soil telemetry whitelist", () => {
-  it("ALLOWED_SYMBOLS SSOT is ETH-only (GMX v2 / HL cron)", () => {
-    expect(ALLOWED_SYMBOLS).toEqual(["ETH"]);
+  it("ALLOWED_SYMBOLS SSOT includes ETH + BTC GM pools", () => {
+    expect(ALLOWED_SYMBOLS).toEqual(["ETH", "BTC"]);
   });
 
   it("filters non-target symbols from terminal soil lines", () => {
     expect(isAllowedTelemetrySymbol("KAITO")).toBe(false);
     expect(isAllowedTelemetrySymbol("KBONK")).toBe(false);
-    expect(isAllowedTelemetrySymbol("btc")).toBe(false);
+    expect(isAllowedTelemetrySymbol("btc")).toBe(true);
     expect(isAllowedTelemetrySymbol("eth")).toBe(true);
     expect(
       formatSoilTelemetryTerminalLine("KAITO", { tripped: true, reasons: ["X"] }),

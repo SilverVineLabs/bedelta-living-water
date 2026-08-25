@@ -1,7 +1,5 @@
 /** @module ZeroDevAA — Opt-in CLI/SDK Citadel Risk Gate (Not mounted on Worker hot path) */
 
-import { checkSoilResistance } from "../../../services/risk-control";
-import type { SoilResistanceInput } from "../../../services/risk-control-lib/soil-resistance";
 import {
   getGasLedgerSnapshot,
   loadGasLedgerFromKv,
@@ -22,17 +20,13 @@ import {
   tripStaticCircuitBreaker,
 } from "./zerodev-aa-static-breaker";
 import {
-  AA_GATEWAY_DISABLED_LABEL,
-  AA_GATEWAY_SECURED_LABEL,
   type CitadelRiskGateInput,
   type CitadelRiskGateResult,
   type ZeroDevAaGateInput,
-  type ZeroDevAaGatewayBadgeStatus,
 } from "./zerodev-aa-gate-types";
 import {
   assertAaDeadmanOrThrow,
   evaluateZeroDevGasGuards,
-  readEnv,
   toGatewayInput,
 } from "./zerodev-aa-gate-helpers";
 
@@ -65,10 +59,10 @@ export {
 
 export { evaluateZeroDevGasGuards };
 
-/** Feature flag — default off; v0.8 Citadel hot path unchanged when false. */
-export function isZeroDevAAEnabled(env?: Record<string, string>): boolean {
-  return readEnv(env).USE_ZERODEV_AA === "true";
-}
+export {
+  evaluateZeroDevAaGatewayBadge,
+  isZeroDevAAEnabled,
+} from "./zerodev-aa-gateway-badge";
 
 /** Static circuit breaker — pure matrix evaluation, fail-fast trip, then telemetry enrich. */
 export function assertCitadelRiskGate(input: CitadelRiskGateInput): CitadelRiskGateResult {
@@ -113,24 +107,6 @@ export async function assertCitadelRiskGateAsync(
     dailySpentUsd: matrix.dailySpentUsd,
     chainHealth: aaProbeRoute.health,
     aaProbeRoute,
-  };
-}
-
-/** HUD badge resolver — mirrors soil leg of static breaker without throwing. */
-export function evaluateZeroDevAaGatewayBadge(
-  soil: SoilResistanceInput,
-  env?: Record<string, string>,
-): ZeroDevAaGatewayBadgeStatus {
-  const enabled = isZeroDevAAEnabled(env);
-  if (!enabled) {
-    return { enabled: false, gatePass: false, secured: false, label: AA_GATEWAY_DISABLED_LABEL };
-  }
-  const gatePass = !checkSoilResistance(soil).tripped;
-  return {
-    enabled: true,
-    gatePass,
-    secured: gatePass,
-    label: gatePass ? AA_GATEWAY_SECURED_LABEL : AA_GATEWAY_DISABLED_LABEL,
   };
 }
 

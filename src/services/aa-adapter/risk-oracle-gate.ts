@@ -2,7 +2,7 @@
 import { createPublicClient, http, type Address } from "viem";
 import { arbitrum, arbitrumNova, arbitrumSepolia } from "viem/chains";
 import { RiskLimitExceeded } from "../risk-control";
-import { isZeroDevAAEnabled } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gate";
+import { isZeroDevAAEnabled } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gateway-badge";
 import { ARBITRUM_ONE_CHAIN_ID, ARBITRUM_NOVA_CHAIN_ID } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-constants";
 import { ARBITRUM_SEPOLIA_CHAIN_ID, resolveArbitrumRpcUrl } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-chain";
 import {

@@ -1,6 +1,7 @@
 /** Tab 2 — minimal reference vault view; live proof lives on Tab 1. */
 import type { ReactNode } from "react";
 import { RetailVaultDemoPanel } from "../RetailVaultDemoPanel";
+import { ZeroDevSmartRouteDepositStub } from "./ZeroDevSmartRouteDepositStub";
 import { resolveRetailVaultYieldTelemetry } from "../../../services/retail-vault-yield-telemetry";
 import type { FullGrantAuditVenueView } from "./grant-audit-view-types";
 
@@ -22,6 +23,7 @@ export function ZeroDeltaVault({ view }: ZeroDeltaVaultProps): ReactNode {
         Reference vault sleeve — live Citadel TVL, Armor Index, and Provenance Verified OID are on Tab 1.
       </p>
       <RetailVaultDemoPanel {...yieldTelemetry} />
+      <ZeroDevSmartRouteDepositStub />
     </div>
   );
 }

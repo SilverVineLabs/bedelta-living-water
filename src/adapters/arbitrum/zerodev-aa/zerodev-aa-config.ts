@@ -1,6 +1,6 @@
 import type { ZeroDevAAConfigOptions, ZeroDevAAEnvConfig } from "./zerodev-aa-types";
 import { ARBITRUM_ONE_CHAIN_ID, resolveZeroDevBundlerRpc } from "./zerodev-aa-constants";
-import { isZeroDevAAEnabled } from "./zerodev-aa-gate";
+import { isZeroDevAAEnabled } from "./zerodev-aa-gateway-badge";
 
 function readEnv(env?: Record<string, string>): Record<string, string> {
   if (env) return env;

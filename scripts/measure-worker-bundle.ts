@@ -37,6 +37,8 @@ function kiB(bytes: number): number {
   return Math.round((bytes / 1024) * 100) / 100;
 }
 
+const BUNDLE_GZIP_LIMIT_KIB = 158.99 as const;
+
 function main(): void {
   const full = process.argv.includes("--full");
   if (full || !existsSync(join(ROOT, "dist", "index.html"))) {
@@ -81,9 +83,15 @@ function main(): void {
     gzipKiB: kiB(gzipBytes),
     wranglerTotalUploadKiB: upload ? Number(upload[1]) : null,
     wranglerTotalGzipKiB: upload ? Number(upload[2]) : null,
+    limitKiB: BUNDLE_GZIP_LIMIT_KIB,
+    pass: kiB(gzipBytes) <= BUNDLE_GZIP_LIMIT_KIB,
   };
 
   console.log(JSON.stringify(report, null, 2));
+  if (!report.pass) {
+    console.error(`[bundle:measure] FAIL — ${report.gzipKiB} KiB > ${BUNDLE_GZIP_LIMIT_KIB} KiB`);
+    process.exit(1);
+  }
 }
 
 main();

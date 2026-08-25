@@ -8,7 +8,8 @@
  *   pnpm telemetry:96h -- --interval 30 --duration-hours 96
  */
 
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
+import { mkdir, rename, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { performance } from "node:perf_hooks";
 import { fileURLToPath } from "node:url";
@@ -23,7 +24,7 @@ const OUT_PATH = join(ROOT, "docs/audit/live-96h-telemetry.json");
 const FETCH_TIMEOUT_MS = 5_000;
 const DEFAULT_INTERVAL_SEC = 30;
 const DEFAULT_DURATION_HOURS = 96;
-const MAX_RECENT_SAMPLES = 500;
+/** 96h @ 30s × 3 venues ≈ 34,560 samples (~3 MB JSON). No truncation — full stream retained. */
 const SCHEMA = "silvervine.live-96h-telemetry.v1" as const;
 
 export type TelemetryStatus = "OK" | "Degraded" | "Trip";
@@ -289,18 +290,34 @@ export function mergeSamples(
     else if (s.status === "Degraded") doc.totals.degraded += 1;
     else doc.totals.trip += 1;
   }
-  if (doc.recentSamples.length > MAX_RECENT_SAMPLES) {
-    doc.recentSamples = doc.recentSamples.slice(-MAX_RECENT_SAMPLES);
-  }
   doc.lastUpdatedAt = now;
   return doc;
 }
 
-function persistDoc(doc: Live96hTelemetryDoc): void {
-  mkdirSync(dirname(OUT_PATH), { recursive: true });
+let persistChain: Promise<void> = Promise.resolve();
+
+async function persistDocAsync(payload: string): Promise<void> {
+  await mkdir(dirname(OUT_PATH), { recursive: true });
   const tmp = `${OUT_PATH}.tmp`;
-  writeFileSync(tmp, `${JSON.stringify(doc, null, 2)}\n`, "utf8");
-  renameSync(tmp, OUT_PATH);
+  await writeFile(tmp, payload, "utf8");
+  await rename(tmp, OUT_PATH);
+}
+
+/** Non-blocking chained write — snapshots JSON at enqueue time. */
+export function persistDoc(doc: Live96hTelemetryDoc): void {
+  const payload = `${JSON.stringify(doc, null, 2)}\n`;
+  persistChain = persistChain
+    .then(() => persistDocAsync(payload))
+    .catch((err) => {
+      console.error(
+        "[telemetry:96h] persist error (fail-safe):",
+        err instanceof Error ? err.message : err,
+      );
+    });
+}
+
+export async function flushPersistDoc(): Promise<void> {
+  await persistChain;
 }
 
 export async function runTelemetryTick(): Promise<TelemetrySample[]> {
@@ -375,8 +392,10 @@ async function main(): Promise<void> {
   const shutdown = () => {
     clearInterval(timer);
     persistDoc(doc);
-    console.log("[telemetry:96h] shutdown — snapshot flushed");
-    process.exit(0);
+    void flushPersistDoc().then(() => {
+      console.log("[telemetry:96h] shutdown — snapshot flushed");
+      process.exit(0);
+    });
   };
   process.on("SIGINT", shutdown);
   process.on("SIGTERM", shutdown);

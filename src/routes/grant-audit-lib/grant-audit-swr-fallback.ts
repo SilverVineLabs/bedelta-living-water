@@ -13,7 +13,7 @@ import { attachProvenanceVerifiedTrades } from "./grant-audit-provenance";
 import type { GrantAuditPayload } from "./grant-audit.types";
 import { attachSepoliaDualLegProof } from "./grant-audit-v0-telemetry-fallback";
 import { buildZeroDevAaGatewayStatus } from "./grant-audit-zerodev-aa";
-import { evaluateZeroDevAaGatewayBadge } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gate";
+import { evaluateZeroDevAaGatewayBadge } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gateway-badge";
 import {
   buildGrantAuditSwrL1GasSurcharge,
   buildGrantAuditSwrSequencerHealth,

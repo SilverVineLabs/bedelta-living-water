@@ -8,8 +8,12 @@ import {
   poolDepthUsd,
 } from "./gmx-v2-adapter.utils";
 import { hashData, hashString } from "./gmx-v2-datastore";
+import {
+  GMX_ETH_USD_MARKET_TOKEN,
+  resolveGmxMarketBySymbol,
+} from "../../config/gmx-markets";
 
-export const GMX_ETH_USD_MARKET_TOKEN = "0x70d95587d40A2caf56bd97485aB3Eec10Bee6336";
+export { GMX_ETH_USD_MARKET_TOKEN };
 const BALANCE_OF_SELECTOR = "0x70a08231";
 const TOTAL_SUPPLY_SELECTOR = "0x18160ddd";
 const GET_UINT_SELECTOR = "0xbd02d0f5";
@@ -88,7 +92,7 @@ export async function fetchGmxGmBalanceTelemetry(input: {
 }): Promise<GmxGmBalanceSnapshot> {
   const opts = input.opts ?? {};
   const symbol = (input.symbol ?? "ETH").toUpperCase();
-  const marketToken = GMX_ETH_USD_MARKET_TOKEN;
+  const { marketToken } = resolveGmxMarketBySymbol(symbol);
   const dataStore = opts.dataStore ?? GMX_V2_DATASTORE;
   const [balanceHex, supplyHex] = await Promise.all([
     rpcCall(marketToken, encodeBalanceOf(input.userAddress), opts),
