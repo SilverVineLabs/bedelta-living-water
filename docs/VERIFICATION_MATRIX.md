@@ -10,9 +10,28 @@ Open this document first. Each tier is CLI-reproducible with **zero mainnet sign
 
 ---
 
+## Tier 0 — Docker One-Click (Zero Host Node/pnpm)
+
+**No local Node 22 / pnpm / WSL toolchain required.** Builds an isolated verifier image from repo root [`Dockerfile`](../Dockerfile).
+
+```bash
+docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
+```
+
+| Command | Proves | Expected |
+|---------|--------|----------|
+| Default `docker run` | 5-step Citadel **`demo:e2e`** dry-run inside container | `[tier0] demo:e2e PASS` |
+| `docker run --rm slivervine-citadel pnpm test` | Full Vitest regression bar (host-free) | **164 files / 735 PASS** |
+| Sidecar (Tier 5) | Telemetry relay · fail-closed `/v1/intent` | [`docker/README.md`](../docker/README.md) |
+
+**Why Tier 0:** Eliminates judge laptop Node version drift, pnpm store corruption, and missing WSL deps — same PASS bar, hermetic container.
+
+---
+
 ## Quick Start (≈ 3 minutes)
 
 ```bash
+docker build -t slivervine-citadel . && docker run --rm slivervine-citadel   # Tier 0 — zero host deps
 pnpm install
 pnpm test                 # Tier 1 — 164 files / 735 PASS
 pnpm audit:fast           # Tier 2 — fast security scorecard
@@ -36,6 +55,7 @@ pnpm audit:nightly                          # Tier 2/3 deep — Echidna · Halmo
 
 | Tier | Command | What it proves | Expected |
 |------|---------|----------------|----------|
+| **0** | `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` | Isolated **`demo:e2e`** · zero host Node/pnpm | `[tier0] demo:e2e PASS` |
 | **1** | `pnpm test` | Core engine · Soil · Wasm · Sequencer · Margin Buffer · adapters | **164 files / 735 PASS** |
 | **2** | `pnpm audit:fast` / `pnpm audit:security` | TSC · Vitest security · Solhint · Gitleaks · Slither · Aderyn | Fast PASS · Security **5/0/0** |
 | **3** | `cd SliverVineGate && forge test` | On-chain Gate · default property fuzz (5×1,024) · gas bounds | **60 Passed** · **5,120 fuzz** (default profile) |
@@ -61,6 +81,17 @@ pnpm audit:nightly                          # Tier 2/3 deep — Echidna · Halmo
 | **SDK / Gate attestation** | EIP-712 · bridge armor | `tests/sdk/*` |
 | **Robinhood ingress** | Unidirectional escort · AML inbound block | `tests/adapters/robinhood-*` · `r-chain-*` |
 | **ZeroDev AA (unit)** | Adapter / dry-run harness units | `tests/adapters/zerodev-aa-*` |
+
+### R03 / R04 — RPC & Execution-Lag Telemetry (Provenance)
+
+Real-world **RTT & RPC Jitter Guard** is **active** with strict fail-closed budgets:
+
+| ID | Guard | Fail-closed budget | Code SSOT |
+|----|-------|-------------------|-----------|
+| **R04** | PGATE Latency / WS jitter | **200ms** | `PGATE_MAX_LATENCY_MS` · `src/adapters/hl/websocket/websocket-health.ts` |
+| **R03** | HL L2 book stale / RPC probe | **500ms** | `HL_L2_STALE_THRESHOLD_MS` · `src/services/exchanges/hl-l2-book-lib/hl-l2-book-types.ts` |
+
+**Live testnet execution provenance:** 5 verified Hyperliquid testnet orders in [`verified_5tx_results.json`](../src/data/verified_5tx_results.json) (bundled via [`provenance_verified_trades.json`](../src/data/provenance_verified_trades.json) → `GET /api/grant-audit` · `provenanceVerified`). Observed cross-venue execution RTT band **~180–320ms** (RPC failover benchmark · testnet fill window) with **&lt;0.12% delta decay** (`crossVenueSlippage: 0.0004` = **0.04%** in 5-TX soil audit).
 
 **Judge note:** Full suite is the institutional regression bar. Sub-slices (`pnpm test:grant-v09-sim`, `pnpm test:wasm-feasibility`) are optional deep-dives only.
 
@@ -164,6 +195,7 @@ Automated dependency audit (2026-08-24): **no TS/JS runtime import** of `contrac
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm audit:fast` / `audit:security` / `audit:nightly` | 3-tier security matrix |
 | `pnpm run demo:e2e` | Grant E2E demonstration |
+| `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` | Tier 0 isolated E2E (see root `Dockerfile`) |
 | `pnpm build:wasm` | Rust `soil_core.wasm` |
 | `pnpm verify:5tx` / `verify:grant` / `verify:negative` | Provenance / negative proofs |
 | `pnpm build` / `deploy` / `dev` | Worker / SPA toolchain |

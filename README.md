@@ -32,11 +32,21 @@
 
 **Arbitrum Native Execution Premium:** Direct Arbitrum One LPs earn an estimated **+15 ~ 30 bps** vs bridged / multi-hop routes *(design estimate — not a locked test assertion)*.
 
-> **SSOT 對齊（2026-08-25）：** v0.9 = Sepolia + dry-run verified · mainnet → M6 · deep fuzz 327,675 需 `audit:nightly` / `FOUNDRY_PROFILE=deep` · 詳見 [`docs/README.md`](./docs/README.md)。
+> **SSOT Realignment (2026-08-25):** v0.9 = Sepolia + dry-run verified · mainnet → M6 · deep fuzz 327,675 requires `audit:nightly` / `FOUNDRY_PROFILE=deep` · **Tier-0 Docker** = root [`Dockerfile`](./Dockerfile) · see [`docs/README.md`](./docs/README.md).
 
 ---
 
 ## ⚡ 30-Second Quick Verification
+
+**Tier 0 — Docker (zero host Node/pnpm dependencies):**
+
+```bash
+docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
+```
+
+Isolated container execution of 5-step `demo:e2e` dry-run; complete **735 PASS** → `docker run --rm slivervine-citadel pnpm test`. Sidecar → [`docker/README.md`](./docker/README.md).
+
+**Tier 1+ — Monorepo CLI:**
 
 ```bash
 pnpm install
@@ -47,9 +57,10 @@ npx tsx scripts/grant-advanced-resilience-benchmark.ts
 
 Canonical interactive demo command for judges:
 
-1. Run `pnpm run demo:e2e` as the single interactive Citadel demo entry point.
-2. `pnpm test` verifies the locked SSOT: `164 test files | 735 PASS`.
-3. `grant-advanced-resilience-benchmark.ts` shows the sub-ms Wasm Shield latency path.
+1. **Tier 0:** `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` — isolated E2E, no host toolchain drift.
+2. Run `pnpm run demo:e2e` as the single interactive Citadel demo entry point.
+3. `pnpm test` verifies the locked SSOT: `164 test files | 735 PASS`.
+4. `grant-advanced-resilience-benchmark.ts` shows the sub-ms Wasm Shield latency path.
 
 For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API Verification` section below.
 
@@ -201,7 +212,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 | [docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md](./docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md) | Arbitrum grant one-pager |
 | [docs/grants/arbitrum/GRANT_PROPOSAL.md](./docs/grants/arbitrum/GRANT_PROPOSAL.md) | Arbitrum / GMX v0.9 grant scope |
 | [docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) | Robinhood Chain Safety Gate Audit · Pillar 2 Firewall |
-| [docs/README.md](./docs/README.md) | Docs index (6 canonical docs · SSOT 對齊紀錄) |
+| [docs/README.md](./docs/README.md) | Docs index (6 canonical docs · SSOT realignment log) |
 
 ---
 

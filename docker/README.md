@@ -4,8 +4,41 @@
 
 > B2B zero-GC relay for Grant evaluators · polls live Citadel telemetry · exposes local `/health` + fail-closed `/v1/intent`.
 
+> **Doc log (2026-08-25):** Tier-0 root [`Dockerfile`](../Dockerfile) E2E · Sidecar Tier-5 · R03/R04 RTT 200/500ms · 5-TX provenance SSOT.
+
 **Entity:** SilverVine Labs · **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) · **Upstream:** `https://bedeltawater.slivervine.xyz/api/telemetry/health`  
 **Regression bar:** **164 test files | 735 PASS (100% Clean)** · `tsc --noEmit` CLEAN
+
+---
+
+## 0. Tier-0 — Root E2E Verifier (Zero Host Node/pnpm)
+
+From repository root — **not** the sidecar image:
+
+```bash
+docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
+```
+
+| Item | Value |
+|------|-------|
+| Dockerfile | [`../Dockerfile`](../Dockerfile) (repo root) |
+| Default CMD | `pnpm run demo:e2e` → `[tier0] demo:e2e PASS` |
+| Full Vitest bar | `docker run --rm slivervine-citadel pnpm test` → **735 PASS** |
+| Isolation | No host Node 22 / pnpm / WSL required |
+
+Sidecar telemetry (Tier 5) remains [`Dockerfile.sidecar`](./Dockerfile.sidecar) below.
+
+---
+
+## 0.1 R03 / R04 — RTT & Execution-Lag Telemetry
+
+| Guard | Budget | SSOT |
+|-------|--------|------|
+| **R04 PGATE** | **200ms** fail-closed | `PGATE_MAX_LATENCY_MS` |
+| **R03 HL L2 stale** | **500ms** fail-closed | `HL_L2_STALE_THRESHOLD_MS` |
+| Sidecar SLO | **500ms** decision deadline | `SIDECAR_DECISION_SLO_MS` |
+
+**Provenance:** 5 HL testnet fills — [`../src/data/verified_5tx_results.json`](../src/data/verified_5tx_results.json) · grant bundle [`provenance_verified_trades.json`](../src/data/provenance_verified_trades.json). Cross-venue RTT band **~180–320ms** · delta decay **&lt;0.12%** (`crossVenueSlippage: 0.0004`).
 
 ---
 
@@ -178,7 +211,8 @@ Institutional funds route alpha through `silvervine-proxy` at `localhost:8080` �
 
 | File                                               | Purpose                                   |
 | -------------------------------------------------- | ----------------------------------------- |
-| [`Dockerfile.sidecar`](./Dockerfile.sidecar)       | Production image                          |
+| [`../Dockerfile`](../Dockerfile)                   | **Tier-0** isolated E2E verifier image    |
+| [`Dockerfile.sidecar`](./Dockerfile.sidecar)       | Tier-5 telemetry sidecar image            |
 | [`sidecar-daemon.mjs`](./sidecar-daemon.mjs)       | Edge-safe daemon (no TS runtime)          |
 | [Root README.md](../README.md)                          | Citadel Core Architecture & Quickstart    |
 | [docs/grants/arbitrum/GRANT_PROPOSAL.md](../docs/grants/arbitrum/GRANT_PROPOSAL.md) | Full Citadel scope                        |

@@ -6,10 +6,10 @@
 > **Baseline (locked):** Vitest **735 PASS (164 files)** · `pnpm test` · live proof `GET /api/grant-audit`.  
 > **Evaluators start here:** [`VERIFICATION_MATRIX.md`](./VERIFICATION_MATRIX.md) — Tier 1–5 CLI map.
 
-> **SSOT 對齊紀錄（2026-08-25）**  
-> - **部署狀態：** 全 doc 統一 `v0.9 Production-Ready (Arbitrum Sepolia Testnet & Dry-Run Verified)` — 唔等同 Arbitrum One mainnet live（M6）。  
-> - **Fuzz：** 預設 `forge test` = **5,120**（5×1,024）；**327,675** = `pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`。  
-> - **Design vs Code：** SGX PRM · Stylus on-L2 · ERC-7715 = ⏳ V1.0 Design Spec；`evaluateHlOrderbookGapGuard()` = v0.9 partial guard。
+> **SSOT Realignment Log (2026-08-25)**  
+> - **Deployment status:** All docs unified on `v0.9 Production-Ready (Arbitrum Sepolia Testnet & Dry-Run Verified)` — not equivalent to Arbitrum One mainnet live (M6).  
+> - **Fuzz:** Default `forge test` = **5,120** (5×1,024); **327,675** = `pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`.  
+> - **Design vs Code:** SGX PRM · Stylus on-L2 · ERC-7715 = ⏳ V1.0 Design Spec; `evaluateHlOrderbookGapGuard()` = v0.9 partial guard.
 
 ## Canonical Docs (SSOT)
 
