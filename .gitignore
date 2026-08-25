@@ -50,7 +50,7 @@ san
 # Block all root-level and sub-folder markdown files by default
 *.md
 docs/**
-san
+
 
 # EXPLICITLY ALLOW ONLY PUBLIC GRANT ARTIFACTS
 !README.md
