@@ -1,32 +1,32 @@
 {
   "schema": "silvervine.live-96h-telemetry.v1",
   "startedAt": "2026-08-25T09:12:13.604Z",
-  "lastUpdatedAt": "2026-08-25T16:39:54.170Z",
+  "lastUpdatedAt": "2026-08-25T17:39:26.628Z",
   "daemonEndsAt": "2026-08-29T09:12:13.605Z",
   "intervalSec": 30,
   "durationHours": 96,
   "snapshot": {
     "arbitrum-sepolia": {
-      "timestamp": "2026-08-25T16:39:53.722Z",
+      "timestamp": "2026-08-25T17:39:26.337Z",
       "venue": "arbitrum-sepolia",
-      "rttMs": 443,
-      "jitterMs": 162,
+      "rttMs": 277,
+      "jitterMs": 22,
       "status": "Trip",
-      "detail": "eth_blockNumber=0x11feebce"
+      "detail": "eth_blockNumber=0x11ff23ff"
     },
     "hyperliquid-testnet": {
-      "timestamp": "2026-08-25T16:39:53.723Z",
+      "timestamp": "2026-08-25T17:39:26.338Z",
       "venue": "hyperliquid-testnet",
-      "rttMs": 446,
-      "jitterMs": 214,
-      "status": "Degraded",
-      "detail": "meta+l2Book ETH spreadBps=3.24"
+      "rttMs": 289,
+      "jitterMs": 14,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=1.22"
     },
     "robinhood-worker": {
-      "timestamp": "2026-08-25T16:39:53.724Z",
+      "timestamp": "2026-08-25T17:39:26.339Z",
       "venue": "robinhood-worker",
-      "rttMs": 203,
-      "jitterMs": 142,
+      "rttMs": 58,
+      "jitterMs": 14,
       "status": "OK",
       "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
     }
@@ -12031,12 +12031,2868 @@
       "jitterMs": 142,
       "status": "OK",
       "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:40:23.744Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 307,
+      "jitterMs": 136,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11feec4b"
+    },
+    {
+      "timestamp": "2026-08-25T16:40:23.744Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 508,
+      "jitterMs": 62,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=2.43"
+    },
+    {
+      "timestamp": "2026-08-25T16:40:23.745Z",
+      "venue": "robinhood-worker",
+      "rttMs": 80,
+      "jitterMs": 123,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:40:53.869Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 1916,
+      "jitterMs": 1609,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11feeccc"
+    },
+    {
+      "timestamp": "2026-08-25T16:40:53.870Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 2812,
+      "jitterMs": 2304,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=3.24"
+    },
+    {
+      "timestamp": "2026-08-25T16:40:53.871Z",
+      "venue": "robinhood-worker",
+      "rttMs": 1217,
+      "jitterMs": 1137,
+      "status": "Trip",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:41:23.892Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 291,
+      "jitterMs": 1625,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11feed3e"
+    },
+    {
+      "timestamp": "2026-08-25T16:41:23.892Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 314,
+      "jitterMs": 2498,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:41:23.893Z",
+      "venue": "robinhood-worker",
+      "rttMs": 78,
+      "jitterMs": 1139,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:41:53.907Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 288,
+      "jitterMs": 3,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11feedb4"
+    },
+    {
+      "timestamp": "2026-08-25T16:41:53.907Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 361,
+      "jitterMs": 47,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=1.62"
+    },
+    {
+      "timestamp": "2026-08-25T16:41:53.918Z",
+      "venue": "robinhood-worker",
+      "rttMs": 82,
+      "jitterMs": 4,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:42:23.931Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 286,
+      "jitterMs": 2,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11feee2d"
+    },
+    {
+      "timestamp": "2026-08-25T16:42:23.932Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 234,
+      "jitterMs": 127,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=1.21"
+    },
+    {
+      "timestamp": "2026-08-25T16:42:23.932Z",
+      "venue": "robinhood-worker",
+      "rttMs": 47,
+      "jitterMs": 35,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:42:53.936Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 306,
+      "jitterMs": 20,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11feeea3"
+    },
+    {
+      "timestamp": "2026-08-25T16:42:53.937Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 297,
+      "jitterMs": 63,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:42:53.937Z",
+      "venue": "robinhood-worker",
+      "rttMs": 570,
+      "jitterMs": 523,
+      "status": "Trip",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:43:23.962Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 319,
+      "jitterMs": 13,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11feef1d"
+    },
+    {
+      "timestamp": "2026-08-25T16:43:23.962Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 255,
+      "jitterMs": 42,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:43:23.963Z",
+      "venue": "robinhood-worker",
+      "rttMs": 100,
+      "jitterMs": 470,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:43:53.986Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 278,
+      "jitterMs": 41,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11feef95"
+    },
+    {
+      "timestamp": "2026-08-25T16:43:53.987Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 315,
+      "jitterMs": 60,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:43:53.987Z",
+      "venue": "robinhood-worker",
+      "rttMs": 112,
+      "jitterMs": 12,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:44:24.011Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 316,
+      "jitterMs": 38,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef00c"
+    },
+    {
+      "timestamp": "2026-08-25T16:44:24.013Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 321,
+      "jitterMs": 6,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.43"
+    },
+    {
+      "timestamp": "2026-08-25T16:44:24.013Z",
+      "venue": "robinhood-worker",
+      "rttMs": 83,
+      "jitterMs": 29,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:44:54.044Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 421,
+      "jitterMs": 105,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef084"
+    },
+    {
+      "timestamp": "2026-08-25T16:44:54.089Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 611,
+      "jitterMs": 290,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:44:54.091Z",
+      "venue": "robinhood-worker",
+      "rttMs": 179,
+      "jitterMs": 96,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:45:24.057Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 309,
+      "jitterMs": 112,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef0fd"
+    },
+    {
+      "timestamp": "2026-08-25T16:45:24.058Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 325,
+      "jitterMs": 286,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.81"
+    },
+    {
+      "timestamp": "2026-08-25T16:45:24.060Z",
+      "venue": "robinhood-worker",
+      "rttMs": 98,
+      "jitterMs": 81,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:45:54.082Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 292,
+      "jitterMs": 17,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef173"
+    },
+    {
+      "timestamp": "2026-08-25T16:45:54.084Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 273,
+      "jitterMs": 52,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:45:54.085Z",
+      "venue": "robinhood-worker",
+      "rttMs": 94,
+      "jitterMs": 4,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:46:24.107Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 342,
+      "jitterMs": 50,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef1eb"
+    },
+    {
+      "timestamp": "2026-08-25T16:46:24.108Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 354,
+      "jitterMs": 81,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:46:24.111Z",
+      "venue": "robinhood-worker",
+      "rttMs": 80,
+      "jitterMs": 14,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:46:54.132Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 286,
+      "jitterMs": 56,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef26c"
+    },
+    {
+      "timestamp": "2026-08-25T16:46:54.132Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 280,
+      "jitterMs": 74,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=3.23"
+    },
+    {
+      "timestamp": "2026-08-25T16:46:54.132Z",
+      "venue": "robinhood-worker",
+      "rttMs": 48,
+      "jitterMs": 32,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:47:24.157Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 272,
+      "jitterMs": 14,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef2e2"
+    },
+    {
+      "timestamp": "2026-08-25T16:47:24.157Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 318,
+      "jitterMs": 38,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.83"
+    },
+    {
+      "timestamp": "2026-08-25T16:47:24.157Z",
+      "venue": "robinhood-worker",
+      "rttMs": 66,
+      "jitterMs": 18,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:47:54.182Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 266,
+      "jitterMs": 6,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef35a"
+    },
+    {
+      "timestamp": "2026-08-25T16:47:54.182Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 259,
+      "jitterMs": 59,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:47:54.182Z",
+      "venue": "robinhood-worker",
+      "rttMs": 49,
+      "jitterMs": 17,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:48:24.199Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 285,
+      "jitterMs": 19,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef3d3"
+    },
+    {
+      "timestamp": "2026-08-25T16:48:24.200Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 230,
+      "jitterMs": 29,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.02"
+    },
+    {
+      "timestamp": "2026-08-25T16:48:24.200Z",
+      "venue": "robinhood-worker",
+      "rttMs": 65,
+      "jitterMs": 16,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:48:54.219Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 296,
+      "jitterMs": 11,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef44c"
+    },
+    {
+      "timestamp": "2026-08-25T16:48:54.219Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 249,
+      "jitterMs": 19,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:48:54.230Z",
+      "venue": "robinhood-worker",
+      "rttMs": 75,
+      "jitterMs": 10,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:49:24.226Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 292,
+      "jitterMs": 4,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef4c3"
+    },
+    {
+      "timestamp": "2026-08-25T16:49:24.226Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 292,
+      "jitterMs": 43,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.02"
+    },
+    {
+      "timestamp": "2026-08-25T16:49:24.226Z",
+      "venue": "robinhood-worker",
+      "rttMs": 64,
+      "jitterMs": 11,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:49:54.251Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 276,
+      "jitterMs": 16,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef53a"
+    },
+    {
+      "timestamp": "2026-08-25T16:49:54.252Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 338,
+      "jitterMs": 46,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:49:54.252Z",
+      "venue": "robinhood-worker",
+      "rttMs": 252,
+      "jitterMs": 188,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:50:24.276Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 293,
+      "jitterMs": 17,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef5b1"
+    },
+    {
+      "timestamp": "2026-08-25T16:50:24.276Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 359,
+      "jitterMs": 21,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:50:24.276Z",
+      "venue": "robinhood-worker",
+      "rttMs": 112,
+      "jitterMs": 140,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:50:54.284Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 594,
+      "jitterMs": 301,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef629"
+    },
+    {
+      "timestamp": "2026-08-25T16:50:54.284Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 274,
+      "jitterMs": 85,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=3.24"
+    },
+    {
+      "timestamp": "2026-08-25T16:50:54.284Z",
+      "venue": "robinhood-worker",
+      "rttMs": 83,
+      "jitterMs": 29,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:51:24.309Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 265,
+      "jitterMs": 329,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef6a3"
+    },
+    {
+      "timestamp": "2026-08-25T16:51:24.310Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 259,
+      "jitterMs": 15,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:51:24.310Z",
+      "venue": "robinhood-worker",
+      "rttMs": 53,
+      "jitterMs": 30,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:51:54.334Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 283,
+      "jitterMs": 18,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef719"
+    },
+    {
+      "timestamp": "2026-08-25T16:51:54.335Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 309,
+      "jitterMs": 50,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.83"
+    },
+    {
+      "timestamp": "2026-08-25T16:51:54.335Z",
+      "venue": "robinhood-worker",
+      "rttMs": 66,
+      "jitterMs": 13,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:52:24.340Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 285,
+      "jitterMs": 2,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef791"
+    },
+    {
+      "timestamp": "2026-08-25T16:52:24.340Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 293,
+      "jitterMs": 16,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=4.45"
+    },
+    {
+      "timestamp": "2026-08-25T16:52:24.341Z",
+      "venue": "robinhood-worker",
+      "rttMs": 99,
+      "jitterMs": 33,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:52:54.354Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 281,
+      "jitterMs": 4,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef810"
+    },
+    {
+      "timestamp": "2026-08-25T16:52:54.355Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 223,
+      "jitterMs": 70,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:52:54.355Z",
+      "venue": "robinhood-worker",
+      "rttMs": 66,
+      "jitterMs": 33,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:53:24.376Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 302,
+      "jitterMs": 21,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef884"
+    },
+    {
+      "timestamp": "2026-08-25T16:53:24.376Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 530,
+      "jitterMs": 307,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.81"
+    },
+    {
+      "timestamp": "2026-08-25T16:53:24.376Z",
+      "venue": "robinhood-worker",
+      "rttMs": 69,
+      "jitterMs": 3,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:53:54.401Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 522,
+      "jitterMs": 220,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef900"
+    },
+    {
+      "timestamp": "2026-08-25T16:53:54.401Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 778,
+      "jitterMs": 248,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:53:54.402Z",
+      "venue": "robinhood-worker",
+      "rttMs": 316,
+      "jitterMs": 247,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:54:24.415Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 288,
+      "jitterMs": 234,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef977"
+    },
+    {
+      "timestamp": "2026-08-25T16:54:24.416Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 243,
+      "jitterMs": 535,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.4"
+    },
+    {
+      "timestamp": "2026-08-25T16:54:24.416Z",
+      "venue": "robinhood-worker",
+      "rttMs": 88,
+      "jitterMs": 228,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:54:54.440Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 342,
+      "jitterMs": 54,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fef9f0"
+    },
+    {
+      "timestamp": "2026-08-25T16:54:54.441Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 469,
+      "jitterMs": 226,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=1.22"
+    },
+    {
+      "timestamp": "2026-08-25T16:54:54.441Z",
+      "venue": "robinhood-worker",
+      "rttMs": 218,
+      "jitterMs": 130,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:55:24.465Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 308,
+      "jitterMs": 34,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fefa67"
+    },
+    {
+      "timestamp": "2026-08-25T16:55:24.466Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 265,
+      "jitterMs": 204,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T16:55:24.466Z",
+      "venue": "robinhood-worker",
+      "rttMs": 93,
+      "jitterMs": 125,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:55:54.490Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 276,
+      "jitterMs": 32,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fefadf"
+    },
+    {
+      "timestamp": "2026-08-25T16:55:54.491Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 1003,
+      "jitterMs": 738,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=1.62"
+    },
+    {
+      "timestamp": "2026-08-25T16:55:54.491Z",
+      "venue": "robinhood-worker",
+      "rttMs": 52,
+      "jitterMs": 41,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:56:24.490Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 282,
+      "jitterMs": 6,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fefb58"
+    },
+    {
+      "timestamp": "2026-08-25T16:56:24.490Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 441,
+      "jitterMs": 562,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T16:56:24.491Z",
+      "venue": "robinhood-worker",
+      "rttMs": 51,
+      "jitterMs": 1,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:56:54.515Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 329,
+      "jitterMs": 47,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fefbce"
+    },
+    {
+      "timestamp": "2026-08-25T16:56:54.515Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 294,
+      "jitterMs": 147,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T16:56:54.515Z",
+      "venue": "robinhood-worker",
+      "rttMs": 106,
+      "jitterMs": 55,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:57:24.522Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 271,
+      "jitterMs": 58,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fefc47"
+    },
+    {
+      "timestamp": "2026-08-25T16:57:24.523Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 277,
+      "jitterMs": 17,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T16:57:24.523Z",
+      "venue": "robinhood-worker",
+      "rttMs": 66,
+      "jitterMs": 40,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:57:54.548Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 292,
+      "jitterMs": 21,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fefcbe"
+    },
+    {
+      "timestamp": "2026-08-25T16:57:54.548Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 440,
+      "jitterMs": 163,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=1.22"
+    },
+    {
+      "timestamp": "2026-08-25T16:57:54.548Z",
+      "venue": "robinhood-worker",
+      "rttMs": 57,
+      "jitterMs": 9,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:58:24.573Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 279,
+      "jitterMs": 13,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fefd36"
+    },
+    {
+      "timestamp": "2026-08-25T16:58:24.574Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 241,
+      "jitterMs": 199,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T16:58:24.574Z",
+      "venue": "robinhood-worker",
+      "rttMs": 46,
+      "jitterMs": 11,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:58:54.579Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 293,
+      "jitterMs": 14,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fefdaf"
+    },
+    {
+      "timestamp": "2026-08-25T16:58:54.579Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 357,
+      "jitterMs": 116,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=1.22"
+    },
+    {
+      "timestamp": "2026-08-25T16:58:54.579Z",
+      "venue": "robinhood-worker",
+      "rttMs": 68,
+      "jitterMs": 22,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:59:24.604Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 299,
+      "jitterMs": 6,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fefe2f"
+    },
+    {
+      "timestamp": "2026-08-25T16:59:24.605Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 521,
+      "jitterMs": 164,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.81"
+    },
+    {
+      "timestamp": "2026-08-25T16:59:24.605Z",
+      "venue": "robinhood-worker",
+      "rttMs": 106,
+      "jitterMs": 38,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T16:59:54.629Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 285,
+      "jitterMs": 14,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11fefea7"
+    },
+    {
+      "timestamp": "2026-08-25T16:59:54.629Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 256,
+      "jitterMs": 265,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.81"
+    },
+    {
+      "timestamp": "2026-08-25T16:59:54.629Z",
+      "venue": "robinhood-worker",
+      "rttMs": 51,
+      "jitterMs": 55,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:00:24.654Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 276,
+      "jitterMs": 9,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11feff1c"
+    },
+    {
+      "timestamp": "2026-08-25T17:00:24.656Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 305,
+      "jitterMs": 49,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:00:24.656Z",
+      "venue": "robinhood-worker",
+      "rttMs": 56,
+      "jitterMs": 5,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:00:54.679Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 285,
+      "jitterMs": 9,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11feff97"
+    },
+    {
+      "timestamp": "2026-08-25T17:00:54.679Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 508,
+      "jitterMs": 203,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:00:54.679Z",
+      "venue": "robinhood-worker",
+      "rttMs": 48,
+      "jitterMs": 8,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:01:24.703Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 287,
+      "jitterMs": 2,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff000f"
+    },
+    {
+      "timestamp": "2026-08-25T17:01:24.703Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 234,
+      "jitterMs": 274,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:01:24.703Z",
+      "venue": "robinhood-worker",
+      "rttMs": 77,
+      "jitterMs": 29,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:01:54.728Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 806,
+      "jitterMs": 519,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0089"
+    },
+    {
+      "timestamp": "2026-08-25T17:01:54.728Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 805,
+      "jitterMs": 571,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:01:54.728Z",
+      "venue": "robinhood-worker",
+      "rttMs": 377,
+      "jitterMs": 300,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:02:24.751Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 304,
+      "jitterMs": 502,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff00fd"
+    },
+    {
+      "timestamp": "2026-08-25T17:02:24.752Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 458,
+      "jitterMs": 347,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.81"
+    },
+    {
+      "timestamp": "2026-08-25T17:02:24.752Z",
+      "venue": "robinhood-worker",
+      "rttMs": 75,
+      "jitterMs": 302,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:02:54.776Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 1232,
+      "jitterMs": 928,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff017a"
+    },
+    {
+      "timestamp": "2026-08-25T17:02:54.777Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 1506,
+      "jitterMs": 1048,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:02:54.778Z",
+      "venue": "robinhood-worker",
+      "rttMs": 696,
+      "jitterMs": 621,
+      "status": "Trip",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:03:24.794Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 289,
+      "jitterMs": 943,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff01ef"
+    },
+    {
+      "timestamp": "2026-08-25T17:03:24.795Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 278,
+      "jitterMs": 1228,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.81"
+    },
+    {
+      "timestamp": "2026-08-25T17:03:24.795Z",
+      "venue": "robinhood-worker",
+      "rttMs": 55,
+      "jitterMs": 641,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:03:54.820Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 604,
+      "jitterMs": 315,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0267"
+    },
+    {
+      "timestamp": "2026-08-25T17:03:54.820Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 648,
+      "jitterMs": 370,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=3.25"
+    },
+    {
+      "timestamp": "2026-08-25T17:03:54.821Z",
+      "venue": "robinhood-worker",
+      "rttMs": 380,
+      "jitterMs": 325,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:04:24.834Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 270,
+      "jitterMs": 334,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff02de"
+    },
+    {
+      "timestamp": "2026-08-25T17:04:24.835Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 284,
+      "jitterMs": 364,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=3.25"
+    },
+    {
+      "timestamp": "2026-08-25T17:04:24.835Z",
+      "venue": "robinhood-worker",
+      "rttMs": 101,
+      "jitterMs": 279,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:04:54.844Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 420,
+      "jitterMs": 150,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0356"
+    },
+    {
+      "timestamp": "2026-08-25T17:04:54.845Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 412,
+      "jitterMs": 128,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=1.62"
+    },
+    {
+      "timestamp": "2026-08-25T17:04:54.845Z",
+      "venue": "robinhood-worker",
+      "rttMs": 181,
+      "jitterMs": 80,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:05:24.869Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 295,
+      "jitterMs": 125,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff03cd"
+    },
+    {
+      "timestamp": "2026-08-25T17:05:24.870Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 360,
+      "jitterMs": 52,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:05:24.870Z",
+      "venue": "robinhood-worker",
+      "rttMs": 54,
+      "jitterMs": 127,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:05:54.894Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 650,
+      "jitterMs": 355,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff044f"
+    },
+    {
+      "timestamp": "2026-08-25T17:05:54.895Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 645,
+      "jitterMs": 285,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:05:54.895Z",
+      "venue": "robinhood-worker",
+      "rttMs": 410,
+      "jitterMs": 356,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:06:24.920Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 364,
+      "jitterMs": 286,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff04be"
+    },
+    {
+      "timestamp": "2026-08-25T17:06:24.921Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 333,
+      "jitterMs": 312,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=1.62"
+    },
+    {
+      "timestamp": "2026-08-25T17:06:24.921Z",
+      "venue": "robinhood-worker",
+      "rttMs": 135,
+      "jitterMs": 275,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:06:54.921Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 287,
+      "jitterMs": 77,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff053e"
+    },
+    {
+      "timestamp": "2026-08-25T17:06:54.921Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 294,
+      "jitterMs": 39,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.81"
+    },
+    {
+      "timestamp": "2026-08-25T17:06:54.922Z",
+      "venue": "robinhood-worker",
+      "rttMs": 75,
+      "jitterMs": 60,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:07:24.946Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 705,
+      "jitterMs": 418,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff05b7"
+    },
+    {
+      "timestamp": "2026-08-25T17:07:24.948Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 774,
+      "jitterMs": 480,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=2.84"
+    },
+    {
+      "timestamp": "2026-08-25T17:07:24.950Z",
+      "venue": "robinhood-worker",
+      "rttMs": 407,
+      "jitterMs": 332,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:07:54.970Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 1334,
+      "jitterMs": 629,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0631"
+    },
+    {
+      "timestamp": "2026-08-25T17:07:55.208Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 1494,
+      "jitterMs": 720,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.81"
+    },
+    {
+      "timestamp": "2026-08-25T17:07:55.209Z",
+      "venue": "robinhood-worker",
+      "rttMs": 795,
+      "jitterMs": 388,
+      "status": "Trip",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:08:24.975Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 295,
+      "jitterMs": 1039,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff06a5"
+    },
+    {
+      "timestamp": "2026-08-25T17:08:24.976Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 378,
+      "jitterMs": 1116,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:08:24.976Z",
+      "venue": "robinhood-worker",
+      "rttMs": 92,
+      "jitterMs": 703,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:08:55.000Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 291,
+      "jitterMs": 4,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff071c"
+    },
+    {
+      "timestamp": "2026-08-25T17:08:55.000Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 307,
+      "jitterMs": 71,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=4.07"
+    },
+    {
+      "timestamp": "2026-08-25T17:08:55.000Z",
+      "venue": "robinhood-worker",
+      "rttMs": 84,
+      "jitterMs": 8,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:09:25.025Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 943,
+      "jitterMs": 652,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0796"
+    },
+    {
+      "timestamp": "2026-08-25T17:09:25.093Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 1973,
+      "jitterMs": 1666,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=1.22"
+    },
+    {
+      "timestamp": "2026-08-25T17:09:25.126Z",
+      "venue": "robinhood-worker",
+      "rttMs": 827,
+      "jitterMs": 743,
+      "status": "Trip",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:09:55.049Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 768,
+      "jitterMs": 175,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff080f"
+    },
+    {
+      "timestamp": "2026-08-25T17:09:55.058Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 1158,
+      "jitterMs": 815,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:09:55.063Z",
+      "venue": "robinhood-worker",
+      "rttMs": 431,
+      "jitterMs": 396,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:10:25.073Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 284,
+      "jitterMs": 484,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0884"
+    },
+    {
+      "timestamp": "2026-08-25T17:10:25.074Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 301,
+      "jitterMs": 857,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:10:25.074Z",
+      "venue": "robinhood-worker",
+      "rttMs": 61,
+      "jitterMs": 370,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:10:55.096Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 269,
+      "jitterMs": 15,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff08fc"
+    },
+    {
+      "timestamp": "2026-08-25T17:10:55.096Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 273,
+      "jitterMs": 28,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.04"
+    },
+    {
+      "timestamp": "2026-08-25T17:10:55.097Z",
+      "venue": "robinhood-worker",
+      "rttMs": 53,
+      "jitterMs": 8,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:11:25.121Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 555,
+      "jitterMs": 286,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0975"
+    },
+    {
+      "timestamp": "2026-08-25T17:11:25.122Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 557,
+      "jitterMs": 284,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.82"
+    },
+    {
+      "timestamp": "2026-08-25T17:11:25.122Z",
+      "venue": "robinhood-worker",
+      "rttMs": 303,
+      "jitterMs": 250,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:11:55.146Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 312,
+      "jitterMs": 243,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff09eb"
+    },
+    {
+      "timestamp": "2026-08-25T17:11:55.147Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 316,
+      "jitterMs": 241,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=1.63"
+    },
+    {
+      "timestamp": "2026-08-25T17:11:55.148Z",
+      "venue": "robinhood-worker",
+      "rttMs": 89,
+      "jitterMs": 214,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:12:25.168Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 297,
+      "jitterMs": 15,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0a83"
+    },
+    {
+      "timestamp": "2026-08-25T17:12:25.168Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 233,
+      "jitterMs": 83,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:12:25.169Z",
+      "venue": "robinhood-worker",
+      "rttMs": 76,
+      "jitterMs": 13,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:12:55.192Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 278,
+      "jitterMs": 19,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0af9"
+    },
+    {
+      "timestamp": "2026-08-25T17:12:55.192Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 276,
+      "jitterMs": 43,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:12:55.193Z",
+      "venue": "robinhood-worker",
+      "rttMs": 44,
+      "jitterMs": 32,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:13:25.216Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 291,
+      "jitterMs": 13,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0b72"
+    },
+    {
+      "timestamp": "2026-08-25T17:13:25.216Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 291,
+      "jitterMs": 15,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:13:25.216Z",
+      "venue": "robinhood-worker",
+      "rttMs": 64,
+      "jitterMs": 20,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:13:55.241Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 296,
+      "jitterMs": 5,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0be8"
+    },
+    {
+      "timestamp": "2026-08-25T17:13:55.242Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 276,
+      "jitterMs": 15,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=1.22"
+    },
+    {
+      "timestamp": "2026-08-25T17:13:55.243Z",
+      "venue": "robinhood-worker",
+      "rttMs": 55,
+      "jitterMs": 9,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:14:25.260Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 313,
+      "jitterMs": 17,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0c61"
+    },
+    {
+      "timestamp": "2026-08-25T17:14:25.261Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 440,
+      "jitterMs": 164,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:14:25.261Z",
+      "venue": "robinhood-worker",
+      "rttMs": 98,
+      "jitterMs": 43,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:14:55.285Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 1349,
+      "jitterMs": 1036,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0cdd"
+    },
+    {
+      "timestamp": "2026-08-25T17:14:55.286Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 2866,
+      "jitterMs": 2426,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:14:55.286Z",
+      "venue": "robinhood-worker",
+      "rttMs": 1078,
+      "jitterMs": 980,
+      "status": "Trip",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:15:25.307Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 434,
+      "jitterMs": 915,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0d52"
+    },
+    {
+      "timestamp": "2026-08-25T17:15:25.308Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 681,
+      "jitterMs": 2185,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:15:25.308Z",
+      "venue": "robinhood-worker",
+      "rttMs": 231,
+      "jitterMs": 847,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:15:55.332Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 1541,
+      "jitterMs": 1107,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0dcd"
+    },
+    {
+      "timestamp": "2026-08-25T17:15:55.334Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 2177,
+      "jitterMs": 1496,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:15:55.335Z",
+      "venue": "robinhood-worker",
+      "rttMs": 1025,
+      "jitterMs": 794,
+      "status": "Trip",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:16:25.341Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 284,
+      "jitterMs": 1257,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0e40"
+    },
+    {
+      "timestamp": "2026-08-25T17:16:25.342Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 304,
+      "jitterMs": 1873,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:16:25.343Z",
+      "venue": "robinhood-worker",
+      "rttMs": 50,
+      "jitterMs": 975,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:16:55.360Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 281,
+      "jitterMs": 3,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0eb8"
+    },
+    {
+      "timestamp": "2026-08-25T17:16:55.360Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 271,
+      "jitterMs": 33,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:16:55.361Z",
+      "venue": "robinhood-worker",
+      "rttMs": 60,
+      "jitterMs": 10,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:17:25.373Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 495,
+      "jitterMs": 214,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0f30"
+    },
+    {
+      "timestamp": "2026-08-25T17:17:25.373Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 540,
+      "jitterMs": 269,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:17:25.374Z",
+      "venue": "robinhood-worker",
+      "rttMs": 320,
+      "jitterMs": 260,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:17:55.398Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 293,
+      "jitterMs": 202,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff0fa7"
+    },
+    {
+      "timestamp": "2026-08-25T17:17:55.399Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 299,
+      "jitterMs": 241,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:17:55.399Z",
+      "venue": "robinhood-worker",
+      "rttMs": 82,
+      "jitterMs": 238,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:18:25.423Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 542,
+      "jitterMs": 249,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff101f"
+    },
+    {
+      "timestamp": "2026-08-25T17:18:25.424Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 604,
+      "jitterMs": 305,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.81"
+    },
+    {
+      "timestamp": "2026-08-25T17:18:25.425Z",
+      "venue": "robinhood-worker",
+      "rttMs": 339,
+      "jitterMs": 257,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:18:55.448Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 285,
+      "jitterMs": 257,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff10b2"
+    },
+    {
+      "timestamp": "2026-08-25T17:18:55.449Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 332,
+      "jitterMs": 272,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:18:55.450Z",
+      "venue": "robinhood-worker",
+      "rttMs": 70,
+      "jitterMs": 269,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:19:25.471Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 1189,
+      "jitterMs": 904,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1125"
+    },
+    {
+      "timestamp": "2026-08-25T17:19:25.472Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 1458,
+      "jitterMs": 1126,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:19:25.472Z",
+      "venue": "robinhood-worker",
+      "rttMs": 645,
+      "jitterMs": 575,
+      "status": "Trip",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:19:55.484Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 292,
+      "jitterMs": 897,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff11a1"
+    },
+    {
+      "timestamp": "2026-08-25T17:19:55.485Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 248,
+      "jitterMs": 1210,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:19:55.485Z",
+      "venue": "robinhood-worker",
+      "rttMs": 80,
+      "jitterMs": 565,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:20:25.509Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 362,
+      "jitterMs": 70,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1219"
+    },
+    {
+      "timestamp": "2026-08-25T17:20:25.509Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 285,
+      "jitterMs": 37,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.03"
+    },
+    {
+      "timestamp": "2026-08-25T17:20:25.510Z",
+      "venue": "robinhood-worker",
+      "rttMs": 158,
+      "jitterMs": 78,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:20:55.532Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 614,
+      "jitterMs": 252,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1291"
+    },
+    {
+      "timestamp": "2026-08-25T17:20:55.532Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 631,
+      "jitterMs": 346,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=2.03"
+    },
+    {
+      "timestamp": "2026-08-25T17:20:55.533Z",
+      "venue": "robinhood-worker",
+      "rttMs": 398,
+      "jitterMs": 240,
+      "status": "Degraded",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:21:25.557Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 558,
+      "jitterMs": 56,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff130a"
+    },
+    {
+      "timestamp": "2026-08-25T17:21:25.558Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 577,
+      "jitterMs": 54,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=1.63"
+    },
+    {
+      "timestamp": "2026-08-25T17:21:25.586Z",
+      "venue": "robinhood-worker",
+      "rttMs": 258,
+      "jitterMs": 140,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:21:55.561Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 289,
+      "jitterMs": 269,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1380"
+    },
+    {
+      "timestamp": "2026-08-25T17:21:55.561Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 471,
+      "jitterMs": 106,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=1.63"
+    },
+    {
+      "timestamp": "2026-08-25T17:21:55.561Z",
+      "venue": "robinhood-worker",
+      "rttMs": 67,
+      "jitterMs": 191,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:22:25.586Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 291,
+      "jitterMs": 2,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff13f4"
+    },
+    {
+      "timestamp": "2026-08-25T17:22:25.586Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 294,
+      "jitterMs": 177,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:22:25.586Z",
+      "venue": "robinhood-worker",
+      "rttMs": 98,
+      "jitterMs": 31,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:22:55.605Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 278,
+      "jitterMs": 13,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1470"
+    },
+    {
+      "timestamp": "2026-08-25T17:22:55.605Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 274,
+      "jitterMs": 20,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.44"
+    },
+    {
+      "timestamp": "2026-08-25T17:22:55.606Z",
+      "venue": "robinhood-worker",
+      "rttMs": 61,
+      "jitterMs": 37,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:23:25.631Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 292,
+      "jitterMs": 14,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff14e8"
+    },
+    {
+      "timestamp": "2026-08-25T17:23:25.641Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 298,
+      "jitterMs": 24,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:23:25.642Z",
+      "venue": "robinhood-worker",
+      "rttMs": 69,
+      "jitterMs": 8,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:23:55.656Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 292,
+      "jitterMs": 0,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff155f"
+    },
+    {
+      "timestamp": "2026-08-25T17:23:55.656Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 286,
+      "jitterMs": 12,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:23:55.656Z",
+      "venue": "robinhood-worker",
+      "rttMs": 57,
+      "jitterMs": 12,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:24:25.681Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 299,
+      "jitterMs": 7,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff15d7"
+    },
+    {
+      "timestamp": "2026-08-25T17:24:25.682Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 229,
+      "jitterMs": 57,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:24:25.682Z",
+      "venue": "robinhood-worker",
+      "rttMs": 53,
+      "jitterMs": 4,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:24:55.702Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 301,
+      "jitterMs": 2,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1659"
+    },
+    {
+      "timestamp": "2026-08-25T17:24:55.703Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 341,
+      "jitterMs": 112,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:24:55.703Z",
+      "venue": "robinhood-worker",
+      "rttMs": 52,
+      "jitterMs": 1,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:25:25.718Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 295,
+      "jitterMs": 6,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff16c6"
+    },
+    {
+      "timestamp": "2026-08-25T17:25:25.720Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 298,
+      "jitterMs": 43,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:25:25.721Z",
+      "venue": "robinhood-worker",
+      "rttMs": 99,
+      "jitterMs": 47,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:25:55.737Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 306,
+      "jitterMs": 11,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1748"
+    },
+    {
+      "timestamp": "2026-08-25T17:25:55.738Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 249,
+      "jitterMs": 49,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:25:55.738Z",
+      "venue": "robinhood-worker",
+      "rttMs": 110,
+      "jitterMs": 11,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:26:25.746Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 297,
+      "jitterMs": 9,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff17bf"
+    },
+    {
+      "timestamp": "2026-08-25T17:26:25.746Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 499,
+      "jitterMs": 250,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:26:25.746Z",
+      "venue": "robinhood-worker",
+      "rttMs": 93,
+      "jitterMs": 17,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:26:55.771Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 292,
+      "jitterMs": 5,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1837"
+    },
+    {
+      "timestamp": "2026-08-25T17:26:55.771Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 280,
+      "jitterMs": 219,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:26:55.772Z",
+      "venue": "robinhood-worker",
+      "rttMs": 57,
+      "jitterMs": 36,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:27:25.796Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 294,
+      "jitterMs": 2,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff18ae"
+    },
+    {
+      "timestamp": "2026-08-25T17:27:25.797Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 292,
+      "jitterMs": 12,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:27:25.797Z",
+      "venue": "robinhood-worker",
+      "rttMs": 74,
+      "jitterMs": 17,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:27:55.821Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 274,
+      "jitterMs": 20,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1927"
+    },
+    {
+      "timestamp": "2026-08-25T17:27:55.821Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 498,
+      "jitterMs": 206,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:27:55.822Z",
+      "venue": "robinhood-worker",
+      "rttMs": 63,
+      "jitterMs": 11,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:28:25.846Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 282,
+      "jitterMs": 8,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff199f"
+    },
+    {
+      "timestamp": "2026-08-25T17:28:25.846Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 263,
+      "jitterMs": 235,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:28:25.847Z",
+      "venue": "robinhood-worker",
+      "rttMs": 60,
+      "jitterMs": 3,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:28:55.871Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 289,
+      "jitterMs": 7,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1a16"
+    },
+    {
+      "timestamp": "2026-08-25T17:28:55.872Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 226,
+      "jitterMs": 37,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=1.63"
+    },
+    {
+      "timestamp": "2026-08-25T17:28:55.872Z",
+      "venue": "robinhood-worker",
+      "rttMs": 50,
+      "jitterMs": 10,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:29:25.896Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 283,
+      "jitterMs": 6,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1a8e"
+    },
+    {
+      "timestamp": "2026-08-25T17:29:25.897Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 269,
+      "jitterMs": 43,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:29:25.897Z",
+      "venue": "robinhood-worker",
+      "rttMs": 77,
+      "jitterMs": 27,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:29:55.915Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 278,
+      "jitterMs": 5,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1b05"
+    },
+    {
+      "timestamp": "2026-08-25T17:29:55.916Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 228,
+      "jitterMs": 41,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=3.67"
+    },
+    {
+      "timestamp": "2026-08-25T17:29:55.916Z",
+      "venue": "robinhood-worker",
+      "rttMs": 84,
+      "jitterMs": 7,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:30:25.921Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 271,
+      "jitterMs": 7,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1b7e"
+    },
+    {
+      "timestamp": "2026-08-25T17:30:25.922Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 264,
+      "jitterMs": 36,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=3.26"
+    },
+    {
+      "timestamp": "2026-08-25T17:30:25.922Z",
+      "venue": "robinhood-worker",
+      "rttMs": 47,
+      "jitterMs": 37,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:30:55.946Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 272,
+      "jitterMs": 1,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1bf7"
+    },
+    {
+      "timestamp": "2026-08-25T17:30:55.947Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 464,
+      "jitterMs": 200,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=3.66"
+    },
+    {
+      "timestamp": "2026-08-25T17:30:55.947Z",
+      "venue": "robinhood-worker",
+      "rttMs": 46,
+      "jitterMs": 1,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:31:25.971Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 280,
+      "jitterMs": 8,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1c78"
+    },
+    {
+      "timestamp": "2026-08-25T17:31:25.971Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 230,
+      "jitterMs": 234,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.44"
+    },
+    {
+      "timestamp": "2026-08-25T17:31:25.971Z",
+      "venue": "robinhood-worker",
+      "rttMs": 70,
+      "jitterMs": 24,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:31:55.996Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 452,
+      "jitterMs": 172,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1cf0"
+    },
+    {
+      "timestamp": "2026-08-25T17:31:55.997Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 285,
+      "jitterMs": 55,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=1.22"
+    },
+    {
+      "timestamp": "2026-08-25T17:31:55.997Z",
+      "venue": "robinhood-worker",
+      "rttMs": 69,
+      "jitterMs": 1,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:32:26.007Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 305,
+      "jitterMs": 147,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1d67"
+    },
+    {
+      "timestamp": "2026-08-25T17:32:26.007Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 314,
+      "jitterMs": 29,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.85"
+    },
+    {
+      "timestamp": "2026-08-25T17:32:26.007Z",
+      "venue": "robinhood-worker",
+      "rttMs": 81,
+      "jitterMs": 12,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:32:56.031Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 282,
+      "jitterMs": 23,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1de0"
+    },
+    {
+      "timestamp": "2026-08-25T17:32:56.032Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 269,
+      "jitterMs": 45,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.03"
+    },
+    {
+      "timestamp": "2026-08-25T17:32:56.033Z",
+      "venue": "robinhood-worker",
+      "rttMs": 61,
+      "jitterMs": 20,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:33:26.057Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 277,
+      "jitterMs": 5,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1e58"
+    },
+    {
+      "timestamp": "2026-08-25T17:33:26.057Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 267,
+      "jitterMs": 2,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=2.84"
+    },
+    {
+      "timestamp": "2026-08-25T17:33:26.057Z",
+      "venue": "robinhood-worker",
+      "rttMs": 53,
+      "jitterMs": 8,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:33:56.081Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 268,
+      "jitterMs": 9,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1ecf"
+    },
+    {
+      "timestamp": "2026-08-25T17:33:56.082Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 213,
+      "jitterMs": 54,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=4.06"
+    },
+    {
+      "timestamp": "2026-08-25T17:33:56.082Z",
+      "venue": "robinhood-worker",
+      "rttMs": 55,
+      "jitterMs": 2,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:34:26.106Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 296,
+      "jitterMs": 28,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1f47"
+    },
+    {
+      "timestamp": "2026-08-25T17:34:26.107Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 273,
+      "jitterMs": 60,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=3.66"
+    },
+    {
+      "timestamp": "2026-08-25T17:34:26.107Z",
+      "venue": "robinhood-worker",
+      "rttMs": 70,
+      "jitterMs": 15,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:34:56.128Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 378,
+      "jitterMs": 82,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff1fbf"
+    },
+    {
+      "timestamp": "2026-08-25T17:34:56.130Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 441,
+      "jitterMs": 168,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=4.47"
+    },
+    {
+      "timestamp": "2026-08-25T17:34:56.131Z",
+      "venue": "robinhood-worker",
+      "rttMs": 110,
+      "jitterMs": 40,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:35:26.152Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 326,
+      "jitterMs": 52,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff2036"
+    },
+    {
+      "timestamp": "2026-08-25T17:35:26.153Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 385,
+      "jitterMs": 56,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:35:26.154Z",
+      "venue": "robinhood-worker",
+      "rttMs": 126,
+      "jitterMs": 16,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:35:56.185Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 604,
+      "jitterMs": 278,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff20b0"
+    },
+    {
+      "timestamp": "2026-08-25T17:35:56.214Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 794,
+      "jitterMs": 409,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=1.22"
+    },
+    {
+      "timestamp": "2026-08-25T17:35:56.220Z",
+      "venue": "robinhood-worker",
+      "rttMs": 267,
+      "jitterMs": 141,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:36:26.218Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 621,
+      "jitterMs": 17,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff2128"
+    },
+    {
+      "timestamp": "2026-08-25T17:36:26.224Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 878,
+      "jitterMs": 84,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:36:26.248Z",
+      "venue": "robinhood-worker",
+      "rttMs": 347,
+      "jitterMs": 80,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:36:56.240Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 450,
+      "jitterMs": 171,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff219e"
+    },
+    {
+      "timestamp": "2026-08-25T17:36:56.256Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 474,
+      "jitterMs": 404,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:36:56.261Z",
+      "venue": "robinhood-worker",
+      "rttMs": 244,
+      "jitterMs": 103,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:37:26.264Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 281,
+      "jitterMs": 169,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff2217"
+    },
+    {
+      "timestamp": "2026-08-25T17:37:26.264Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 319,
+      "jitterMs": 155,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:37:26.264Z",
+      "venue": "robinhood-worker",
+      "rttMs": 101,
+      "jitterMs": 143,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:37:56.291Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 397,
+      "jitterMs": 116,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff2298"
+    },
+    {
+      "timestamp": "2026-08-25T17:37:56.291Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 499,
+      "jitterMs": 180,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-25T17:37:56.292Z",
+      "venue": "robinhood-worker",
+      "rttMs": 184,
+      "jitterMs": 83,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:38:26.293Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 273,
+      "jitterMs": 124,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff2311"
+    },
+    {
+      "timestamp": "2026-08-25T17:38:26.293Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 436,
+      "jitterMs": 63,
+      "status": "Degraded",
+      "detail": "meta+l2Book ETH spreadBps=1.22"
+    },
+    {
+      "timestamp": "2026-08-25T17:38:26.293Z",
+      "venue": "robinhood-worker",
+      "rttMs": 49,
+      "jitterMs": 135,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:38:56.312Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 299,
+      "jitterMs": 26,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff2388"
+    },
+    {
+      "timestamp": "2026-08-25T17:38:56.313Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 303,
+      "jitterMs": 133,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=1.62"
+    },
+    {
+      "timestamp": "2026-08-25T17:38:56.313Z",
+      "venue": "robinhood-worker",
+      "rttMs": 72,
+      "jitterMs": 23,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-25T17:39:26.337Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 277,
+      "jitterMs": 22,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x11ff23ff"
+    },
+    {
+      "timestamp": "2026-08-25T17:39:26.338Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 289,
+      "jitterMs": 14,
+      "status": "OK",
+      "detail": "meta+l2Book ETH spreadBps=1.22"
+    },
+    {
+      "timestamp": "2026-08-25T17:39:26.339Z",
+      "venue": "robinhood-worker",
+      "rttMs": 58,
+      "jitterMs": 14,
+      "status": "OK",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
     }
   ],
   "totals": {
-    "probes": 1500,
-    "ok": 803,
-    "degraded": 122,
-    "trip": 575
+    "probes": 1857,
+    "ok": 953,
+    "degraded": 175,
+    "trip": 729
   }
 }
