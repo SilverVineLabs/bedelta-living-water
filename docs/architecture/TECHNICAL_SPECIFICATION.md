@@ -58,24 +58,27 @@ Santenmoku is a **unified sub-millisecond pre-execution gateway**. **Center of g
 | **Protection Level** | Global protocol parameter tuning (LTV, Collateral factors) | **Granular tx-level & LP soil protection** (MEV, RPC jitter, Oracle lag) |
 | **Deployment Model** | Advisory / SaaS Analytics | **Inline Edge Gate & Open-Source Wasm SDK** (`@slivervine/citadel-sdk`) |
 
-### 0.1 Bytecode Predicate Verification & ERC-7715 Compatibility
+### 0.1 Bytecode Predicate Verification (v0.9) & ERC-7715 (⏳ V1.0 Design Spec)
 
-SilverVine does not interpret natural-language LLM prompts. The Shield enforces **Asymmetric Predicate Bytecode Hard Assertions** against ERC-4337 UserOp calldata inside the sub-ms Wasm core (p50 ~106 μs), with ZeroDev Kernel v3 as the modular session-key adapter evolving toward **ERC-7715 (Advanced Wallet Permissions)**.
+SilverVine does not interpret natural-language LLM prompts. The Shield enforces **Asymmetric Predicate Bytecode Hard Assertions** against ERC-4337 UserOp calldata inside the sub-ms Wasm core (p50 ~106 μs), with ZeroDev Kernel v3 as the **v0.9** modular session-key adapter.
 
-| Invariant | Mechanism |
-|-----------|-----------|
-| **Receiver Invariant** | Decode GMX v2 parameters from UserOp bytecode; assert `sender ≡ receiver` before any L2 broadcast. |
-| **Parameter Invariant** | Bound-check `acceptablePrice` (and related execution params) against oracle-lag sensors; fail-closed on drift. |
-| **Unidirectional Outbound Escort** | When a permissioned ingress source is used (e.g. Robinhood Chain `46630`/`4663`), capital flow is outbound-only → Arbitrum `42161`; inbound AML contamination is blocked at the Firewall. |
+> **ERC-7715 (Advanced Wallet Permissions):** ⏳ **Planned / V1.0 Design Spec** — evolution target for Gatehouse permission surfaces; **not shipped in v0.9**. Adapter swap path is documented for future ZeroDev / Offchain Labs integration without Shield or Wasm rewrite.
+
+| Invariant | Mechanism | Status |
+|-----------|-----------|--------|
+| **Receiver Invariant** | Decode GMX v2 parameters from UserOp bytecode; assert `sender ≡ receiver` before any L2 broadcast. | ✅ v0.9 Code-Verified |
+| **Parameter Invariant** | Bound-check `acceptablePrice` (and related execution params) against oracle-lag sensors; fail-closed on drift. | ✅ v0.9 Code-Verified |
+| **Unidirectional Outbound Escort** | When a permissioned ingress source is used (e.g. Robinhood Chain `46630`/`4663`), capital flow is outbound-only → Arbitrum `42161`; inbound AML contamination is blocked at the Firewall. | ✅ v0.9 Code-Verified |
 
 ### 0.2 v0.9 Delivered Scope vs V1.0 Roadmap
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v0.9 Delivered (100% Code & Tested)** | ✅ Live | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX +5 bps UI Fee · **164 test files / 735 PASS (100% Clean)** |
-| **v0.9 Active Target** | ✅ Live | Single blue-chip anchor: **GMX v2 ETH/USDC GM Pool** + Hyperliquid **1× short** hedge |
+| **v0.9 Delivered (100% Code & Tested)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX +5 bps UI Fee · **164 test files / 735 PASS (100% Clean)** |
+| **v0.9 Active Target** | ✅ Code-Verified (Sepolia & Dry-Run) | Single blue-chip anchor: **GMX v2 ETH/USDC GM Pool** + Hyperliquid **1× short** hedge · Mainnet deployment ties to **M6 Grant distribution** |
+| **v0.9 Partial — HL Orderbook Gap Guard** | ✅ Code-Verified | `evaluateHlOrderbookGapGuard()` in [`hl-orderbook-gap-guard.ts`](../../src/services/risk-control-lib/hl-orderbook-gap-guard.ts) · wired via [`soil-resistance.ts`](../../src/services/risk-control-lib/soil-resistance.ts) — gap-window leverage scale-down + 2× depth floor |
 | **V1.0 Isomorphic Extension** | ⏳ Planned | **BTC/USDC GM Pool** — zero bytecode / Wasm changes; config-driven market address mapping |
-| **V1.0 Roadmap (Planned Post-Grant)** | ⏳ Planned | **Citadel-as-a-Service (CaaS)** — productize `@slivervine/citadel-sdk` as an open sub-ms risk layer for the Arbitrum ecosystem · **Hedge Leg Depth Guard** — dedicated Hyperliquid L2 orderbook depth sensing prior to hedge execution (zero-market-impact 1× short even during flash-liquidity drawdowns) · On-chain ECDSA Signer Recovery Verification · Production Smart Contract Deployment for GM Vaults · Native **USDG Robinhood Chain Treasury routing** |
+| **V1.0 Roadmap (Planned Post-Grant)** | ⏳ Planned | **Citadel-as-a-Service (CaaS)** — productize `@slivervine/citadel-sdk` as an open sub-ms risk layer for the Arbitrum ecosystem · **Hedge Leg Depth Guard (full product)** — extends v0.9 `evaluateHlOrderbookGapGuard()` into dedicated Hyperliquid L2 orderbook depth sensing prior to hedge execution (zero-market-impact 1× short even during flash-liquidity drawdowns) · On-chain ECDSA Signer Recovery Verification · Production Smart Contract Deployment for GM Vaults · Native **USDG Robinhood Chain Treasury routing** |
 
 **Demo:** `pnpm run demo:e2e` — 5-step grant E2E (Intent+Deadman → Robinhood escort → GMX underweight → HL Session hedge → R20 Panic Flash).
 
@@ -187,7 +190,9 @@ For **$1,000,000+** treasury routing into GMX v2 GM pools, the Shield schedules 
 | **Private path** | Bypass public mempools via **Private Relays / QUIC** — Edge never exposes intent on the open gossip surface during desync windows. |
 | **Settlement timing moat** | Leverage GMX v2 **two-stage async settlement**: keepers execute create→settle asynchronously; **`cancelOrder` remains a single-stage atomic** counter to stale MEV intent if soil / sequencer / oracle sensors trip mid-window. |
 
-#### § SGX PRM Key Caching
+#### § SGX PRM Key Caching — ⏳ Planned / V1.0 Design Spec
+
+> **Not in v0.9 codebase.** Documented cold-path / hot-signing architecture for future hardened key isolation.
 
 | Phase | Bound |
 |-------|-------|
@@ -261,10 +266,10 @@ Routing policy: venue selected per risk flags; both paths share the same fail-cl
 
 | Layer | Parameter | Value / Rule | Status |
 |-------|-----------|--------------|--------|
-| **Active v0.9 Controls** | Single-order notional cap | **$5,000 USD** (`SESSION_KEY_NOTIONAL_CAP_USD`) | ✅ Live |
-| **Active v0.9 Controls** | Protocol UI fee accrual | **+5 bps** `uiFeeReceiver` (`GMX_UI_FEE_BPS`) | ✅ Live |
-| **Active v0.9 Controls** | Emergency margin buffer | **5%** (`DEFAULT_CROSS_MMR = 0.05`) | ✅ Live |
-| **Active v0.9 Controls** | Circuit breakers | **R17** daily-loss severance · **R20** physical deadlock / flatten-fail | ✅ Live |
+| **Active v0.9 Controls** | Single-order notional cap | **$5,000 USD** (`SESSION_KEY_NOTIONAL_CAP_USD`) | ✅ Code-Verified |
+| **Active v0.9 Controls** | Protocol UI fee accrual | **+5 bps** `uiFeeReceiver` (`GMX_UI_FEE_BPS`) | ✅ Code-Verified |
+| **Active v0.9 Controls** | Emergency margin buffer | **5%** (`DEFAULT_CROSS_MMR = 0.05`) | ✅ Code-Verified |
+| **Active v0.9 Controls** | Circuit breakers | **R17** daily-loss severance · **R20** physical deadlock / flatten-fail | ✅ Code-Verified |
 | **Vault Operational Spec (V1.0 Roadmap)** | Alpha Vault Cap | **$100,000** hard TVL ceiling | ⏳ Planned |
 | **Vault Operational Spec (V1.0 Roadmap)** | Epoch batching | **4-hour** epoch windows for cross-venue execution | ⏳ Planned |
 | **Vault Operational Spec (V1.0 Roadmap)** | Deposit cooldown | **24-hour** minimum hold to prevent flash arbitrage | ⏳ Planned |
@@ -282,7 +287,7 @@ Official infrastructure standards map — each row links a public ERC/EIP (or ve
 | **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)** | Account Abstraction — scoped agent UserOps without hot-wallet custody | ZeroDev Kernel v3 · EntryPoint **v0.7** · `src/adapters/arbitrum/zerodev-aa/` | ZeroDev AA gate + aa-adapter tests |
 | **[ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** | Modular smart-account modules — session-key permission scopes | ZeroDev Kernel v3 modular session keys · scoped `ORDER_EXECUTE` clip · daily gas sponsorship limits | Gatehouse (Pillar 1) · agent-intent SDK |
 | **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** | Dynamic base-fee congestion sensing on Arbitrum One | Tri-Sensor **BaseFee Velocity** channel · `arbitrum-gas-guard.ts` | Gas-guard tests · Tri-Sensor Matrix |
-| **ArbOS 61** | Arbitrum L2 execution / Stylus co-residence alignment | `RobinhoodSafetySwitch.sol` · Elara ingress design · Stylus WASM parity path | Robinhood safety contracts · audit notes |
+| **ArbOS 61** | Arbitrum L2 execution / Stylus co-residence alignment (⏳ V1.0 Design Spec) | `RobinhoodSafetySwitch.sol` · Elara ingress design · Stylus WASM parity path | Robinhood safety contracts · audit notes |
 | **Robinhood Chain Ingress** | Permissioned institutional egress · AML inbound isolation | Chains **46630** (testnet) / **4663** (mainnet filter) · Across bridge · `RobinhoodSafetySwitch.sol` | Robinhood Across bridge tests · audit snapshot |
 | **WASM Core (`soil_core`)** | Sub-ms pre-execution soil fuse · Cloudflare Edge hot path | `pkg/soil_core.wasm` · `#![no_std]` Rust · budget **&lt;28 KiB** · warm exec **&lt;60 µs** | Wasm feasibility suite |
 
@@ -294,15 +299,17 @@ Official infrastructure standards map — each row links a public ERC/EIP (or ve
 - **EIP-1559:** Gas-yield ratio fuse blocks dispatch when L1 surcharge exceeds target yield band.
 - **Robinhood Chain:** Outbound-only escort (`46630`/`4663` → `42161`); inbound AML blocked · `lostUsd ≡ 0`.
 - **WASM:** Hot-path soil evaluation mirrors Edge `checkSoilResistance()` semantics for sub-ms fail-closed.
-- **ERC-7715 Decoupling:** ZeroDev Kernel v3 is an ephemeral session-key adapter (Gatehouse). Permission surfaces target universal **ERC-7715 Advanced Wallet Permissions** so agentic finance remains multi-chain-neutral — adapter swap without Shield or Wasm rewrite.
+- **ERC-7715 Decoupling:** ⏳ **Planned / V1.0 Design Spec** — ZeroDev Kernel v3 is the v0.9 ephemeral session-key adapter (Gatehouse). Universal **ERC-7715 Advanced Wallet Permissions** is the evolution target for adapter swap without Shield or Wasm rewrite.
 
-### 4.2 ArbOS / Stylus Alignment
+### 4.2 ArbOS / Stylus Alignment — ⏳ Planned / V1.0 Design Spec
 
-| Layer | Alignment |
-|-------|-----------|
-| **Stylus WASM core** | Risk filters and ingress predicates compile toward Arbitrum Stylus-native WASM for microsecond on-L2 evaluation (parity with Edge `checkSoilResistance` semantics) |
-| **Elara protocol ingress** | Protocol-level ingress filtering drops non-compliant Robinhood Chain / blacklisted senders before GM payload construction — complements `RobinhoodSafetySwitch` |
-| **ArbOS gas / base-fee sensor** | Tri-Sensor **BaseFee Velocity** channel remains the congestion throttle for dispatch SLO |
+> **Not in v0.9 Edge hot path.** Edge (Cloudflare) remains the pre-broadcast SSOT; Stylus/Elara are the documented on-chain reinforcement plane.
+
+| Layer | Alignment | Status |
+|-------|-----------|--------|
+| **Stylus WASM core** | Risk filters and ingress predicates compile toward Arbitrum Stylus-native WASM for microsecond on-L2 evaluation (parity with Edge `checkSoilResistance` semantics) | ⏳ V1.0 Design Spec |
+| **Elara protocol ingress** | Protocol-level ingress filtering drops non-compliant Robinhood Chain / blacklisted senders before GM payload construction — complements `RobinhoodSafetySwitch` | ⏳ V1.0 Design Spec |
+| **ArbOS gas / base-fee sensor** | Tri-Sensor **BaseFee Velocity** channel remains the congestion throttle for dispatch SLO | ✅ v0.9 Code-Verified (`arbitrum-gas-guard.ts`) |
 
 **Design rule:** Edge (Cloudflare) remains the pre-broadcast SSOT; Stylus/Elara are the on-chain reinforcement plane — never a weaker substitute for fail-closed Edge gates.
 
@@ -335,8 +342,8 @@ Gates must not assume instant atomicity across the triangle; inventory accountin
 
 | Item | Definition | Status |
 |------|------------|--------|
-| **Builder UI Fee** | **+5 bps** `uiFeeReceiver` on every unsigned GMX v2 increase / decrease / deposit payload | ✅ Live |
-| **Referral** | Optional `referralCode` (bytes32) on unsigned payloads | ✅ Live |
+| **Builder UI Fee** | **+5 bps** `uiFeeReceiver` on every unsigned GMX v2 increase / decrease / deposit payload | ✅ Code-Verified |
+| **Referral** | Optional `referralCode` (bytes32) on unsigned payloads | ✅ Code-Verified |
 
 ### 5.3 Performance Fee Tokenomics (V1.5 Roadmap)
 

@@ -18,7 +18,7 @@
 | **Active Guards** | **`agent-citadel-guard` (50 bps Slippage Deadman)** + R01–R20 matrix **17 Active \| 2 Refactored \| 1 Deprecated** | `src/core/agent-citadel-guard.ts` (`AGENT_DEADMAN_SLIPPAGE_BPS = 50`) |
 | **Revenue Integration** | GMX v2 **`uiFeeReceiver` (+5 bps protocol yield accrual)** | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` |
 | **Security Matrix** | **3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)** | `pnpm run audit:security` → [`static-analysis-report.json`](./static-analysis-report.json) `summary.pass=5` |
-| **Fuzzing Baseline** | **327,675 total runs (65,535 runs/property across 5 invariants)** | Forge property suite · Gate unit **60 Passed** |
+| **Fuzzing Baseline** | **327,675 Property Fuzz Executions** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep` · 5×65,535) · standard `forge test` = **5,120** (5×1,024) | Forge property suite · Gate unit **60 Passed** |
 | **Decision latency** | p50 ~106 µs (`checkSoilResistance()` / Shield hot path) | Resilience / soil benchmark harness |
 | **Chaos matrix** | **255 / 255** toxic scenarios blocked · `failClosedRate: 100.00%` · `capitalLossUsd: 0` | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) |
 
@@ -31,7 +31,7 @@
 
 | Horizon | Status | Asset / clearing bound |
 |---------|--------|------------------------|
-| **v0.9 Active Production** | ✅ Live | Strictly **ETH/USDC GM Pool** — eliminates oracle de-peg and FX slippage when escorting treasuries Robinhood Chain (`46630`) → Arbitrum One (`42161`) |
+| **v0.9 Production-Ready (Arbitrum Sepolia Testnet & Dry-Run Verified)** | ✅ Code-Verified | Strictly **ETH/USDC GM Pool** — eliminates oracle de-peg and FX slippage when escorting treasuries Robinhood Chain (`46630`) → Arbitrum One (`42161`) · Mainnet deployment ties to **M6 Grant distribution** |
 | **V1.0 Isomorphic Extension** | ⏳ Planned | **BTC/USDC GM Pool** — config-driven market address mapping; **zero** bytecode / Wasm rewrite |
 | **V1.0 Treasury Routing** | ⏳ Planned | Native **USDG Robinhood Chain Treasury routing** — USDG clearing remains on Robinhood Chain (`46630`) via unidirectional bridge |
 
@@ -89,7 +89,7 @@
 | Harness | Result | Artifact |
 |---------|--------|----------|
 | Chaos Black-Swan | **255** scenarios · **255** blocked · **0** isolate crashes · **$0** capital loss | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) |
-| Forge property fuzz | **327,675** total runs (65,535 × 5 invariants) | Gate suite |
+| Forge property fuzz | **327,675** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`) · standard `forge test` = **5,120** (5×1,024) | Gate suite |
 | Forge unit | **60 Passed / 0 Failed** | `static-analysis-report.json` → forge |
 | Advanced resilience | TOCTOU compensate · RPC failover · soil SLO harness `allPass: true` | [`grant-resilience-benchmark-metrics.json`](./grant-resilience-benchmark-metrics.json) |
 | Security tier | **5/0/0 PASS** (Vitest, Forge, Slither, Aderyn, pnpm-audit) | [`static-analysis-report.json`](./static-analysis-report.json) |
@@ -130,9 +130,9 @@
 
 ## Appendix B — ERC-7715 & Apache 2.0 Patent Retaliation
 
-### B.1 ERC-7715 Decoupling
+### B.1 ERC-7715 Decoupling — ⏳ Planned / V1.0 Design Spec
 
-ZeroDev Kernel v3 is an **ephemeral session-key adapter** (Gatehouse). Permission surfaces are designed against universal **ERC-7715 (Advanced Wallet Permissions)** so agentic finance remains multi-chain-neutral as ZeroDev / Offchain Labs integrate — adapter swap without Shield or Wasm rewrite. Bytecode predicate verification (Receiver / Parameter invariants on ERC-4337 UserOp) remains inside the Wasm / soil core (Tech Spec §0.4).
+ZeroDev Kernel v3 is the **v0.9 ephemeral session-key adapter** (Gatehouse). **ERC-7715 (Advanced Wallet Permissions)** is a **V1.0 evolution target** — not shipped in v0.9. Bytecode predicate verification (Receiver / Parameter invariants on ERC-4337 UserOp) is **v0.9 live** inside the Wasm / soil core (Tech Spec §0.1).
 
 ### B.2 Apache-2.0 Patent Retaliation (SDK surface)
 

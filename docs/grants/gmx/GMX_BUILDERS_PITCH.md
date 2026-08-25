@@ -54,7 +54,7 @@ Every unsigned increase / decrease / deposit payload injects **+5 bps `uiFeeRece
 
 | Milestone | Scope | Status |
 |-----------|-------|--------|
-| **M1** | Mainnet pre-exec gateway · Live HUD · +5 bps routing · `/api/grant-audit` · **164 test files \| 735 PASS (100% Clean)** | ✅ Complete & Live |
+| **M1** | **v0.9 Production-Ready (Arbitrum Sepolia Testnet & Dry-Run Verified)** · pre-exec gateway · Live HUD · +5 bps routing · `/api/grant-audit` · **164 test files \| 735 PASS (100% Clean)** | ✅ Delivered (Sepolia & dry-run; mainnet ties to M6) |
 | **M2** | Institutional gateway · sidecar daemon · `claimUiFees` | ✅ Core Built (Sidecar Daemon Ready / Awaiting Treasury Claim Hook) |
 | **M3** | Multi-tenant B2B · cross-venue compensation SLA | Roadmap (Multi-tenant B2B & Cross-venue SLA) |
 
@@ -68,7 +68,7 @@ pnpm run audit:security   # 5/0/0 PASS target
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel.isGmxBalancerQualified
 ```
 
-**Regression bar:** `164 test files | 735 PASS (100% Clean)` · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
+**Regression bar:** `164 test files | 735 PASS (100% Clean)` · Forge 60/60 · **327,675 Property Fuzz Executions** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = 5,120) · Wasm `<28kb` / `<60µs`.
 
 ---
 

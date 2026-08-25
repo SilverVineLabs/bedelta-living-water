@@ -4,7 +4,7 @@
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit`  
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
 
-> **Regression bar (locked):** Vitest **164 files / 735 PASS** · Forge **60/60** · Property Fuzz **327,675** · ZeroDev AA **Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7)**.
+> **Regression bar (locked):** Vitest **164 files / 735 PASS** · Forge **60/60** · Property Fuzz **327,675** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = **5,120** = 5×1,024) · ZeroDev AA **Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7)**.
 
 Open this document first. Each tier is CLI-reproducible with **zero mainnet signing dependency** unless explicitly noted.
 
@@ -24,7 +24,9 @@ Optional deeper tiers:
 
 ```bash
 pnpm audit:security                         # Tier 2 — full 5/0/0 matrix
-cd SliverVineGate && forge test && cd ..     # Tier 3 — Gate + fuzz
+cd SliverVineGate && forge test && cd ..     # Tier 3 — Gate + default fuzz (5,120)
+cd SliverVineGate && FOUNDRY_PROFILE=deep forge test --match-path 'test/*.fuzz.t.sol' && cd ..  # 327,675 deep fuzz
+pnpm audit:nightly                          # Tier 2/3 deep — Echidna · Halmos · deep fuzz gate
 # Tier 5 — see docker/README.md
 ```
 
@@ -36,7 +38,7 @@ cd SliverVineGate && forge test && cd ..     # Tier 3 — Gate + fuzz
 |------|---------|----------------|----------|
 | **1** | `pnpm test` | Core engine · Soil · Wasm · Sequencer · Margin Buffer · adapters | **164 files / 735 PASS** |
 | **2** | `pnpm audit:fast` / `pnpm audit:security` | TSC · Vitest security · Solhint · Gitleaks · Slither · Aderyn | Fast PASS · Security **5/0/0** |
-| **3** | `cd SliverVineGate && forge test` | On-chain Gate · property fuzz · gas bounds | **60 Passed** · **327k Fuzz** |
+| **3** | `cd SliverVineGate && forge test` | On-chain Gate · default property fuzz (5×1,024) · gas bounds | **60 Passed** · **5,120 fuzz** (default profile) |
 | **4** | `pnpm test:zerodev` | Kernel v3 UserOp draft · session scope · oracle gate (offline) | Dry-run harness **PASS** |
 | **5** | [`docker/README.md`](../docker/README.md) | Telemetry sidecar · live grant-audit endpoints | `/health` · `/api/grant-audit` |
 
@@ -80,18 +82,25 @@ Related: [`audit/PRINCIPAL_AUDIT_REPORT.md`](./audit/PRINCIPAL_AUDIT_REPORT.md) 
 
 ## Tier 3 — Smart Contract & Fuzzing
 
-**Command:**
+**Default command (CI / `audit:security`):**
 
 ```bash
 cd SliverVineGate && forge test --gas-report && cd ..
 ```
 
-| Metric | Expected |
-|--------|----------|
-| Unit tests | **60 Passed · 0 Failed** |
-| Property fuzzing | **5 properties × 65,535 = 327,675** executions |
-| Invariants | **3 × 16,384 depth** stateful calls · 0 counterexamples |
-| Core | `SliverVineGate.sol` consume-once attestation · gas-bounded `verifyAndConsume` |
+**Deep fuzz command (327,675 executions):**
+
+```bash
+pnpm audit:nightly
+# or: cd SliverVineGate && FOUNDRY_PROFILE=deep forge test --match-path 'test/*.fuzz.t.sol' && cd ..
+```
+
+| Metric | Default `forge test` | Deep profile (`FOUNDRY_PROFILE=deep` / `pnpm audit:nightly`) |
+|--------|----------------------|----------------------------------------------------------------|
+| Unit tests | **60 Passed · 0 Failed** | **60 Passed · 0 Failed** |
+| Property fuzzing | **5 × 1,024 = 5,120** executions | **5 × 65,535 = 327,675** executions |
+| Invariants | **3 × 16,384** stateful calls · 0 counterexamples | same |
+| Core | `SliverVineGate.sol` consume-once attestation · gas-bounded `verifyAndConsume` | same |
 
 ---
 
@@ -130,7 +139,7 @@ Automated dependency audit (2026-08-24): **no TS/JS runtime import** of `contrac
 
 | Path | Contracts | Role | Forge / TS linkage |
 |------|-----------|------|-------------------|
-| **`SliverVineGate/`** | `SliverVineGate.sol` · `GatedExecutor.sol` | EIP-712 consume-once attestation gate (Tier 3) | `cd SliverVineGate && forge test` · **60/60** · 327k fuzz |
+| **`SliverVineGate/`** | `SliverVineGate.sol` · `GatedExecutor.sol` | EIP-712 consume-once attestation gate (Tier 3) | `cd SliverVineGate && forge test` · **60/60** · default fuzz **5,120** · deep **327,675** via `FOUNDRY_PROFILE=deep` |
 | **`contracts/`** | `SliverVineRiskOracle.sol` · `RobinhoodSafetySwitch.sol` | Robinhood Chain compliance oracle + institutional firewall | **Not** in Forge testbed · ABI mirrored in TS |
 
 **TypeScript interface SSOT (Edge runtime):**

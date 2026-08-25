@@ -30,7 +30,9 @@
 
 **Triangle Liquidity Loop:** `Arbitrum One (GMX GM Yield Base — PRIMARY)` ↔ `Hyperliquid (1× Short Hedge)` ← optional permissioned ingress (e.g. Robinhood Chain) — see [`docs/architecture/TECHNICAL_SPECIFICATION.md`](./docs/architecture/TECHNICAL_SPECIFICATION.md).
 
-**Arbitrum Native Execution Premium:** Direct Arbitrum One LPs earn an estimated **+15 ~ 30 bps** vs bridged / multi-hop routes.
+**Arbitrum Native Execution Premium:** Direct Arbitrum One LPs earn an estimated **+15 ~ 30 bps** vs bridged / multi-hop routes *(design estimate — not a locked test assertion)*.
+
+> **SSOT 對齊（2026-08-25）：** v0.9 = Sepolia + dry-run verified · mainnet → M6 · deep fuzz 327,675 需 `audit:nightly` / `FOUNDRY_PROFILE=deep` · 詳見 [`docs/README.md`](./docs/README.md)。
 
 ---
 
@@ -79,7 +81,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 ### 1. On-Chain Enforcement Layer (Solidity v0.8.28)
 * **Unit Tests**: 🟢 **60 Passed | 0 Failed**
 * **Line Coverage**: 📊 **95.51% Overall** (`SliverVineGate.sol`: **95.65%**)
-* **Property Fuzzing**: 🌀 **5 Properties × 65,535 Runs = 327,675 Executions** (All Green)
+* **Property Fuzzing**: 🌀 **327,675 Property Fuzz Executions** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = **5,120** = 5×1,024) (All Green)
 * **Invariant Testing**: ⛓️ **3 Invariants × 16,384 Depth = 49,152 Stateful Calls** (0 Counterexamples)
 * **Gas Deadlock**: ⛽ `verifyAndConsume`: **25,853 min / 28,043 median gas**
 * **Runtime Bytecode**: 📦 **8,716 Bytes (8.71 KiB)** — Zero External Dependencies (`Assembly-optimized`)
@@ -98,7 +100,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 | Milestone | Status | Deliverables & Verification |
 |-----------|--------|-----------------------------|
 | **M0: Operational Foundation** | ✅ Delivered | WSL / PNPM Monorepo, Cloudflare Edge Worker pipeline, and CI/CD strict typecheck. |
-| **M1: On-Chain Citadel Gate** | ✅ Delivered | `SliverVineGate.sol` core invariant locks, 327,675 Property Fuzzing, 25k gas bounds. |
+| **M1: On-Chain Citadel Gate** | ✅ Delivered | `SliverVineGate.sol` core invariant locks · **327,675 deep fuzz** (`FOUNDRY_PROFILE=deep`) · 25k gas bounds. |
 | **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, **164 test files | 735 PASS (100% Clean)**, 162.49 KiB gzip bundle, sub-ms latency. |
 | **M3: Dual-Chain & ZeroDev AA** | ✅ Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7) | ZeroDev Kernel v3 AA Adapter · optional Robinhood Chain (`46630`/`4663`) permissioned ingress escort into Arbitrum. |
 | **M4: WASM Engine & IP Moat** | ✅ Delivered | Rust `#![no_std]` Wasm core (`pkg/soil_core.wasm`) — Cloudflare budget `<28kb`, hot-path exec `<60µs` — & `@slivervine/citadel-sdk` shipped. |
@@ -119,7 +121,8 @@ pnpm run audit:security   # security tier 5/0/0 → docs/audit/static-analysis-r
 pnpm run audit:nightly    # Echidna Property Fuzz + Halmos Symbolic + Deep Fuzz
 
 # 3. Contract unit tests, fuzzing, & gas benchmark
-cd SliverVineGate && forge test --gas-report && cd ..
+cd SliverVineGate && forge test --gas-report && cd ..   # default fuzz: 5,120 (5×1,024)
+pnpm audit:nightly                                     # deep fuzz: 327,675 (5×65,535)
 
 # 4. Run Off-chain Resilience & Latency Benchmark
 npx tsx scripts/grant-advanced-resilience-benchmark.ts
@@ -198,7 +201,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 | [docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md](./docs/grants/arbitrum/ARBITRUM_ONE_PAGER.md) | Arbitrum grant one-pager |
 | [docs/grants/arbitrum/GRANT_PROPOSAL.md](./docs/grants/arbitrum/GRANT_PROPOSAL.md) | Arbitrum / GMX v0.9 grant scope |
 | [docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) | Robinhood Chain Safety Gate Audit · Pillar 2 Firewall |
-| [docs/README.md](./docs/README.md) | Docs index (5 canonical docs) |
+| [docs/README.md](./docs/README.md) | Docs index (6 canonical docs · SSOT 對齊紀錄) |
 
 ---
 

@@ -84,10 +84,13 @@ const escort = assertUnidirectionalBridge({
 
 ## Audit test harness
 
-Executable gap proofs live in `tests/sdk/citadel-sdk.test.ts`:
+Executable gap proofs live in:
+
+- `tests/sdk/citadel-sdk-intent.test.ts`
+- `tests/sdk/citadel-sdk-bridge-armor.test.ts`
 
 ```bash
-pnpm exec vitest run tests/sdk/citadel-sdk.test.ts
+pnpm exec vitest run tests/sdk/citadel-sdk-intent.test.ts tests/sdk/citadel-sdk-bridge-armor.test.ts
 pnpm test
 pnpm audit:fast
 ```
