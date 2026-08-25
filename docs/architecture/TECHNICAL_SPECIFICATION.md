@@ -154,7 +154,94 @@ Robinhood `46630`/`4663` **USDG** ingress routes via ZeroDev Kernel UserOp to **
 
 **Payload binding (calldata-level, Gate struct unchanged):** `buildGmxSmartRoutePayloadBinding()` encodes smart-route calldata → `computeGatedExecutorPayloadHash()` mirrors on-chain `GatedExecutor.payloadHash(initiator, target, keccak256(data), nonce)`. The digest fills the existing `RiskAttestation.payloadHash` field — **`SliverVineGate.sol` `ATTESTATION_TYPEHASH` and struct layout are not modified**.
 
-Anchors: [`gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-smart-route-payload-binding.ts) · [`gated-executor-payload.ts`](../../src/sdk/gated-executor-payload.ts) · [`r-chain-yield-router.ts`](../../src/adapters/robinhood/r-chain-yield-router.ts) · [`GatedExecutor.sol`](../../SliverVineGate/src/GatedExecutor.sol).
+Anchors: [`gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-smart-route-payload-binding.ts) · [`gated-executor-payload.ts`](../../src/sdk/gated-executor-payload.ts) · [`r-chain-yield-router.ts`](../../src/adapters/robinhood/r-chain-yield-router.ts) · [`GatedExecutor.sol`](../../SliverVineGate/src/GatedExecutor.sol) · 深度解析：[`ZERODEV_SMART_ROUTING_DEEP_DIVE.md`](../internal/ZERODEV_SMART_ROUTING_DEEP_DIVE.md).
+
+### 2.4 Pillar 1 — ZeroDev 帳戶抽象（Account Abstraction）深度規格
+
+> **狀態：** v0.9 生產 SSOT = **Kernel v3**（`ZERODEV_KERNEL_VERSION` v0.3.1 · EntryPoint v0.7）；**Kernel v4** = V1.0 對齊路線（僅升級 Gatehouse 適配層，**不重寫** Shield / Wasm / EIP-712 Gate）。
+
+#### 2.4.1 為何 ZeroDev 是 BDLW 非託管 106 µs 執行管線的基礎核心
+
+BeDelta Living Water 的產品承諾是 **機構級 pre-execution gate（p50 ~106 µs）+ 非託管資本流**。兩者若缺少統一的 **智能帳戶執行平面**，將被迫退回 EOA 多簽或熱錢包託管——直接破壞 `lostUsd ≡ 0` 與合規敘事。
+
+ZeroDev 提供三項 BDLW **無法自行拼裝替代** 的基礎能力：
+
+| 能力 | 若無 ZeroDev | BDLW 與 ZeroDev 整合後 |
+|------|-------------|----------------------|
+| **Scoped Session Keys** | 全權私鑰或人工多簽 | Kernel 模組化 `ORDER_EXECUTE` · R06/R07 名目上限 · TTL 自動過期 |
+| **Paymaster 代付** | 機構用戶需預備多鏈 gas | `zerodev.sponsorUserOperation` · 單筆 ≤ $0.5 · 日額 $10 熔斷 |
+| **Bundler 標準路徑** | 自架 relayer 信任面膨脹 | EntryPoint v0.7 + **EIP-7562** 合規 UserOp · fail-closed 非盲重試 |
+
+**執行管線耦合（106 µs 語意）：**
+
+```text
+UserOp 草稿 → verifyAgentIntent() [Edge Shield · p50 ~106µs]
+           → evaluateStaticBreakerMatrix() [soil + gas ledger]
+           → Paymaster 簽章 → Bundler → EntryPoint → Kernel validateUserOp
+```
+
+Shield 在 **廣播前** 完成決策；ZeroDev 僅負責 **非託管帳戶語意下的安全遞送**。Citadel 永不持有用戶私鑰或本金——資本始終在 **Kernel `sender` 智能帳戶** 內（R06–R07 · ERC-7579）。
+
+#### 2.4.2 Kernel v3 / v4 Session Keys（ERC-7579 模組化權限）
+
+| 維度 | Kernel v3（v0.9 已交付） | Kernel v4（V1.0 對齊） |
+|------|-------------------------|------------------------|
+| **模組標準** | ERC-7579 模組化 session key | v4 統一權限面 · 與 ZeroDev「One Stack」整合 |
+| **權限範圍** | `ORDER_EXECUTE` · 白名單 `callData` target/selector | 沿用 R06 語意 · 擴展 Smart Routing 跨鏈 session scope |
+| **名目上限** | `SESSION_KEY_NOTIONAL_CAP_USD` = **$5,000**（R07） | 配置驅動 · 不變量公式不變 |
+| **TTL / 重授權** | Session TTL + R14 EIP-712 5-min re-auth | v4 Authorize 階段原生對齊 · 適配層替換即可 |
+| **驗簽路徑** | Kernel `isValidSignature` → ERC-1271 `0x1626ba7e` | 保持雙平面：Kernel ERC-1271 ∥ Gate ECDSA m-of-n |
+| **程式錨點** | `src/adapters/arbitrum/zerodev-aa/` · `hl-session/permissions.ts` | ⏳ V1.0 adapter swap · **Shield / Wasm 零改寫** |
+
+**遷移鐵律：** Kernel v3 → v4 僅替換 Gatehouse 適配器（`zerodev-aa-userop.ts` · `zerodev-aa-gate.ts`）；`checkSoilResistance()`、`pkg/soil_core.wasm`、`SliverVineGate.sol` **不隨 Kernel 大版本變更**。
+
+#### 2.4.3 Paymaster Gas Sponsorship（代付與熔斷）
+
+| 參數 | 值 | SSOT |
+|------|-----|------|
+| 單筆 UserOp 代付上限 | **$0.50 USD** | `MAX_GAS_COST_PER_USEROP_USD` |
+| 24h 滾動代付額度 | **$10 USD** | `DAILY_SPONSORSHIP_LIMIT_USD` |
+| 熔斷 trip | `ZERODEV_GAS_LIMIT_EXCEEDED_TRIP` | `zerodev-aa-static-breaker.ts` |
+| Paymaster 中介 | `zerodev.sponsorUserOperation` | `zerodev-aa-userop.ts` |
+| 持久化（可選） | KV `zerodev:aa:gas:ledger` · TTL 86,400s | `zerodev-aa-gas-ledger.ts` |
+
+代付請求與 soil fuse **串行評估**：`evaluateStaticBreakerMatrix()` 先執行 `checkSoilResistance()`，再評估 `evaluateSponsoredGasLimits()`——土壤熔斷時 **拒絕代付與廣播**，避免「付費但應被攔截」的 UserOp 進入 bundler。
+
+#### 2.4.4 EIP-7562 Zero-Bundler-Rejection 不變量
+
+**Zero-Bundler-Rejection Invariant（零 Bundler 拒絕不變量）：** Citadel UserOp 在 validation phase **不得** 觸發 EIP-7562 opcode/storage 違規；bundler 拒絕視為 **協議故障**，**禁止** 盲重試。
+
+| 規則 | 強制機制 |
+|------|----------|
+| Validation 階段 storage 讀取 | Session-key 模組限制 `callData` 至白名單 target/selector — 禁止跨合約 forbidden reads |
+| Edge 前置篩選 | Static breaker + `checkSoilResistance()` 於 `sendUserOperation()` 之前 |
+| Fail-closed | Bundler 不可達 · 缺少 EP v0.7 · 逾時 → `BUNDLER_TIMEOUT_FAIL_CLOSED`（`ZERODEV_BUNDLER_FAIL_CLOSED_TIMEOUT_MS` = 3,000 ms） |
+| 探測 | `supportsEntryPoint07` · `zerodev-aa-bundler.ts` smoke probe |
+
+此不變量確保機構 UserOp 在 Arbitrum bundler 生態中 **可預測送達**，而非因 storage 違規被靜默丟棄——與 106 µs Shield 的 fail-closed 哲學一致。
+
+#### 2.4.5 ZeroDev v4「Seven Stages, One Stack」對齊路線圖
+
+ZeroDev v4 將智能錢包生命週期收斂為 **七階段、單一技術棧**。BDLW 對齊其中五個 **執行關鍵階段**（其餘 Recover / Compose 標記 V1.0）：
+
+| 階段 | ZeroDev v4 語意 | BDLW 整合錨點 | 狀態 |
+|------|----------------|--------------|------|
+| **① Sign in** | 身分驗證 · Kernel 帳戶解析 | ZeroDev 託管登入 → `sender` Kernel 地址 · 無 hot-wallet seed | ✅ v0.9 |
+| **② Fund** | 跨鏈入金 · Smart Routing | `ZERODEV_SMART_ROUTE_TARGETS` · USDG → GMX ExchangeRouter（§2.3） | ✅ v0.9 |
+| **③ Gas** | Paymaster 代付 | `zerodev-aa-gas-ledger` · 單筆/日額熔斷（§2.4.3） | ✅ v0.9 |
+| **④ Authorize** | Session Key 授權 · 權限範圍 | ERC-7579 `ORDER_EXECUTE` · R06/R07 · R14 re-auth | ✅ v0.9（v4 適配 ⏳） |
+| **⑤ Execute** | UserOp 廣播 · 鏈上執行 | `verifyAgentIntent()` → Shield → Bundler → GMX/HL venue | ✅ v0.9 |
+| **⑥ Recover** | 帳戶恢復 · 社交恢復 | — | ⏳ V1.0 |
+| **⑦ Compose** | 多步驟意圖編排 | 2PC intent ledger · `intent-ledger.ts`（部分語意已覆蓋） | ⏳ V1.0 |
+
+```text
+Sign in ──► Fund ──► Gas ──► Authorize ──► Execute
+  │          │        │         │            │
+ Kernel    Smart    Paymaster  Session    Shield 106µs
+ Account   Route    Ledger     Keys R06   + Venue
+```
+
+**One Stack 語意：** 五階段共用同一 Kernel 帳戶、`sender` 身分與 Citadel `AllowedToSign` 謂詞——機構用戶無需在 Robinhood Chain 與 Arbitrum One 之間切換錢包或重複 onboarding。
 
 ---
 
@@ -307,25 +394,29 @@ Official infrastructure standards map — each row links a public ERC/EIP (or ve
 
 #### ERC-4337 — Account Abstraction & UserOperation Structure
 
+> **繁體中文深度規格：** §2.4 Pillar 1 — ZeroDev 帳戶抽象（Kernel v3/v4 · Paymaster · EIP-7562 · v4 Seven Stages 路線圖）。
+
 | Field | Citadel binding |
 |-------|-----------------|
 | **EntryPoint** | `entryPoint07Address` — SSOT `ZERODEV_ENTRY_POINT_ADDRESS` |
-| **Kernel** | ZeroDev Kernel **v0.3.1** (`ZERODEV_KERNEL_VERSION`) |
+| **Kernel** | ZeroDev Kernel **v0.3.1** (`ZERODEV_KERNEL_VERSION`) — v4 adapter swap ⏳ V1.0（§2.4.2） |
 | **UserOp draft** | `sender` · `nonce` · `callData` · optional `factory`/`factoryData` · gas limits · `paymaster`/`paymasterData` · `signature` |
-| **Paymaster** | ZeroDev `zerodev.sponsorUserOperation` middleware (`zerodev-aa-userop.ts`) |
+| **Paymaster** | ZeroDev `zerodev.sponsorUserOperation` — per-op ≤ $0.50 · daily $10 · `zerodev-aa-gas-ledger.ts` |
 | **Pre-broadcast gate** | `verifyAgentIntent()` — `AllowedToSign = Injection ∧ Digest ∧ Soil ∧ Session ∧ Gas ∧ Attestation ∧ Armor ∧ Wasm` |
+| **106 µs coupling** | Shield (`checkSoilResistance`) runs **before** paymaster sign + bundler dispatch — ZeroDev delivers, Citadel decides |
 
-UserOps are drafted locally, sponsored via ZeroDev paymaster middleware, and submitted only after Edge soil + static-breaker evaluation. Bundler RPC MUST advertise EntryPoint v0.7 (`supportsEntryPoint07`).
+UserOps are drafted locally, sponsored via ZeroDev paymaster middleware, and submitted only after Edge soil + static-breaker evaluation. Bundler RPC MUST advertise EntryPoint v0.7 (`supportsEntryPoint07`). ZeroDev is the **non-custodial execution substrate**; Citadel Edge is the **pre-broadcast decision SSOT** (§2.4.1).
 
 #### EIP-7562 — Account Abstraction Storage Access Rules
 
-**Zero-Bundler-Rejection Invariant:** Citadel UserOps MUST NOT violate EIP-7562 opcode/storage rules during the validation phase; bundler rejection is treated as a protocol fault, not a retry signal.
+**Zero-Bundler-Rejection Invariant（零 Bundler 拒絕不變量）：** Citadel UserOps MUST NOT violate EIP-7562 opcode/storage rules during the validation phase; bundler rejection is treated as a **protocol fault**, not a retry signal. 詳見 §2.4.4。
 
 | Rule | Enforcement |
 |------|-------------|
 | Validation-phase storage reads | Session-key modules restrict `callData` to whitelisted targets/selectors — no forbidden cross-contract reads |
-| Edge pre-screen | Static breaker matrix + `checkSoilResistance()` before `sendUserOperation()` |
-| Fail-closed | Bundler unreachable, missing EP v0.7, or timeout → `BUNDLER_TIMEOUT_FAIL_CLOSED` (`ZERODEV_BUNDLER_FAIL_CLOSED_TIMEOUT_MS = 3_000`) |
+| Edge pre-screen | `evaluateStaticBreakerMatrix()` — soil first, then gas ledger, before `sendUserOperation()` |
+| Fail-closed | Bundler unreachable, missing EP v0.7, or timeout → `BUNDLER_TIMEOUT_FAIL_CLOSED` (`ZERODEV_BUNDLER_FAIL_CLOSED_TIMEOUT_MS` = 3_000`) |
+| Verification | `zerodev-aa-bundler.ts` · `supportsEntryPoint07` probe · aa-adapter Vitest suite |
 
 #### EIP-712 — Typed Structured Data Hashing & Domain Binding
 
@@ -447,6 +538,9 @@ B2B Option B (slippage-savings fee) remains a separate commercial SKU and is not
 | [`../audit/`](../audit/) | Principal audit · Robinhood Chain safety gate |
 | [`../../docker/README.md`](../../docker/README.md) | Sidecar |
 | [`../grants/arbitrum/ARBITRUM_ONE_PAGER.md`](../grants/arbitrum/ARBITRUM_ONE_PAGER.md) | Grant one-pager |
+| [`../internal/ZERODEV_SMART_ROUTING_DEEP_DIVE.md`](../internal/ZERODEV_SMART_ROUTING_DEEP_DIVE.md) | ZeroDev Smart Routing 深度解析（繁中） |
+| [`../internal/HOT_COLD_PATH_DECOUPLING.md`](../internal/HOT_COLD_PATH_DECOUPLING.md) | Hot/Cold Path 解耦架構（繁中） |
+| [`../internal/WASM_STYLUS_DUAL_ENGINE_ROADMAP.md`](../internal/WASM_STYLUS_DUAL_ENGINE_ROADMAP.md) | Wasm / Stylus 雙引擎路線圖（繁中） |
 | `src/services/risk/liquidation-meter.ts` | `DEFAULT_CROSS_MMR = 0.05` |
 | `src/services/session-key-adapter-lib/nonce-auto-healing.ts` | HL nonce auto-resync |
 | `src/services/execution/twap-engine-v2.ts` | TWAP path planner |

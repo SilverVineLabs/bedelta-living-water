@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { App } from "./v2/App";
+import { App } from "./App";
 import { TerminalErrorBoundary } from "./v2/components/TerminalErrorBoundary";
 import "./v2/index.css";
 import "./v2/gmx-citadel-theme.css";
