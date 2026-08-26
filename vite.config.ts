@@ -8,6 +8,12 @@ const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      "./soil-wasm-node": path.resolve(rootDir, "src/sdk/soil-wasm-node.browser.ts"),
+      "src/sdk/soil-wasm-node": path.resolve(rootDir, "src/sdk/soil-wasm-node.browser.ts"),
+    },
+  },
   define: {
     "import.meta.env.NEXT_PUBLIC_HUD_CANARY": JSON.stringify("bedelta-stealth"),
   },

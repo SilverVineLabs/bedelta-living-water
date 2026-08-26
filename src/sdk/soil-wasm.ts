@@ -3,9 +3,6 @@
  * Copyright 2026 SilverVine Labs
  * M4 Wasm soil/session loader — production requires Wasm; dev falls back to TS sim.
  */
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import {
   encodeWasmSoilInput,
   runWasmSoilCoreSim,
@@ -13,10 +10,13 @@ import {
   type WasmSoilCoreOutput,
 } from "../services/wasm-feasibility-lib/soil-core-sim";
 import { SESSION_KEY_AUTO_EXPIRE_MS, SESSION_KEY_CLIP_USD } from "../services/risk/session-audit";
+import { readDefaultWasmBytesSync } from "./soil-wasm-node";
 
 export const WASM_ABI_VERSION = 1 as const;
 export const WASM_BUDGET_BYTES = 28 * 1024;
 export const WASM_EXEC_BUDGET_US = 60;
+
+const DEFAULT_WASM_URL = new URL("../../pkg/soil_core.wasm", import.meta.url);
 
 type SoilExports = {
   memory: WebAssembly.Memory;
@@ -28,10 +28,16 @@ type SoilExports = {
 };
 
 let exportsRef: SoilExports | null = null;
+let wasmInitPromise: Promise<boolean> | null = null;
 
-function resolveDefaultWasmPath(): string {
-  const here = dirname(fileURLToPath(import.meta.url));
-  return join(here, "../../pkg/soil_core.wasm");
+function isNodeRuntime(): boolean {
+  return typeof process !== "undefined" && Boolean(process.versions?.node);
+}
+
+function toUint8Array(source: ArrayBuffer | Uint8Array): Uint8Array {
+  return source instanceof ArrayBuffer
+    ? new Uint8Array(source)
+    : new Uint8Array(source.buffer, source.byteOffset, source.byteLength);
 }
 
 function bindInstance(bytes: Uint8Array): boolean {
@@ -49,15 +55,35 @@ function bindInstance(bytes: Uint8Array): boolean {
 export function initSoilWasm(source?: ArrayBuffer | Uint8Array): boolean {
   try {
     const bytes = source
-      ? source instanceof ArrayBuffer
-        ? new Uint8Array(source)
-        : new Uint8Array(source.buffer, source.byteOffset, source.byteLength)
-      : new Uint8Array(readFileSync(resolveDefaultWasmPath()));
+      ? toUint8Array(source)
+      : readDefaultWasmBytesSync();
+    if (!bytes) return false;
     return bindInstance(bytes);
   } catch {
     exportsRef = null;
     return false;
   }
+}
+
+/** Browser-safe async loader — fetches Wasm asset emitted by Vite. */
+export async function initSoilWasmAsync(
+  source?: ArrayBuffer | Uint8Array,
+): Promise<boolean> {
+  if (source) return initSoilWasm(source);
+  if (exportsRef) return true;
+  if (!wasmInitPromise) {
+    wasmInitPromise = (async () => {
+      if (isNodeRuntime()) return initSoilWasm();
+      try {
+        const res = await fetch(DEFAULT_WASM_URL);
+        if (!res.ok) return false;
+        return initSoilWasm(await res.arrayBuffer());
+      } catch {
+        return false;
+      }
+    })();
+  }
+  return wasmInitPromise;
 }
 
 export function isSoilWasmReady(): boolean {
@@ -66,9 +92,10 @@ export function isSoilWasmReady(): boolean {
 
 export function __resetSoilWasmForTests(): void {
   exportsRef = null;
+  wasmInitPromise = null;
 }
 
-/** Lazy-load default binary once. */
+/** Lazy-load default binary once (sync Node path; browser uses TS sim until async init). */
 export function ensureSoilWasm(): boolean {
   if (exportsRef) return true;
   return initSoilWasm();
