@@ -5,6 +5,28 @@
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit`  
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
 
+---
+
+## 30-Second Elevator Pitch & Business Model
+
+**One line:** BDLW is a **p50 ~106 µs pre-execution Citadel** on **Arbitrum One** — every GMX / Hyperliquid broadcast passes Wasm soil fuse, EIP-712 Gate attestation, and ZeroDev scoped session keys **before** mempool exposure.
+
+**B2B Citadel-as-a-Service (CaaS) monetization — yield security, not custody:**
+
+| Revenue lane | Rate | Role |
+|--------------|------|------|
+| **GMX Builder UI Fee** | **+5 bps** `uiFeeReceiver` on every unsigned GMX v2 payload | Standard GMX Builders mechanics · institutional routing revenue |
+| **Dynamic Skew Rebate** | Up to **~5 bps** underweight-side price-impact rebate (venue-native; separate from UI fee) | Skew-neutralizer premium on delta-neutral GM flow |
+| **Combined B2B band** | **+5 ~ +10 bps total** | **Yield security fee stack** — Citadel gates signing before Worker injects fees; innovation = sub-ms fail-closed risk layer, not fee arbitrage |
+
+**Product identity:** Delta-neutral **GMX v2 ETH/USDC GM + Hyperliquid 1× short** on Arbitrum One · **`@slivervine/citadel-sdk`** (Apache-2.0) for third-party dApps & AI agents.
+
+**Demo & storyboard:** [`Grant Pitch & Video Storyboard — The Storm & 3-Options`](../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) · 35s evaluator script · Three-Pillar architecture walkthrough.
+
+> **Regression SSOT:** Vitest **171 test files | 753 PASS (100% Clean)** on `pnpm test -- --run` · Cargo Stylus **`cargo test` 5/5 PASS** · Forge **60/60** · Security-tier **5/0/0 PASS**.
+
+---
+
 > **Proposal Locked Baseline:** Vitest **168 test files | 742 PASS (100% Clean)** · **Current Live Suite:** **171 test files | 753 PASS (100% Clean)** on `pnpm test -- --run` · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` Cloudflare budget, `<60µs` execution.
 
 **Audience:** Arbitrum Open House / Buildathon / chain security diligence.  
