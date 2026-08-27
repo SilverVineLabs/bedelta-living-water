@@ -22,7 +22,8 @@ BeDelta Living Water (BDLW) adopts ZeroDev Kernel v3 in production (Kernel v4 + 
 
 ```text
 Pillar 1 GATEHOUSE   → ZeroDev Kernel · scoped Session Keys · Paymaster caps
-Pillar 2 FIREWALL    → Robinhood outbound escort · AML inbound block · payloadHash binding
+Pillar 2 COMPLIANCE INGRESS FIREWALL (Robinhood = inaugural ref adapter)
+                       → outbound escort · AML inbound block · payloadHash binding
 Pillar 3 SHIELD      → checkSoilResistance() · pkg/soil_core.wasm · Fail-Closed pre-broadcast
 ```
 
@@ -109,7 +110,7 @@ verifyAgentIntent() / checkSoilResistance()   ← p50 ~106 µs Wasm (Fail-Closed
 
 > **EIP-7702 roadmap alignment:** Kernel v4 intent composition adds **UX surface area** — the **106 µs Shield does not move**. Edge remains SSOT; ZeroDev delivers execution plumbing, Citadel decides.
 
-### 4.3 Honest Accounting — `lostUsd ≡ 0` (Firewall + Bridge SSOT)
+### 4.3 Honest Accounting — `lostUsd ≡ 0` (Compliance Ingress Firewall + Bridge SSOT)
 
 Consumer bridge UX often treats in-flight tokens as deployable balance. BDLW **labels and isolates**:
 
@@ -141,7 +142,7 @@ EOA → EIP-7702 delegate → UserOp → bundler → venue
 Kernel Smart Account (ZeroDev v3)
     │
     ▼
-Pillar 2 — payloadHash() bind · bridge direction validate
+Pillar 2 Compliance Ingress Firewall — payloadHash() bind · bridge direction validate
     │
     ▼
 Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
