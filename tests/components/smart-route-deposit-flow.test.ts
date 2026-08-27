@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { runSmartRouteDepositPreview } from "../../src/components/hud/smart-route-deposit-flow";
+import {
+  runArbitrumNativeDepositPreview,
+  runDepositPreviewByTranche,
+  runSmartRouteDepositPreview,
+} from "../../src/components/hud/smart-route-deposit-flow";
 
 const WALLET = "0xcccccccccccccccccccccccccccccccccccccccc";
 
@@ -19,5 +23,27 @@ describe("smart-route-deposit-flow", () => {
     expect(preview.ok).toBe(false);
     expect(preview.gateSimVerdict).toBe("DENY");
     expect(preview.payloadHash).toBeNull();
+  });
+
+  it("Tranche A native preview binds payloadHash on Arbitrum path", () => {
+    const preview = runArbitrumNativeDepositPreview({ amountUsd: 500, wallet: WALLET });
+    expect(preview.ok).toBe(true);
+    expect(preview.payloadHash).toMatch(/^0x[a-f0-9]{64}$/);
+  });
+
+  it("runDepositPreviewByTranche dispatches Tranche A vs Tranche B", () => {
+    const native = runDepositPreviewByTranche({
+      tranche: "tranche-a-native",
+      amountUsd: 500,
+      wallet: WALLET,
+    });
+    const escort = runDepositPreviewByTranche({
+      tranche: "tranche-b-robinhood",
+      amountUsd: 500,
+      wallet: WALLET,
+    });
+    expect(native.ok).toBe(true);
+    expect(escort.ok).toBe(true);
+    expect(native.smartRoutingAddress).not.toBe(escort.smartRoutingAddress);
   });
 });

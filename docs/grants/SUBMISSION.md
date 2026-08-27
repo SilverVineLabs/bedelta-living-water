@@ -15,9 +15,10 @@
 
 | Revenue lane | Rate | Role |
 |--------------|------|------|
-| **GMX Builder UI Fee** | **+5 bps** `uiFeeReceiver` on every unsigned GMX v2 payload | Standard GMX Builders mechanics · institutional routing revenue |
+| **GMX Native Builder Fee** | **+10 bps** `uiFeeReceiver` on every unsigned GMX v2 payload | GMX v2 ExchangeRouter native parameter · institutional routing revenue · **zero additional overhead on v0.9 execution safety** |
+| **GMX Referral Rebate** | Up to **25%** of GMX trading fees (venue-native `referralCode`) | Standard GMX Builders rebate share · separate from builder UI fee |
 | **Dynamic Skew Rebate** | Up to **~5 bps** underweight-side price-impact rebate (venue-native; separate from UI fee) | Skew-neutralizer premium on delta-neutral GM flow |
-| **Combined B2B band** | **+5 ~ +10 bps total** | **Yield security fee stack** — Citadel gates signing before Worker injects fees; innovation = sub-ms fail-closed risk layer, not fee arbitrage |
+| **Combined B2B band** | **10 bps builder + up to 25% referral + skew rebate** | **Yield security fee stack** — Citadel gates signing before Worker injects fees; innovation = sub-ms fail-closed risk layer, not fee arbitrage |
 
 **Product identity:** Delta-neutral **GMX v2 ETH/USDC GM + Hyperliquid 1× short** on Arbitrum One · **`@slivervine/citadel-sdk`** (Apache-2.0) for third-party dApps & AI agents.
 

@@ -124,15 +124,18 @@ Citadel UserOps **must not** trigger bundler rejection under [EIP-7562](https://
 
 See also: [`TECHNICAL_SPECIFICATION.md` §4.0](../architecture/TECHNICAL_SPECIFICATION.md) — EIP-7562 wiki entry.
 
-### 4. Skew Neutralizer Premium (`uiFeeReceiver` +5 bps ~ +10 bps)
+### 4. CaaS Monetization — 10 bps GMX Native Builder Fee + Up to 25% GMX Referral Rebate
 
-Citadel routes institutional flow to the **underweight side** of GMX GM pools, capturing builder revenue and positive skew rebates while maintaining Δ-neutral hedge on Hyperliquid.
+Citadel routes institutional flow to the **underweight side** of GMX GM pools, capturing builder revenue, GMX referral rebates, and positive skew rebates while maintaining Δ-neutral hedge on Hyperliquid.
+
+> **Execution safety:** The **10 bps** builder fee is natively supported by GMX v2 **ExchangeRouter** `uiFeeReceiver` parameters (`GMX_UI_FEE_BPS`). It imposes **zero additional overhead** on the v0.9 sub-ms fail-closed execution path — SDK/Worker inject the fee field on unsigned payloads only; soil fuse, session gates, and Gate attestation are unchanged.
 
 | Revenue channel | Rate | Module |
 |-----------------|------|--------|
-| **Builder UI fee** | **+5 bps** `uiFeeReceiver` on every unsigned GMX v2 increase / decrease / deposit | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` (Worker BUSL) |
+| **GMX Native Builder Fee** | **+10 bps** `uiFeeReceiver` on every unsigned GMX v2 increase / decrease / deposit | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` (Worker BUSL) |
+| **GMX Referral Rebate** | Up to **25%** of GMX trading fees via registered `referralCode` | `GMX_REFERRAL_CODE_BYTES32` · `gmx-revenue.ts` |
 | **Positive skew rebate** | Up to **~5 bps** price-impact rebate on underweight-side flow (venue-native; separate from `uiFeeReceiver`) | `gmx-v2-balancer` · soil price-impact fuse |
-| **Combined premium band** | **+5 bps ~ +10 bps** total skew-neutralization yield — never conflated with custody or performance fee | Grant audit · `GET /api/grant-audit` |
+| **Combined CaaS stack** | **10 bps builder + up to 25% referral + skew rebate** — never conflated with custody or performance fee | Grant audit · `GET /api/grant-audit` |
 
 SDK gates signing **before** Worker injects `uiFeeReceiver`; skew routing decisions live in Edge soil + balancer — not in SDK exports.
 
@@ -144,7 +147,7 @@ Audit scope: [`src/sdk/`](../../src/sdk/) · [`tests/sdk/`](../../tests/sdk/)
 
 | Topology | Verified in SDK/tests | Boundary notes |
 |----------|----------------------|----------------|
-| **a) Arbitrum One Native Gateway** | ✅ `verifyAgentIntent()` + `evaluateSoilCore()` + `ARBITRUM_ONE_CHAIN_ID` | GMX v2 **unsigned order payload** + **5 bps `uiFeeReceiver`** live in Worker [`gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts) (BUSL) — **not** exported from `src/sdk/index.ts`. SDK gates signing **before** Worker broadcast. |
+| **a) Arbitrum One Native Gateway** | ✅ `verifyAgentIntent()` + `evaluateSoilCore()` + `ARBITRUM_ONE_CHAIN_ID` | GMX v2 **unsigned order payload** + **10 bps `uiFeeReceiver`** live in Worker [`gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts) (BUSL) — **not** exported from `src/sdk/index.ts`. SDK gates signing **before** Worker broadcast. |
 | **b) Arbitrum ↔ Hyperliquid Delta Escort** | ✅ `verifyAgentIntent()` soil `{ hlSpot, hlPerp, dydxPerp }` + `armor.rpcLatencyMs` + deadman; legacy-risk exports `assertSessionKeyExecutionGates`, `signAndExecuteOrder` | 1× short hedge provenance enforced at Worker Session Key adapter + FoolProof/VineShield — SDK pre-sign cross-venue fuse. |
 | **c) Robinhood → Arbitrum Ingress** | ✅ `assertUnidirectionalBridge()` · `exportRobinhoodAuditSnapshot()` · `tests/sdk/citadel-sdk-bridge-armor.test.ts` | Outbound `46630`/`4663` → `42161` only; inbound `42161` → Robinhood ⇒ `AML_INBOUND_TO_ROBINHOOD_BLOCKED`. |
 | **Primary anchor = Arbitrum One** | ✅ `AGENT_GUARD_CHAIN_ID = ARBITRUM_ONE_CHAIN_ID` in [`agent-citadel-guard.ts`](../../src/core/agent-citadel-guard.ts); Gate EIP-712 domain SSOT `42161` | Robinhood is ingress escort only — never secondary execution anchor. |
@@ -224,7 +227,7 @@ allowedToSign = injectionOk ∧ digestOk ∧ soilOk ∧ sessionOk ∧ gasOk ∧ 
 
 ### 1. Arbitrum One GMX v2 Soil-Protected Order Routing
 
-SDK gates signing on **Arbitrum One (`42161`)**. GMX unsigned payload construction (incl. 5 bps `uiFeeReceiver`) is Worker-side:
+SDK gates signing on **Arbitrum One (`42161`)**. GMX unsigned payload construction (incl. 10 bps `uiFeeReceiver`) is Worker-side:
 
 ```ts
 import {
@@ -239,7 +242,7 @@ import {
 // Worker (BUSL monorepo internal — not SDK export):
 // import { buildGmxV2UnsignedOrderPayload } from "../services/adapters/gmx-v2-order-payload";
 // const unsigned = buildGmxV2UnsignedOrderPayload({ ... });
-// unsigned.addresses.uiFeeReceiver → GMX_UI_FEE_RECEIVER (5 bps treasury)
+// unsigned.addresses.uiFeeReceiver → GMX_UI_FEE_RECEIVER (10 bps treasury)
 
 ensureSoilWasm();
 const { hlSpot, hlPerp, dydxPerp, depthUsd } = await fetchGmSoilSnapshot();

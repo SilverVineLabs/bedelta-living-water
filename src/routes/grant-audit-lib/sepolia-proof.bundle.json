@@ -11,8 +11,8 @@
     "longBorrowRateHourly": 0,
     "shortBorrowRateHourly": 0,
     "uiFeeReceiver": "0xc9BddABD80982d2201376195DD9B85fb7951546f",
-    "uiFeeBps": 5,
-    "uiFeeLabel": "UI Fee Accrual (5 bps)",
+    "uiFeeBps": 10,
+    "uiFeeLabel": "UI Fee Accrual (10 bps)",
     "depositCalldata": {
       "action": "deposit",
       "marketToken": "0x0000000000000000000000000000000000000e01",

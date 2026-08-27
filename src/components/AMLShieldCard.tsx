@@ -2,6 +2,10 @@
 import { useState, type ReactNode } from "react";
 import { exportDailyRobinhoodComplianceReport } from "../sdk";
 import {
+  BRIDGE_TIMEOUT_FAIL_CLOSED,
+  type ComplianceTripAlert,
+} from "./compliance-trip-alerts";
+import {
   GMX_ACCENT_TEXT_CLASS,
   GMX_CITADEL_PANEL_CLASS,
   GMX_MUTED_TEXT_CLASS,
@@ -20,6 +24,8 @@ export interface AMLShieldCardProps {
   auditButtonLabel?: string;
   isExporting?: boolean;
   exportDisabled?: boolean;
+  /** Reactive bridge / AML fail-closed banners (e.g. BRIDGE_TIMEOUT_FAIL_CLOSED). */
+  complianceAlerts?: readonly ComplianceTripAlert[];
   onExportAudit?: () => void;
 }
 
@@ -58,11 +64,13 @@ export function AMLShieldCard({
   auditButtonLabel = "📄 Download Daily Compliance Audit Snapshot (SHA-256)",
   isExporting = false,
   exportDisabled = false,
+  complianceAlerts = [],
   onExportAudit,
 }: AMLShieldCardProps): ReactNode {
   const [localExporting, setLocalExporting] = useState(false);
   const exporting = isExporting || localExporting;
-  const blocked = exportDisabled || exporting;
+  const bridgeTimeout = complianceAlerts.some((a) => a.code === BRIDGE_TIMEOUT_FAIL_CLOSED);
+  const blocked = exportDisabled || exporting || bridgeTimeout;
 
   const onDownload = async (): Promise<void> => {
     if (blocked) return;
@@ -86,6 +94,28 @@ export function AMLShieldCard({
           Unidirectional escort · inbound mempool fail-closed
         </p>
       </header>
+
+      {complianceAlerts.length > 0 ? (
+        <div className="space-y-2" data-testid="aml-compliance-alerts">
+          {complianceAlerts.map((alert) => (
+            <div
+              key={alert.code}
+              className="rounded border border-red-500/55 bg-red-950/35 px-3 py-2 animate-pulse"
+              data-testid={`compliance-alert-${alert.code}`}
+              role="alert"
+              aria-live="assertive"
+            >
+              <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-red-200">
+                🔒 {alert.code}
+              </p>
+              <p className="mt-1 font-mono text-[11px] font-semibold text-red-100">{alert.title}</p>
+              <p className="mt-0.5 font-mono text-[10px] leading-relaxed text-red-200/90">
+                {alert.message}
+              </p>
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       <div className="space-y-2" data-testid="aml-flow-map">
         <span className={`font-mono text-[10px] uppercase tracking-widest ${GMX_MUTED_TEXT_CLASS}`}>

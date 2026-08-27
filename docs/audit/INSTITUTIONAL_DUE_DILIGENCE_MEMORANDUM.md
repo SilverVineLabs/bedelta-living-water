@@ -53,7 +53,7 @@ BDLW operates on a **non-custodial execution substrate**:
 
 - User principal resides in **ZeroDev Kernel Smart Accounts** controlled by the user — not in a protocol treasury, omnibus wallet, or discretionary custodian account.
 - SilverVine Labs does **not** take discretionary possession of user funds, does **not** rehypothecate labeled in-flight bridge capital, and does **not** represent itself as a licensed custodian, broker-dealer, or payment institution.
-- Protocol yield accrual via GMX **`uiFeeReceiver` (+5 bps)** is **protocol revenue**, explicitly separated from user principal in accounting semantics (§6.3).
+- Protocol yield accrual via GMX **`uiFeeReceiver` (+10 bps)** and **up to 25% GMX Referral Rebate** is **protocol revenue**, explicitly separated from user principal in accounting semantics (§6.3). The 10 bps builder fee is a native GMX v2 ExchangeRouter parameter — zero additional overhead on v0.9 execution safety.
 
 **0-Proxy architecture** (§5.3) means BDLW provides **risk gates and routing logic** — not balance-sheet intermediation. Users and institutions retain **direct smart-contract exposure** to underlying venues (GMX, Hyperliquid, Across bridge, Robinhood Chain escort path).
 
@@ -660,7 +660,7 @@ Deprecated fixed **$50 SL** is **forbidden** by workspace protocol rules and enf
 ### 6.3 Non-Custodial Semantics
 
 - User principal is held in **ZeroDev Kernel Smart Accounts** — not protocol treasury.
-- GMX `uiFeeReceiver` (+5 bps) accrues protocol yield — never conflated with user principal.
+- GMX `uiFeeReceiver` (+10 bps native builder fee) and GMX referral rebate (up to **25%** of trading fees) accrue protocol yield — never conflated with user principal. Builder fee injection uses GMX v2 ExchangeRouter parameters only; no change to v0.9 pre-execution safety path.
 - In-flight bridge capital is **labeled, not lent** — no rehypothecation claim in code paths.
 
 ### 6.4 Cross-Reference

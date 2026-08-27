@@ -4,25 +4,23 @@ import AMLShieldCard from "./components/AMLShieldCard";
 import HeaderNav from "./components/HeaderNav";
 import LivingWaterShieldCard from "./components/LivingWaterShieldCard";
 import SmartRoutingDepositCard from "./components/SmartRoutingDepositCard";
-import { runSmartRouteDepositPreview } from "./components/hud/smart-route-deposit-flow";
+import {
+  type DepositTrancheId,
+  resolveDepositTrancheConfig,
+} from "./components/deposit-tranche-config";
+import { runDepositPreviewByTranche } from "./components/hud/smart-route-deposit-flow";
 import { GMX_MUTED_TEXT_CLASS } from "./components/hud/gmx-citadel-theme";
+import {
+  BRIDGE_TIMEOUT_FAIL_CLOSED,
+  resolveComplianceAlertsFromReasons,
+} from "./components/compliance-trip-alerts";
 
 const DEMO_WALLET = "0xcccccccccccccccccccccccccccccccccccccccc" as const;
-const DYNAMIC_APY_RANGE = { minPercent: 14.2, maxPercent: 21.8 } as const;
+const DYNAMIC_APY_RANGE = { minPercent: 8.2, maxPercent: 11.8 } as const;
 const YIELD_SOURCES = [
   "GMX v2 Base GM Pool Yield (ETH/USDC & BTC/USDC)",
   "Skew Neutralizer Premium (+5bps ~ +10bps via native uiFeeReceiver)",
   "Hyperliquid 1x Delta-Neutral Funding Cushion",
-] as const;
-const SEND_TOKEN_OPTS = [{ value: "USDC", label: "USDC" }] as const;
-const SEND_CHAIN_OPTS = [{ value: "arbitrum", label: "Arbitrum One" }] as const;
-const RECEIVE_TOKEN_OPTS = [
-  { value: "USDG", label: "USDG" },
-  { value: "GM_LP", label: "GM Pool LP" },
-] as const;
-const RECEIVE_CHAIN_OPTS = [
-  { value: "rh-46630", label: "Robinhood Chain 46630" },
-  { value: "arbitrum", label: "Arbitrum" },
 ] as const;
 
 export interface AppProps {
@@ -32,9 +30,10 @@ export interface AppProps {
 export function App({
   verificationMetrics = "742 Vitest PASS | 60/60 Foundry PASS | 87.76 KiB Gzip",
 }: AppProps): ReactNode {
+  const [depositTranche, setDepositTranche] = useState<DepositTrancheId>("tranche-a-native");
   const [sendAmount, setSendAmount] = useState("250.00");
-  const [receiveToken, setReceiveToken] = useState("USDG");
-  const [receiveChain, setReceiveChain] = useState("rh-46630");
+  const [receiveToken, setReceiveToken] = useState("GM_LP");
+  const [receiveChain, setReceiveChain] = useState("arbitrum");
   const [walletConnected, setWalletConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [isDepositing, setIsDepositing] = useState(false);
@@ -43,11 +42,39 @@ export function App({
     "[edge] rootProtection() standby · hot-path armed",
   ]);
 
+  const trancheConfig = useMemo(
+    () => resolveDepositTrancheConfig(depositTranche),
+    [depositTranche],
+  );
+
   const amountUsd = useMemo(() => Number.parseFloat(sendAmount), [sendAmount]);
   const depositPreview = useMemo(() => {
     if (!Number.isFinite(amountUsd) || amountUsd <= 0) return null;
-    return runSmartRouteDepositPreview({ amountUsd, wallet: DEMO_WALLET });
-  }, [amountUsd]);
+    return runDepositPreviewByTranche({
+      tranche: depositTranche,
+      amountUsd,
+      wallet: DEMO_WALLET,
+    });
+  }, [amountUsd, depositTranche]);
+
+  const complianceAlerts = useMemo(
+    () => resolveComplianceAlertsFromReasons(shieldLogs),
+    [shieldLogs],
+  );
+  const shieldComplianceAlerts = useMemo(
+    () => complianceAlerts.filter((a) => a.code !== BRIDGE_TIMEOUT_FAIL_CLOSED),
+    [complianceAlerts],
+  );
+  const amlComplianceAlerts = useMemo(
+    () => complianceAlerts.filter((a) => a.code === BRIDGE_TIMEOUT_FAIL_CLOSED),
+    [complianceAlerts],
+  );
+
+  const bridgeStateActive = useMemo(() => {
+    if (depositTranche !== "tranche-b-robinhood") return undefined;
+    if (isDepositing) return "IN_FLIGHT_BRIDGE_CAPITAL";
+    return depositPreview?.ok ? "AVAILABLE" : undefined;
+  }, [depositPreview?.ok, depositTranche, isDepositing]);
 
   const telemetry = useMemo(
     () => ({
@@ -75,6 +102,17 @@ export function App({
       return prev.at(-1) === line ? prev : [...prev.slice(-7), line];
     });
   }, [depositPreview?.payloadHash]);
+
+  const onDepositTrancheChange = (tranche: DepositTrancheId): void => {
+    const next = resolveDepositTrancheConfig(tranche);
+    setDepositTranche(tranche);
+    setReceiveToken(next.receiveToken);
+    setReceiveChain(next.receiveChain);
+    setShieldLogs((prev) => [
+      ...prev.slice(-6),
+      `[tranche] ${next.label} selected · ${next.subtitle}`,
+    ]);
+  };
 
   const onConnectWallet = (): void => {
     setIsConnecting(true);
@@ -105,7 +143,9 @@ export function App({
     window.setTimeout(() => {
       setShieldLogs((prev) => [
         ...prev.slice(-7),
-        `[escort] ZeroDev smart route deposit -> BDLW vault queued`,
+        depositTranche === "tranche-b-robinhood"
+          ? "[escort] Tranche B · Across bridge IN_FLIGHT · lostUsd ≡ 0"
+          : "[native] Tranche A · Arbitrum GM vault deposit queued",
       ]);
       setIsDepositing(false);
     }, 900);
@@ -127,31 +167,42 @@ export function App({
           apyRange={DYNAMIC_APY_RANGE}
           yieldSources={YIELD_SOURCES}
           logLines={shieldLogs}
+          complianceAlerts={shieldComplianceAlerts}
           isExecuting={isDepositing}
           actionDisabled={depositPreview?.ok !== true}
           onJoinVault={onJoinVault}
           onInspectSoilRadar={onInspectSoilRadar}
         />
         <SmartRoutingDepositCard
+          depositTranche={depositTranche}
+          onDepositTrancheChange={onDepositTrancheChange}
+          trancheSubtitle={trancheConfig.subtitle}
+          bridgeStateLines={
+            depositTranche === "tranche-b-robinhood" ? trancheConfig.bridgeStateMachine : []
+          }
+          bridgeStateActive={bridgeStateActive}
           sendAmount={sendAmount}
           onSendAmountChange={setSendAmount}
-          sendToken="USDC"
-          sendTokenOptions={SEND_TOKEN_OPTS}
-          sendChain="Arbitrum One"
-          sendChainOptions={SEND_CHAIN_OPTS}
+          sendToken={trancheConfig.sendToken}
+          sendTokenOptions={trancheConfig.sendTokenOptions}
+          sendChain={trancheConfig.sendChain}
+          sendChainOptions={trancheConfig.sendChainOptions}
           smartRouteAddress={depositPreview?.smartRoutingAddress ?? ""}
           receiveAmount={sendAmount}
           receiveToken={receiveToken}
-          receiveTokenOptions={RECEIVE_TOKEN_OPTS}
+          receiveTokenOptions={trancheConfig.receiveTokenOptions}
           onReceiveTokenChange={setReceiveToken}
           receiveChain={receiveChain}
-          receiveChainOptions={RECEIVE_CHAIN_OPTS}
+          receiveChainOptions={trancheConfig.receiveChainOptions}
           onReceiveChainChange={setReceiveChain}
+          safetyBadgeLabel={trancheConfig.safetyBadgeLabel}
+          actionLabel={trancheConfig.actionLabel}
+          depositingLabel={trancheConfig.depositingLabel}
           isDepositing={isDepositing}
           depositDisabled={!walletConnected || depositPreview?.ok !== true}
           onDeposit={onDeposit}
         />
-        <AMLShieldCard />
+        <AMLShieldCard complianceAlerts={amlComplianceAlerts} />
       </main>
 
       <footer

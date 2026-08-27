@@ -1,5 +1,9 @@
 /** BeDeltaLivingWater — Pre-Execution Living Water Shield card (Pillar 3). */
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, type ReactNode } from "react";
+import {
+  type ComplianceTripAlert,
+  hasCriticalComplianceTrip,
+} from "./compliance-trip-alerts";
 import {
   GMX_ACCENT_TEXT_CLASS,
   GMX_CITADEL_PANEL_CLASS,
@@ -31,6 +35,8 @@ export interface LivingWaterShieldCardProps {
   safetyFootnote?: string;
   joinVaultLabel?: string;
   inspectSoilLabel?: string;
+  /** Reactive fail-closed trip banners (SYSTEM_FAIL_CLOSED · ORACLE_LAG_DEADLOCK). */
+  complianceAlerts?: readonly ComplianceTripAlert[];
   isExecuting?: boolean;
   actionDisabled?: boolean;
   onJoinVault?: () => void;
@@ -53,6 +59,23 @@ function StatusRow({ label, value }: { label: string; value: string }): ReactNod
   );
 }
 
+function ComplianceAlertBanner({ alert }: { alert: ComplianceTripAlert }): ReactNode {
+  return (
+    <div
+      className="rounded border border-red-500/55 bg-red-950/35 px-3 py-2 animate-pulse"
+      data-testid={`compliance-alert-${alert.code}`}
+      role="alert"
+      aria-live="assertive"
+    >
+      <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-red-200">
+        🔴 {alert.code}
+      </p>
+      <p className="mt-1 font-mono text-[11px] font-semibold text-red-100">{alert.title}</p>
+      <p className="mt-0.5 font-mono text-[10px] leading-relaxed text-red-200/90">{alert.message}</p>
+    </div>
+  );
+}
+
 export function LivingWaterShieldCard({
   className = "",
   cardTitle = "Card 1: Pre-Execution Living Water Shield (Pillar 3)",
@@ -63,6 +86,7 @@ export function LivingWaterShieldCard({
   safetyFootnote = "*Yields fluctuate with market skew. Citadel 106µs Shield enforces lostUsd ≡ 0 during market storms.",
   joinVaultLabel = "🌊 Join Vault (One-Click Deposit)",
   inspectSoilLabel = "📄 Inspect Soil Radar",
+  complianceAlerts = [],
   isExecuting = false,
   actionDisabled = false,
   onJoinVault,
@@ -70,15 +94,26 @@ export function LivingWaterShieldCard({
 }: LivingWaterShieldCardProps): ReactNode {
   const logViewportRef = useRef<HTMLDivElement>(null);
 
+  const criticalTripped = hasCriticalComplianceTrip(complianceAlerts);
+  const effectiveVariant = criticalTripped ? "storm" : status.marketStateVariant;
+  const marketClass = MARKET_VARIANT_CLASS[effectiveVariant];
+  const actionsDisabled =
+    actionDisabled || isExecuting || effectiveVariant === "storm";
+  const apyLabel = `Dynamic Target Range: ${apyRange.minPercent.toFixed(1)}% ~ ${apyRange.maxPercent.toFixed(1)}% (Non-Guaranteed · Hurdle Gate +0.5%)`;
+
+  const logLinesWithTrips = useMemo(() => {
+    if (complianceAlerts.length === 0) return logLines;
+    const tripLines = complianceAlerts.map(
+      (a) => `[FAIL-CLOSED] ${a.code} · ${a.title}`,
+    );
+    return [...logLines, ...tripLines].slice(-12);
+  }, [complianceAlerts, logLines]);
+
   useEffect(() => {
     const el = logViewportRef.current;
     if (!el) return;
     el.scrollTop = el.scrollHeight;
-  }, [logLines]);
-
-  const marketClass = MARKET_VARIANT_CLASS[status.marketStateVariant];
-  const actionsDisabled = actionDisabled || isExecuting || status.marketStateVariant === "storm";
-  const apyLabel = `Dynamic Estimated APY: ${apyRange.minPercent.toFixed(1)}% ~ ${apyRange.maxPercent.toFixed(1)}% (Non-Guaranteed)`;
+  }, [logLinesWithTrips]);
 
   return (
     <section
@@ -90,6 +125,14 @@ export function LivingWaterShieldCard({
           {cardTitle}
         </h2>
       </header>
+
+      {complianceAlerts.length > 0 ? (
+        <div className="space-y-2" data-testid="living-water-compliance-alerts">
+          {complianceAlerts.map((alert) => (
+            <ComplianceAlertBanner key={alert.code} alert={alert} />
+          ))}
+        </div>
+      ) : null}
 
       <div
         className="space-y-2 rounded border border-[#2d42fc]/40 bg-[#2d42fc]/10 px-3 py-2.5"
@@ -108,11 +151,11 @@ export function LivingWaterShieldCard({
         <div
           className={`rounded border px-3 py-2 font-mono text-[11px] font-semibold ${marketClass}`}
           data-testid="living-water-market-state"
-          data-market-variant={status.marketStateVariant}
+          data-market-variant={effectiveVariant}
           role="status"
         >
           <span className={`mr-2 text-[9px] uppercase tracking-widest opacity-70`}>Market State</span>
-          {status.marketState}
+          {criticalTripped ? "⛈ STORM (Fail-Closed — Dispatch Blocked)" : status.marketState}
         </div>
         <StatusRow label="Edge Engine" value={status.edgeEngineLabel} />
         <StatusRow label="Skew Premium" value={status.skewPremiumLabel} />
@@ -163,10 +206,10 @@ export function LivingWaterShieldCard({
           aria-live="polite"
           aria-relevant="additions"
         >
-          {logLines.length === 0 ? (
+          {logLinesWithTrips.length === 0 ? (
             <p className="text-zinc-600">— awaiting edge telemetry —</p>
           ) : (
-            logLines.map((line, index) => (
+            logLinesWithTrips.map((line, index) => (
               <p key={`${index}-${line.slice(0, 24)}`} className="whitespace-pre-wrap break-all">
                 {line}
               </p>
