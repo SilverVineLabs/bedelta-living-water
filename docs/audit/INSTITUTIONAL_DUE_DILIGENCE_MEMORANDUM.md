@@ -8,7 +8,7 @@
 | **Entity** | SilverVine Labs |
 | **Protocol** | SliverVine / BeΔ Living Water (BDLW) · Santenmoku Risk Engine |
 | **Audience** | Arbitrum Foundation · ZeroDev Grant Committee · Institutional allocators · Fund-of-funds diligence |
-| **Baseline** | Vitest **168 files \| 742 PASS (100% Clean)** · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs** |
+| **Baseline** | **Locked Minimum Proposal Baseline:** 168 files \| 742 PASS · **Current Branch Live Expected Output:** 171 files \| 753 PASS · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway) · Wasm warm **&lt;60 µs** |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **Spec SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **Risk Framework SSOT** | [`../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) |
@@ -36,7 +36,7 @@ BeDelta Living Water (BDLW) is a **sophisticated, non-custodial DeFi execution p
 | **Pillar 3 — Pre-Execution Shield** | **Fail-Closed** Citadel gate **before** broadcast | `checkSoilResistance()` · `pkg/soil_core.wasm` |
 | **Wasm Soil Engine** | **p50 ~106 µs** hot-path fuse on Edge | R01–R20 matrix · Vitest regression |
 | **Pillar 1 — Gatehouse** | Scoped Session Keys · EIP-712 · ZeroDev Kernel v3 AA | `session-key-gates.ts` |
-| **Pillar 2 — Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort & honest escort accounting (`IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0`); inbound AML blocked. **Robinhood Chain is the inaugural production reference adapter** — not the product identity | `robinhood-across-bridge.ts` · `RobinhoodSafetySwitch.sol` |
+| **Pillar 2 — Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort & Pending-Capital Recognition Invariant (`IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0`); inbound AML blocked. **Robinhood Chain is the inaugural Code-Verified / Dry-Run Verified reference adapter** — not the product identity | `robinhood-across-bridge.ts` · `RobinhoodSafetySwitch.sol` |
 | **Venue legs** | GMX v2 GM pools (Arbitrum One) + Hyperliquid 1× short hedge | Tech Spec §2 |
 
 **Fail-Closed posture:** When soil, oracle, sequencer, bridge, or session sensors trip, BDLW **prefers no action over wrong action** — `signingChannelOpen: false`, UserOp rejected pre-bundler, bridge state `BRIDGE_TIMEOUT_FAIL_CLOSED`. This is a **pre-execution safety layer**, not a guarantee of profit, principal protection, or elimination of market risk.
@@ -163,7 +163,7 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 
 | TSC domain | BDLW control | Code / artifact anchor |
 |------------|-------------|------------------------|
-| **CC6 — Logical access** | Scoped Session Keys (`ORDER_EXECUTE` only) · 30s TTL · R07 $5k cap | `hl-session/permissions.ts` · `session-key-gates.ts` |
+| **CC6 — Logical access** | Scoped Session Keys (`ORDER_EXECUTE` only) · **30s TTL Heartbeat / Intent Execution Window** (crypto session key lifetime bounded up to **24h / 7d**) · R07 $5k cap | `hl-session/permissions.ts` · `session-key-gates.ts` |
 | **CC7 — System operations** | Sequencer guard (600s grace) · oracle lag fail-closed · PGATE 200ms latency fuse | `sequencer-guard.ts` · `PGATE_MAX_LATENCY_MS` |
 | **CC8 — Change management** | Immutable Wasm artifact + pinned Worker bundle · BUSL-1.1 license gate | `pkg/soil_core.wasm` · `pnpm bundle:measure` |
 | **CC9 — Risk mitigation** | R17 daily loss severance · R20 physical deadlock · rootProtection | `circuit-breaker.ts` · `flatten-hardlock.ts` |
@@ -182,7 +182,7 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 
 ### 2.3 Three Pillars Architecture (Evaluator Mental Model)
 
-**Pillar 2 — Compliance Ingress Firewall (with Robinhood Ingress as Reference Adapter):** A **venue-agnostic**, unidirectional AML firewall and escort accounting layer. Capital from permissioned ingress sources is escorted outbound-only into Arbitrum; inbound AML paths are fail-closed; in-flight bridge capital is honestly labeled (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`) until settled. **Robinhood Chain (`46630`/`4663`) is the inaugural production reference adapter** — code paths and contract names remain Robinhood-specific by design; the architectural pillar is not Robinhood-bound.
+**Pillar 2 — Compliance Ingress Firewall (with Robinhood Ingress as Reference Adapter):** A **venue-agnostic**, unidirectional AML firewall and escort accounting layer. Capital from permissioned ingress sources is escorted outbound-only into Arbitrum; inbound AML paths are fail-closed; in-flight bridge capital is honestly labeled via the **Pending-Capital Recognition Invariant** (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`) until settled. **Robinhood Chain (`46630`/`4663`) is the inaugural Code-Verified / Dry-Run Verified reference adapter** — code paths and contract names remain Robinhood-specific by design; the architectural pillar is not Robinhood-bound.
 
 ```text
 [ Allocator Capital ]
@@ -317,15 +317,16 @@ R07 is enforced at the **HL session-key signing pipeline** (`session-key-gates.t
 
 Orders above **$5,000** notional trigger **physical severance** of the hot signing channel — no partial fill, no downgrade to unscoped signing.
 
-#### 3.2.3 30s TTL — Session Heartbeat & Intent Expiry
+#### 3.2.3 30s TTL Heartbeat / Intent Execution Window — Session Heartbeat & Intent Expiry
 
-The **30-second TTL family** spans WS heartbeat, intent ledger, and session revocation:
+The **30s TTL Heartbeat / Intent Execution Window** spans WS heartbeat, intent ledger, and session revocation — **distinct from** the underlying cryptographic session key lifetime (bounded up to **24h / 7d** per module scope):
 
 | Mechanism | Constant | SSOT | Test anchor |
 |-----------|----------|------|-------------|
-| **HL WS heartbeat interval** | `WS_HEARTBEAT_INTERVAL_MS = 30_000` | `adapters/hl/websocket/types.ts` | `websocket-client-lifecycle.test.ts` |
+| **HL WS heartbeat interval** | `WS_HEARTBEAT_INTERVAL_MS = 30_000` — Intent Execution Window | `adapters/hl/websocket/types.ts` | `websocket-client-lifecycle.test.ts` |
 | **Heartbeat expiry → lock** | `SESSION_KEY_HEARTBEAT_EXPIRED` | `nonce-auto-healing.ts` | `nonce-auto-healing.test.ts` |
 | **2PC intent TTL** | `DEFAULT_TTL_MS = 30_000` | `intent-ledger/defaults.ts` | `intent-persistence.test.ts` |
+| **Crypto session key lifetime** | Bounded up to **24h / 7d** (module-scoped) | `agent-intent.ts` · ZeroDev Kernel session modules | `session-key-gates.test.ts` |
 
 When heartbeat expires, `auditSessionKeyHeartbeat()` sets `revocationLocked: true` — stale session keys cannot sign new HL orders. Cross-leg intents older than **30s** abort with `CRASH_RECOVERY_TTL_EXPIRED`, preventing orphan venue legs.
 
@@ -531,7 +532,7 @@ Portfolio tail ≤ $100k Alpha Cap + stress replay    ← §4 + Survival Benchma
 
 | SOC 2 TSC domain | 0-Proxy / Immutable control | Verification |
 |------------------|----------------------------|--------------|
-| **CC6 — Logical access** | Scoped Session Keys (`ORDER_EXECUTE` only) · 30s heartbeat TTL · R07 $5k cap | `session-key-gates.ts` · `nonce-auto-healing.test.ts` |
+| **CC6 — Logical access** | Scoped Session Keys (`ORDER_EXECUTE` only) · **30s TTL Heartbeat / Intent Execution Window** (crypto key up to 24h/7d) · R07 $5k cap | `session-key-gates.ts` · `nonce-auto-healing.test.ts` |
 | **CC7 — System operations** | Sequencer 600s grace · oracle >30s fail-closed · PGATE 200ms | `sequencer-guard.ts` · `PGATE_MAX_LATENCY_MS` |
 | **CC8 — Change management** | Pinned `#![no_std]` Wasm · BUSL-1.1 · Worker bundle measurement | `pkg/soil_core.wasm` · `pnpm bundle:measure` |
 | **CC9 — Risk mitigation** | L1 `verifyAndConsume()` single-use digest · no replay | `SliverVineGate.sol` · Forge 60+ PASS |
@@ -628,7 +629,7 @@ pnpm test -- --run                                                     # 742 PAS
 
 BDLW enforces **honest accounting** as a hard invariant — pending liquidity is never mis-booked as principal loss.
 
-### 6.1 The Zero-Loss Bridge Invariant (`lostUsd ≡ 0`)
+### 6.1 Pending-Capital Recognition Invariant — `lostUsd ≡ 0`
 
 | `capitalLabel` | Economic meaning | Deployable NAV | `lostUsd` |
 |----------------|------------------|----------------|-----------|

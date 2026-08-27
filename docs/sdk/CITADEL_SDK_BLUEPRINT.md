@@ -14,8 +14,8 @@
 
 | Pillar | Scope | SDK surface |
 |--------|-------|-------------|
-| **Pillar 1 — Anchor** | **Arbitrum One (`42161`)** is the **primary** execution venue — GMX v2 GM pools, EIP-712 Gate domain, Agent-Citadel-Guard chainId | `ARBITRUM_ONE_CHAIN_ID`, `SLIVERVINE_GATE_ADDRESS`, `verifyAgentIntent()` |
-| **Pillar 2 — Compliance Ingress Firewall (Robinhood Ingress as Reference Adapter)** | Venue-agnostic route policy + capital escort · **`IN_FLIGHT_BRIDGE_CAPITAL`** · **`lostUsd ≡ 0`**. **Robinhood Chain (`46630`/`4663` → `42161`) is the inaugural production reference adapter** — not the core anchor. Also governs Arbitrum-native routes and Arb ↔ Hyperliquid hedge channels | `assertUnidirectionalBridge()`, `exportRobinhoodAuditSnapshot()`, `quoteRChainYieldToArbitrumGm()` |
+| **Pillar 1 — Gatehouse (Account Abstraction & Intent Gateway)** | **Arbitrum One (`42161`)** is the **primary execution anchor / center of gravity** — GMX v2 GM pools, EIP-712 Gate domain, Agent-Citadel-Guard chainId | `ARBITRUM_ONE_CHAIN_ID`, `SLIVERVINE_GATE_ADDRESS`, `verifyAgentIntent()` |
+| **Pillar 2 — Compliance Ingress Firewall (Robinhood Ingress as Reference Adapter)** | Venue-agnostic route policy + capital escort · **`IN_FLIGHT_BRIDGE_CAPITAL`** · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)**. **Robinhood Chain (`46630`/`4663` → `42161`) is the inaugural Code-Verified / Dry-Run Verified reference adapter** — not the core anchor. Also governs Arbitrum-native routes and Arb ↔ Hyperliquid hedge channels | `assertUnidirectionalBridge()`, `exportRobinhoodAuditSnapshot()`, `quoteRChainYieldToArbitrumGm()` |
 | **Pillar 3 — The Shield** | Sub-ms `checkSoilResistance()` semantics (p50 ~106 μs; Wasm warm &lt;60 μs) protect **Arbitrum One (GMX v2) native execution**, **Arb ↔ Hyperliquid cross-venue routing**, and **Arbitrum Edge Worker AI Agents** | `verifyAgentIntent()`, `evaluateSoilCore()`, `guardAgentUserOp()`, legacy-risk re-exports |
 
 ```text
@@ -85,30 +85,31 @@ Closed-loop three-venue routing with **Arbitrum One as the primary yield base**.
 
 These invariants are **non-negotiable** across SDK, Edge Worker, and on-chain Gate. Integrators must treat violations as hard failures — never as retryable soft errors.
 
-### 1. Non-Custodial Unidirectional Escort (`lostUsd ≡ 0`)
+### 1. Non-Custodial Unidirectional Escort — Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)
 
 | Property | Rule |
 |----------|------|
 | **Capital custody** | Protocol never books user principal as protocol-owned; capital remains in user Kernel account or venue GM / HL position |
 | **Bridge direction** | Robinhood `46630`/`4663` → Arbitrum `42161` outbound only; reverse path ⇒ `AML_INBOUND_TO_ROBINHOOD_BLOCKED` |
-| **In-flight accounting** | Pending bridge liquidity labelled `IN_FLIGHT_BRIDGE_CAPITAL`; **`lostUsd` is always `0`** until explicit timeout (`BRIDGE_TIMEOUT_FAIL_CLOSED`) |
+| **In-flight accounting** | Pending bridge liquidity labelled `IN_FLIGHT_BRIDGE_CAPITAL`; **Pending-Capital Recognition Invariant:** **`lostUsd` is always `0`** — protocol never prematurely writes off in-flight bridge capital as loss during active execution (until explicit timeout `BRIDGE_TIMEOUT_FAIL_CLOSED`) |
 | **SDK enforcement** | `assertUnidirectionalBridge()` · `exportRobinhoodAuditSnapshot()` · `buildRobinhoodAuditSnapshot()` throw on `lostUsd ≠ 0` |
 
 Inbound reverse blocking is **hard-coded** — zero inbound capital to Robinhood is an invariant, not a runtime toggle.
 
-### 2. 30s TTL Nonce-Healed Self-Exploding Session Keys
+### 2. 30s TTL Heartbeat / Intent Execution Window — Nonce-Healed Self-Exploding Session Keys
 
-Ephemeral session keys are designed to **self-destruct** on TTL breach, heartbeat loss, or nonce desync — closing the signing channel rather than retrying with stale authority.
+Ephemeral session keys are designed to **self-destruct** on TTL breach, heartbeat loss, or nonce desync — closing the signing channel rather than retrying with stale authority. The **30s TTL Heartbeat / Intent Execution Window** is distinct from the underlying cryptographic session key lifetime (bounded up to **24h / 7d** per module scope).
 
 | Layer | Mechanism | Constant / module |
 |-------|-----------|-------------------|
-| **Gate attestation TTL** | EIP-712 `expiresAtMs` envelope bound ≤ **30s** | `SliverVineGate.verifyAndConsume` · SDK `evaluateAttestation()` |
+| **Gate attestation TTL** | EIP-712 `expiresAtMs` envelope bound ≤ **30s** — Intent Execution Window | `SliverVineGate.verifyAndConsume` · SDK `evaluateAttestation()` |
 | **Intent ledger TTL** | Cross-leg 2PC intents expire at **30s** | `intent-ledger/defaults.ts` · `DEFAULT_TTL_MS = 30_000` |
 | **HL session heartbeat** | WS heartbeat interval **30s**; expiry ⇒ revocation lock | `SESSION_KEY_HEARTBEAT_MS` · `nonce-auto-healing.ts` |
+| **Crypto session key lifetime** | Bounded up to **24h / 7d** (module-scoped) | `agent-intent.ts` · ZeroDev Kernel session modules |
 | **Nonce auto-heal** | `Invalid nonce` WS event ⇒ monotonic nonce reset + `signingChannelOpen: false` | `handleInvalidSessionKeyNonce()` · `auditSessionKeyNonceState()` |
 | **Self-explode** | Heartbeat expiry or invalid nonce ⇒ `hardlock: true` · `hudState: BLOCKED` — channel closed, not silently retried | `applyRevocationLock()` |
 
-Session keys are **scoped clips** (default ≤ $30) with bounded TTL — they are not hot-wallet substitutes.
+Session keys are **scoped clips** — SDK default clip **≤ $30** (`agent-intent.ts`); protocol hard ceiling **R07 $5,000** (`SESSION_KEY_NOTIONAL_CAP_USD` in `session-key-gates.ts`) — they are not hot-wallet substitutes.
 
 ### 3. Zero-Bundler-Rejection Invariant (EIP-7562 Compliance)
 
@@ -177,7 +178,7 @@ guardAgentUserOp(input: AgentCitadelGuardInput): Promise<AgentCitadelGuardResult
 
 ## Pillar 2 — Compliance Ingress Firewall (with Robinhood Ingress as Reference Adapter)
 
-Robinhood Chain is the **inaugural production reference adapter** for Pillar 2 — venue-agnostic unidirectional AML escort and honest escort accounting (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`). It is **not** the protocol anchor.
+Robinhood Chain is the **inaugural Code-Verified / Dry-Run Verified reference adapter** for Pillar 2 — venue-agnostic unidirectional AML escort and Pending-Capital Recognition Invariant (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`). It is **not** the protocol anchor.
 
 | Route | Policy | SDK call |
 |-------|--------|----------|
@@ -196,7 +197,7 @@ Robinhood Chain is the **inaugural production reference adapter** for Pillar 2 �
 
 | Protected surface | Mechanism | Latency SLO |
 |-------------------|-----------|-------------|
-| **Arbitrum One GMX v2 native execution** | Soil depth / slippage fuse before unsigned payload broadcast | p50 ~106 μs · Wasm warm &lt;60 μs |
+| **Arbitrum One GMX v2 native execution** | Soil depth / slippage fuse before unsigned payload broadcast | p50 ~106 μs Shield/TS Gateway · Wasm warm &lt;60 μs |
 | **Arb ↔ Hyperliquid cross-venue routing** | `hlSpot` / `hlPerp` / `dydxPerp` cross-spread + deadman (50 bps default) | `armor.rpcLatencyMs` ≤ `PGATE_MAX_LATENCY_MS` (200 ms) |
 | **Arbitrum Edge Worker AI Agents** | Prompt injection intercept · Session Key clip/TTL · Gate attestation envelope | Sub-ms Wasm path |
 
@@ -209,11 +210,13 @@ allowedToSign = injectionOk ∧ digestOk ∧ soilOk ∧ sessionOk ∧ gasOk ∧ 
 | Gate | Limit | Module |
 |------|-------|--------|
 | Soil slippage | ≤ 0.5% (`MAX_SLIPPAGE`) | Wasm `soil_core` or TS fallback |
-| Session clip | ≤ $30 default | `agent-intent.ts` |
-| Session TTL | ≤ 7d | `agent-intent.ts` |
+| SDK default session clip | ≤ **$30** default | `agent-intent.ts` — integrator-facing soft default |
+| Protocol hard ceiling (R07) | ≤ **$5,000** notional | `SESSION_KEY_NOTIONAL_CAP_USD` · `session-key-gates.ts` — physical severance on breach |
+| Session TTL (intent window) | ≤ **30s** heartbeat / intent | `DEFAULT_TTL_MS` · `WS_HEARTBEAT_INTERVAL_MS` |
+| Crypto session key lifetime | ≤ **7d** (module-scoped) | `agent-intent.ts` |
 | RPC / Pgate latency | ≤ **200 ms** | `PGATE_MAX_LATENCY_MS` in [`src/config/constants.ts`](../../src/config/constants.ts) |
 | Sandwich risk | ≤ **25 bps** | `AGENT_ARMOR_SANDWICH_MAX_BPS` |
-| Wasm hot path | **&lt; 60 μs** warm · p50 ~106 μs | [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) |
+| Wasm warm path | **&lt; 60 μs** warm · p50 ~106 μs Shield/TS Gateway | [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) |
 
 ---
 
@@ -390,7 +393,7 @@ Immutable Robinhood Chain audit cut-off certificate — SHA-256 signed JSON for 
 |-------|---------|
 | `robinhoodChainId` | `46630` testnet · `4663` mainnet |
 | `inboundBlocked` | AML isolation proof |
-| `lostUsd` | Strict zero-loss invariant (`0`) |
+| `lostUsd` | Pending-Capital Recognition Invariant — strict zero (`0`) during active execution |
 | `cutoffTimestamp` | Immutable snapshot boundary |
 
 **HTTP mirror:** `GET /api/robinhood-audit-snapshot?chainId=46630&amountUsd=2500`
@@ -406,12 +409,12 @@ Verified by [`tests/risk-control/margin-buffer.test.ts`](../../tests/risk-contro
 ```bash
 pnpm exec vitest run tests/sdk/citadel-sdk-intent.test.ts
 pnpm exec vitest run tests/sdk/citadel-sdk-bridge-armor.test.ts
-pnpm test -- --run                           # 168 files | 742 PASS (100% Clean)
+pnpm test -- --run                           # Current Branch Live Expected Output: 171 files | 753 PASS (Locked Minimum Proposal Baseline: 168 | 742)
 pnpm audit:fast
 pnpm build:wasm                              # rebuild pkg/soil_core.wasm
 ```
 
-**Regression bar (locked):** `168 files | 742 PASS (100% Clean)`
+**Locked Minimum Proposal Baseline:** `168 files | 742 PASS (100% Clean)` · **Current Branch Live Expected Output:** `171 files | 753 PASS (100% Clean)`
 
 ---
 

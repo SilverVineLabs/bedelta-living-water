@@ -33,7 +33,7 @@
 **Arbitrum Native Execution Premium:** Direct Arbitrum One LPs earn an estimated **+15 ~ 30 bps** vs bridged / multi-hop routes *(design estimate — not a locked test assertion)*.
 
 > **SSOT Realignment (2026-08-25):** v0.9 = Sepolia + dry-run verified · mainnet → M6 · deep fuzz 327,675 requires `audit:nightly` / `FOUNDRY_PROFILE=deep` · **Tier-0 Docker** = root [`Dockerfile`](./Dockerfile) · see [`docs/README.md`](./docs/README.md).  
-> **Regression baseline (locked):** **168 files | 742 PASS (100% Clean)** — official Grant proposal bar. *Live suite continuously expands: **171 files / 753 PASS** on `pnpm test -- --run` (100% clean).*
+> **Locked Minimum Proposal Baseline:** **168 files | 742 PASS (100% Clean)** — official Grant proposal bar. **Current Branch Live Expected Output:** **171 files | 753 PASS (100% Clean)** on `pnpm test -- --run`.
 
 ---
 
@@ -60,7 +60,7 @@ Canonical interactive demo command for judges:
 
 1. **Tier 0:** `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` — isolated E2E, no host toolchain drift.
 2. Run `pnpm run demo:e2e` as the single interactive Citadel demo entry point.
-3. `pnpm test -- --run` verifies the locked SSOT: **168 files | 742 PASS (100% Clean)** *(live suite: 171 files / 753 PASS)*.
+3. `pnpm test -- --run` verifies **Current Branch Live Expected Output:** **171 files | 753 PASS (100% Clean)** *(Locked Minimum Proposal Baseline: 168 files | 742 PASS)*.
 4. `grant-advanced-resilience-benchmark.ts` shows the sub-ms Wasm Shield latency path.
 
 For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API Verification` section below.
@@ -75,14 +75,14 @@ For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API 
 | **Zero Protocol-Level Lock-Up** | Zero protocol-level lock-up (100% non-custodial); redemption speed is subject only to GMX v2's native 3–5 min async Keeper settlement. Optional ingress AML firewall (e.g. Robinhood **`4663` inbound block**). |
 | **V1.0 Roadmap** | **Citadel-as-a-Service (CaaS)** — productize [`@slivervine/citadel-sdk`](./src/sdk/README.md) into an open sub-ms pre-execution risk layer for all Arbitrum dApps & AI Agent frameworks · **Hedge Leg Depth Guard** — dedicated Hyperliquid L2 orderbook depth sensing prior to hedge execution (zero-market-impact 1× short even during flash-liquidity drawdowns) · **✅ Config-Driven GM Markets (ETH/USDC primary · BTC/USDC active registry)** · optional **USDG Robinhood Chain Treasury routing** (config-driven; no Wasm rewrite). |
 
-**Standards & Infrastructure:** Built on **[EIP-712](https://eips.ethereum.org/EIPS/eip-712)** attestation · **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) / [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** modular session keys (ZeroDev Kernel v3) · **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** base-fee sensing · **ArbOS 61** · Wasm soil core · optional permissioned ingress (e.g. Robinhood Chain) — full wiki: [`TECHNICAL_SPECIFICATION.md` § Standard Compliance](./docs/architecture/TECHNICAL_SPECIFICATION.md#-standard-compliance--erceip-wiki).
+**Standards & Infrastructure:** Built on **[EIP-712](https://eips.ethereum.org/EIPS/eip-712)** attestation · **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) / [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** modular session keys (ZeroDev Kernel v3) · **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** base-fee sensing · **ArbOS 61** · Wasm soil core · optional permissioned ingress (e.g. Robinhood Chain) — full wiki: [`TECHNICAL_SPECIFICATION.md` §4 Standard Compliance](./docs/architecture/TECHNICAL_SPECIFICATION.md#4-standard-compliance--erceip-wiki).
 
 ## ⚔️ Competitive Matrix — Pre-Execution vs. Post-Execution Risk
 
 | Feature / Dimension | Legacy Providers (Gauntlet / Chaos Labs) | SliverVine Citadel Gate (Pillar 3) |
 | :--- | :--- | :--- |
 | **Execution Phase** | Post-execution dashboards & multi-day governance parameter updates | **Pre-execution inline interception** (Sub-ms BEFORE mempool broadcast) |
-| **Latency / Hot-Path** | Minutes to Days (Off-chain simulations + DAO votes) | **p50 ~106 µs** (Rust `#![no_std]` Wasm engine on Edge) |
+| **Latency / Hot-Path** | Minutes to Days (Off-chain simulations + DAO votes) | **p50 ~106 µs** Shield/TS Gateway path · Wasm warm **&lt;60 µs** (Rust `#![no_std]` on Edge) |
 | **Protection Level** | Global protocol parameter tuning (LTV, Collateral factors) | **Granular tx-level & LP soil protection** (MEV, RPC jitter, Oracle lag) |
 | **Deployment Model** | Advisory / SaaS Analytics | **Inline Edge Gate & Open-Source Wasm SDK** (`@slivervine/citadel-sdk`) |
 
@@ -99,11 +99,11 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 * **Runtime Bytecode**: 📦 **8,716 Bytes (8.71 KiB)** — Zero External Dependencies (`Assembly-optimized`)
 
 ### 2. Off-Chain Pre-Execution Radar (TypeScript / V8 Runtime)
-* **Vitest Suite**: 🧪 **168 files | 742 PASS (100% Clean)** — official proposal baseline
-* **Live Regression Bar**: 🎯 **171 files / 753 PASS** on `pnpm test -- --run` (100% clean · continuously expanding)
+* **Locked Minimum Proposal Baseline**: 🧪 **168 files | 742 PASS (100% Clean)**
+* **Current Branch Live Expected Output**: 🎯 **171 files | 753 PASS (100% Clean)** on `pnpm test -- --run`
 * **Chaos Matrix**: 🌪️ **255 Severe Failure Cases | 0 Crashes**
-* **Edge Decision Latency**: ⏱️ **SLO < 1.0ms | p50 ~106 μs (0.106 ms) | Pure Math: 0.0002 ms (200 ns)**
-* **Worker Bundle**: 📦 **162.49 KiB gzip** (Zero-Cold-Start Edge Deployment)
+* **Edge Decision Latency**: ⏱️ **SLO &lt; 1.0ms | p50 ~106 μs Shield/TS Gateway | Wasm warm &lt;60 μs | Pure Math: 0.0002 ms (200 ns)**
+* **Worker Bundle**: 📦 **87.76 KiB gzip** measured hot path (`pnpm bundle:measure`) · **162.49 KiB gzip** full Edge deployment artifact
 
 ---
 
@@ -170,7 +170,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
                            ▼
     ┌─────────────────────────────────────────────────────────┐
     │ Pillar 1: GATEHOUSE (Account Abstraction)               │
-    │ ZeroDev Kernel v3 · 30s TTL heartbeat Session Keys      │
+    │ ZeroDev Kernel v3 · 30s TTL Heartbeat / Intent Window   │
     │ Paymaster gas-free onboarding (conditional sponsorship) │
     └──────────────────────┬──────────────────────────────────┘
                            │
@@ -178,27 +178,27 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
     ┌─────────────────────────────────────────────────────────┐
     │ Pillar 2: COMPLIANCE INGRESS FIREWALL (Escort Acct.)  │
     │ Unidirectional AML firewall · IN_FLIGHT_BRIDGE_CAPITAL  │
-    │ lostUsd ≡ 0 · Robinhood Chain = inaugural ref adapter   │
+    │ Pending-Capital Recognition (lostUsd ≡ 0) · ref adapter  │
     └──────────────────────┬──────────────────────────────────┘
                            │
                            ▼
     ┌─────────────────────────────────────────────────────────┐
     │ Pillar 3: SHIELD (Pre-Execution Risk Engine)            │
-    │ p50 ~106 µs Wasm Soil Engine (soil_core.wasm)           │
-    │ R01–R20 circuit breaker · signingChannelOpen: false     │
+    │ p50 ~106 µs Shield/TS Gateway · Wasm warm &lt;60 µs       │
+    │ R01–R20 Defense Matrix (17|2|1) · signingChannelOpen: false │
     └──────────────────────┬──────────────────────────────────┘
                            │
                            ▼
 [ PRIMARY: Arbitrum One GMX v2 ETH/USDC GM + Hyperliquid 1× Short ]
 ```
 
-**[Pillar 1: Gatehouse — Account Abstraction]** ZeroDev Kernel v3 scoped session keys · **30s TTL** heartbeat (`WS_HEARTBEAT_INTERVAL_MS`) · **Paymaster gas-free onboarding** (daily sponsorship caps; fail-closed fallback when exhausted).
+**[Pillar 1: Gatehouse — Account Abstraction]** ZeroDev Kernel v3 scoped session keys · **30s TTL Heartbeat / Intent Execution Window** (`WS_HEARTBEAT_INTERVAL_MS` · `DEFAULT_TTL_MS`) — distinct from underlying cryptographic session key lifetime (bounded up to **24h / 7d** per module scope) · **Paymaster gas-free onboarding** (daily sponsorship caps; fail-closed fallback when exhausted).
 
-**[Pillar 2: Compliance Ingress Firewall — Escort Accounting]** Venue-agnostic unidirectional AML firewall · honest **`IN_FLIGHT_BRIDGE_CAPITAL`** labels · **`lostUsd ≡ 0`** until settled · **Robinhood Chain (`46630`/`4663`) is the inaugural production reference adapter** — not the product identity. **Audit:** [`docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md).
+**[Pillar 2: Compliance Ingress Firewall — Escort Accounting]** Venue-agnostic unidirectional AML firewall · honest **`IN_FLIGHT_BRIDGE_CAPITAL`** labels · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** — protocol never prematurely writes off in-flight bridge capital as loss during active execution · **Robinhood Chain (`46630`/`4663`) is the inaugural Code-Verified / Dry-Run Verified reference adapter** — not the product identity. **Audit:** [`docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md).
 
-**[Pillar 3: Shield — Pre-Execution Risk Engine]** **`pkg/soil_core.wasm`** · `checkSoilResistance()` at **p50 ~106 µs** · **R01–R20** defense matrix · **`signingChannelOpen: false`** on any soil / oracle / sequencer trip — primary technical moat before Arbitrum / HL broadcast.
+**[Pillar 3: Shield — Pre-Execution Risk Engine]** **`pkg/soil_core.wasm`** · `checkSoilResistance()` at **p50 ~106 µs** (Shield/TS Gateway path) · Wasm warm **&lt;60 µs** · **R01–R20 Defense Matrix (17 Active | 2 Refactored | 1 Deprecated)** · **`signingChannelOpen: false`** on any soil / oracle / sequencer trip — primary technical moat before Arbitrum / HL broadcast.
 
-**Architecture standards:** **EIP-712** Gate attestation · **ERC-4337/7579** ZeroDev Kernel v3 · **EIP-1559** ArbOS Tri-Sensor · **ArbOS 61** · optional Robinhood ingress · **Wasm** `soil_core` — see [§ Standard Compliance Wiki](./docs/architecture/TECHNICAL_SPECIFICATION.md#-standard-compliance--erceip-wiki).
+**Architecture standards:** **EIP-712** Gate attestation · **ERC-4337/7579** ZeroDev Kernel v3 · **EIP-1559** ArbOS Tri-Sensor · **ArbOS 61** · optional Robinhood ingress · **Wasm** `soil_core` — see [§4 Standard Compliance Wiki](./docs/architecture/TECHNICAL_SPECIFICATION.md#4-standard-compliance--erceip-wiki).
 
 ---
 

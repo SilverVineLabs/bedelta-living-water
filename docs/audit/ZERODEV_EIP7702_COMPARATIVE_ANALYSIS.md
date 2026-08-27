@@ -7,7 +7,7 @@
 | **Classification** | Grant / Institutional Allocator · AA Architecture Benchmark |
 | **Branch baseline** | `v1.0_push_BDLW` |
 | **Entity** | SilverVine Labs · BeΔ Living Water (BDLW) |
-| **Baseline** | Vitest **168 files \| 742 PASS (100% Clean)** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** |
+| **Baseline** | **Locked Minimum Proposal Baseline:** 168 files \| 742 PASS · **Current Branch Live Expected Output:** 171 files \| 753 PASS · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
 | **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
 > **Scope note:** This document compares **consumer-focused EIP-7702 AA implementations** with BDLW's **institutional-grade pre-execution risk substrate**. It is an architectural diligence artifact — not legal or investment advice.
@@ -18,7 +18,7 @@
 
 EIP-7702 and ERC-7579 enable EOAs to delegate execution to smart-account logic — unlocking **1-click intent composition**, **gas sponsorship**, and **session-scoped permissions**. Consumer AA stacks optimize for **conversion and retention**: long-lived session keys, broad contract scopes, and post-hoc policy checks.
 
-BeDelta Living Water (BDLW) adopts ZeroDev Kernel v3 in production (Kernel v4 + EIP-7702 intent composer on the **⏳ V1.5 roadmap**) but **never substitutes UX for risk governance**. Frictionless onboarding rides on the same **Three Pillars** stack:
+BeDelta Living Water (BDLW) adopts ZeroDev Kernel v3 as **Code-Verified / Dry-Run Verified** (Kernel v4 + EIP-7702 intent composer on the **⏳ V1.5 roadmap**) but **never substitutes UX for risk governance**. Frictionless onboarding rides on the same **Three Pillars** stack:
 
 ```text
 Pillar 1 GATEHOUSE   → ZeroDev Kernel · scoped Session Keys · Paymaster caps
@@ -27,7 +27,7 @@ Pillar 2 COMPLIANCE INGRESS FIREWALL (Robinhood = inaugural ref adapter)
 Pillar 3 SHIELD      → checkSoilResistance() · pkg/soil_core.wasm · Fail-Closed pre-broadcast
 ```
 
-**Institutional differentiation:** BDLW binds every UserOp to a **p50 ~106 µs Wasm soil gate**, **30-second self-destructing session keys**, and **honest bridge accounting (`lostUsd ≡ 0`)** — before any GMX or Hyperliquid broadcast.
+**Institutional differentiation:** BDLW binds every UserOp to a **p50 ~106 µs Wasm soil gate** (Shield/TS Gateway path), **30s TTL Heartbeat / Intent Execution Window** (distinct from underlying session key lifetime bounded up to **24h / 7d**), and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** — before any GMX or Hyperliquid broadcast.
 
 ---
 
@@ -50,50 +50,52 @@ These patterns are appropriate for **retail conversion funnels**. They are **ins
 | Architecture dimension | Consumer EIP-7702 AA (industry benchmark) | BDLW institutional substrate (code-verified) |
 |------------------------|-------------------------------------------|---------------------------------------------|
 | **Primary objective** | UX · onboarding · transaction volume | **Fail-Closed risk mitigation** · honest accounting · bounded tail loss |
-| **Account runtime** | EIP-7702 delegation / ERC-4337 smart account | ZeroDev **Kernel v3** (✅ production) → **Kernel v4 + EIP-7702** (⏳ roadmap) |
-| **Session key TTL** | Hours / days (minimize re-auth) | **`WS_HEARTBEAT_INTERVAL_MS = 30_000`** · heartbeat expiry → `SESSION_KEY_HEARTBEAT_EXPIRED` |
+| **Account runtime** | EIP-7702 delegation / ERC-4337 smart account | ZeroDev **Kernel v3** (✅ Code-Verified / Dry-Run Verified) → **Kernel v4 + EIP-7702** (⏳ roadmap) |
+| **Session key TTL** | Hours / days (minimize re-auth) | **30s TTL Heartbeat / Intent Execution Window** (`WS_HEARTBEAT_INTERVAL_MS = 30_000` · `DEFAULT_TTL_MS = 30_000`); underlying cryptographic session key lifetime bounded up to **24h / 7d** · heartbeat expiry → `SESSION_KEY_HEARTBEAT_EXPIRED` |
 | **Execution scope** | Broad contract interaction | **`ORDER_EXECUTE` only** — zero withdrawal authority (R06) |
 | **Notional cap** | Often uncapped or wallet-level | **`SESSION_KEY_NOTIONAL_CAP_USD = $5,000`** (v0.9 live) · R07 physical severance |
-| **Risk gate placement** | Post-simulation / backend policy (fail-open tendency) | **Pre-broadcast Edge SSOT** — `checkSoilResistance()` **p50 ~106 µs** · `pkg/soil_core.wasm` |
+| **Risk gate placement** | Post-simulation / backend policy (fail-open tendency) | **Pre-broadcast Edge SSOT** — `checkSoilResistance()` **p50 ~106 µs** Shield/TS Gateway · Wasm warm **&lt;60 µs** · `pkg/soil_core.wasm` |
 | **Gate philosophy** | Prefer execution with monitoring | **Fail-Closed** — `signingChannelOpen: false` · UserOp rejected pre-bundler |
 | **Paymaster exhaustion** | Fallback to user-paid gas (unguarded path risk) | **`ZERODEV_DAILY_SPONSORSHIP_EXHAUSTED`** → fail-closed to self-pay **after** soil gate — not unguarded broadcast |
 | **Intent binding** | Optional calldata hashing | **`payloadHash()`** → `SliverVineGate.sol` consume-once attestation |
-| **Bridge in-flight** | Often booked as live NAV | **`IN_FLIGHT_BRIDGE_CAPITAL`** · **`lostUsd ≡ 0`** · no naked GM/HL until `SETTLED` |
+| **Bridge in-flight** | Often booked as live NAV | **`IN_FLIGHT_BRIDGE_CAPITAL`** · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** · no naked GM/HL until `SETTLED` |
 | **Emergency response** | Admin pause · multisig | **Automated** R17 daily severance · R20 physical deadlock · `rootProtection()` |
-| **Regression proof** | Vendor QA / audit snapshots | **742 PASS** · `zerodev-aa-gate.test.ts` **4/4** · chaos matrix **255/255** |
+| **Regression proof** | Vendor QA / audit snapshots | **753 PASS** (171 files live) · Locked Minimum Proposal Baseline **742 PASS** · `zerodev-aa-gate.test.ts` **4/4** · chaos matrix **255/255** |
 
 ---
 
 ## 4. Deep Dive — Three Institutional Anchors
 
-### 4.1 Thirty-Second TTL Session Keys (Gatehouse)
+### 4.1 30s TTL Heartbeat / Intent Execution Window (Gatehouse)
 
-Consumer AA extends session duration to reduce wallet prompts. BDLW **minimizes signing-channel exposure**:
+Consumer AA extends session duration to reduce wallet prompts. BDLW **minimizes signing-channel exposure** via a **30s TTL Heartbeat / Intent Execution Window** — distinct from the underlying cryptographic session key lifetime (bounded up to **24h / 7d** per module scope):
 
 | Control | Value / behavior | SSOT |
 |---------|------------------|------|
-| **HL WS heartbeat** | **30s** interval | `adapters/hl/websocket/types.ts` · `WS_HEARTBEAT_INTERVAL_MS` |
+| **HL WS heartbeat** | **30s** interval — **Intent Execution Window** | `adapters/hl/websocket/types.ts` · `WS_HEARTBEAT_INTERVAL_MS` |
 | **Heartbeat expiry** | `SESSION_KEY_HEARTBEAT_EXPIRED` · channel lock | `nonce-auto-healing.ts` |
 | **2PC intent TTL** | **`DEFAULT_TTL_MS = 30_000`** | `intent-ledger/defaults.ts` |
+| **Crypto session key lifetime** | Bounded up to **24h / 7d** (module-scoped) | `agent-intent.ts` · ZeroDev Kernel session modules |
 | **Scope** | **`ORDER_EXECUTE`** only | `hl-session/permissions.ts` |
 | **Notional fuse** | **$5,000** → `SESSION_KEY_HARDLOCK_INTERCEPTED` | `session-key-gates.ts` |
 
 ```text
-Session key minted → 30s heartbeat window
+Session key minted → 30s heartbeat / intent window (crypto key may live up to 24h/7d)
   ├─ valid heartbeat + soil PASS → ORDER_EXECUTE allowed
   └─ expiry / cap breach → signingChannelOpen: false (Fail-Closed)
 ```
 
-> **Institutional rationale:** A stolen session key has **at most ~30 seconds** and **$5k notional** of blast radius — not an hours-long delegated wallet.
+> **Institutional rationale:** A stolen session key has **at most ~30 seconds** of active intent window and **$5k notional** blast radius — not an hours-long delegated wallet.
 
-### 4.2 106 µs Wasm Soil Gate (Shield)
+### 4.2 106 µs Shield/TS Gateway Soil Gate (Shield)
 
 Consumer stacks often simulate transactions **after** UserOp construction. BDLW evaluates soil **before** bundler dispatch:
 
 | Metric | Locked value | SSOT |
 |--------|-------------|------|
-| **Shield latency (p50)** | **~106 µs** | Edge `checkSoilResistance()` · `pkg/soil_core.wasm` |
-| **Worker bundle** | **87.76 KiB gzip** | `pnpm bundle:measure` |
+| **Shield latency (p50)** | **~106 µs** — Shield/TS Gateway path | Edge `checkSoilResistance()` · `pkg/soil_core.wasm` |
+| **Wasm warm execution** | **&lt;60 µs** | `pkg/soil_core.wasm` hot path |
+| **Worker bundle (measured)** | **87.76 KiB gzip** | `pnpm bundle:measure` |
 | **Slippage fuse** | **0.5%** (`MAX_SLIPPAGE`) | `soil-resistance-types.ts` |
 | **Depth floor** | **$100,000** (`MIN_DEPTH_USD`) | soil matrix |
 | **Trip behavior** | `TRIP_SOIL_RESISTANCE` · no broadcast | `zerodev-aa-gate.test.ts` |
@@ -110,9 +112,9 @@ verifyAgentIntent() / checkSoilResistance()   ← p50 ~106 µs Wasm (Fail-Closed
 
 > **EIP-7702 roadmap alignment:** Kernel v4 intent composition adds **UX surface area** — the **106 µs Shield does not move**. Edge remains SSOT; ZeroDev delivers execution plumbing, Citadel decides.
 
-### 4.3 Honest Accounting — `lostUsd ≡ 0` (Compliance Ingress Firewall + Bridge SSOT)
+### 4.3 Pending-Capital Recognition Invariant — `lostUsd ≡ 0` (Compliance Ingress Firewall + Bridge SSOT)
 
-Consumer bridge UX often treats in-flight tokens as deployable balance. BDLW **labels and isolates**:
+Consumer bridge UX often treats in-flight tokens as deployable balance. BDLW **labels and isolates** via the **Pending-Capital Recognition Invariant** — the protocol never prematurely writes off in-flight bridge capital as a loss during active execution:
 
 | `capitalLabel` | Deployable? | `lostUsd` |
 |----------------|-------------|-----------|
@@ -171,7 +173,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 | # | Claim | Command / artifact | Expected |
 |---|-------|-------------------|----------|
-| 1 | Full regression | `pnpm test -- --run` | **168 files \| 742 PASS** |
+| 1 | Full regression | `pnpm test -- --run` | **171 files \| 753 PASS** *(Locked Minimum Proposal Baseline: 168 \| 742)* |
 | 2 | ZeroDev AA gate fail-closed | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` | **4/4 PASS** |
 | 3 | Session R07 $5k cap | `pnpm exec vitest run tests/services/session-key-gates.test.ts` | Severance on breach |
 | 4 | 30s heartbeat expiry | `pnpm exec vitest run tests/services/nonce-auto-healing.test.ts` | Lock on expiry |
@@ -185,7 +187,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 > Consumer AA protocols optimize for **making DeFi easy to click**. BDLW optimizes for **making 1-click execution mathematically safe before broadcast**.
 >
-> We adopt ZeroDev's Kernel and EIP-7702 intent composer for frictionless, non-custodial onboarding — but every UserOp passes a **106 µs Wasm circuit breaker** (`soil_core.wasm`), **30-second self-destructing session keys**, and **honest bridge labels (`lostUsd ≡ 0`)**. Under a 3σ market shock, the AA pipeline **fails closed** — `signingChannelOpen: false` — rather than opening naked delta or mis-booking in-flight capital as deployable NAV.
+> We adopt ZeroDev's Kernel and EIP-7702 intent composer for frictionless, non-custodial onboarding — but every UserOp passes a **106 µs Wasm circuit breaker** (`soil_core.wasm`, Shield/TS Gateway path), **30s TTL Heartbeat / Intent Execution Window** (crypto session keys bounded up to 24h/7d), and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)**. Under a 3σ market shock, the AA pipeline **fails closed** — `signingChannelOpen: false` — rather than opening naked delta or mis-booking in-flight capital as deployable NAV.
 
 ---
 

@@ -46,7 +46,7 @@ Santenmoku is a **unified sub-millisecond pre-execution gateway**. **Center of g
 | Pillar | Role | SSOT / Mechanism |
 |--------|------|------------------|
 | **Gatehouse (Auth)** | ZeroDev scoped session keys | Kernel v3 · `ORDER_EXECUTE` bounds · daily gas sponsorship limits · R06 / R07 |
-| **Pillar 2: Compliance Ingress Firewall** | **Venue-agnostic unidirectional AML firewall & escort accounting layer** — permissioned ingress sources escort outbound-only into Arbitrum; inbound AML blocked; honest `IN_FLIGHT_BRIDGE_CAPITAL` / `lostUsd ≡ 0` labels. **Robinhood Chain (`46630`/`4663`) is the inaugural production reference adapter**, not the product identity. Includes ZeroDev Smart Routing Address for 1-click USDG deposit/swap via `GMX_V2_EXCHANGE_ROUTER_ARBITRUM` (`ZERODEV_SMART_ROUTE_TARGETS`); calldata bound at `GatedExecutor.payloadHash()` | `robinhood-across-bridge.ts` · `RobinhoodSafetySwitch.sol` · `ZERODEV_SMART_ROUTE_TARGETS` |
+| **Pillar 2: Compliance Ingress Firewall** | **Venue-agnostic unidirectional AML firewall & escort accounting layer** — permissioned ingress sources escort outbound-only into Arbitrum; inbound AML blocked; honest `IN_FLIGHT_BRIDGE_CAPITAL` / Pending-Capital Recognition Invariant (`lostUsd ≡ 0`) labels. **Robinhood Chain (`46630`/`4663`) is the inaugural Code-Verified / Dry-Run Verified reference adapter**, not the product identity. Includes ZeroDev Smart Routing Address for 1-click USDG deposit/swap via `GMX_V2_EXCHANGE_ROUTER_ARBITRUM` (`ZERODEV_SMART_ROUTE_TARGETS`); calldata bound at `GatedExecutor.payloadHash()` | `robinhood-across-bridge.ts` · `RobinhoodSafetySwitch.sol` · `ZERODEV_SMART_ROUTE_TARGETS` |
 | **Shield (CORE MOAT)** | Sub-ms Wasm pre-execution armor — **primary technical moat** | `checkSoilResistance()` p50 ~106 μs · Wasm warm path &lt;60µs · R01 / R04 |
 
 > *While single components like `checkSoilResistance()` formulas are kept standard and open for seamless `@slivervine/citadel-sdk` adoption across Arbitrum, our core moat lies in the production integration complexity—stitching Rust `#![no_std]` Wasm, Edge Worker execution, and EIP-712 Gate into a sub-ms, fail-closed system.*
@@ -516,7 +516,7 @@ Gates must not assume instant atomicity across the triangle; inventory accountin
 
 | Item | Definition |
 |------|------------|
-| **Benchmark** | Aave v3 USDC (Arbitrum) base borrow/supply APY — same fallback used by Arbitrum yield ingress |
+| **Benchmark** | **Aave v3 USDC (Arbitrum) — APY Benchmark / Default Yield Source** (not a live execution adapter); same fallback used by Arbitrum yield ingress |
 | **Performance Fee** | **10% of Excess Yield Above Aave Benchmark Rate** |
 | **Excess Yield** | `max(0, Net Strategy APY − Aave Benchmark APY)` after friction buffer |
 | **Status** | **V1.5 roadmap** — not accrued on current v0.9 builder UI-fee path (+5 bps `uiFeeReceiver`) |
