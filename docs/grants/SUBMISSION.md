@@ -24,7 +24,7 @@
 | Edge Citadel | Workers on Arbitrum One | Sequencer · oracle-lag · soil fail-closed |
 | Sepolia proof | `sepoliaDualLegProof` | Arbiscan-anchored dual-leg diligence |
 | On-chain gate (Sepolia) | `scripts/deploy-sepolia-gate.sol` | Forge deploy + Arbiscan verify for `SliverVineGate` · `RobinhoodSafetySwitch` |
-| Stylus soil probe | [`contracts/stylus-probe/`](../contracts/stylus-probe/) | Rust `SliverVineSoilProbe` · `check_soil_probe(spread_bps, depth_usd)` baseline |
+| **On-Chain HF Math Coprocessor (Stylus)** | [`contracts/stylus-probe/`](../contracts/stylus-probe/) | **`SliverVineSoilCoprocessor`** · fixed-point `evaluate_soil_coprocessor(spread_bps, depth_usd, slippage_bps)` |
 | Security matrix | `pnpm run audit:security` | Vitest + Forge + Slither + Aderyn + pnpm-audit |
 
 ---
@@ -72,7 +72,7 @@ Live envelopes: `GET /api/grant-audit`.
 |----------|------|----------------------------|--------|
 | `SliverVineGate` | Consume-once EIP-712 attestation anchor | `0x0000000000000000000000000000000000000000` *(pending `forge script`)* | [`SliverVineGate/src/SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) |
 | `RobinhoodSafetySwitch` | Pillar 2 compliance filter (oracle flush + blacklist) | `0x0000000000000000000000000000000000000000` *(pending `forge script`)* | [`contracts/RobinhoodSafetySwitch.sol`](../../contracts/RobinhoodSafetySwitch.sol) |
-| `SliverVineSoilProbe` (Stylus) | On-chain soil baseline probe (`spread_bps ≤ 50` ∧ `depth_usd ≥ 10_000`) | `0x0000000000000000000000000000000000000000` *(pending `cargo stylus deploy`)* | [`contracts/stylus-probe/src/lib.rs`](../../contracts/stylus-probe/src/lib.rs) |
+| `SliverVineSoilCoprocessor` (Stylus) | **On-Chain High-Frequency Math Coprocessor for Pre-Execution Soil Verification** — u128 fixed-point score · quadratic spread/slippage penalty · fail-closed `depth_usd ≥ 10_000` · score ceiling `10_000` | `0x0000000000000000000000000000000000000000` *(pending `cargo stylus deploy`)* | [`contracts/stylus-probe/src/lib.rs`](../../contracts/stylus-probe/src/lib.rs) |
 
 **Deploy (Sepolia gate stack):**
 
@@ -82,10 +82,14 @@ forge script scripts/deploy-sepolia-gate.sol:DeploySepoliaGate \
   --rpc-url $ARB_SEPOLIA_RPC_URL --broadcast --verify --etherscan-api-key $ARBISCAN_API_KEY
 ```
 
-**Stylus probe build:**
+**Stylus coprocessor build & deploy:**
 
 ```bash
-cd contracts/stylus-probe && cargo stylus check && cargo stylus deploy --network arbitrum-sepolia
+cd contracts/stylus-probe
+cargo check --target wasm32-unknown-unknown
+cargo test                              # fixed-point score unit proofs
+cargo stylus check && cargo stylus deploy --network arbitrum-sepolia
+export SOIL_COPROCESSOR_ADDRESS=0x...   # record in deploy-sepolia-gate logs
 ```
 
 Replace zero addresses above with Arbiscan-verified deployments before final grant submission.

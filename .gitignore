@@ -78,7 +78,7 @@ docs/**
 docs/audit/PROGRESS_TRUTH_CHECK.md
 docs/audit/BUILDATHON_JUDGE_REVIEW.md
 
-# Rust Wasm build artifacts (commit pkg/soil_core.wasm only)
-src/wasm/target/
+# Rust build artifacts (commit pkg/soil_core.wasm only; ignore all Cargo target dirs)
+**/target/
 
 

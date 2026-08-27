@@ -8,6 +8,7 @@ import {RobinhoodSafetySwitch} from "../contracts/RobinhoodSafetySwitch.sol";
 
 /// @title DeploySepoliaGate — Arbitrum Sepolia (421614) gate + compliance stack
 /// @notice Deploys SliverVineGate, SliverVineRiskOracle, and RobinhoodSafetySwitch;
+///         records SliverVineSoilCoprocessor (Stylus) deployment reference;
 ///         prints Arbiscan verification parameters for grant diligence.
 ///
 /// Usage:
@@ -20,7 +21,8 @@ import {RobinhoodSafetySwitch} from "../contracts/RobinhoodSafetySwitch.sol";
 ///   GUARDIAN, GATE_ADMIN, RISK_ORACLE_SIGNER
 ///
 /// Optional env:
-///   SLO_WINDOW_SEC (default 300), RH_BLACKLIST (comma-separated addresses)
+///   SLO_WINDOW_SEC (default 300), RH_BLACKLIST (comma-separated addresses),
+///   SOIL_COPROCESSOR_ADDRESS (Stylus coprocessor deployed via cargo stylus)
 contract DeploySepoliaGate is Script {
     uint256 internal constant ARBITRUM_SEPOLIA_CHAIN_ID = 421614;
 
@@ -71,6 +73,9 @@ contract DeploySepoliaGate is Script {
         console2.log("SliverVineGate          ", address(result.gate));
         console2.log("SliverVineRiskOracle    ", address(result.riskOracle));
         console2.log("RobinhoodSafetySwitch   ", address(result.safetySwitch));
+        console2.log("SliverVineSoilCoprocessor (Stylus)", vm.envOr("SOIL_COPROCESSOR_ADDRESS", address(0)));
+        console2.log("  deploy: cd contracts/stylus-probe && cargo stylus deploy --network arbitrum-sepolia");
+        console2.log("  verify: cargo stylus verify --network arbitrum-sepolia");
         console2.log("domainSeparator         ");
         console2.logBytes32(result.gate.domainSeparator());
         console2.log("");
