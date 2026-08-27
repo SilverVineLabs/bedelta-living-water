@@ -1,0 +1,5 @@
+[contract]
+
+[contract.deployments.arbitrum-sepolia]
+network = "arbitrum-sepolia"
+no_activate = false
