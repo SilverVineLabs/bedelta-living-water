@@ -4,7 +4,7 @@
 > **Version:** v1.0 → v2.0 Roadmap Alignment  
 > **Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs**  
 > **Core Principle:** Honest Accounting, Physical Invariants (`lostUsd ≡ 0`), and Venue-Agnostic Pre-Execution Citadel Protection.  
-> **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md) · **中文備份:** [`../internal/CROSS_CHAIN_RISK_AND_EVOLUTION_ZH.md`](../internal/CROSS_CHAIN_RISK_AND_EVOLUTION_ZH.md)
+> **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md)
 
 **Entity:** SilverVine Labs · **Protocol:** SliverVine / BeΔ Living Water (BDLW)  
 **Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
@@ -88,10 +88,13 @@ During market storms (3σ volatility spikes, oracle lag >30s, or Sequencer recov
 
 ### 2.3 Two-Tiered Yield System & Citadel Safety Buffer
 
+> **V1.0 yield SSOT:** Allocator-facing HUD anchors to **Dynamic Target Range 8.2% ~ 11.8% APY** (non-guaranteed), governed by **Hurdle Gate** `FRICTION_BUFFER_APY = 0.005` (0.5% friction buffer) in `rebalance-rules.ts`. Tier caps below describe component mechanics — not guaranteed totals.
+
 | Tier | Mechanism | Cap / Rule |
 |------|-----------|------------|
-| **Robinhood Ingress Escort** | Base RWA Earn + institutional compliance channel | Capped at **+2.0% Boost** (5.5%~6.5% total APY) |
+| **Robinhood Ingress Escort** | Base RWA Earn + institutional compliance channel (Tranche B) | Component boost capped at **+2.0%** · rolls into Dynamic Target Range band |
 | **Citadel Safety Buffer** | GMX v2 Skew Arbitrage excess (+5~10 bps `uiFeeReceiver`) | Absorbs bridge fees, basis risk, and MEV slippage |
+| **Hurdle Gate** | Rebalance / performance fee crystallization | `FRICTION_BUFFER_APY = 0.005` — deploy only above friction-adjusted excess |
 
 ### 2.4 Evolution of ZeroDev: From Bridge Router to Intent Composer
 
@@ -104,6 +107,133 @@ Even in a 100% Native Arbitrum setup (Stage C), ZeroDev remains the indispensabl
 | **Atomic Composition** | 1-click crosschain deposit/swap | Aave → GMX → Variational in one UserOp |
 
 **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md` §2.4](./TECHNICAL_SPECIFICATION.md)
+
+### 2.5 Economic Sustainability Philosophy: Why Low Fees Without Depth Destroy Yield
+
+> **DeFi economics first principle:** A headline fee rate is not yield. **Net LP return = fee revenue + incentives − impermanent loss − cross-venue slippage − MEV leakage.** When depth is thin, a race to **0.01% flat fees** or **unsustainable emissions** often accelerates a **death spiral** — volume chases the cheapest quote, LPs absorb hidden slippage, TVL exits, depth collapses further, and advertised APY becomes fiction.
+
+#### 2.5.1 Lessons from Sustainable AMM Design (Equalizer / Curve lineage)
+
+Mature stableswap and ve(3,3)-style venues (e.g. **Curve**, **Equalizer** and peers) converge on a shared insight:
+
+| Sustainable DEX pattern | Why it survives | Failure mode it avoids |
+|-------------------------|-----------------|--------------------------|
+| **Fee tiers matched to pool depth & volatility** | Higher-impact pools charge enough to compensate LPs for LVR | Flat micro-fees on shallow books → LP capital bleed |
+| **Emissions tied to real fee generation, not vanity TVL** | Rewards follow measurable protocol revenue | Mercenary capital farm-and-dump → liquidity cliff |
+| **Concentrated liquidity with explicit impact budgets** | Slippage is priced, not socialized as "free yield" | Toxic flow + hidden IL → silent principal erosion |
+| **Governance that adjusts parameters when depth shifts** | Fee/emission knobs respond to utilization | Static 0.01% marketing → death spiral when vol spikes |
+
+**Death spiral mechanics (generic):**
+
+```text
+Low headline fee / high emission APY
+  → toxic flow & arb extract value from LPs
+  → realized slippage + IL > advertised yield
+  → LP exit · depth thins
+  → worse execution for every $1 deployed
+  → emissions subsidize a shrinking book → spiral repeats until TVL collapse
+```
+
+BDLW does **not** compete on vanity fee minimization. We compete on **honest net yield after friction** — enforced by code, not marketing copy.
+
+#### 2.5.2 BDLW Contrast: Mathematical Invariants Over Fee Theater
+
+| Dimension | Unsustainable low-fee / emission model | BDLW V1.0 approach |
+|-----------|----------------------------------------|---------------------|
+| **Yield governance** | Narrative APY · mutable emissions | **Mathematical invariants** — soil fuse · hurdle gate · honest bridge accounting |
+| **Protocol revenue capture** | Often absent or extracted via hidden spread | **GMX v2 `uiFeeReceiver` +5 bps** on every unsigned payload (`GMX_UI_FEE_BPS`) |
+| **Friction vs net gain** | Ignored until LP capital is impaired | **`FRICTION_BUFFER_APY = 0.005` (0.5%) Hurdle Gate** — DN opens only when `targetNetApy > nativeEarnApy + buffer` |
+| **Slippage budget** | Socialized across passive LPs | **Pre-execution soil fuse** — cross-venue slip **> 0.5%** trips fail-closed · TWAP path slicing |
+| **Allocator disclosure** | Fixed "guaranteed" APY | **Dynamic Target Range 8.2% ~ 11.8%** (non-guaranteed HUD band) |
+
+**Hurdle Gate SSOT (`rebalance-rules.ts`):**
+
+```typescript
+export const FRICTION_BUFFER_APY = 0.005 as const; // 0.5% friction buffer
+// resolveCapitalAllocation(): OPEN_DELTA_NEUTRAL iff targetNetApy > hurdleRateApy + FRICTION_BUFFER_APY
+```
+
+**Net-yield inequality BDLW enforces:**
+
+```text
+GMX skew premium (+5~10 bps uiFeeReceiver) + funding cushion
+  − bridge / basis / MEV friction
+  > Native Earn APY + FRICTION_BUFFER_APY (0.5%)
+  ⇔ capital deployment allowed (else park in Native Earn · fail-closed)
+```
+
+**Design rule:** Citadel Safety Buffer and builder UI fee exist to **capture real economic surplus** from GMX v2 skew routing — not to mask slippage with emissions. The 0.5% Hurdle Gate ensures **net gains always outpace friction** before Delta-Neutral capital is deployed or rebalanced.
+
+**Code anchors:** `src/services/yield/rebalance-rules.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `src/services/risk-control-lib/soil-resistance.ts` · Vitest **742 PASS** regression.
+
+### 2.6 Real Yield vs. Toxic Inflation
+
+> **Tokenomics first principle:** Not all APY is created equal. **Real yield** flows from exogenous cash flows — trading fees, funding payments, lending spreads, and skew rebates paid by counterparties. **Toxic inflation** flows from endogenous token emissions — newly minted governance tokens recycled into headline APY with no structural payer on the other side of the trade.
+
+BDLW **does not** operate an empty emission token model. There is **no** native BDLW reward token, **no** mercenary liquidity mining program, and **no** vanity TVL subsidy designed to inflate HUD numbers. Yield is anchored to **structural delta-neutral cash flows** that exist independently of SilverVine token issuance.
+
+#### 2.6.1 Toxic Inflation — The Empty Emission Pattern
+
+| Toxic inflation signal | Mechanism | Why it collapses |
+|------------------------|-----------|------------------|
+| **Emission-only APY** | Protocol mints reward token → farms TVL → dumps on exit | No exogenous payer; APY is self-referential |
+| **Mercenary capital loop** | High emission → farm → exit → repeat | TVL cliff when emissions taper |
+| **Narrative "real yield" without hurdle** | Marketing APY without friction-adjusted net math | Slippage + IL + basis bleed hidden until principal impaired |
+| **Governance token as collateral of last resort** | Token price backs advertised returns | Reflexive death spiral when token sells off |
+
+```text
+Toxic inflation loop:
+  Mint emissions → advertise 40% APY → mercenary TVL in
+    → emissions sold / diluted → real cash flow < headline APY
+    → exit cascade → emissions must rise → spiral until insolvency narrative
+```
+
+This pattern is **explicitly rejected** by BDLW architecture. Allocator-facing disclosure uses a **non-guaranteed Dynamic Target Range (8.2% ~ 11.8%)** — not emission-inflated marketing APY.
+
+#### 2.6.2 Real Yield — BDLW's Structural Delta-Neutral Cash-Flow Stack
+
+BDLW composes yield from **three exogenous legs**, each with an identifiable economic payer outside SilverVine token minting:
+
+| Cash-flow leg | Source | Economic payer | Stage | Code / spec anchor |
+|---------------|--------|----------------|-------|-------------------|
+| **Risk-free base** | Aave v3 / Morpho Blue USDC earn on Arbitrum One | Borrowers pay lending spread | A (probe) · B (fallback) | `arbitrum-yield-ingress.ts` · `rebalance-rules.ts` |
+| **GMX skew rebate + builder fee** | Underweight-side GM LP · `uiFeeReceiver` **+5 bps** · positive skew price-impact rebate (+5~10 bps band) | Traders / skew rebalancers on GMX v2 | A ✅ | `gmx-v2-order-payload.ts` · `GMX_UI_FEE_BPS` · Invariant #25–#27 |
+| **HL funding cushion** | 1× short leg on Hyperliquid — hourly funding when perp > spot | Counterparty funding flow on HL book | A ✅ | HL session pipeline · Survival Benchmark funding replay |
+
+**Delta-neutral structure:** Long GM pool exposure (Arbitrum) is hedged by 1× HL short — net directional delta ≈ 0. Yield is therefore **carry and fee capture**, not leveraged directional bet + emission subsidy.
+
+```text
+Real yield stack (conceptual):
+  Base floor     ← Aave / Morpho USDC earn (~4–5% probe · V1.5 storm fallback)
+  + GMX surplus  ← skew rebate + uiFeeReceiver (+5 bps builder · +5~10 bps skew band)
+  + HL funding   ← 1× short funding cushion (hourly · regime-dependent)
+  − friction     ← bridge · basis · MEV · slippage (Citadel Safety Buffer absorbs)
+  > hurdle       ← Native Earn + FRICTION_BUFFER_APY (0.5%) before DN redeploy
+```
+
+#### 2.6.3 Why BDLW Rejects Empty Emissions — Design Rules
+
+| Design rule | Rationale |
+|-------------|-----------|
+| **No emission token as yield source** | Prevents reflexive APY divorced from venue cash flows |
+| **Hurdle Gate before DN deployment** | `resolveCapitalAllocation()` parks capital in Native Earn when `targetNetApy ≤ hurdle + 0.5%` |
+| **Citadel Safety Buffer absorbs friction** | Real surplus must cover bridge/basis/MEV — not be masked by mint-and-dump |
+| **Storm fallback to Aave/Morpho (V1.5)** | When GMX skew + HL funding compress, capital **degrades to risk-free base** — not to higher emissions |
+| **Honest HUD band** | 8.2–11.8% is a **target range**, not a guaranteed emission-backed APY |
+
+**Contrast summary:**
+
+| | Toxic inflation model | BDLW real-yield model |
+|---|----------------------|----------------------|
+| **Primary yield driver** | Native token emissions | GMX fees/rebates + HL funding + Aave/Morpho base |
+| **Payer identity** | Future token holders / dilution | Traders, borrowers, funding counterparties |
+| **TVL retention** | Mercenary — exits when emissions drop | Hurdle-gated — deploys only when net > friction |
+| **Downside in storm** | Raise emissions (spiral) | Fail-closed + Aave/Morpho fallback (V1.5) |
+| **Protocol revenue** | Often token-dilutive | **+5 bps `uiFeeReceiver`** — venue-native builder fee |
+
+> **Allocator note:** Real yield **does not mean risk-free**. Funding can flip negative, skew rebates compress, and Aave rates move. BDLW quantifies and buffers these residuals (§2.5 · §6) — it simply refuses to **substitute** them with empty token inflation.
+
+**Code anchors:** `src/services/yield/rebalance-rules.ts` · `src/adapters/arbitrum/arbitrum-yield-ingress.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `scripts/survival-benchmark/` (HL funding replay) · [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) § Risk & Disclaimer (no guaranteed APY).
 
 ---
 
@@ -204,9 +334,210 @@ Even in a 100% Native Arbitrum setup (Stage C), ZeroDev remains the indispensabl
 
 ---
 
-## 4. Verification & Related Documents
+## 4. Simulation & Stress Testing Harness
 
-### 4.0 Audit Walkthrough — Code Anchors (Grant Evaluators)
+BDLW treats **simulation as a first-class risk artifact** — not a marketing appendix. All harnesses below are offline or read-only against live market data; they never mutate production signing state unless explicitly invoked with `--live`.
+
+### 4.1 Survival Benchmark (HL Mainnet L2 + Dual-Radar)
+
+The **Survival Benchmark** is a 30-day lookback institutional stress report that fuses Hyperliquid mainnet L2 orderbook walks, Binance basis, funding history, and Citadel soil audits.
+
+| Parameter | Value | SSOT |
+|-----------|-------|------|
+| Canonical notional | **$100,000** (`NOTIONAL_USD`) | `scripts/survival-benchmark/survival-benchmark.types.ts` |
+| Stress notional | **$1,000,000** (`STRESS_NOTIONAL_USD`) | Same |
+| Lookback window | **30 days** | `LOOKBACK_MS` |
+| Slippage fuse | **0.5%** (`MAX_SLIPPAGE`) | `soil-resistance-types.ts` |
+| Depth floor | **$100,000** (`MIN_DEPTH_USD`) | Same |
+| Output artifact | `docs/0801_BeDelta_Survival_Benchmark.md` | `scripts/survival-benchmark/index.ts` |
+
+**Execution:**
+
+```bash
+pnpm tsx scripts/generate-survival-report.ts
+```
+
+**What it measures:**
+
+1. **Live L2 book metrics** — spread, bid/ask depth, price impact @ $100k / $1M via `computeLiveBookMetrics()`.
+2. **Soil resistance audit** — `auditLiveBookSoilResistance()` against `MIN_DEPTH_USD` and cross-venue slippage fuse.
+3. **Dual-leg market vs SLI-TWAP** — `dualLegMarketSlip()` vs `simulateSliTwap()`; reports slippage saved at $100k and $1M.
+4. **HL Dual-Radar composite** — 5-sensor matrix (funding, basis, depth, volatility, HUD state) over 30D funding equity curve.
+5. **Phase isolations** — progressive weapon staging (Base → Full Spec) with single-variable isolation.
+
+> **Grant evaluator note:** Survival Benchmark validates that **$100k is the v1.0 design notional envelope** — aligned with `ORDER_SIZE_MAX_USD`, `MIN_DEPTH_USD`, and Alpha Vault Cap (§5.1).
+
+### 4.2 ZeroDev AA Gate Regression (`zerodev-aa-gate.test.ts`)
+
+The ZeroDev Citadel risk gate is an **opt-in CLI/SDK pre-broadcast envelope** (not mounted on the Worker hot path). Its Vitest suite proves fail-closed behavior before any UserOp reaches a bundler.
+
+| Test case | Assertion | Risk control |
+|-----------|-----------|--------------|
+| Healthy soil pass | `assertCitadelRiskGate()` returns `sequencerSafe: true`, chain `42161` | Baseline AA route |
+| Soil trip | Throws `RiskLimitExceeded` with `TRIP_SOIL_RESISTANCE` | Cross-venue slippage > fuse |
+| Per-UserOp gas cap | Throws `ZERODEV_GAS_LIMIT_EXCEEDED_TRIP` when gas > **$0.50** | `MAX_GAS_COST_PER_USEROP_USD` |
+| Daily sponsorship exhaustion | Falls back to `sponsored: false` at **$10/day** cap | `DAILY_SPONSORSHIP_LIMIT_USD` |
+
+```bash
+pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
+```
+
+**Read order for evaluators:**
+
+```text
+zerodev-aa-gate.test.ts     → assertCitadelRiskGate() + evaluateZeroDevGasGuards()
+zerodev-aa-gate.ts          → evaluateStaticBreakerMatrix() + Citadel risk gate
+  ├─ zerodev-aa-failover.ts     → Arbitrum One health / AA probe route
+  ├─ zerodev-aa-static-breaker.ts → soil + gas sponsorship limits
+  └─ zerodev-aa-userop.ts       → Paymaster + bundler dispatch (after gate PASS)
+```
+
+### 4.3 ZeroDev / HL Dry-Run Harnesses (No Live Broadcast)
+
+| Harness | Command / Test | Scope |
+|---------|----------------|-------|
+| **ZeroDev AA Dry-Run** | `pnpm test:zerodev` → `tests/adapters/zerodev-aa-dryrun-harness.test.ts` | Kernel v3 EP 0.7 UserOp draft · session-key clip audit · Risk Oracle Gate simulation |
+| **HL Panic Sandbox** | `pnpm tsx scripts/dry-run-sandbox.ts` | In-memory HL testnet stress → counter-attack → EIP-712 session-key pipeline (< 5ms hot path target) |
+| **Grant E2E Demo** | `pnpm demo:pipeline` (default **dry-run**) | Full Citadel pipeline simulation; pass `--live` only for controlled mainnet ignition |
+| **5-TX Verified Proof** | `pnpm verify:5tx` / `pnpm verify:grant` | Hyperliquid testnet 5-TX anchor with notional tiers ($1K / $100K / $1M) |
+| **Negative Proofs** | `pnpm verify:negative` | Confirms soil trips on depth breach (`DEPTH_USD < MIN_DEPTH_USD`) |
+
+> Production soil fuse on Edge remains **`checkSoilResistance()`** — dry-run harnesses validate adjacent paths without replacing the Worker SSOT.
+
+---
+
+## 5. Comparative Analysis: Arbitrum Native vs. Robinhood Ingress Escort
+
+Stage A (V1.0) operates two **distinct capital ingress modes**. They share the same Citadel pre-execution envelope but differ in capacity, timing, and accounting semantics.
+
+### 5.1 Capacity Limits
+
+| Dimension | **Arbitrum Native Ingress** | **Robinhood Ingress Escort** |
+|-----------|----------------------------|------------------------------|
+| **V1.0 Alpha Vault TVL cap** | **$100,000** hard ceiling (roadmap spec) | Same envelope — escort does not raise TVL cap |
+| **Single-order notional (v0.9 live)** | `SESSION_KEY_NOTIONAL_CAP_USD` = **$5,000** | N/A until bridge settles on `42161` |
+| **Single-order notional (v1.0 design)** | `ORDER_SIZE_MAX_USD` = **$100,000** | Post-settlement only; in-flight capital excluded from deployable NAV |
+| **Depth prerequisite** | `MIN_DEPTH_USD` = **$100,000** on HL book | Same hedge leg requirements after settlement |
+| **Gap-window tightening** | HL orderbook gap guard: depth **2×** ($200k) · leverage **3× → 1×** | Bridge timeout fail-closed — no naked GM/HL legs during in-flight |
+
+**Quant anchor:** The **$100,000** convergence is not arbitrary — it is the intersection of `MIN_DEPTH_USD`, `ORDER_SIZE_MAX_USD`, Survival Benchmark `NOTIONAL_USD`, and `TECHNICAL_SPECIFICATION.md` §3.6 Alpha Vault Cap.
+
+### 5.2 Execution Timing: Instant vs. In-Flight Bridge State Machine
+
+```text
+Arbitrum Native (Instant Path)
+──────────────────────────────
+User USDC on 42161 → checkSoilResistance() → GMX GM deposit + HL 1× short
+                     └─ p50 ~106 µs Wasm fuse · sub-second intent-to-gate
+
+Robinhood Escort (Deferred Path)
+────────────────────────────────
+USDG on 46630 → evaluateAcrossBridgeTransfer() state machine:
+
+  AVAILABLE ──(initiate)──► IN_FLIGHT_BRIDGE_CAPITAL ──(settle)──► SETTLED
+                                    │
+                                    └──(> 1h timeout)──► BRIDGE_TIMEOUT_FAIL_CLOSED
+                                                              lostUsd ≡ 0
+```
+
+| State | `capitalLabel` | Deployable? | `lostUsd` |
+|-------|----------------|-------------|-----------|
+| Pre-bridge | `AVAILABLE` | No (not on Arb yet) | **0** |
+| In transit | `IN_FLIGHT_BRIDGE_CAPITAL` | **No** — naked positions forbidden | **0** |
+| Settled | `SETTLED` | Yes — full Citadel envelope | **0** |
+| Timeout | `BRIDGE_TIMEOUT_FAIL_CLOSED` | **No** — fail-closed severance | **0** |
+
+**Code SSOT:** `evaluateAcrossBridgeTransfer()` in `src/adapters/robinhood/robinhood-across-bridge.ts` · Vitest **5/5 PASS**.
+
+**Settlement latency honesty (Invariant #6):** GMX async settlement **3–5 min** · HL withdrawal **~15 min** · Across bridge escort **≤ 1 h** before timeout fail-closed. Arbitrum-native ingress bypasses bridge latency entirely but retains GMX/HL settlement windows.
+
+### 5.3 When to Use Which Path
+
+| Use case | Recommended path | Rationale |
+|----------|-----------------|-----------|
+| Existing Arb USDC / GM positions | **Arbitrum Native** | Zero bridge latency · instant soil gate |
+| Robinhood USDG institutional earn + compliance escort | **Robinhood Escort** | Outbound-only AML isolation · honest in-flight accounting |
+| Storm / sequencer grace / 3σ halt | **Neither opens new risk** | `signingChannelOpen: false` · both paths fail-closed |
+
+---
+
+## 6. Institutional Compliance Alignment (Basel Accords Mapping)
+
+> **Disclaimer:** This mapping is an **architectural alignment narrative** for grant committees and institutional due diligence — not a claim of regulatory certification. BDLW implements controls that **rhyme with** Basel III operational-risk and ICAAP stress-testing principles.
+
+### 6.1 Basel III Operational Risk → Citadel Fail-Closed Controls
+
+| Basel III concept | BDLW control | Code / test anchor |
+|-------------------|-------------|-------------------|
+| **Internal control environment** | Unidirectional `SystemState` · no orphan venue legs (R09 Saga) | `intent-ledger.ts` · `tests/risk-control/*` |
+| **Risk assessment** | Pre-execution `checkSoilResistance()` — depth, spread, slippage | `soil-resistance.ts` · `pkg/soil_core.wasm` |
+| **Control activities** | Session-key scope (`ORDER_EXECUTE` only) · notional cap R07 | `session-key-gates.ts` · `SESSION_KEY_NOTIONAL_CAP_USD` |
+| **Monitoring & reporting** | `GET /api/grant-audit` · 96h telemetry daemon | `pnpm telemetry:96h` |
+| **Fail-safe severance** | R17 daily loss · R20 physical deadlock · signing channel close | `circuit-breaker.ts` · `flatten-hardlock.ts` |
+
+### 6.2 `lostUsd ≡ 0` → Principle of Honest Loss Recognition
+
+Basel operational-risk frameworks require that **pending/settlement exposures are not mis-booked as realized losses**. BDLW enforces this as a **hard invariant**:
+
+```typescript
+// robinhood-across-bridge.ts — lostUsd is always 0 until explicit timeout labeling
+lostUsd: number; // Always 0 — pending bridge liquidity is never booked as loss.
+```
+
+| Accounting state | Booked loss | Basel analog |
+|------------------|-------------|--------------|
+| `IN_FLIGHT_BRIDGE_CAPITAL` | **$0** | Settlement pending — not operational loss event |
+| `BRIDGE_TIMEOUT_FAIL_CLOSED` | **$0** (capital state unknown, not written off) | Process failure → control trigger, not P&L recognition |
+| Soil trip / R17 severance | Bounded by `Balance × 1% + $100` dynamic Max SL | Loss limit framework |
+
+### 6.3 Stress Testing → Survival Benchmark & Dry-Run Matrix
+
+| Basel ICAAP element | BDLW harness | Frequency |
+|---------------------|-------------|-----------|
+| **Historical simulation** | Survival Benchmark 30D HL funding + L2 book | On-demand (`generate-survival-report.ts`) |
+| **Stress scenarios** | $100k canonical + **$1M** stress notional (`STRESS_NOTIONAL_USD`) | Same report |
+| **Reverse stress** | Negative proofs — depth breach, soil trip, bridge timeout | `pnpm verify:negative` |
+| **Model validation** | Vitest **742 PASS** full regression | CI / pre-release |
+
+### 6.4 Three Lines of Defense Mapping
+
+| Line | BDLW layer | Examples |
+|------|-----------|----------|
+| **1st — Business / Ops** | Yield hurdle · rebalance rules · buffer engine (5–10% pre-hedge) | `rebalance-rules.ts` · `buffer-engine.ts` |
+| **2nd — Risk / Compliance** | Soil resistance · PGATE · sequencer/oracle guards · bridge AML isolation | R01–R20 matrix (§3) |
+| **3rd — Internal Audit** | Grant audit matrix · negative proofs · Survival Benchmark artifact | `pnpm audit:grant` · `docs/audit/*` |
+
+### 6.5 ArbOS Elara Compliance Alignment & Dynamic Target Range
+
+> **V1.0 Design Spec (on-chain reinforcement plane).** Edge (Cloudflare) remains the pre-broadcast SSOT; **ArbOS Elara upgrade** natively aligns **Pillar 2 AML Firewall** with protocol-level compliance filtering and **transaction-ordering awareness** — never a weaker substitute for Edge fail-closed gates.
+
+| Layer | Compliance function | Transaction-ordering awareness | Status |
+|-------|---------------------|-------------------------------|--------|
+| **Edge Citadel (SSOT)** | `checkSoilResistance()` · R01–R20 · signing channel severance | Pre-broadcast intent ordering · UserOp gate before bundler | ✅ v0.9 Code-Verified |
+| **Pillar 2 AML Firewall + ArbOS Elara** | Outbound-only Robinhood escort · `AML_INBOUND_TO_ROBINHOOD_BLOCKED` · Elara ingress drops non-compliant / blacklisted senders before GM payload construction | Sequencer / ArbOS ordering sensor alignment · complements `RobinhoodSafetySwitch.sol` | ⏳ V1.0 Design Spec ([`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md) §4.2) |
+| **UI reactive HUD** | `LivingWaterShieldCard` · `AMLShieldCard` · `SmartRoutingDepositCard` tranche switcher | Trip banners · Tranche A native vs Tranche B bridge state machine | ✅ v1.0 UI SSOT |
+
+**Dynamic Target Range (non-guaranteed yield band):**
+
+| Parameter | Locked value | SSOT |
+|-----------|--------------|------|
+| **Dynamic Target Range** | **8.2% ~ 11.8% APY** (display band · not a guarantee) | `App.tsx` · DDIP §5.6 |
+| **Hurdle Gate (friction buffer)** | **+0.5%** (`FRICTION_BUFFER_APY = 0.005`) — rebalance / performance fee only above friction-adjusted excess | `rebalance-rules.ts` |
+| **Performance hurdle (planned)** | Aave benchmark + 1.5% before fee crystallization | Invariant #24 · #59 (⏳) |
+
+```text
+Net deployable excess  = observed_yield − (Aave_base + FRICTION_BUFFER_APY)
+Rebalance allowed      ⇔ excess ≥ FRICTION_BUFFER_APY   // Hurdle Gate
+UI display band        = 8.2% ~ 11.8% Dynamic Target Range (Non-Guaranteed)
+```
+
+**Design rule (Elara):** Elara ingress filtering and ArbOS transaction-ordering awareness **reinforce** Edge fail-closed — they do not bypass `signingChannelOpen: false`, `BRIDGE_TIMEOUT_FAIL_CLOSED`, or `ORACLE_LAG_DEADLOCK` severance.
+
+---
+
+## 7. Verification & Related Documents
+
+### 7.0 Audit Walkthrough — Code Anchors (Grant Evaluators)
 
 Evaluators should trace claims in this document to the following SSOT paths:
 
@@ -242,4 +573,3 @@ gmx-smart-route-payload-binding.ts → buildGmxSmartRoutePayloadBinding()
 | [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · Triangle Liquidity Loop |
 | [`../audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](../audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) | Robinhood Three Pillars audit |
 | [`../sdk/CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md) | `@slivervine/citadel-sdk` integration |
-| [`../internal/CROSS_CHAIN_RISK_AND_EVOLUTION_ZH.md`](../internal/CROSS_CHAIN_RISK_AND_EVOLUTION_ZH.md) | 中文官方 SSOT 備份 |

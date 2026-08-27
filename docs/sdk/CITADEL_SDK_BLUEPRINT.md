@@ -406,12 +406,12 @@ Verified by [`tests/risk-control/margin-buffer.test.ts`](../../tests/risk-contro
 ```bash
 pnpm exec vitest run tests/sdk/citadel-sdk-intent.test.ts
 pnpm exec vitest run tests/sdk/citadel-sdk-bridge-armor.test.ts
-pnpm test                                    # 164 test files · 735 PASS
+pnpm test -- --run                           # 168 files | 742 PASS (100% Clean)
 pnpm audit:fast
 pnpm build:wasm                              # rebuild pkg/soil_core.wasm
 ```
 
-**Regression bar (locked):** `164 test files | 735 PASS (100% Clean)`
+**Regression bar (locked):** `168 files | 742 PASS (100% Clean)`
 
 ---
 

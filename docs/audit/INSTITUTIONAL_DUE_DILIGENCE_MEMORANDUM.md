@@ -12,7 +12,6 @@
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **Spec SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **Risk Framework SSOT** | [`../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) |
-| **中文備份** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM_ZH.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM_ZH.md) |
 
 ---
 
@@ -20,7 +19,96 @@
 
 This memorandum provides a **transparent, code-verified audit trail** for the Arbitrum Foundation, ZeroDev, and institutional allocators evaluating BDLW Delta-Neutral vault infrastructure. Every quantitative claim maps to a **reproducible command, test file, or on-chain artifact** — not narrative assurance.
 
-> **Disclaimer:** DDIP is an architectural diligence artifact. It does **not** constitute legal advice, investment advice, or a claim of regulatory certification (including SOC 2 Type II attestation).
+> **Read first:** Full **Risk & Disclaimer** disclosures — including non-custodial semantics, residual cross-chain/basis risks, and the limits of Fail-Closed protection — are in [**§ Risk & Disclaimer**](#risk--disclaimer) below. DDIP is an architectural diligence artifact; it does **not** constitute legal, investment, or tax advice, nor regulatory certification.
+
+---
+
+## Risk & Disclaimer
+
+> **Effective scope:** This section applies to all readers — retail participants, institutional allocators, grant evaluators, and fund-of-funds diligence teams. By referencing DDIP, you acknowledge that BDLW is a **sophisticated smart-contract protocol**, not a bank deposit, money-market fund, or insured cash product.
+
+### R.1 Protocol Classification — Sophisticated Smart-Contract Infrastructure
+
+BeDelta Living Water (BDLW) is a **sophisticated, non-custodial DeFi execution protocol** operated by SilverVine Labs. It composes:
+
+| Layer | Function | SSOT |
+|-------|----------|------|
+| **Pillar 3 — Pre-Execution Shield** | **Fail-Closed** Citadel gate **before** broadcast | `checkSoilResistance()` · `pkg/soil_core.wasm` |
+| **Wasm Soil Engine** | **p50 ~106 µs** hot-path fuse on Edge | R01–R20 matrix · Vitest regression |
+| **Pillar 1 — Gatehouse** | Scoped Session Keys · EIP-712 · ZeroDev Kernel v3 AA | `session-key-gates.ts` |
+| **Pillar 2 — Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort & honest escort accounting (`IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0`); inbound AML blocked. **Robinhood Chain is the inaugural production reference adapter** — not the product identity | `robinhood-across-bridge.ts` · `RobinhoodSafetySwitch.sol` |
+| **Venue legs** | GMX v2 GM pools (Arbitrum One) + Hyperliquid 1× short hedge | Tech Spec §2 |
+
+**Fail-Closed posture:** When soil, oracle, sequencer, bridge, or session sensors trip, BDLW **prefers no action over wrong action** — `signingChannelOpen: false`, UserOp rejected pre-bundler, bridge state `BRIDGE_TIMEOUT_FAIL_CLOSED`. This is a **pre-execution safety layer**, not a guarantee of profit, principal protection, or elimination of market risk.
+
+```text
+User intent → 106µs Wasm Soil Engine (Fail-Closed) → Gate attestation → Venue broadcast
+                    │
+                    └── trip → severance (no broadcast) — NOT "zero financial risk"
+```
+
+### R.2 Non-Custodial Execution Substrate
+
+BDLW operates on a **non-custodial execution substrate**:
+
+- User principal resides in **ZeroDev Kernel Smart Accounts** controlled by the user — not in a protocol treasury, omnibus wallet, or discretionary custodian account.
+- SilverVine Labs does **not** take discretionary possession of user funds, does **not** rehypothecate labeled in-flight bridge capital, and does **not** represent itself as a licensed custodian, broker-dealer, or payment institution.
+- Protocol yield accrual via GMX **`uiFeeReceiver` (+5 bps)** is **protocol revenue**, explicitly separated from user principal in accounting semantics (§6.3).
+
+**0-Proxy architecture** (§5.3) means BDLW provides **risk gates and routing logic** — not balance-sheet intermediation. Users and institutions retain **direct smart-contract exposure** to underlying venues (GMX, Hyperliquid, Across bridge, Robinhood Chain escort path).
+
+### R.3 Residual Risks — Quantified, Isolated, and Buffered (Not Hidden)
+
+BDLW **does not** market "zero risk," "guaranteed yield," or "capital-protected returns." Residual risks remain **fully disclosed, quantified where possible, isolated by state labels, and economically buffered** — rather than obscured behind marketing copy.
+
+| Residual risk class | How BDLW treats it | What Fail-Closed does **not** remove |
+|--------------------|--------------------|--------------------------------------|
+| **Cross-chain / bridge** | `IN_FLIGHT_BRIDGE_CAPITAL` label · 1h timeout → `BRIDGE_TIMEOUT_FAIL_CLOSED` · **`lostUsd ≡ 0`** honest pending accounting | Bridge operator failure · settlement delay · smart-contract exploit on bridge |
+| **Basis drift (GM vs HL)** | Dual-leg delta tracking · Citadel Safety Buffer · Survival Benchmark 3σ replay | Persistent funding/basis divergence · venue-specific insolvency |
+| **Oracle staleness** | `ORACLE_LAG_DEADLOCK` (>30s) · fail-closed severance | Oracle manipulation · feed outage beyond modeled thresholds |
+| **Sequencer / ArbOS desync** | 600s recovery grace · no naked opens during desync | Extended L2 outage · reordering/MEV beyond PGATE budget |
+| **Smart-contract risk** | Immutable Wasm · L1 consume-once gate · 742-test + chaos matrix | Unknown vulnerabilities · upgrade/key compromise · third-party venue bugs |
+| **Market / liquidity** | `MIN_DEPTH_USD` · 0.5% slippage fuse · TWAP path slicing | Gap windows · depth evaporation · black-swan tail beyond stress replay |
+| **Yield variability** | Dynamic Target Range **8.2% ~ 11.8%** (non-guaranteed HUD band) · **0.5% Hurdle Gate** | Negative funding · fee compression · emission-independent return shortfall |
+
+**Isolation principle:** Cross-chain capital in transit is **labeled and non-deployable** until `SETTLED`. Basis and funding shocks are **buffered** by Citadel Safety Buffer and hurdle-gated redeployment (`FRICTION_BUFFER_APY = 0.005`). These controls **reduce preventable loss paths** — they do **not** convert DeFi into a risk-free product.
+
+> **Anti-marketing pledge:** Any representation of BDLW as "risk-free," "guaranteed APY," or "principal protected" is **inconsistent with this memorandum** and with the protocol's honest-accounting invariants.
+
+### R.4 What Fail-Closed Protection Means (and Does Not Mean)
+
+| Statement | Accurate? |
+|-----------|-----------|
+| BDLW blocks toxic orders **before** GMX/HL broadcast when sensors trip | **Yes** — 255/255 chaos scenarios · `capitalLossUsd: 0` in adversarial matrix |
+| BDLW eliminates smart-contract, market, bridge, or counterparty risk | **No** |
+| BDLW guarantees the Dynamic Target Range 8.2–11.8% APY | **No** — display band only; see §5.6 |
+| Pending bridge liquidity is booked as principal loss | **No** — `lostUsd ≡ 0` until explicit, bounded execution loss |
+| Users require sophistication to evaluate residual risks | **Yes** |
+
+Fail-Closed is **operational risk severance at the pre-execution boundary** — analogous to a circuit breaker, not an insurance policy.
+
+### R.5 Legal, Regulatory & No-Advice Disclaimers
+
+| Topic | Disclosure |
+|-------|------------|
+| **Legal advice** | DDIP is **not** legal advice. Engage qualified counsel for jurisdiction-specific analysis. |
+| **Investment advice** | DDIP is **not** investment, financial, or tax advice. No recommendation to buy, sell, or hold any asset. |
+| **Regulatory status** | BDLW does **not** claim banking license, MiCA CASP authorization, SEC/CFTC registration, or **SOC 2 Type II** attestation. Framework mappings in §5 are **architectural alignment narratives** only. |
+| **Securities characterization** | SilverVine Labs makes **no** representation regarding whether any BDLW interaction constitutes a security in any jurisdiction. |
+| **Forward-looking statements** | Roadmap items marked **⏳ Roadmap Spec** are design targets — not commitments of delivery or performance. |
+| **Third-party venues** | GMX, Hyperliquid, ZeroDev, Across, Robinhood Chain, and Arbitrum are **independent third parties**. BDLW is not responsible for their uptime, governance, or solvency. |
+| **Live audit endpoint** | `GET /api/grant-audit` reflects **operational telemetry under normal test criteria** — not a real-time guarantee for all future states. |
+
+### R.6 Allocator & User Acknowledgment
+
+Institutional allocators and sophisticated users interacting with BDLW should acknowledge that they:
+
+1. **Understand smart-contract composability risk** across Arbitrum One, Hyperliquid, and optional Robinhood escort paths.
+2. **Accept residual cross-chain and basis exposure** even when Fail-Closed gates are operational — including scenarios outside the 255-case chaos matrix and 30D Survival Benchmark replay.
+3. **Do not rely on DDIP, HUD APY bands, or grant-audit telemetry** as substitutes for independent due diligence, legal review, and risk budgeting.
+4. **Recognize that Fail-Closed severance may delay or prevent execution** — potentially missing intended market opportunities (opportunity cost is a real economic risk).
+
+**Verification SSOT:** `pnpm test -- --run` · `GET /api/grant-audit` · [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) §2.5–§2.6 (economic sustainability · real yield) · §4 (ingress timing) · §6 (Basel mapping).
 
 ---
 
@@ -36,7 +124,7 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 | **Capital accounting** | `lostUsd ≡ 0` on pending bridge liquidity | `robinhood-across-bridge.ts` · 5/5 Vitest |
 | **Session / AA security** | Scoped keys · notional cap · gas ledger | ZeroDev AA gate · `session-key-gates.ts` |
 | **Stress & simulation** | 30D Survival Benchmark + 742-test regression | `generate-survival-report.ts` · `pnpm test -- --run` |
-| **Compliance isolation** | Outbound-only Robinhood escort · AML inbound block | `RobinhoodSafetySwitch.sol` · Firewall pillar audit |
+| **Compliance isolation** | Pillar 2 Compliance Ingress Firewall — outbound-only escort · AML inbound block · Robinhood Chain as inaugural reference adapter | `RobinhoodSafetySwitch.sol` · [`ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) |
 
 ### 1.2 Locked SSOT Metrics (Evaluator Copy-Paste)
 
@@ -53,12 +141,16 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 
 | Topic | DDIP section | Extended SSOT |
 |-------|-------------|---------------|
+| **Risk & Disclaimer** | [§ Risk & Disclaimer](#risk--disclaimer) | This document · non-custodial · residual risk table |
 | Simulation & chaos harness | §3 | This document · [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) §4 |
 | Arbitrum Native vs Robinhood escort | §4 | This document · [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) §5 |
 | Regulatory & institutional compliance | §5 | This document · [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) §6 |
+| ArbOS Elara · Dynamic Target Range | §5.6 | [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) §6.5 · Tech Spec §4.2 |
+| Real yield vs. toxic inflation | §2.6 (Risk Framework SSOT) | [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) §2.6 |
 | 60 architectural invariants | §5.1–§5.2 | [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) §3 |
-| Robinhood Three Pillars | §2.3 | [`ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) |
+| Robinhood reference adapter audit | §2.3 | [`ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) |
 | Principal security interrogations | §2 | [`PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) |
+| ZeroDev EIP-7702 vs. institutional substrate | — | [`ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md`](./ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md) |
 | Yellow Paper / R01–R20 | §2.2 | [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 
 ---
@@ -90,6 +182,8 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 
 ### 2.3 Three Pillars Architecture (Evaluator Mental Model)
 
+**Pillar 2 — Compliance Ingress Firewall (with Robinhood Ingress as Reference Adapter):** A **venue-agnostic**, unidirectional AML firewall and escort accounting layer. Capital from permissioned ingress sources is escorted outbound-only into Arbitrum; inbound AML paths are fail-closed; in-flight bridge capital is honestly labeled (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`) until settled. **Robinhood Chain (`46630`/`4663`) is the inaugural production reference adapter** — code paths and contract names remain Robinhood-specific by design; the architectural pillar is not Robinhood-bound.
+
 ```text
 [ Allocator Capital ]
          │
@@ -99,7 +193,9 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 └──────────────────┬──────────────────┘
                    ▼
 ┌─────────────────────────────────────┐
-│ Pillar 2: FIREWALL (Compliance)     │  Robinhood outbound-only · AML inbound block
+│ Pillar 2: COMPLIANCE INGRESS        │  Venue-agnostic AML escort & accounting
+│         FIREWALL                    │  Robinhood Chain = inaugural ref adapter
+│                                     │  · outbound-only · AML inbound block
 └──────────────────┬──────────────────┘
                    ▼
 ┌─────────────────────────────────────┐
@@ -480,7 +576,37 @@ pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts   # 5/5 — 
 pnpm test -- --run                                                     # 742 PASS — full regression
 ```
 
-### 5.5 Three Lines of Defense & Allocator FAQ
+### 5.6 ArbOS Elara Compliance Alignment & Dynamic Target Range
+
+> **V1.0 Design Spec.** BDLW's **Pillar 2 Compliance Ingress Firewall** natively aligns with the **ArbOS Elara upgrade** — Arbitrum's protocol-level ingress filtering plane — documenting **transaction-ordering awareness** as a reinforcement layer alongside Edge fail-closed gates. See [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §4.2.
+
+| Compliance plane | Function | UI / code anchor |
+|------------------|----------|------------------|
+| **Edge SSOT (pre-broadcast)** | Soil matrix · signing channel severance · UserOp gate | `checkSoilResistance()` · `zerodev-aa-gate.ts` |
+| **Pillar 2 Compliance Ingress Firewall + ArbOS Elara** | Venue-agnostic outbound escort · inbound AML block · Robinhood Chain as inaugural reference adapter · Elara drops non-compliant / blacklisted senders before GM payload construction | Tech Spec §4.2 · `RobinhoodSafetySwitch.sol` · `robinhood-across-bridge.ts` |
+| **Sequencer / ordering sensor** | ArbOS base-fee velocity · sequencer grace — no naked opens during desync | `arbitrum-gas-guard.ts` · `sequencer-guard.ts` |
+| **Multi-tranche demo HUD** | Tranche A native vault vs Tranche B bridge state machine | `SmartRoutingDepositCard` · `deposit-tranche-config.ts` |
+| **Reactive HUD alerts** | Institutional trip copy for allocators | `compliance-trip-alerts.ts` · `LivingWaterShieldCard` · `AMLShieldCard` |
+
+**Fail-closed trip codes (UI SSOT):**
+
+| Trip code | Card | Behavior |
+|-----------|------|----------|
+| `SYSTEM_FAIL_CLOSED_TRIP` | Living Water Shield | Storm variant · dispatch blocked · `aria-live="assertive"` banner |
+| `ORACLE_LAG_DEADLOCK` | Living Water Shield | Oracle staleness >30s · dispatch blocked |
+| `BRIDGE_TIMEOUT_FAIL_CLOSED` | AML Shield | Across >1h timeout · export blocked · in-flight capital labeled · `lostUsd ≡ 0` |
+
+**Dynamic Target Range & Hurdle Gate (yield disclosure):**
+
+| Parameter | Value | SSOT |
+|-----------|-------|------|
+| **Dynamic Target Range** | **8.2% ~ 11.8% APY** (non-guaranteed display band) | `App.tsx` · [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) §6.5 |
+| **Hurdle Gate friction buffer** | **+0.5%** (`FRICTION_BUFFER_APY = 0.005`) | `rebalance-rules.ts` |
+| **Rebalance predicate** | Deploy only when excess yield exceeds friction buffer | `resolveCapitalAllocation()` · `passesDeltaNeutralHurdle()` |
+
+> **Allocator note:** The 8.2–11.8% band is a **dynamic target range for HUD disclosure**, not a guaranteed return. Performance crystallization remains gated by the Hurdle Gate friction buffer and planned Aave + 1.5% performance hurdle (Invariant #24).
+
+### 5.7 Three Lines of Defense & Allocator FAQ
 
 | Line | Function | BDLW layer |
 |------|----------|------------|
@@ -570,9 +696,8 @@ Ingress capacity and execution timing are fully specified in **§4**. Basel / ES
 | [`ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) | Three Pillars · bridge gate |
 | [`static-analysis-report.json`](./static-analysis-report.json) | 3-Tier security matrix artifact |
 | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) | 255-scenario adversarial matrix |
-| [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM_ZH.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM_ZH.md) | 繁體中文 SSOT 備份 |
 
 ---
 
 **Prepared by:** SilverVine Labs Risk & Compliance Documentation  
-**Last updated:** 2026-08-26 · Branch baseline: `v1.0_push_BDLW` · §5 Regulatory & institutional compliance alignment added
+**Last updated:** 2026-08-27 · Branch baseline: `v1.0_push_BDLW` · **Risk & Disclaimer** section (Fail-Closed · non-custodial · residual risk disclosure)

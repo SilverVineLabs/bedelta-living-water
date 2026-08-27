@@ -1,6 +1,6 @@
 # SliverVine Protocol — Santenmoku Engine: Technical Specification & Risk Topology
 
-> **Baseline (locked):** Vitest `164 test files | 735 PASS (100% Clean)` · Security-tier `5/0/0 PASS` (`docs/audit/static-analysis-report.json`; Vitest, Forge, Slither, Aderyn, pnpm-audit) · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.  
+> **Baseline (locked):** Vitest `168 files | 742 PASS (100% Clean)` · Security-tier `5/0/0 PASS` (`docs/audit/static-analysis-report.json`; Vitest, Forge, Slither, Aderyn, pnpm-audit) · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.  
 > Fast-tier scorecard (`docs/audit/security-scorecard.json`) is overwritten by the last `audit:*` run — do not mix tiers.  
 > **This file SSOT:** R01–R20 invariants · dual-engine topology · KV / MDD · settlement & fee bounds.  
 > **Docs index:** [`docs/README.md`](../README.md) · **Grants:** [`docs/grants/`](../grants/)
@@ -27,9 +27,10 @@ Santenmoku is a **unified sub-millisecond pre-execution gateway**. **Center of g
                            │
                            ▼
     ┌─────────────────────────────────────────────────────────┐
-    │ 2. THE FIREWALL (Compliance) — Institutional Ingress &  │
-    │    Cross-Chain AML Firewall · ZeroDev Smart Routing Addr │
-    │    (1-Click Crosschain Deposit/Swap → GMX ExchangeRouter)│
+    │ 2. PILLAR 2: COMPLIANCE INGRESS FIREWALL              │
+    │    Venue-agnostic unidirectional AML escort & accounting│
+    │    Robinhood Chain = inaugural reference adapter        │
+    │    · ZeroDev Smart Routing Addr (1-Click Deposit/Swap)  │
     └──────────────────────┬──────────────────────────────────┘
                            │
                            ▼
@@ -45,7 +46,7 @@ Santenmoku is a **unified sub-millisecond pre-execution gateway**. **Center of g
 | Pillar | Role | SSOT / Mechanism |
 |--------|------|------------------|
 | **Gatehouse (Auth)** | ZeroDev scoped session keys | Kernel v3 · `ORDER_EXECUTE` bounds · daily gas sponsorship limits · R06 / R07 |
-| **Firewall (Compliance)** | **Institutional Ingress & Cross-Chain AML Firewall** + **ZeroDev Smart Routing Address** | Robinhood `46630`/`4663` → Arbitrum `42161` outbound-only; ZeroDev 1-click USDG deposit/swap via `GMX_V2_EXCHANGE_ROUTER_ARBITRUM` (`ZERODEV_SMART_ROUTE_TARGETS`); inbound AML blocked; calldata bound at `GatedExecutor.payloadHash()` |
+| **Pillar 2: Compliance Ingress Firewall** | **Venue-agnostic unidirectional AML firewall & escort accounting layer** — permissioned ingress sources escort outbound-only into Arbitrum; inbound AML blocked; honest `IN_FLIGHT_BRIDGE_CAPITAL` / `lostUsd ≡ 0` labels. **Robinhood Chain (`46630`/`4663`) is the inaugural production reference adapter**, not the product identity. Includes ZeroDev Smart Routing Address for 1-click USDG deposit/swap via `GMX_V2_EXCHANGE_ROUTER_ARBITRUM` (`ZERODEV_SMART_ROUTE_TARGETS`); calldata bound at `GatedExecutor.payloadHash()` | `robinhood-across-bridge.ts` · `RobinhoodSafetySwitch.sol` · `ZERODEV_SMART_ROUTE_TARGETS` |
 | **Shield (CORE MOAT)** | Sub-ms Wasm pre-execution armor — **primary technical moat** | `checkSoilResistance()` p50 ~106 μs · Wasm warm path &lt;60µs · R01 / R04 |
 
 > *While single components like `checkSoilResistance()` formulas are kept standard and open for seamless `@slivervine/citadel-sdk` adoption across Arbitrum, our core moat lies in the production integration complexity—stitching Rust `#![no_std]` Wasm, Edge Worker execution, and EIP-712 Gate into a sub-ms, fail-closed system.*
@@ -69,13 +70,13 @@ SilverVine does not interpret natural-language LLM prompts. The Shield enforces 
 |-----------|-----------|--------|
 | **Receiver Invariant** | Decode GMX v2 parameters from UserOp bytecode; assert `sender ≡ receiver` before any L2 broadcast. | ✅ v0.9 Code-Verified |
 | **Parameter Invariant** | Bound-check `acceptablePrice` (and related execution params) against oracle-lag sensors; fail-closed on drift. | ✅ v0.9 Code-Verified |
-| **Unidirectional Outbound Escort** | When a permissioned ingress source is used (e.g. Robinhood Chain `46630`/`4663`), capital flow is outbound-only → Arbitrum `42161`; inbound AML contamination is blocked at the Firewall. | ✅ v0.9 Code-Verified |
+| **Unidirectional Outbound Escort** | Pillar 2 enforces venue-agnostic outbound-only escort into Arbitrum `42161`; inbound AML contamination is blocked at the Compliance Ingress Firewall. Robinhood Chain (`46630`/`4663`) is the inaugural reference adapter. | ✅ v0.9 Code-Verified |
 
 ### 0.2 v0.9 Delivered Scope vs V1.0 Roadmap
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v0.9 Delivered (100% Code & Tested)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX +5 bps UI Fee · **164 test files / 735 PASS (100% Clean)** |
+| **v0.9 Delivered (100% Code & Tested)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX +5 bps UI Fee · **168 files | 742 PASS (100% Clean)** |
 | **v0.9 Active Target** | ✅ Code-Verified (Sepolia & Dry-Run) | Single blue-chip anchor: **GMX v2 ETH/USDC GM Pool** + Hyperliquid **1× short** hedge · Mainnet deployment ties to **M6 Grant distribution** |
 | **v0.9 Partial — HL Orderbook Gap Guard** | ✅ Code-Verified | `evaluateHlOrderbookGapGuard()` in [`hl-orderbook-gap-guard.ts`](../../src/services/risk-control-lib/hl-orderbook-gap-guard.ts) · wired via [`soil-resistance.ts`](../../src/services/risk-control-lib/soil-resistance.ts) — gap-window leverage scale-down + 2× depth floor |
 | **V1.0 Isomorphic Extension** | ⏳ Planned | **BTC/USDC GM Pool** — zero bytecode / Wasm changes; config-driven market address mapping |
@@ -148,91 +149,91 @@ Solidity vault surface splits capital into two non-fungible risk lanes:
 | **Arbitrum One Off-ramp** | Native **ETH, BTC, and USDC** supported directly upon GMX v2 async unwind (3–5 min). |
 | **USDG Clearing** | Native USDG treasury redemptions are restricted to Robinhood Chain (`46630`/`4663`) via the unidirectional bridge; Arbitrum USDC is converted on return to preserve compliance bounds. Inbound AML contamination (reverse path) is blocked. |
 
-### 2.3 Pillar 2 — ZeroDev Smart Routing Address (1-Click Crosschain Deposit/Swap)
+### 2.3 ZeroDev Smart Routing Address (Pillar 2 Surface — 1-Click Crosschain Deposit/Swap)
 
-Robinhood `46630`/`4663` **USDG** ingress routes via ZeroDev Kernel UserOp to **`GMX_V2_EXCHANGE_ROUTER_ARBITRUM`** (`ZERODEV_SMART_ROUTE_TARGETS` · `gmx-revenue.ts`) → **`GM_ETH_USDC`** pool — single-click cross-chain deposit/swap, no hot-wallet custody.
+**Pillar 2 context:** This section documents one **production surface** of the Compliance Ingress Firewall — ZeroDev Kernel UserOp routing from permissioned ingress (Robinhood `46630`/`4663` **USDG** as inaugural reference adapter) to Arbitrum GMX execution. **`GMX_V2_EXCHANGE_ROUTER_ARBITRUM`** (`ZERODEV_SMART_ROUTE_TARGETS` · `gmx-revenue.ts`) → **`GM_ETH_USDC`** pool — single-click cross-chain deposit/swap, no hot-wallet custody.
 
 **Payload binding (calldata-level, Gate struct unchanged):** `buildGmxSmartRoutePayloadBinding()` encodes smart-route calldata → `computeGatedExecutorPayloadHash()` mirrors on-chain `GatedExecutor.payloadHash(initiator, target, keccak256(data), nonce)`. The digest fills the existing `RiskAttestation.payloadHash` field — **`SliverVineGate.sol` `ATTESTATION_TYPEHASH` and struct layout are not modified**.
 
-Anchors: [`gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-smart-route-payload-binding.ts) · [`gated-executor-payload.ts`](../../src/sdk/gated-executor-payload.ts) · [`r-chain-yield-router.ts`](../../src/adapters/robinhood/r-chain-yield-router.ts) · [`GatedExecutor.sol`](../../SliverVineGate/src/GatedExecutor.sol) · 深度解析：[`ZERODEV_SMART_ROUTING_DEEP_DIVE.md`](../internal/ZERODEV_SMART_ROUTING_DEEP_DIVE.md).
+Anchors: [`gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-smart-route-payload-binding.ts) · [`gated-executor-payload.ts`](../../src/sdk/gated-executor-payload.ts) · [`r-chain-yield-router.ts`](../../src/adapters/robinhood/r-chain-yield-router.ts) · [`GatedExecutor.sol`](../../SliverVineGate/src/GatedExecutor.sol).
 
-### 2.4 Pillar 1 — ZeroDev 帳戶抽象（Account Abstraction）深度規格
+### 2.4 Pillar 1 — ZeroDev Account Abstraction (Deep Specification)
 
-> **狀態：** v0.9 生產 SSOT = **Kernel v3**（`ZERODEV_KERNEL_VERSION` v0.3.1 · EntryPoint v0.7）；**Kernel v4** = V1.0 對齊路線（僅升級 Gatehouse 適配層，**不重寫** Shield / Wasm / EIP-712 Gate）。
+> **Status:** v0.9 production SSOT = **Kernel v3** (`ZERODEV_KERNEL_VERSION` v0.3.1 · EntryPoint v0.7); **Kernel v4** = V1.0 alignment path (Gatehouse adapter upgrade only — **no rewrite** of Shield / Wasm / EIP-712 Gate).
 
-#### 2.4.1 為何 ZeroDev 是 BDLW 非託管 106 µs 執行管線的基礎核心
+#### 2.4.1 Why ZeroDev Is the Foundation of BDLW's Non-Custodial 106 µs Execution Pipeline
 
-BeDelta Living Water 的產品承諾是 **機構級 pre-execution gate（p50 ~106 µs）+ 非託管資本流**。兩者若缺少統一的 **智能帳戶執行平面**，將被迫退回 EOA 多簽或熱錢包託管——直接破壞 `lostUsd ≡ 0` 與合規敘事。
+BeDelta Living Water's product promise is **institutional pre-execution gate (p50 ~106 µs) + non-custodial capital flow**. Without a unified **smart-account execution plane**, the system would fall back to EOA multisig or hot-wallet custody — breaking `lostUsd ≡ 0` and compliance narrative.
 
-ZeroDev 提供三項 BDLW **無法自行拼裝替代** 的基礎能力：
+ZeroDev provides three capabilities BDLW **cannot replicate in-house**:
 
-| 能力 | 若無 ZeroDev | BDLW 與 ZeroDev 整合後 |
-|------|-------------|----------------------|
-| **Scoped Session Keys** | 全權私鑰或人工多簽 | Kernel 模組化 `ORDER_EXECUTE` · R06/R07 名目上限 · TTL 自動過期 |
-| **Paymaster 代付** | 機構用戶需預備多鏈 gas | `zerodev.sponsorUserOperation` · 單筆 ≤ $0.5 · 日額 $10 熔斷 |
-| **Bundler 標準路徑** | 自架 relayer 信任面膨脹 | EntryPoint v0.7 + **EIP-7562** 合規 UserOp · fail-closed 非盲重試 |
+| Capability | Without ZeroDev | With BDLW + ZeroDev integration |
+|------------|-----------------|-------------------------------|
+| **Scoped Session Keys** | Full private keys or manual multisig | Kernel modular `ORDER_EXECUTE` · R06/R07 notional cap · TTL auto-expiry |
+| **Paymaster sponsorship** | Institutions must prefund multi-chain gas | `zerodev.sponsorUserOperation` · per-op ≤ $0.50 · daily $10 circuit breaker |
+| **Bundler standard path** | Self-hosted relayer expands trust surface | EntryPoint v0.7 + **EIP-7562** compliant UserOp · fail-closed · no blind retry |
 
-**執行管線耦合（106 µs 語意）：**
+**Execution pipeline coupling (106 µs semantics):**
 
 ```text
-UserOp 草稿 → verifyAgentIntent() [Edge Shield · p50 ~106µs]
+UserOp draft → verifyAgentIntent() [Edge Shield · p50 ~106µs]
            → evaluateStaticBreakerMatrix() [soil + gas ledger]
-           → Paymaster 簽章 → Bundler → EntryPoint → Kernel validateUserOp
+           → Paymaster sign → Bundler → EntryPoint → Kernel validateUserOp
 ```
 
-Shield 在 **廣播前** 完成決策；ZeroDev 僅負責 **非託管帳戶語意下的安全遞送**。Citadel 永不持有用戶私鑰或本金——資本始終在 **Kernel `sender` 智能帳戶** 內（R06–R07 · ERC-7579）。
+The Shield decides **before broadcast**; ZeroDev handles **non-custodial account delivery only**. Citadel never holds user keys or principal — capital remains in the **Kernel `sender` smart account** (R06–R07 · ERC-7579).
 
-#### 2.4.2 Kernel v3 / v4 Session Keys（ERC-7579 模組化權限）
+#### 2.4.2 Kernel v3 / v4 Session Keys (ERC-7579 Modular Permissions)
 
-| 維度 | Kernel v3（v0.9 已交付） | Kernel v4（V1.0 對齊） |
-|------|-------------------------|------------------------|
-| **模組標準** | ERC-7579 模組化 session key | v4 統一權限面 · 與 ZeroDev「One Stack」整合 |
-| **權限範圍** | `ORDER_EXECUTE` · 白名單 `callData` target/selector | 沿用 R06 語意 · 擴展 Smart Routing 跨鏈 session scope |
-| **名目上限** | `SESSION_KEY_NOTIONAL_CAP_USD` = **$5,000**（R07） | 配置驅動 · 不變量公式不變 |
-| **TTL / 重授權** | Session TTL + R14 EIP-712 5-min re-auth | v4 Authorize 階段原生對齊 · 適配層替換即可 |
-| **驗簽路徑** | Kernel `isValidSignature` → ERC-1271 `0x1626ba7e` | 保持雙平面：Kernel ERC-1271 ∥ Gate ECDSA m-of-n |
-| **程式錨點** | `src/adapters/arbitrum/zerodev-aa/` · `hl-session/permissions.ts` | ⏳ V1.0 adapter swap · **Shield / Wasm 零改寫** |
+| Dimension | Kernel v3 (v0.9 delivered) | Kernel v4 (V1.0 alignment) |
+|-----------|------------------------------|------------------------------|
+| **Module standard** | ERC-7579 modular session keys | v4 unified permission surface · ZeroDev "One Stack" |
+| **Permission scope** | `ORDER_EXECUTE` · whitelisted `callData` target/selector | Same R06 semantics · extended Smart Routing cross-chain session scope |
+| **Notional cap** | `SESSION_KEY_NOTIONAL_CAP_USD` = **$5,000** (R07) | Config-driven · invariant formulas unchanged |
+| **TTL / re-auth** | Session TTL + R14 EIP-712 5-min re-auth | v4 Authorize stage native alignment · adapter swap only |
+| **Signature path** | Kernel `isValidSignature` → ERC-1271 `0x1626ba7e` | Dual plane: Kernel ERC-1271 ∥ Gate ECDSA m-of-n |
+| **Code anchors** | `src/adapters/arbitrum/zerodev-aa/` · `hl-session/permissions.ts` | ⏳ V1.0 adapter swap · **Shield / Wasm zero rewrite** |
 
-**遷移鐵律：** Kernel v3 → v4 僅替換 Gatehouse 適配器（`zerodev-aa-userop.ts` · `zerodev-aa-gate.ts`）；`checkSoilResistance()`、`pkg/soil_core.wasm`、`SliverVineGate.sol` **不隨 Kernel 大版本變更**。
+**Migration rule:** Kernel v3 → v4 replaces Gatehouse adapters only (`zerodev-aa-userop.ts` · `zerodev-aa-gate.ts`); `checkSoilResistance()`, `pkg/soil_core.wasm`, and `SliverVineGate.sol` **do not change** with Kernel major version.
 
-#### 2.4.3 Paymaster Gas Sponsorship（代付與熔斷）
+#### 2.4.3 Paymaster Gas Sponsorship (Sponsorship & Circuit Breakers)
 
-| 參數 | 值 | SSOT |
-|------|-----|------|
-| 單筆 UserOp 代付上限 | **$0.50 USD** | `MAX_GAS_COST_PER_USEROP_USD` |
-| 24h 滾動代付額度 | **$10 USD** | `DAILY_SPONSORSHIP_LIMIT_USD` |
-| 熔斷 trip | `ZERODEV_GAS_LIMIT_EXCEEDED_TRIP` | `zerodev-aa-static-breaker.ts` |
-| Paymaster 中介 | `zerodev.sponsorUserOperation` | `zerodev-aa-userop.ts` |
-| 持久化（可選） | KV `zerodev:aa:gas:ledger` · TTL 86,400s | `zerodev-aa-gas-ledger.ts` |
+| Parameter | Value | SSOT |
+|-----------|-------|------|
+| Per-UserOp sponsorship cap | **$0.50 USD** | `MAX_GAS_COST_PER_USEROP_USD` |
+| 24h rolling sponsorship budget | **$10 USD** | `DAILY_SPONSORSHIP_LIMIT_USD` |
+| Trip code | `ZERODEV_GAS_LIMIT_EXCEEDED_TRIP` | `zerodev-aa-static-breaker.ts` |
+| Paymaster middleware | `zerodev.sponsorUserOperation` | `zerodev-aa-userop.ts` |
+| Persistence (optional) | KV `zerodev:aa:gas:ledger` · TTL 86,400s | `zerodev-aa-gas-ledger.ts` |
 
-代付請求與 soil fuse **串行評估**：`evaluateStaticBreakerMatrix()` 先執行 `checkSoilResistance()`，再評估 `evaluateSponsoredGasLimits()`——土壤熔斷時 **拒絕代付與廣播**，避免「付費但應被攔截」的 UserOp 進入 bundler。
+Sponsorship and soil fuse are **serially evaluated**: `evaluateStaticBreakerMatrix()` runs `checkSoilResistance()` first, then `evaluateSponsoredGasLimits()` — on soil trip, **both sponsorship and broadcast are denied**, preventing "paid but should-be-blocked" UserOps from reaching the bundler.
 
-#### 2.4.4 EIP-7562 Zero-Bundler-Rejection 不變量
+#### 2.4.4 EIP-7562 Zero-Bundler-Rejection Invariant
 
-**Zero-Bundler-Rejection Invariant（零 Bundler 拒絕不變量）：** Citadel UserOp 在 validation phase **不得** 觸發 EIP-7562 opcode/storage 違規；bundler 拒絕視為 **協議故障**，**禁止** 盲重試。
+**Zero-Bundler-Rejection Invariant:** Citadel UserOps MUST NOT trigger EIP-7562 opcode/storage violations during the validation phase; bundler rejection is a **protocol fault**, not a retry signal.
 
-| 規則 | 強制機制 |
-|------|----------|
-| Validation 階段 storage 讀取 | Session-key 模組限制 `callData` 至白名單 target/selector — 禁止跨合約 forbidden reads |
-| Edge 前置篩選 | Static breaker + `checkSoilResistance()` 於 `sendUserOperation()` 之前 |
-| Fail-closed | Bundler 不可達 · 缺少 EP v0.7 · 逾時 → `BUNDLER_TIMEOUT_FAIL_CLOSED`（`ZERODEV_BUNDLER_FAIL_CLOSED_TIMEOUT_MS` = 3,000 ms） |
-| 探測 | `supportsEntryPoint07` · `zerodev-aa-bundler.ts` smoke probe |
+| Rule | Enforcement |
+|------|-------------|
+| Validation-phase storage reads | Session-key modules restrict `callData` to whitelisted target/selector — no forbidden cross-contract reads |
+| Edge pre-screen | Static breaker + `checkSoilResistance()` before `sendUserOperation()` |
+| Fail-closed | Bundler unreachable · missing EP v0.7 · timeout → `BUNDLER_TIMEOUT_FAIL_CLOSED` (`ZERODEV_BUNDLER_FAIL_CLOSED_TIMEOUT_MS` = 3,000 ms) |
+| Probe | `supportsEntryPoint07` · `zerodev-aa-bundler.ts` smoke probe |
 
-此不變量確保機構 UserOp 在 Arbitrum bundler 生態中 **可預測送達**，而非因 storage 違規被靜默丟棄——與 106 µs Shield 的 fail-closed 哲學一致。
+This invariant ensures institutional UserOps are **predictably deliverable** on Arbitrum bundler infrastructure — not silently dropped for storage violations — consistent with the 106 µs Shield fail-closed philosophy.
 
-#### 2.4.5 ZeroDev v4「Seven Stages, One Stack」對齊路線圖
+#### 2.4.5 ZeroDev v4 "Seven Stages, One Stack" Alignment Roadmap
 
-ZeroDev v4 將智能錢包生命週期收斂為 **七階段、單一技術棧**。BDLW 對齊其中五個 **執行關鍵階段**（其餘 Recover / Compose 標記 V1.0）：
+ZeroDev v4 converges the smart-wallet lifecycle into **seven stages, one stack**. BDLW aligns five **execution-critical stages** (Recover / Compose marked V1.0):
 
-| 階段 | ZeroDev v4 語意 | BDLW 整合錨點 | 狀態 |
-|------|----------------|--------------|------|
-| **① Sign in** | 身分驗證 · Kernel 帳戶解析 | ZeroDev 託管登入 → `sender` Kernel 地址 · 無 hot-wallet seed | ✅ v0.9 |
-| **② Fund** | 跨鏈入金 · Smart Routing | `ZERODEV_SMART_ROUTE_TARGETS` · USDG → GMX ExchangeRouter（§2.3） | ✅ v0.9 |
-| **③ Gas** | Paymaster 代付 | `zerodev-aa-gas-ledger` · 單筆/日額熔斷（§2.4.3） | ✅ v0.9 |
-| **④ Authorize** | Session Key 授權 · 權限範圍 | ERC-7579 `ORDER_EXECUTE` · R06/R07 · R14 re-auth | ✅ v0.9（v4 適配 ⏳） |
-| **⑤ Execute** | UserOp 廣播 · 鏈上執行 | `verifyAgentIntent()` → Shield → Bundler → GMX/HL venue | ✅ v0.9 |
-| **⑥ Recover** | 帳戶恢復 · 社交恢復 | — | ⏳ V1.0 |
-| **⑦ Compose** | 多步驟意圖編排 | 2PC intent ledger · `intent-ledger.ts`（部分語意已覆蓋） | ⏳ V1.0 |
+| Stage | ZeroDev v4 semantics | BDLW integration anchor | Status |
+|-------|---------------------|-------------------------|--------|
+| **① Sign in** | Identity · Kernel account resolution | ZeroDev login → `sender` Kernel address · no hot-wallet seed | ✅ v0.9 |
+| **② Fund** | Cross-chain deposit · Smart Routing | `ZERODEV_SMART_ROUTE_TARGETS` · USDG → GMX ExchangeRouter (§2.3) | ✅ v0.9 |
+| **③ Gas** | Paymaster sponsorship | `zerodev-aa-gas-ledger` · per-op / daily caps (§2.4.3) | ✅ v0.9 |
+| **④ Authorize** | Session key scope | ERC-7579 `ORDER_EXECUTE` · R06/R07 · R14 re-auth | ✅ v0.9 (v4 adapter ⏳) |
+| **⑤ Execute** | UserOp broadcast · on-chain execution | `verifyAgentIntent()` → Shield → Bundler → GMX/HL venue | ✅ v0.9 |
+| **⑥ Recover** | Account recovery · social recovery | — | ⏳ V1.0 |
+| **⑦ Compose** | Multi-step intent composition | 2PC intent ledger · `intent-ledger.ts` (partial coverage today) | ⏳ V1.0 |
 
 ```text
 Sign in ──► Fund ──► Gas ──► Authorize ──► Execute
@@ -241,7 +242,7 @@ Sign in ──► Fund ──► Gas ──► Authorize ──► Execute
  Account   Route    Ledger     Keys R06   + Venue
 ```
 
-**One Stack 語意：** 五階段共用同一 Kernel 帳戶、`sender` 身分與 Citadel `AllowedToSign` 謂詞——機構用戶無需在 Robinhood Chain 與 Arbitrum One 之間切換錢包或重複 onboarding。
+**One Stack semantics:** All five stages share one Kernel account, `sender` identity, and Citadel `AllowedToSign` predicate — institutions need not switch wallets between Robinhood Chain and Arbitrum One or repeat onboarding.
 
 ---
 
@@ -394,7 +395,7 @@ Official infrastructure standards map — each row links a public ERC/EIP (or ve
 
 #### ERC-4337 — Account Abstraction & UserOperation Structure
 
-> **繁體中文深度規格：** §2.4 Pillar 1 — ZeroDev 帳戶抽象（Kernel v3/v4 · Paymaster · EIP-7562 · v4 Seven Stages 路線圖）。
+> **Deep specification:** §2.4 Pillar 1 — ZeroDev Account Abstraction (Kernel v3/v4 · Paymaster · EIP-7562 · v4 Seven Stages roadmap).
 
 | Field | Citadel binding |
 |-------|-----------------|
@@ -409,7 +410,7 @@ UserOps are drafted locally, sponsored via ZeroDev paymaster middleware, and sub
 
 #### EIP-7562 — Account Abstraction Storage Access Rules
 
-**Zero-Bundler-Rejection Invariant（零 Bundler 拒絕不變量）：** Citadel UserOps MUST NOT violate EIP-7562 opcode/storage rules during the validation phase; bundler rejection is treated as a **protocol fault**, not a retry signal. 詳見 §2.4.4。
+**Zero-Bundler-Rejection Invariant:** Citadel UserOps MUST NOT violate EIP-7562 opcode/storage rules during the validation phase; bundler rejection is treated as a **protocol fault**, not a retry signal. See §2.4.4.
 
 | Rule | Enforcement |
 |------|-------------|
@@ -538,9 +539,6 @@ B2B Option B (slippage-savings fee) remains a separate commercial SKU and is not
 | [`../audit/`](../audit/) | Principal audit · Robinhood Chain safety gate |
 | [`../../docker/README.md`](../../docker/README.md) | Sidecar |
 | [`../grants/arbitrum/ARBITRUM_ONE_PAGER.md`](../grants/arbitrum/ARBITRUM_ONE_PAGER.md) | Grant one-pager |
-| [`../internal/ZERODEV_SMART_ROUTING_DEEP_DIVE.md`](../internal/ZERODEV_SMART_ROUTING_DEEP_DIVE.md) | ZeroDev Smart Routing 深度解析（繁中） |
-| [`../internal/HOT_COLD_PATH_DECOUPLING.md`](../internal/HOT_COLD_PATH_DECOUPLING.md) | Hot/Cold Path 解耦架構（繁中） |
-| [`../internal/WASM_STYLUS_DUAL_ENGINE_ROADMAP.md`](../internal/WASM_STYLUS_DUAL_ENGINE_ROADMAP.md) | Wasm / Stylus 雙引擎路線圖（繁中） |
 | `src/services/risk/liquidation-meter.ts` | `DEFAULT_CROSS_MMR = 0.05` |
 | `src/services/session-key-adapter-lib/nonce-auto-healing.ts` | HL nonce auto-resync |
 | `src/services/execution/twap-engine-v2.ts` | TWAP path planner |
