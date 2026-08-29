@@ -9,6 +9,7 @@ import {
   ROBINHOOD_TESTNET_CHAIN_ID,
 } from "../../sdk/constants";
 import { assertUnidirectionalBridge } from "../../sdk/unidirectional-bridge";
+import { IN_FLIGHT_BRIDGE_CAPITAL } from "../across-ingress-bridge";
 import { type GmPoolRouteKey, resolveGmxMarketByRouteKey } from "../../config/gmx-markets";
 import {
   GMX_V2_EXCHANGE_ROUTER_ARBITRUM,
@@ -32,6 +33,7 @@ export interface RChainYieldEscortInput extends RChainYieldRouteInput {
   gmPoolTarget?: string;
   targetRoute?: GmPoolRouteKey;
   initiatedAtMs?: number;
+  settledAtMs?: number | null;
   nowMs?: number;
 }
 
@@ -106,10 +108,14 @@ export function quoteRChainYieldToArbitrumGm(
       amountUsd: input.amountUsd,
       wallet: input.wallet,
       initiatedAtMs: input.initiatedAtMs ?? nowMs,
+      settledAtMs: input.settledAtMs,
       nowMs,
     });
-    bridgeEscortOk = bridge.ok;
-    if (!bridge.ok) reasons.push(...bridge.reasons);
+    bridgeEscortOk = bridge.deployable;
+    if (!bridge.routeAllowed) reasons.push(...bridge.reasons);
+    else if (!bridge.deployable && bridge.capitalLabel === IN_FLIGHT_BRIDGE_CAPITAL) {
+      reasons.push(IN_FLIGHT_BRIDGE_CAPITAL);
+    }
   }
 
   const routeInput: RChainYieldRouteInput = {

@@ -35,6 +35,10 @@ export interface AcrossBridgeOutboundInput {
 
 export interface AcrossBridgeEvaluation {
   ok: boolean;
+  /** Unidirectional route permitted (AML / direction / amount / timeout). */
+  routeAllowed: boolean;
+  /** Capital may deploy into GM/HL legs — only when SETTLED. */
+  deployable: boolean;
   direction: "outbound-only" | "blocked";
   capitalLabel: BridgeCapitalLabel;
   inFlightUsd: number;
@@ -43,6 +47,24 @@ export interface AcrossBridgeEvaluation {
   lostUsd: number;
   inboundToRobinhoodPermitted: false;
   reasons: string[];
+}
+
+function bridgeDeployable(
+  routeAllowed: boolean,
+  capitalLabel: BridgeCapitalLabel,
+): boolean {
+  return routeAllowed && capitalLabel === "SETTLED";
+}
+
+function evaluation(
+  partial: Omit<AcrossBridgeEvaluation, "routeAllowed" | "deployable"> & {
+    routeAllowed: boolean;
+  },
+): AcrossBridgeEvaluation {
+  return {
+    ...partial,
+    deployable: bridgeDeployable(partial.routeAllowed, partial.capitalLabel),
+  };
 }
 
 export function isRobinhoodToArbitrumRoute(
@@ -110,8 +132,9 @@ export function evaluateAcrossBridgeTransfer(
   const direction = validateAcrossBridgeDirection({ sourceChainId, destChainId });
 
   if (!direction.ok) {
-    return {
+    return evaluation({
       ok: false,
+      routeAllowed: false,
       direction: "blocked",
       capitalLabel: direction.inboundBlocked
         ? AML_INBOUND_TO_ROBINHOOD_BLOCKED
@@ -121,12 +144,13 @@ export function evaluateAcrossBridgeTransfer(
       lostUsd: 0,
       inboundToRobinhoodPermitted: false,
       reasons: direction.reasons,
-    };
+    });
   }
 
   if (!(amountUsd > 0)) {
-    return {
+    return evaluation({
       ok: false,
+      routeAllowed: false,
       direction: "outbound-only",
       capitalLabel: "AVAILABLE",
       inFlightUsd: 0,
@@ -134,7 +158,7 @@ export function evaluateAcrossBridgeTransfer(
       lostUsd: 0,
       inboundToRobinhoodPermitted: false,
       reasons: ["BRIDGE_AMOUNT_ZERO"],
-    };
+    });
   }
 
   const timeout = evaluateBridgeTimeout(
@@ -143,8 +167,9 @@ export function evaluateAcrossBridgeTransfer(
     options.timeoutMs,
   );
   if (timeout.failClosed && options.settledAtMs == null) {
-    return {
+    return evaluation({
       ok: false,
+      routeAllowed: false,
       direction: "outbound-only",
       capitalLabel: BRIDGE_TIMEOUT_FAIL_CLOSED,
       inFlightUsd: 0,
@@ -154,12 +179,13 @@ export function evaluateAcrossBridgeTransfer(
       reasons: [
         `${BRIDGE_TIMEOUT_FAIL_CLOSED}:${timeout.elapsedMs}ms>${options.timeoutMs ?? DEFAULT_ACROSS_BRIDGE_TIMEOUT_MS}ms`,
       ],
-    };
+    });
   }
 
   if (options.settledAtMs != null && options.settledAtMs >= input.initiatedAtMs) {
-    return {
+    return evaluation({
       ok: true,
+      routeAllowed: true,
       direction: "outbound-only",
       capitalLabel: "SETTLED",
       inFlightUsd: 0,
@@ -167,11 +193,12 @@ export function evaluateAcrossBridgeTransfer(
       lostUsd: 0,
       inboundToRobinhoodPermitted: false,
       reasons: ["BRIDGE_SETTLED"],
-    };
+    });
   }
 
-  return {
+  return evaluation({
     ok: true,
+    routeAllowed: true,
     direction: "outbound-only",
     capitalLabel: IN_FLIGHT_BRIDGE_CAPITAL,
     inFlightUsd: amountUsd,
@@ -179,5 +206,5 @@ export function evaluateAcrossBridgeTransfer(
     lostUsd: 0,
     inboundToRobinhoodPermitted: false,
     reasons: ["BRIDGE_IN_FLIGHT"],
-  };
+  });
 }

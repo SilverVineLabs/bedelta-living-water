@@ -14,7 +14,7 @@ const WALLET = "0xcccccccccccccccccccccccccccccccccccccccc";
 const NOW = 1_700_000_000_000;
 
 describe("r-chain-yield-router escort", () => {
-  it("quotes RWA → Arbitrum GM with bridge escort ok", () => {
+  it("quotes RWA → Arbitrum GM with bridge escort ok when capital settled", () => {
     const q = quoteRChainYieldToArbitrumGm({
       assetKind: "rwa",
       symbol: "TOKENIZED-TBILL",
@@ -22,6 +22,7 @@ describe("r-chain-yield-router escort", () => {
       wallet: WALLET,
       sourceChainId: ROBINHOOD_TESTNET_CHAIN_ID,
       initiatedAtMs: NOW,
+      settledAtMs: NOW + 500,
       nowMs: NOW + 1_000,
     });
     expect(q.ok).toBe(true);
@@ -34,7 +35,7 @@ describe("r-chain-yield-router escort", () => {
     expect(q.smartRoutingAddress).toBeTruthy();
   });
 
-  it("accepts Robinhood mainnet alias 4663 as source", () => {
+  it("accepts Robinhood mainnet alias 4663 as source when settled", () => {
     const q = quoteRChainYieldToArbitrumGm({
       assetKind: "idle",
       symbol: "USDC",
@@ -42,6 +43,7 @@ describe("r-chain-yield-router escort", () => {
       wallet: WALLET,
       sourceChainId: ROBINHOOD_MAINNET_CHAIN_ID,
       initiatedAtMs: NOW,
+      settledAtMs: NOW + 500,
       nowMs: NOW + 1_000,
     });
     expect(q.ok).toBe(true);
@@ -59,6 +61,21 @@ describe("r-chain-yield-router escort", () => {
     });
     expect(q.ok).toBe(false);
     expect(q.reasons).toContain("RWA_YIELD_AMOUNT_TOO_SMALL");
+  });
+
+  it("blocks in-flight bridge capital from escort deploy", () => {
+    const q = quoteRChainYieldToArbitrumGm({
+      assetKind: "rwa",
+      symbol: "TOKENIZED-TBILL",
+      amountUsd: 1_000,
+      wallet: WALLET,
+      sourceChainId: ROBINHOOD_TESTNET_CHAIN_ID,
+      initiatedAtMs: NOW,
+      nowMs: NOW + 1_000,
+    });
+    expect(q.ok).toBe(false);
+    expect(q.bridgeEscortOk).toBe(false);
+    expect(q.reasons).toContain("IN_FLIGHT_BRIDGE_CAPITAL");
   });
 
   it("does not allow reverse yield path (inbound AML)", () => {

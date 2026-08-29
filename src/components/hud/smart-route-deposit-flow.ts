@@ -137,7 +137,14 @@ export function runSmartRouteDepositPreview(input: {
   symbol?: string;
   wallet: `0x${string}`;
   targetRoute?: GmPoolRouteKey;
+  initiatedAtMs?: number;
+  settledAtMs?: number | null;
+  nowMs?: number;
 }): SmartRouteDepositPreview {
+  const nowMs = input.nowMs ?? Date.now();
+  const initiatedAtMs = input.initiatedAtMs ?? nowMs - 120_000;
+  const settledAtMs =
+    input.settledAtMs === undefined ? initiatedAtMs + 60_000 : input.settledAtMs;
   const quote = quoteRChainYieldToArbitrumGm({
     assetKind: "idle",
     symbol: input.symbol ?? "USDG",
@@ -145,8 +152,11 @@ export function runSmartRouteDepositPreview(input: {
     wallet: input.wallet,
     sourceChainId: ROBINHOOD_TESTNET_CHAIN_ID,
     targetRoute: input.targetRoute,
+    initiatedAtMs,
+    settledAtMs,
+    nowMs,
   });
-  if (!quote.ok) {
+  if (!quote.ok || !quote.bridgeEscortOk) {
     return {
       phase: "blocked",
       ok: false,

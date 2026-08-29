@@ -8,7 +8,7 @@
 | **Entity** | SilverVine Labs |
 | **Protocol** | SliverVine / BeΔ Living Water (BDLW) · Santenmoku Risk Engine |
 | **Audience** | Arbitrum Foundation · ZeroDev Grant Committee · Institutional allocators · Fund-of-funds diligence |
-| **Baseline** | **Locked Minimum Proposal Baseline:** 168 files \| 742 PASS · **Current Branch Live Expected Output:** 174 files \| 764 PASS · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway) · Wasm warm **&lt;60 µs** |
+| **Baseline** | **Locked Minimum Proposal Baseline:** 168 files \| 742 PASS · **Current Branch Live Expected Output:** 174 files \| 768 PASS · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway) · Wasm warm **&lt;60 µs** |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **Spec SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **Risk Framework SSOT** | [`../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) |
@@ -130,7 +130,7 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 
 | Metric | Locked value | Verifier |
 |--------|--------------|----------|
-| **Vitest regression** | **174 files \| 764 PASS** *(Locked Proposal Baseline: 168 \| 742)* | `pnpm test -- --run` |
+| **Vitest regression** | **174 files \| 768 PASS** *(Locked Proposal Baseline: 168 \| 742)* | `pnpm test -- --run` |
 | **Bridge invariants** | **5/5 PASS** | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` |
 | **ZeroDev AA gate** | **4/4 PASS** | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` |
 | **Chaos matrix** | **255/255 blocked · `capitalLossUsd: 0`** | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) |
@@ -206,7 +206,7 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 **Evaluator command pack:**
 
 ```bash
-pnpm test -- --run                                    # 174 files | 764 PASS (Locked Baseline: 168 | 742)
+pnpm test -- --run                                    # 174 files | 768 PASS (Locked Baseline: 168 | 742)
 pnpm audit:security                                   # 3-Tier matrix
 pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
@@ -362,7 +362,7 @@ When heartbeat expires, `auditSessionKeyHeartbeat()` sets `revocationLocked: tru
 
 | Harness | Command | Expected |
 |---------|---------|----------|
-| **Full Vitest** | `pnpm test -- --run` | **174 files \| 764 PASS** *(Locked Baseline: 168 \| 742)* |
+| **Full Vitest** | `pnpm test -- --run` | **174 files \| 768 PASS** *(Locked Baseline: 168 \| 742)* |
 | **Grant v0.9 sim** | `pnpm test:grant-v09-sim` | AA / risk sim PASS |
 | **Wasm feasibility** | `pnpm test:wasm-feasibility` | Soil Wasm sim PASS |
 | **Security matrix** | `pnpm audit:security` | **3-Tier 5/0/0 PASS** |
@@ -524,7 +524,7 @@ Portfolio tail ≤ $100k Alpha Cap + stress replay    ← §4 + Survival Benchma
 | Soil-trip rejected order | **No** — fail-closed pre-execution | **0** |
 | Bounded execution slippage | **Yes** — capped by order-aware Max SL | ≤ fuse budget |
 
-**SSOT:** `evaluateAcrossBridgeTransfer()` · `computeOrderAwareMaxSlUsd()` · Vitest **764 PASS** *(Locked Baseline: 742)*.
+**SSOT:** `evaluateAcrossBridgeTransfer()` · `computeOrderAwareMaxSlUsd()` · Vitest **768 PASS** *(Locked Baseline: 742)*.
 
 ### 5.3 0-Proxy Immutable Infrastructure (SOC 2–Aligned)
 
@@ -574,7 +574,7 @@ MiCA (Markets in Crypto-Assets Regulation) emphasizes **operational resilience, 
 
 ```bash
 pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts   # 5/5 — AML + in-flight
-pnpm test -- --run                                                     # 764 PASS — full regression (Locked Baseline: 742)
+pnpm test -- --run                                                     # 768 PASS — full regression (Locked Baseline: 742)
 ```
 
 ### 5.6 ArbOS Elara Compliance Alignment & Dynamic Target Range
@@ -613,7 +613,7 @@ pnpm test -- --run                                                     # 764 PAS
 |------|----------|------------|
 | **First** | Business operations | Yield hurdle · buffer engine (5–10%) · rebalance rules |
 | **Second** | Risk & compliance | Fail-closed soil · PGATE · AML firewall · bridge accounting |
-| **Third** | Independent assurance | 764 PASS · Survival Benchmark (§3) · chaos matrix · DDIP |
+| **Third** | Independent assurance | 768 PASS · Survival Benchmark (§3) · chaos matrix · DDIP |
 
 | Question | Answer | Verify |
 |----------|--------|--------|
@@ -673,7 +673,7 @@ Ingress capacity and execution timing are fully specified in **§4**. Basel / ES
 
 | # | Check | Command / surface | Pass |
 |---|-------|-------------------|------|
-| 1 | Full regression | `pnpm test -- --run` | 174 \| 764 PASS *(Locked: 168 \| 742)* |
+| 1 | Full regression | `pnpm test -- --run` | 174 \| 768 PASS *(Locked: 168 \| 742)* |
 | 2 | Bridge accounting | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` | 5/5 |
 | 3 | ZeroDev gate | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` | 4/4 |
 | 4 | Security matrix | `pnpm audit:security` | 5/0/0 |
@@ -683,7 +683,7 @@ Ingress capacity and execution timing are fully specified in **§4**. Basel / ES
 | 8 | Session R07 cap | `tests/services/session-key-gates.test.ts` | `SESSION_CAP>5000` severed |
 | 9 | Negative proofs | `pnpm verify:negative` | Soil trips confirmed |
 | 10 | Ingress path comparison | §4.1 table · `across-ingress-bridge.test.ts` | 5/5 · state machine verified |
-| 11 | Regulatory mapping | §5.1–§5.4 · `pnpm test -- --run` | Basel/ES/MiCA tables · 764 PASS |
+| 11 | Regulatory mapping | §5.1–§5.4 · `pnpm test -- --run` | Basel/ES/MiCA tables · 768 PASS |
 
 ---
 

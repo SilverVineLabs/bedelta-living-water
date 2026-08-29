@@ -6,6 +6,7 @@ import {
 } from "../../src/components/hud/smart-route-deposit-flow";
 
 const WALLET = "0xcccccccccccccccccccccccccccccccccccccccc";
+const NOW = 1_700_000_000_000;
 
 describe("smart-route-deposit-flow", () => {
   it("runs deposit → soil → gate payloadHash preview without error", () => {
@@ -16,6 +17,20 @@ describe("smart-route-deposit-flow", () => {
     expect(preview.soilTripped).toBe(false);
     expect(preview.payloadHash).toMatch(/^0x[a-f0-9]{64}$/);
     expect(preview.smartRoutingAddress).toMatch(/^0x[a-fA-F0-9]{40}$/);
+  });
+
+  it("fail-closes smart-route preview on in-flight bridge capital", () => {
+    const preview = runSmartRouteDepositPreview({
+      amountUsd: 1_000,
+      wallet: WALLET,
+      initiatedAtMs: NOW,
+      settledAtMs: null,
+      nowMs: NOW + 30_000,
+    });
+    expect(preview.ok).toBe(false);
+    expect(preview.gateSimVerdict).toBe("DENY");
+    expect(preview.payloadHash).toBeNull();
+    expect(preview.reasons).toContain("IN_FLIGHT_BRIDGE_CAPITAL");
   });
 
   it("fail-closes on undersized deposit", () => {

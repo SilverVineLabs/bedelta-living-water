@@ -19,6 +19,12 @@ import {
   type GmxEthDeltaSnapshot,
 } from "./gmx-eth-delta";
 import { refreshSoilArbitrumProbesWithFallback } from "./risk-control-lib/soil-arb-probe-refresh";
+import {
+  buildLiveHedgeSoilInput,
+  HEDGE_SOIL_L2_TRIP,
+} from "./gmx-cross-wallet-hedge-lib/build-hedge-soil-input";
+
+export { HEDGE_SOIL_L2_TRIP };
 
 async function postHlInfo(
   body: Record<string, unknown>,
@@ -122,6 +128,13 @@ export async function runGmxCrossWalletEthHedge(input: {
   };
   const riskBalanceUsd = Math.max(orderUsd / 0.01, delta.gmLiquidityUsd, 10_000);
 
+  const liveSoil = await buildLiveHedgeSoilInput({
+    symbol: "ETH",
+    orderUsd,
+    gmxReferenceMidUsd: delta.ethMidUsd || ethMarkUsd,
+    fetchFn: input.fetchFn,
+  });
+
   const result = await executeHlSessionKeyOrder(leg, {
     signer,
     dryRun: !live,
@@ -147,15 +160,10 @@ export async function runGmxCrossWalletEthHedge(input: {
       skipHardlockAssert: true,
     }),
     preTrade: {
-      symbol: "ETH",
-      hlSpot: ethMarkUsd,
-      hlPerp: ethMarkUsd,
-      dydxPerp: ethMarkUsd,
-      depthUsd: 500_000,
+      ...liveSoil,
       latencyMs: 50,
       expectedSlippage: 0.0005,
       accountBalanceUsd: riskBalanceUsd,
-      isTestnet: false,
     },
   });
 

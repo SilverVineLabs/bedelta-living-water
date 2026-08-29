@@ -87,4 +87,4 @@ ORDER BY 1 DESC;
 
 ---
 
-*SilverVine Labs · Dune Dashboard Spec · Vitest SSOT: 174/174 files | 764/764 PASS*
+*SilverVine Labs · Dune Dashboard Spec · Vitest SSOT: 174/174 files | 768/768 PASS*

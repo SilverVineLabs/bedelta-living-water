@@ -196,11 +196,11 @@ BDLW distribution is **B2B infrastructure-first** — the Citadel SDK is the wed
 
 **Pendle alignment (risk guard, not yield wrapper):** [`pendle-pt-expiry-guard.ts`](../../src/adapters/pendle/pendle-pt-expiry-guard.ts) — `evaluatePendlePtExpiryRisk()` fail-closes when PT maturity **&lt; 7 days** and implied yield jitter **&gt; 200 bps**; prevents premature PT packaging of unsettled GMX async GM legs.
 
-> **Regression SSOT:** Vitest **174/174 files | 764/764 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Cargo Stylus **`cargo test` 5/5 PASS** · Forge **60/60** · Security-tier **5/0/0 PASS**.
+> **Regression SSOT:** Vitest **174/174 files | 768/768 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Cargo Stylus **`cargo test` 5/5 PASS** · Forge **60/60** · Security-tier **5/0/0 PASS**.
 
 ---
 
-> **Proposal Locked Baseline:** Vitest **168 test files | 742 PASS (100% Clean)** · **Current Live Suite:** **174/174 files | 764/764 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` Cloudflare budget, `<60µs` execution.
+> **Proposal Locked Baseline:** Vitest **168 test files | 742 PASS (100% Clean)** · **Current Live Suite:** **174/174 files | 768/768 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` Cloudflare budget, `<60µs` execution.
 
 **Audience:** Arbitrum Open House / Buildathon / chain security diligence.  
 **Out of scope here:** GMX builder fee pitch → [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md) (monetization only — not the innovation claim).
@@ -300,7 +300,7 @@ Prize distribution is **milestone-gated** — each row is independently verifiab
 | ID | Unlock condition (objective) | Sponsor / track | Status (2026-08-30) |
 |----|------------------------------|-----------------|---------------------|
 | **M-Sepolia** | Sepolia Gate + RiskOracle + IngressSafetySwitch verified · `sepoliaDualLegProof` in `/api/grant-audit` | Arbitrum | ✅ Delivered |
-| **M-CLI** | Vitest **174/174 files \| 764/764 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` | All | ✅ Delivered |
+| **M-CLI** | Vitest **174/174 files \| 768/768 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` | All | ✅ Delivered |
 | **M-RH-Demo** | Public demo: `46630`/`4663` → `42161` outbound escort OK · inbound AML blocked · `lostUsd ≡ 0` | Robinhood Chain | ✅ Code-verified · ⏳ video |
 | **M-GMX-Fee** | Unsigned GMX v2 payload injects **10 bps** `uiFeeReceiver` · balancer qualified routing | GMX | ✅ Injected · ⏳ `claimUiFees` |
 | **M-Dune** | Publish Dune dashboard with 3 panels per [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Dune | ⏳ Spec ready · dashboard pending |
@@ -314,13 +314,13 @@ Prize distribution is **milestone-gated** — each row is independently verifiab
 
 ```bash
 pnpm install
-pnpm test -- --run        # Current Live Suite: 174/174 files | 764/764 PASS (Proposal Locked Baseline: 168 | 742)
+pnpm test -- --run        # Current Live Suite: 174/174 files | 768/768 PASS (Proposal Locked Baseline: 168 | 742)
 pnpm run audit:security   # 5/0/0 PASS
 cd SliverVineGate && forge test --gas-report && cd ..
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualLegProof
 ```
 
-**Regression bar:** **Proposal Locked Baseline:** 168 files | 742 PASS (100% Clean) · **Current Live Suite:** 174/174 files | 764/764 PASS (100% Clean · Exit Code 0) · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
+**Regression bar:** **Proposal Locked Baseline:** 168 files | 742 PASS (100% Clean) · **Current Live Suite:** 174/174 files | 768/768 PASS (100% Clean · Exit Code 0) · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
 
 ---
 

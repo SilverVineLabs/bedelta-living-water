@@ -7,7 +7,7 @@
 | **贊助商** | Robinhood Chain · Dune · GMX · Pendle |
 | **審計範圍** | `src/` · `contracts/` · `SliverVineGate/` · `docs/` · 根目錄 `.md` |
 | **審計日期** | 2026-08-30 |
-| **測試主張** | 文檔 SSOT：**174 files \| 764 PASS (100% Clean · Exit Code 0)**；本輪 **未執行** `pnpm test`（依任務禁令） |
+| **測試主張** | 文檔 SSOT：**174 files \| 768 PASS (100% Clean · Exit Code 0)**；本輪 **未執行** `pnpm test`（依任務禁令） |
 | **測試檔案實測** | 工作區 `tests/**/*.test.ts` glob = **174 檔**（檔案數與文檔對齊） |
 | **鎖定 Grant 基線** | 歷史鎖定：**168 files \| 742 PASS**（不得改寫為現況） |
 
@@ -45,9 +45,9 @@ SilverVine / BDLW 在 **Arbitrum Sepolia Gate 棧 + Edge fail-closed + GMX v2 �
 | 主張 | 證據 | 判定 |
 |------|------|------|
 | 174 test files | glob `tests/**/*.test.ts` = 174 | **對齊** |
-| 764 PASS | 文檔已全面同步；本輪未跑 Vitest | **條件對齊**（數字未 CLI 覆核） |
+| 768 PASS | 文檔已全面同步；本輪未跑 Vitest | **條件對齊**（數字未 CLI 覆核） |
 | 168 \| 742 鎖定基線 | README / GRANT / VERIFICATION_MATRIX 保留 | **對齊** |
-| README Docker 段仍寫「full regression **168 \| 742**」對 `docker … pnpm test` | `README.md` ~L49 vs 同檔 L37/64 的 174 \| 764 | **落差**（容器路徑過期；`docker/README.md` 已 764） |
+| README Docker 段仍寫「full regression **168 \| 742**」對 `docker … pnpm test` | `README.md` ~L49 vs 同檔 L37/64 的 174 \| 768 | **落差**（容器路徑過期；`docker/README.md` 已 768） |
 | Forge 60/60 · 327,675 fuzz | 文檔區分 nightly / `FOUNDRY_PROFILE=deep` vs 標準 5,120 | **條件對齊**（勿在 pitch 把 nightly fuzz 說成每次 `forge test`） |
 
 ### 1.3 合約地址 vs 常數
@@ -411,7 +411,7 @@ SilverVine / BDLW 在 **Arbitrum Sepolia Gate 棧 + Edge fail-closed + GMX v2 �
 
 - 禁止說「HMAC-SHA256」「密碼學不可否認的拒絕證明」（改：確定性 SHA-256 審計摘要 + 鏈上 EIP-712 結算）。
 - 禁止展示 SDK 佔位址 `0x511E1111…`；只展示 Sepolia checksum Gate。
-- 禁止「Stylus 已主網部署」「764 測試剛才現場跑完」（未跑則說「倉庫 174 檔回歸 SSOT」）。
+- 禁止「Stylus 已主網部署」「768 測試剛才現場跑完」（未跑則說「倉庫 174 檔回歸 SSOT」）。
 - 禁止 APY 保證、禁止 25% rebate 當協議不變量。
 - 禁止把 Hyperliquid 說成 Arbitrum 部署以满足賽制。
 
@@ -428,7 +428,7 @@ SilverVine / BDLW 在 **Arbitrum Sepolia Gate 棧 + Edge fail-closed + GMX v2 �
 | 120–140 | `curl /api/grant-audit` · 口播 Dune 三面板為下一里程碑 | 評審 7 |
 | 140–155 | Pendle **誠實 15 秒**：不包裝未結算 GM；V1 對齊到期 | 評審 6（止損） |
 | 155–175 | 營利：10 bps CaaS · 里程碑 M1 已交付 Sepolia · 主網 = M6 | 評審 9、12 |
-| 175–180 | CLI：`pnpm test -- --run` 字幕 **174 files \| 764 PASS** · QR | 全場 |
+| 175–180 | CLI：`pnpm test -- --run` 字幕 **174 files \| 768 PASS** · QR | 全場 |
 
 ### 4.3 評審想在 3 分鐘裡「具體看到」的清單（打勾用）
 
@@ -493,12 +493,12 @@ SilverVine / BDLW 在 **Arbitrum Sepolia Gate 棧 + Edge fail-closed + GMX v2 �
 
 - 靜態對照：文檔主張 ↔ `src/` / `contracts/` / `SliverVineGate/` 符號與常數。
 - **未執行** `pnpm test`、未 `forge test`、未鏈上 `eth_getCode`、未開啟瀏覽器驗證 HUD。
-- 764 PASS 採文檔 SSOT + 174 檔 glob；若 CI 漂移，以 CLI 為準並回寫文檔。
+- 768 PASS 採文檔 SSOT + 174 檔 glob；若 CI 漂移，以 CLI 為準並回寫文檔。
 
 ## 附錄 B — 48 小時急救清單（若要上修至 7.2+）
 
 1. 全公開 `.md`：HMAC-SHA256 → **SHA-256 reject digest（非 MAC）**。  
-2. `README.md` Docker 句 168/742 → 與 174/764 對齊或標明「容器內為鎖定基線」。  
+2. `README.md` Docker 句 168/742 → 與 174/768 對齊或標明「容器內為鎖定基線」。  
 3. Demo 環境變數強制 Sepolia Gate 址；避免 HUD 顯示 `0x511E…`。  
 4. 新增公開一頁 Pendle 對齊（或 pitch 15 秒誠實段）。  
 5. 發布或錄製 Dune 最小 query（哪怕是 GMX uiFee 事件）。  
@@ -506,4 +506,4 @@ SilverVine / BDLW 在 **Arbitrum Sepolia Gate 棧 + Edge fail-closed + GMX v2 �
 
 ---
 
-*SilverVine Labs · 內部文件 · Buildathon 10 評審模擬 · Vitest 文檔 SSOT: 174/174 files | 764/764 PASS · 本輪未跑測試*
+*SilverVine Labs · 內部文件 · Buildathon 10 評審模擬 · Vitest 文檔 SSOT: 174/174 files | 768/768 PASS · 本輪未跑測試*

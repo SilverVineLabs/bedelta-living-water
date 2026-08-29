@@ -5,7 +5,7 @@
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)  
 **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 
-> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · **Current Live Suite:** **174 files | 764 PASS** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
+> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · **Current Live Suite:** **174 files | 768 PASS** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
 
 **Audience:** Arbitrum ecosystem / Open House / future Security Grant.  
 **Not this pack:** GMX `uiFeeReceiver` economics → [`../gmx/`](../gmx/).
@@ -54,12 +54,12 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v0.9 Delivered (100% Code & Tested)** | ✅ Live | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee (monetization, not moat) · **174 test files / 764 PASS (100% Clean)** *(Locked Baseline: 168 \| 742)* · Sepolia / dry-run verified; mainnet ties to M6 |
+| **v0.9 Delivered (100% Code & Tested)** | ✅ Live | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee (monetization, not moat) · **174 test files / 768 PASS (100% Clean)** *(Locked Baseline: 168 \| 742)* · Sepolia / dry-run verified; mainnet ties to M6 |
 | **V1.0 Roadmap (Planned Post-Grant)** | ⏳ Planned | **Citadel-as-a-Service (CaaS)** — productize `@slivervine/citadel-sdk` as an open sub-ms pre-execution risk layer for all Arbitrum dApps & AI Agent frameworks · **Hedge Leg Depth Guard** — dedicated Hyperliquid L2 orderbook depth sensing prior to hedge execution (zero-market-impact 1× short even during flash-liquidity drawdowns) · On-chain ECDSA Signer Recovery · Production GM Vault deployment · BTC/USDC isomorphic pools |
 
 | Phase | Scope | Status |
 |-------|-------|--------|
-| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **174/764** bar *(Locked: 168/742)* · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
+| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **174/768** bar *(Locked: 168/742)* · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
 | Security Grant pack | Cold audit pack · R01–R20 + Slither/Echidna narrative | ⏳ Planned |
 | Institutional AA | Kernel v3 Session Key (draft: `docs/internal/zerodev/`) | ✅ Delivered in v0.9 |
 
@@ -69,7 +69,7 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 ```bash
 pnpm install
-pnpm test                 # 174 test files | 764 PASS (Locked Baseline: 168 | 742)
+pnpm test                 # 174 test files | 768 PASS (Locked Baseline: 168 | 742)
 pnpm run audit:security   # 5/0/0 PASS
 pnpm run demo:e2e         # 5-step Citadel E2E (dry-run)
 cd SliverVineGate && forge test && cd ..

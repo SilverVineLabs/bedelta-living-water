@@ -39,6 +39,8 @@ describe("across-ingress-bridge", () => {
       { nowMs: T0 + 60_000 },
     );
     expect(state.ok).toBe(true);
+    expect(state.routeAllowed).toBe(true);
+    expect(state.deployable).toBe(false);
     expect(state.capitalLabel).toBe(IN_FLIGHT_BRIDGE_CAPITAL);
     expect(state.inFlightUsd).toBe(2_500);
     expect(state.settledUsd).toBe(0);
@@ -56,6 +58,8 @@ describe("across-ingress-bridge", () => {
       { nowMs: T0 + 120_000, settledAtMs: T0 + 90_000 },
     );
     expect(state.capitalLabel).toBe("SETTLED");
+    expect(state.routeAllowed).toBe(true);
+    expect(state.deployable).toBe(true);
     expect(state.settledUsd).toBe(1_000);
     expect(state.inFlightUsd).toBe(0);
     expect(state.lostUsd).toBe(0);

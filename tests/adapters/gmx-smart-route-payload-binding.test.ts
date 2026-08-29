@@ -40,6 +40,7 @@ describe("gmx smart-route payload binding", () => {
       sourceChainId: ROBINHOOD_TESTNET_CHAIN_ID,
       targetRoute: "GM_BTC_USDC",
       initiatedAtMs: NOW,
+      settledAtMs: NOW + 500,
       nowMs: NOW + 1_000,
     });
     expect(q.ok).toBe(true);
