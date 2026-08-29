@@ -104,6 +104,8 @@ Five-star institutional diligence lens — **Manual Hedging vs Reactive Vaults v
 
 Public grant diligence requires **on-chain + Edge telemetry parity**. BDLW exposes `GET /api/grant-audit` as the live SSOT; Dune dashboards mirror the same pillars for institutional allocators.
 
+**Full dashboard spec:** [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) — 3 production SQL queries (Ingress Escort Volume · Soil Trip Frequency · GMX UI Fee Accrual).
+
 **Dashboard SSOT targets:**
 
 | Panel | Metric | Source |
@@ -180,11 +182,25 @@ ORDER BY 1 DESC;
 
 **Demo & storyboard:** [`Grant Pitch & Video Storyboard — The Storm & 3-Options`](../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) · 35s evaluator script · Three-Pillar architecture walkthrough.
 
-> **Regression SSOT:** Vitest **173/173 files | 761/761 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Cargo Stylus **`cargo test` 5/5 PASS** · Forge **60/60** · Security-tier **5/0/0 PASS**.
+---
+
+## Growth Strategy & Agentic Framework Distribution Pipeline
+
+BDLW distribution is **B2B infrastructure-first** — the Citadel SDK is the wedge; GMX builder fees fund integrator incentives.
+
+| Channel | Target | Integration surface | GTM motion |
+|---------|--------|---------------------|------------|
+| **1. Agentic Framework Adapters** | Eliza (ai16z) · LangChain · AutoGPT | `@slivervine/citadel-sdk` · `guardAgentUserOp()` · `evaluateAgentCitadelGuard()` · `assertUnidirectionalBridge()` | Ship thin adapter packages (`eliza-plugin-citadel`, `langchain-tool-citadel-guard`) that wrap pre-broadcast fail-closed hooks before any Agent UserOp reaches a bundler |
+| **2. B2B Trading Bot CaaS** | Telegram Trading Bots · Institutional Desks | Sub-ms Wasm soil fuse + EIP-712 Gate attestation as a **Security Citadel layer** in front of existing bot signers | White-label `checkSoilResistance()` + session-key scope (R06/R07) · no custody · `lostUsd ≡ 0` bridge accounting for treasury desks |
+| **3. Dev Incentive Flywheel** | SDK integrators routing GMX volume | **50% revenue share** of GMX **10 bps** `uiFeeReceiver` builder fee attributed to verified integrator `referralCode` / partner wallet | On-chain attribution via GMX order events · reconciled against [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) Panel 3 |
+
+**Pendle alignment (risk guard, not yield wrapper):** [`pendle-pt-expiry-guard.ts`](../../src/adapters/pendle/pendle-pt-expiry-guard.ts) — `evaluatePendlePtExpiryRisk()` fail-closes when PT maturity **&lt; 7 days** and implied yield jitter **&gt; 200 bps**; prevents premature PT packaging of unsettled GMX async GM legs.
+
+> **Regression SSOT:** Vitest **174/174 files | 764/764 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Cargo Stylus **`cargo test` 5/5 PASS** · Forge **60/60** · Security-tier **5/0/0 PASS**.
 
 ---
 
-> **Proposal Locked Baseline:** Vitest **168 test files | 742 PASS (100% Clean)** · **Current Live Suite:** **173/173 files | 761/761 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` Cloudflare budget, `<60µs` execution.
+> **Proposal Locked Baseline:** Vitest **168 test files | 742 PASS (100% Clean)** · **Current Live Suite:** **174/174 files | 764/764 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` Cloudflare budget, `<60µs` execution.
 
 **Audience:** Arbitrum Open House / Buildathon / chain security diligence.  
 **Out of scope here:** GMX builder fee pitch → [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md) (monetization only — not the innovation claim).
@@ -277,17 +293,34 @@ Replace zero addresses above with Arbiscan-verified deployments before final gra
 
 ---
 
+## Granular Milestone Matrix (Buildathon · Grant-Tied Distribution)
+
+Prize distribution is **milestone-gated** — each row is independently verifiable; avoid single-shot M6-only narratives.
+
+| ID | Unlock condition (objective) | Sponsor / track | Status (2026-08-30) |
+|----|------------------------------|-----------------|---------------------|
+| **M-Sepolia** | Sepolia Gate + RiskOracle + IngressSafetySwitch verified · `sepoliaDualLegProof` in `/api/grant-audit` | Arbitrum | ✅ Delivered |
+| **M-CLI** | Vitest **174/174 files \| 764/764 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` | All | ✅ Delivered |
+| **M-RH-Demo** | Public demo: `46630`/`4663` → `42161` outbound escort OK · inbound AML blocked · `lostUsd ≡ 0` | Robinhood Chain | ✅ Code-verified · ⏳ video |
+| **M-GMX-Fee** | Unsigned GMX v2 payload injects **10 bps** `uiFeeReceiver` · balancer qualified routing | GMX | ✅ Injected · ⏳ `claimUiFees` |
+| **M-Dune** | Publish Dune dashboard with 3 panels per [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Dune | ⏳ Spec ready · dashboard pending |
+| **M6-Mainnet** | Arbitrum One limited-capital deployment · live uiFee accrual · institutional AA on Kernel v3 | Arbitrum · Grant | ⏳ Post-grant |
+
+**Pendle guard (M-Dune adjacent):** `evaluatePendlePtExpiryRisk()` — [`tests/adapters/pendle-pt-expiry-guard.test.ts`](../../tests/adapters/pendle-pt-expiry-guard.test.ts).
+
+---
+
 ## Verification (60s)
 
 ```bash
 pnpm install
-pnpm test -- --run        # Current Live Suite: 173/173 files | 761/761 PASS (Proposal Locked Baseline: 168 | 742)
+pnpm test -- --run        # Current Live Suite: 174/174 files | 764/764 PASS (Proposal Locked Baseline: 168 | 742)
 pnpm run audit:security   # 5/0/0 PASS
 cd SliverVineGate && forge test --gas-report && cd ..
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualLegProof
 ```
 
-**Regression bar:** **Proposal Locked Baseline:** 168 files | 742 PASS (100% Clean) · **Current Live Suite:** 173/173 files | 761/761 PASS (100% Clean · Exit Code 0) · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
+**Regression bar:** **Proposal Locked Baseline:** 168 files | 742 PASS (100% Clean) · **Current Live Suite:** 174/174 files | 764/764 PASS (100% Clean · Exit Code 0) · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
 
 ---
 

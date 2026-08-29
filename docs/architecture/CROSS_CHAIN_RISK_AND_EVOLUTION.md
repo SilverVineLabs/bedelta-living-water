@@ -2,7 +2,7 @@
 
 > **Document Status:** Official SSOT for Arbitrum Foundation & ZeroDev Grant Committees  
 > **Version:** v1.0 → v2.0 Roadmap Alignment  
-> **Baseline:** Vitest **173 files | 761 PASS (100% Clean)** *(Locked Proposal Baseline: 168 \| 742)* · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs**  
+> **Baseline:** Vitest **174 files | 764 PASS (100% Clean)** *(Locked Proposal Baseline: 168 \| 742)* · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs**  
 > **Core Principle:** Honest Accounting, Physical Invariants (`lostUsd ≡ 0`), and Venue-Agnostic Pre-Execution Citadel Protection.  
 > **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md)
 
@@ -51,7 +51,7 @@ This document outlines BDLW's 3-Stage Evolutionary Roadmap, its Tiered Liquidity
 
 | Stage | Status | Center of Gravity |
 |-------|--------|-------------------|
-| **A — V1.0** | ✅ Code-Verified (173 files \| 761 PASS · Locked Baseline: 168 \| 742) | Arbitrum GMX v2 + HL 1× short · Robinhood outbound escort |
+| **A — V1.0** | ✅ Code-Verified (174 files \| 764 PASS · Locked Baseline: 168 \| 742) | Arbitrum GMX v2 + HL 1× short · Robinhood outbound escort |
 | **B — V1.5** | ⏳ Roadmap | Aave/Morpho base + Variational native hedge PoC |
 | **C — V2.0** | ⏳ Design Spec | 100% Arbitrum atomic intent stack · CaaS monetization |
 
@@ -164,7 +164,7 @@ GMX skew premium (+5~10 bps uiFeeReceiver) + funding cushion
 
 **Design rule:** Citadel Safety Buffer and builder UI fee exist to **capture real economic surplus** from GMX v2 skew routing — not to mask slippage with emissions. The 0.5% Hurdle Gate ensures **net gains always outpace friction** before Delta-Neutral capital is deployed or rebalanced.
 
-**Code anchors:** `src/services/yield/rebalance-rules.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `src/services/risk-control-lib/soil-resistance.ts` · Vitest **761 PASS** regression *(Locked Baseline: 742)*.
+**Code anchors:** `src/services/yield/rebalance-rules.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `src/services/risk-control-lib/soil-resistance.ts` · Vitest **764 PASS** regression *(Locked Baseline: 742)*.
 
 ### 2.6 Real Yield vs. Toxic Inflation
 
@@ -497,7 +497,7 @@ lostUsd: number; // Always 0 — pending bridge liquidity is never booked as los
 | **Historical simulation** | Survival Benchmark 30D HL funding + L2 book | On-demand (`generate-survival-report.ts`) |
 | **Stress scenarios** | $100k canonical + **$1M** stress notional (`STRESS_NOTIONAL_USD`) | Same report |
 | **Reverse stress** | Negative proofs — depth breach, soil trip, bridge timeout | `pnpm verify:negative` |
-| **Model validation** | Vitest **761 PASS** full regression *(Locked Baseline: 742)* | CI / pre-release |
+| **Model validation** | Vitest **764 PASS** full regression *(Locked Baseline: 742)* | CI / pre-release |
 
 ### 6.4 Three Lines of Defense Mapping
 
@@ -564,7 +564,7 @@ gmx-smart-route-payload-binding.ts → buildGmxSmartRoutePayloadBinding()
 
 | Check | Command / Surface | Expected |
 |-------|-------------------|----------|
-| Full regression | `pnpm test -- --run` | **173 files \| 761 PASS** *(Locked: 168 \| 742)* |
+| Full regression | `pnpm test -- --run` | **174 files \| 764 PASS** *(Locked: 168 \| 742)* |
 | Bridge invariants | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` | **5/5 PASS** |
 | Live audit | `GET /api/grant-audit` | `lostUsd: 0` · guard states exposed |
 

@@ -329,7 +329,7 @@ Edge **無狀態** 預篩矩陣（`evaluateStaticBreakerMatrix` + `evaluateSpons
 
 ## 附錄：SilverVine v0.8 內部已知物理邊界與 V1.0 主網修補 Roadmap
 
-> **Truth-Mode 聲明：** 本附錄僅供內部工程 / 法務 / Grant 盡職審查使用。下列三項為 v0.8 Santenmoku **已知情且已文件化** 的物理邊界，**不影響** Sepolia 乾跑與 761/761 Vitest 回歸通過，但必須在 **V1.0 主網（M6）** 前完成修補或接受 residual risk 簽核。
+> **Truth-Mode 聲明：** 本附錄僅供內部工程 / 法務 / Grant 盡職審查使用。下列三項為 v0.8 Santenmoku **已知情且已文件化** 的物理邊界，**不影響** Sepolia 乾跑與 764/764 Vitest 回歸通過，但必須在 **V1.0 主網（M6）** 前完成修補或接受 residual risk 簽核。
 
 ### 邊界總覽
 
@@ -469,4 +469,4 @@ P2（主網後 30 天）  邊界 C — 全路徑定點化 + Stylus 主網 SSOT
 
 ---
 
-*SilverVine Labs · Santenmoku Engine v0.8 · 內部 13 維度架構白皮書 · Vitest SSOT: 173/173 files \| 761/761 PASS*
+*SilverVine Labs · Santenmoku Engine v0.8 · 內部 13 維度架構白皮書 · Vitest SSOT: 174/174 files \| 764/764 PASS*

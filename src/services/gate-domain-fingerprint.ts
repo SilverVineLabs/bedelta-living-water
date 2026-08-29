@@ -19,16 +19,15 @@ import { arbitrum, arbitrumSepolia } from "viem/chains";
 import {
   EIP712_DOMAIN_NAME,
   EIP712_DOMAIN_VERSION,
+  SLIVERVINE_GATE_SEPOLIA_ADDRESS,
 } from "../sdk/constants";
 import {
   ARBITRUM_SEPOLIA_CHAIN_ID,
   resolveArbitrumRpcUrl,
 } from "../adapters/arbitrum/zerodev-aa/zerodev-aa-chain";
 
-/** Sepolia SliverVineGate — SSOT: docs/grants/SUBMISSION.md */
-export const SLIVERVINE_GATE_SEPOLIA_ADDRESS = getAddress(
-  "0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1",
-);
+/** Sepolia SliverVineGate — SSOT: `src/sdk/constants.ts` */
+export { SLIVERVINE_GATE_SEPOLIA_ADDRESS };
 
 const EIP712_DOMAIN_TYPEHASH = keccak256(
   toHex(
@@ -79,7 +78,7 @@ export function resolveGateAddress(
   const raw =
     override ??
     (e.SLIVERVINE_GATE_ADDRESS?.trim() as Address | undefined) ??
-    SLIVERVINE_GATE_SEPOLIA_ADDRESS;
+    getAddress(SLIVERVINE_GATE_SEPOLIA_ADDRESS);
   return getAddress(raw);
 }
 

@@ -14,6 +14,8 @@ export const AGENT_GUARD_DOMAIN_NAME = "SliverVineAgentCitadelGuard" as const;
 export const AGENT_GUARD_DOMAIN_VERSION = "0.1" as const;
 export const AGENT_GUARD_CHAIN_ID = ARBITRUM_ONE_CHAIN_ID;
 export const AGENT_GUARD_VERIFYING_CONTRACT = "0x0000000000000000000000000000000000000000" as const;
+/** Default M2M session key when no scoped key is bound (Edge reflex plane). */
+export const CITADEL_SESSION_KEY_STUB = "CITADEL_SESSION_KEY_STUB" as const;
 
 export interface AgentIntentMessage {
   maxSlippageBps: number;
@@ -114,12 +116,26 @@ function isDepthDeadman(soil: SoilResistanceResult): boolean {
   );
 }
 
-export async function signAgentMemoryPayload(payload: AgentMemoryRejectPayload): Promise<string> {
-  const digest = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(JSON.stringify(payload)),
+/** Deterministic HMAC-SHA256 session proof (Workers Web Crypto; semantically ≡ Node createHmac). */
+export async function signAgentMemoryPayload(
+  payload: AgentMemoryRejectPayload,
+  sessionKey?: string,
+): Promise<string> {
+  const keyMaterial = sessionKey ?? CITADEL_SESSION_KEY_STUB;
+  const message = JSON.stringify(payload);
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(keyMaterial),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
   );
-  const hex = Array.from(new Uint8Array(digest))
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    cryptoKey,
+    new TextEncoder().encode(message),
+  );
+  const hex = Array.from(new Uint8Array(signature))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
   return `0x${hex}`;

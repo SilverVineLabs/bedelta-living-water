@@ -3,7 +3,7 @@
 **Entity:** SilverVine Labs · **Protocol:** SliverVine · **Branch:** `v1.0_push_BDLW`  
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · **Contact:** `grants@silvervinelabs.com`
 
-> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · **Current Live Suite:** **173 files | 761 PASS** · `pnpm test -- --run` · live proof `GET /api/grant-audit`.
+> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · **Current Live Suite:** **174 files | 764 PASS** · `pnpm test -- --run` · live proof `GET /api/grant-audit`.
 
 > **Language policy:** English SSOT files are self-contained — professional English only, no CJK characters, no cross-language links.
 

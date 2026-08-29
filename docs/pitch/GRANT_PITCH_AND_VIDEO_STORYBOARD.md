@@ -7,7 +7,7 @@
 | **Classification** | Grant / Institutional Pitch · Live Demo Script |
 | **Branch baseline** | `v1.0_push_BDLW` |
 | **Entity** | SilverVine Labs · BeΔ Living Water (BDLW) |
-| **Baseline** | Vitest **168 files \| 742 PASS (100% Clean)** · live **`761 PASS`** on `pnpm test -- --run` · Wasm **p50 ~106 µs** · chaos **255/255** |
+| **Baseline** | Vitest **168 files \| 742 PASS (100% Clean)** · live **`764 PASS`** on `pnpm test -- --run` · Wasm **p50 ~106 µs** · chaos **255/255** |
 | **Live proof** | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` |
 | **Related SSOT** | [`VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) · [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 
@@ -28,7 +28,7 @@
 | **Onboarding** | **1-click** ZeroDev Smart Routing deposit (Pillar 2 surface) + Kernel v3 session keys — no hot-wallet custody |
 | **Yield architecture** | Delta-neutral **GMX v2 GM + Hyperliquid 1× short** with **0.5% Hurdle Gate** (`FRICTION_BUFFER_APY`) — dynamic target band **8.2% ~ 11.8%** (non-guaranteed display) |
 | **Honest accounting** | Bridge in-flight capital labeled **`IN_FLIGHT_BRIDGE_CAPITAL`** — **`lostUsd ≡ 0`** until settled |
-| **Proof** | **761 PASS** Vitest · **255/255** chaos matrix · **4/4** ZeroDev gate · **5/5** bridge tests |
+| **Proof** | **764 PASS** Vitest · **255/255** chaos matrix · **4/4** ZeroDev gate · **5/5** bridge tests |
 
 **Three Pillars (evaluator mental model):**
 
@@ -88,7 +88,7 @@ Pillar 3 SHIELD (CORE MOAT)     → pkg/soil_core.wasm · checkSoilResistance() 
 | **AML isolation** | Pillar 2 **Compliance Ingress Firewall** — outbound-only escort; inbound blocked | Generic contract scopes | KYC at onboarding only | None on-chain |
 | **Wasm soil fuse** | **`pkg/soil_core.wasm`** · `<28kb` budget | None | None | None |
 | **ZeroDev integration** | Kernel v3 production · gate **before** paymaster sign | Kernel / 7702 UX-first | None | None |
-| **Regression proof** | **761 PASS** · `zerodev-aa-gate` **4/4** · bridge **5/5** | Vendor QA snapshots | Audit letters | Partial |
+| **Regression proof** | **764 PASS** · `zerodev-aa-gate` **4/4** · bridge **5/5** | Vendor QA snapshots | Audit letters | Partial |
 
 ---
 
@@ -178,12 +178,12 @@ pnpm exec vitest run tests/risk-control/soil-circuit-breaker.test.ts
 | **0:28–0:30** | Pillar 2 overlay: bridge state **`IN_FLIGHT_BRIDGE_CAPITAL`** · no GM open | **`lostUsd ≡ 0`** green lock | `src/adapters/robinhood/robinhood-across-bridge.ts` |
 | **0:30–0:32** | Pillar 1: session key **30s TTL** countdown · `$5k cap` badge | VO: *"Scoped keys. Honest labels. Zero naked broadcast."* | `session-key-gates.ts` · `nonce-auto-healing.ts` |
 | **0:32–0:34** | Storm passes · HUD green **READY** · no loss counter | **`capitalLossUsd: 0`** · chaos 255/255 | `docs/audit/chaos-blackswan-metrics.json` |
-| **0:34–0:35** | Logo · URL · QR to `/api/grant-audit` | **BeΔ Living Water · SilverVine Labs** | `pnpm test -- --run` · **761 PASS** |
+| **0:34–0:35** | Logo · URL · QR to `/api/grant-audit` | **BeΔ Living Water · SilverVine Labs** | `pnpm test -- --run` · **764 PASS** |
 
 **End card verification strip (on-screen, 0:34–0:35):**
 
 ```text
-761 PASS · 255/255 chaos · 4/4 ZeroDev gate · 5/5 bridge · p50 106µs Wasm
+764 PASS · 255/255 chaos · 4/4 ZeroDev gate · 5/5 bridge · p50 106µs Wasm
 ```
 
 ---
@@ -198,7 +198,7 @@ pnpm exec vitest run tests/risk-control/soil-circuit-breaker.test.ts
 | UI trip banners | 0:02–0:04 | `src/components/compliance-trip-alerts.ts` | `tests/components/compliance-trip-alerts.test.ts` |
 | Session TTL / cap | 0:30–0:32 | `src/services/session-key-adapter-lib/session-key-gates.ts` | `tests/services/session-key-gates.test.ts` |
 | Chaos / zero loss | 0:32–0:34 | `docs/audit/chaos-blackswan-metrics.json` | `tests/scripts/chaos-blackswan-stress.test.ts` |
-| Full regression | End card | — | `pnpm test -- --run` → **761 PASS** |
+| Full regression | End card | — | `pnpm test -- --run` → **764 PASS** |
 
 **Grant evaluator one-liner (post-video):**
 
@@ -214,13 +214,13 @@ pnpm test -- --run && pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.t
 
 | Metric | Doc lock | Live CLI (`pnpm test -- --run`) |
 |--------|----------|----------------------------------|
-| Vitest | **168 files \| 742 PASS (100% Clean)** | **173 files \| 761 PASS** |
+| Vitest | **168 files \| 742 PASS (100% Clean)** | **174 files \| 764 PASS** |
 | ZeroDev gate | **4/4** | `tests/adapters/zerodev-aa-gate.test.ts` |
 | Robinhood bridge | **5/5** | `tests/adapters/robinhood-across-bridge.test.ts` |
 | Chaos matrix | **255/255 · capitalLossUsd: 0** | `docs/audit/chaos-blackswan-metrics.json` |
 | Wasm shield | **p50 ~106 µs** · `<28kb` artifact budget | `tests/services/wasm-feasibility-lib/soil-core-sim.test.ts` |
 
-> **Note for evaluators:** Documentation SSOT locks **742 PASS** as the grant regression phrase; the live suite on `v1.0_push_BDLW` runs **761 PASS** (additional component/compliance tests). Both are 100% clean — re-run CLI to confirm on your machine.
+> **Note for evaluators:** Documentation SSOT locks **742 PASS** as the grant regression phrase; the live suite on `v1.0_push_BDLW` runs **764 PASS** (additional component/compliance tests). Both are 100% clean — re-run CLI to confirm on your machine.
 
 ### Tier 0–5 entry point
 

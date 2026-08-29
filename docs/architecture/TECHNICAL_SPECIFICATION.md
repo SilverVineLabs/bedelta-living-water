@@ -1,6 +1,6 @@
 # SliverVine Protocol — Santenmoku Engine: Technical Specification & Risk Topology
 
-> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · **Current Live Suite:** **173 files | 761 PASS** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
+> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · **Current Live Suite:** **174 files | 764 PASS** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
 > **This file SSOT:** R01–R20 invariants · dual-engine topology · KV / MDD · settlement & fee bounds.  
 > **Docs index:** [`docs/README.md`](../README.md) · **Grants:** [`docs/grants/`](../grants/)
 
@@ -75,7 +75,7 @@ SilverVine does not interpret natural-language LLM prompts. The Shield enforces 
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v0.9 Delivered (100% Code & Tested)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee · **173 files | 761 PASS (100% Clean)** *(Locked Proposal Baseline: 168 \| 742)* |
+| **v0.9 Delivered (100% Code & Tested)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee · **174 files | 764 PASS (100% Clean)** *(Locked Proposal Baseline: 168 \| 742)* |
 | **v0.9 Active Target** | ✅ Code-Verified (Sepolia & Dry-Run) | Single blue-chip anchor: **GMX v2 ETH/USDC GM Pool** + Hyperliquid **1× short** hedge · Mainnet deployment ties to **M6 Grant distribution** |
 | **v0.9 Partial — HL Orderbook Gap Guard** | ✅ Code-Verified | `evaluateHlOrderbookGapGuard()` in [`hl-orderbook-gap-guard.ts`](../../src/services/risk-control-lib/hl-orderbook-gap-guard.ts) · wired via [`soil-resistance.ts`](../../src/services/risk-control-lib/soil-resistance.ts) — gap-window leverage scale-down + 2× depth floor |
 | **V1.0 Isomorphic Extension** | ⏳ Planned | **BTC/USDC GM Pool** — zero bytecode / Wasm changes; config-driven market address mapping |

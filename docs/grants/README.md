@@ -3,7 +3,7 @@
 **Entity:** SilverVine Labs · `grants@silvervinelabs.com`  
 **OpSec:** External-facing grant packs only.
 
-> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS** · **Current Live Suite:** **173 files | 761 PASS** · `pnpm test -- --run`.
+> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS** · **Current Live Suite:** **174 files | 764 PASS** · `pnpm test -- --run`.
 
 | Track | Status | Entry |
 |-------|--------|-------|

@@ -407,17 +407,31 @@ Verified by [`tests/risk-control/margin-buffer.test.ts`](../../tests/risk-contro
 
 ---
 
+## Growth Strategy & Agentic Framework Distribution Pipeline
+
+| Channel | Target | SDK surface |
+|---------|--------|-------------|
+| **1. Agentic Framework Adapters** | Eliza (ai16z) · LangChain · AutoGPT | `guardAgentUserOp()` · `evaluateAgentCitadelGuard()` · `verifyAgentIntent()` — pre-bundler fail-closed hook |
+| **2. B2B Trading Bot CaaS** | Telegram Trading Bots · Institutional Desks | Sub-ms `checkSoilResistance()` + Gate attestation as Security Citadel in front of bot signers · no custody |
+| **3. Dev Incentive Flywheel** | SDK integrators | **50% revenue share** of GMX **10 bps** builder fee for verified integrator partner wallets |
+
+**Pendle risk guard:** [`pendle-pt-expiry-guard.ts`](../../src/adapters/pendle/pendle-pt-expiry-guard.ts) · `evaluatePendlePtExpiryRisk()` — fail-closed when PT maturity **&lt; 7 days** AND yield jitter **&gt; 200 bps**.
+
+**Dune telemetry:** [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md).
+
+---
+
 ## Verification
 
 ```bash
 pnpm exec vitest run tests/sdk/citadel-sdk-intent.test.ts
 pnpm exec vitest run tests/sdk/citadel-sdk-bridge-armor.test.ts
-pnpm test -- --run                           # Current Branch Live Expected Output: 173 files | 761 PASS (Locked Minimum Proposal Baseline: 168 | 742)
+pnpm test -- --run                           # Current Branch Live Expected Output: 174 files | 764 PASS (Locked Minimum Proposal Baseline: 168 | 742)
 pnpm audit:fast
 pnpm build:wasm                              # rebuild pkg/soil_core.wasm
 ```
 
-**Locked Minimum Proposal Baseline:** `168 files | 742 PASS (100% Clean)` · **Current Branch Live Expected Output:** `173 files | 761 PASS (100% Clean)`
+**Locked Minimum Proposal Baseline:** `168 files | 742 PASS (100% Clean)` · **Current Branch Live Expected Output:** `174 files | 764 PASS (100% Clean)`
 
 ---
 

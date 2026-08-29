@@ -1,6 +1,6 @@
 # 🛡️ BeΔLivingWater SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway
 
-[![Vitest](https://img.shields.io/badge/Vitest-761%20PASS%20%28173%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![Vitest](https://img.shields.io/badge/Vitest-764%20PASS%20%28174%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![Stylus Coprocessor](https://img.shields.io/badge/Stylus-5%2F5%20PASS-blue?logo=rust)](./contracts/stylus-probe/)
 [![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts)
 [![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-255%2F255%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water)
@@ -34,7 +34,7 @@
 **Arbitrum Native Execution Premium:** Direct Arbitrum One LPs earn an estimated **+15 ~ 30 bps** vs bridged / multi-hop routes *(design estimate — not a locked test assertion)*.
 
 > **SSOT Realignment (2026-08-25):** v0.9 = Sepolia + dry-run verified · mainnet → M6 · deep fuzz 327,675 requires `audit:nightly` / `FOUNDRY_PROFILE=deep` · **Tier-0 Docker** = root [`Dockerfile`](./Dockerfile) · see [`docs/README.md`](./docs/README.md).  
-> **Locked Minimum Proposal Baseline:** **168 files | 742 PASS (100% Clean)** — official Grant proposal bar. **Current Branch Live Expected Output:** **173 files | 761 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run`.
+> **Locked Minimum Proposal Baseline:** **168 files | 742 PASS (100% Clean)** — official Grant proposal bar. **Current Branch Live Expected Output:** **174 files | 764 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run`.
 
 ---
 
@@ -46,7 +46,7 @@
 docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 ```
 
-Isolated container execution of 5-step `demo:e2e` dry-run; full regression **168 files | 742 PASS (100% Clean)** → `docker run --rm slivervine-citadel pnpm test`. Sidecar → [`docker/README.md`](./docker/README.md).
+Isolated container execution of 5-step `demo:e2e` dry-run; full regression **174 files | 764 PASS (100% Clean · Exit Code 0)** → `docker run --rm slivervine-citadel pnpm test`. Sidecar → [`docker/README.md`](./docker/README.md).
 
 **Tier 1+ — Monorepo CLI:**
 
@@ -61,7 +61,7 @@ Canonical interactive demo command for judges:
 
 1. **Tier 0:** `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` — isolated E2E, no host toolchain drift.
 2. Run `pnpm run demo:e2e` as the single interactive Citadel demo entry point.
-3. `pnpm test -- --run` verifies **Current Branch Live Expected Output:** **173 files | 761 PASS (100% Clean · Exit Code 0)** *(Locked Minimum Proposal Baseline: 168 files | 742 PASS)*.
+3. `pnpm test -- --run` verifies **Current Branch Live Expected Output:** **174 files | 764 PASS (100% Clean · Exit Code 0)** *(Locked Minimum Proposal Baseline: 168 files | 742 PASS)*.
 4. `grant-advanced-resilience-benchmark.ts` shows the sub-ms Wasm Shield latency path.
 
 For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API Verification` section below.
@@ -101,7 +101,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 
 ### 2. Off-Chain Pre-Execution Radar (TypeScript / V8 Runtime)
 * **Locked Minimum Proposal Baseline**: 🧪 **168 files | 742 PASS (100% Clean)**
-* **Current Branch Live Expected Output**: 🎯 **173 files | 761 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run`
+* **Current Branch Live Expected Output**: 🎯 **174 files | 764 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run`
 * **Chaos Matrix**: 🌪️ **255 Severe Failure Cases | 0 Crashes**
 * **Edge Decision Latency**: ⏱️ **SLO &lt; 1.0ms | p50 ~106 μs Shield/TS Gateway | Wasm warm &lt;60 μs | Pure Math: 0.0002 ms (200 ns)**
 * **Worker Bundle**: 📦 **87.76 KiB gzip** measured hot path (`pnpm bundle:measure`) · **162.49 KiB gzip** full Edge deployment artifact
@@ -125,7 +125,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 ## 🛡️ Auditor — 30-Second CLI & API Verification
 
 ```bash
-# 1. Full Vitest suite (168 files | 742 PASS — live: 173 / 761)
+# 1. Full Vitest suite (168 files | 742 PASS — live: 174 / 764)
 pnpm test -- --run
 
 # 2. 3-Tier Security Matrix (Fast / Security / Nightly)

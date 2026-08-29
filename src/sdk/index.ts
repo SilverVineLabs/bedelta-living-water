@@ -43,11 +43,15 @@ export {
 } from "../core/agent-citadel-guard";
 export {
   ARBITRUM_ONE_CHAIN_ID,
+  ARBITRUM_SEPOLIA_CHAIN_ID,
   EIP712_DOMAIN_NAME,
   EIP712_DOMAIN_VERSION,
+  LOCAL_MOCK_GATE_ADDRESS,
   ROBINHOOD_MAINNET_CHAIN_ID,
   ROBINHOOD_TESTNET_CHAIN_ID,
   SLIVERVINE_GATE_ADDRESS,
+  SLIVERVINE_GATE_SEPOLIA_ADDRESS,
+  resolveSliverVineGateAddress,
 } from "./constants";
 export type { CitadelSdkPreset } from "./constants";
 export {
