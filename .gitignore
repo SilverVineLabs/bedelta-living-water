@@ -48,8 +48,8 @@ san
 # STRICT OPSEC WHITELIST FOR DOCUMENTS (BLOCK EVERYTHING BY DEFAULT)
 # ------------------------------------------------------------------------------
 # Block all root-level and sub-folder markdown files by default
-*.md
-docs/**
+#*.md
+#docs/**
 
 
 # EXPLICITLY ALLOW ONLY PUBLIC GRANT ARTIFACTS

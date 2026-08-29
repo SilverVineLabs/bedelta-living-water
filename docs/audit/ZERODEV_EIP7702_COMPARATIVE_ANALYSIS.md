@@ -7,7 +7,7 @@
 | **Classification** | Grant / Institutional Allocator · AA Architecture Benchmark |
 | **Branch baseline** | `v1.0_push_BDLW` |
 | **Entity** | SilverVine Labs · BeΔ Living Water (BDLW) |
-| **Baseline** | **Locked Minimum Proposal Baseline:** 168 files \| 742 PASS · **Current Branch Live Expected Output:** 172 files \| 758 PASS · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
+| **Baseline** | **Locked Minimum Proposal Baseline:** 168 files \| 742 PASS · **Current Branch Live Expected Output:** 173 files \| 761 PASS · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
 | **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
 > **Scope note:** This document compares **consumer-focused EIP-7702 AA implementations** with BDLW's **institutional-grade pre-execution risk substrate**. It is an architectural diligence artifact — not legal or investment advice.
@@ -60,7 +60,7 @@ These patterns are appropriate for **retail conversion funnels**. They are **ins
 | **Intent binding** | Optional calldata hashing | **`payloadHash()`** → `SliverVineGate.sol` consume-once attestation |
 | **Bridge in-flight** | Often booked as live NAV | **`IN_FLIGHT_BRIDGE_CAPITAL`** · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** · no naked GM/HL until `SETTLED` |
 | **Emergency response** | Admin pause · multisig | **Automated** R17 daily severance · R20 physical deadlock · `rootProtection()` |
-| **Regression proof** | Vendor QA / audit snapshots | **758 PASS** (172 files live) · Locked Minimum Proposal Baseline **742 PASS** · `zerodev-aa-gate.test.ts` **4/4** · chaos matrix **255/255** |
+| **Regression proof** | Vendor QA / audit snapshots | **761 PASS** (173 files live) · Locked Minimum Proposal Baseline **742 PASS** · `zerodev-aa-gate.test.ts` **4/4** · chaos matrix **255/255** |
 
 ---
 
@@ -173,7 +173,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 | # | Claim | Command / artifact | Expected |
 |---|-------|-------------------|----------|
-| 1 | Full regression | `pnpm test -- --run` | **172 files \| 758 PASS** *(Locked Minimum Proposal Baseline: 168 \| 742)* |
+| 1 | Full regression | `pnpm test -- --run` | **173 files \| 761 PASS** *(Locked Minimum Proposal Baseline: 168 \| 742)* |
 | 2 | ZeroDev AA gate fail-closed | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` | **4/4 PASS** |
 | 3 | Session R07 $5k cap | `pnpm exec vitest run tests/services/session-key-gates.test.ts` | Severance on breach |
 | 4 | 30s heartbeat expiry | `pnpm exec vitest run tests/services/nonce-auto-healing.test.ts` | Lock on expiry |

@@ -8,7 +8,7 @@
 | **實體** | SilverVine Labs |
 | **協議** | SliverVine / BeΔ Living Water (BDLW) · Santenmoku 風控引擎 |
 | **受眾** | Arbitrum Foundation · ZeroDev Grant 委員會 · 機構配置者 · Fund-of-Funds 盡職 |
-| **基線** | **鎖定基線：** Vitest **168 檔 \| 742 PASS** · **當前 Live：** **172 檔 \| 758 PASS** · Wasm 熱路徑 **87.76 KiB gzip** · Shield **p50 ~106 µs** |
+| **基線** | **鎖定基線：** Vitest **168 檔 \| 742 PASS** · **當前 Live：** **173 檔 \| 761 PASS** · Wasm 熱路徑 **87.76 KiB gzip** · Shield **p50 ~106 µs** |
 | **即時驗證** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **規格 SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **風控框架 SSOT** | [`../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) |
@@ -42,7 +42,7 @@ BeΔ Living Water (BDLW) 為包裹 Arbitrum One 上 GMX v2 GM Pool 與 Hyperliqu
 
 | 指標 | 鎖定值 | 驗證方式 |
 |------|--------|---------|
-| **Vitest 回歸** | **172 檔 \| 758 PASS** *(鎖定基線：168 \| 742)* | `pnpm test -- --run` |
+| **Vitest 回歸** | **173 檔 \| 761 PASS** *(鎖定基線：168 \| 742)* | `pnpm test -- --run` |
 | **橋接不變量** | **5/5 PASS** | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` |
 | **ZeroDev AA 閘門** | **4/4 PASS** | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` |
 | **混沌矩陣** | **255/255 阻擋 · `capitalLossUsd: 0`** | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) |
@@ -135,7 +135,7 @@ BDLW 將**誠實會計**作為硬不變量——在途流動性永不誤記為�
 
 | 公式 | @$100k 權益 | SSOT |
 |------|------------|------|
-| **Dynamic Max SL** | `Balance × 1% + $100` → **$1,100** | `effective-max-sl.ts` |
+| **Dynamic Max SL** | Dynamic Account Risk Ceiling (V0.8 Baseline: Equity-Weighted SL; V1.0 Mainnet: Dynamic Adaptive Engine) → **$1,100** | `effective-max-sl.ts` |
 | **日損上限 (R17)** | Max SL × 3 → **$3,300** | `DAILY_LOSS_CAP_MULTIPLIER` |
 | **跨場所滑點 fuse** | **0.5%** | `MAX_SLIPPAGE` |
 | **Order-Aware @$100k 名義** | min($1,100, $500) → **$500** | `computeOrderAwareMaxSlUsd()` |
@@ -167,7 +167,7 @@ BDLW 將**誠實會計**作為硬不變量——在途流動性永不誤記為�
 
 | 框架 | 命令 | 預期 |
 |------|------|------|
-| **全量 Vitest** | `pnpm test -- --run` | **172 檔 \| 758 PASS** *(鎖定基線：168 \| 742)* |
+| **全量 Vitest** | `pnpm test -- --run` | **173 檔 \| 761 PASS** *(鎖定基線：168 \| 742)* |
 | **Grant v0.9 切片** | `pnpm test:grant-v09-sim` | AA / 風控 sim PASS |
 | **Wasm 可行性** | `pnpm test:wasm-feasibility` | Soil Wasm sim PASS |
 | **ZeroDev dry-run** | `pnpm test:zerodev` | Mock Bundler PASS |
@@ -233,7 +233,7 @@ pnpm tsx scripts/generate-survival-report.ts
 |------|------|----------|
 | **第一道** | 業務營運 | 收益門檻 · 緩衝引擎 · 再平衡規則 |
 | **第二道** | 風控合規 | Soil · PGATE · Sequencer/Oracle · 橋接 AML |
-| **第三道** | 獨立保證 | 758 PASS · Survival Benchmark · 安全矩陣 · DDIP |
+| **第三道** | 獨立保證 | 761 PASS · Survival Benchmark · 安全矩陣 · DDIP |
 
 ### 5.4 配置者 FAQ（盡職熱點）
 
@@ -251,7 +251,7 @@ pnpm tsx scripts/generate-survival-report.ts
 
 | # | 檢查項 | 命令 / 介面 | 通過標準 |
 |---|--------|------------|---------|
-| 1 | 全量回歸 | `pnpm test -- --run` | 172 \| 758 PASS *(鎖定：168 \| 742)* |
+| 1 | 全量回歸 | `pnpm test -- --run` | 173 \| 761 PASS *(鎖定：168 \| 742)* |
 | 2 | 橋接會計 | `across-ingress-bridge.test.ts` | 5/5 |
 | 3 | ZeroDev 閘門 | `zerodev-aa-gate.test.ts` | 4/4 |
 | 4 | 安全矩陣 | `pnpm audit:security` | 5/0/0 |

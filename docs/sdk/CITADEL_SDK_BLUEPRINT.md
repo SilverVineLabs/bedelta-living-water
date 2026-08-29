@@ -201,7 +201,7 @@ Robinhood Chain is the **inaugural Code-Verified / Dry-Run Verified reference ad
 | Protected surface | Mechanism | Latency SLO |
 |-------------------|-----------|-------------|
 | **Arbitrum One GMX v2 native execution** | Soil depth / slippage fuse before unsigned payload broadcast | p50 ~106 μs Shield/TS Gateway · Wasm warm &lt;60 μs |
-| **Arb ↔ Hyperliquid cross-venue routing** | `hlSpot` / `hlPerp` / `dydxPerp` cross-spread + deadman (50 bps default) | `armor.rpcLatencyMs` ≤ `PGATE_MAX_LATENCY_MS` (200 ms) |
+| **Arb ↔ Hyperliquid cross-venue routing** | `hlSpot` / `hlPerp` / `dydxPerp` cross-spread + Configurable Dynamic Slippage Deadman | `armor.rpcLatencyMs` ≤ `PGATE_MAX_LATENCY_MS` (200 ms) |
 | **Arbitrum Edge Worker AI Agents** | Prompt injection intercept · Session Key clip/TTL · Gate attestation envelope | Sub-ms Wasm path |
 
 Production decision formula:
@@ -412,12 +412,12 @@ Verified by [`tests/risk-control/margin-buffer.test.ts`](../../tests/risk-contro
 ```bash
 pnpm exec vitest run tests/sdk/citadel-sdk-intent.test.ts
 pnpm exec vitest run tests/sdk/citadel-sdk-bridge-armor.test.ts
-pnpm test -- --run                           # Current Branch Live Expected Output: 172 files | 758 PASS (Locked Minimum Proposal Baseline: 168 | 742)
+pnpm test -- --run                           # Current Branch Live Expected Output: 173 files | 761 PASS (Locked Minimum Proposal Baseline: 168 | 742)
 pnpm audit:fast
 pnpm build:wasm                              # rebuild pkg/soil_core.wasm
 ```
 
-**Locked Minimum Proposal Baseline:** `168 files | 742 PASS (100% Clean)` · **Current Branch Live Expected Output:** `172 files | 758 PASS (100% Clean)`
+**Locked Minimum Proposal Baseline:** `168 files | 742 PASS (100% Clean)` · **Current Branch Live Expected Output:** `173 files | 761 PASS (100% Clean)`
 
 ---
 

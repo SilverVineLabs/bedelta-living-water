@@ -31,7 +31,7 @@ SliverVine Citadel is designed **fail-closed** — ambiguous or unsafe states ha
 | Oracle Lag Shield | `arbitrum-gas-guard.ts` | HALT when canonical lag exceeds cap (<120ms grant posture) |
 | Soil Resistance | `risk-control/soil.ts` | Trade rejected on depth, cross-spread, or slippage fuse breach |
 | Root Protection | `rootProtectionService.ts` | Fatal / R17·R20 breach kills hot-key signing pipelines |
-| Dynamic Max SL | `effective-max-sl.ts` | `Balance × 1% + $100` — deprecated fixed $50 SL forbidden |
+| Dynamic Max SL | `effective-max-sl.ts` | Dynamic Account Risk Ceiling (V0.8 Baseline: Equity-Weighted SL; V1.0 Mainnet: Dynamic Adaptive Engine) — deprecated fixed $50 SL forbidden |
 | Session Key | `session-key-adapter` | Expired or revoked keys → READ_ONLY_OBSERVER |
 | RPC Whitelist | `rpc-whitelist.ts` | External RPC monitored; >500ms latency trips circuit breaker |
 

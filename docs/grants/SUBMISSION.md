@@ -23,6 +23,36 @@
 
 **Product identity:** Delta-neutral **GMX v2 ETH/USDC GM + Hyperliquid 1× short** on Arbitrum One · **`@slivervine/citadel-sdk`** (Apache-2.0) for third-party dApps & AI agents.
 
+### Architectural Trade-off: Sub-Millisecond AI Agent Rejection Proof vs. EIP-712
+
+> **Sub-ms M2M Rejection Standard** — AI agent swarms reject on the Edge reflex plane; EIP-712 is reserved for human-initiated on-chain settlement.
+
+| Plane | Mechanism | Latency | Role |
+|-------|-----------|---------|------|
+| **M2M Reflex** | `agent-citadel-guard` HMAC-SHA256 Session Proof | **&lt; 12 µs** | Sub-ms reject · deadman switch · Agent Memory non-repudiation |
+| **Settlement** | `SliverVineGate` EIP-712 m-of-n attestation | **1.2 – 3.5 ms** (ECDSA) | Consume-once on-chain anchor for human / final broadcast |
+
+**Core thesis:** EIP-712 ECDSA introduces **1.2 ms – 3.5 ms** signing overhead — a **DoS vector** for sub-millisecond AI trading swarms. SilverVine's `agent-citadel-guard` achieves **~200× latency reduction** via deterministic session proofs while preserving audit-grade rejection trails. Full spec: [`TECHNICAL_SPECIFICATION.md` §6.6](../architecture/TECHNICAL_SPECIFICATION.md#66-architectural-trade-off-sub-millisecond-ai-agent-rejection-proof-vs-eip-712).
+
+**License SSOT (G8):** Contracts = **BUSL-1.1** · SDK = **Apache-2.0** · Demo HUD domain fingerprint = `verifyGateDomainSeparator()` (G11).
+
+### Architectural Benchmark: SilverVine High-Performance Innovations vs. Legacy Web3 Standards
+
+> Full audit matrix: [`TECHNICAL_SPECIFICATION.md` §6.7](../architecture/TECHNICAL_SPECIFICATION.md#67-architectural-benchmark-silvervine-high-performance-innovations-vs-legacy-web3-standards)
+
+| Dimension | Legacy Web3 Standard (ERC/EIP) | SilverVine Engineered Standard | Latency / Gas Improvement | Architectural Reason |
+|-----------|-------------------------------|--------------------------------|---------------------------|----------------------|
+| **AI Agent Rejection Proof** | EIP-712 ECDSA per reject | **HMAC-SHA256 Session Proof** — `agent-citadel-guard` | **~200×** — **&lt; 12 µs** vs **1.2 – 3.5 ms** | Swarm-safe M2M reject; EIP-712 only for settlement |
+| **Session Authorization Gate** | ERC-4337 Bundler → EntryPoint | **SystemState single-flight** — `session-key-gates` · `hl/auth/signing-gate` | **&lt; 1 ms** vs **50 – 500 ms+** bundler RTT | R06/R07 clip enforced before HL signature |
+| **Circuit Breaker** | OpenZeppelin `Pausable` (≥ 1 block) | **Edge R17/R20 sever** — `circuit-breaker-sever` · signing pipe cut | **&lt; 1 ms** vs **≥ 250 ms** on-chain | Kill toxic broadcast before mempool, not after |
+| **Risk Oracle Flush** | Ownable `pause()` / governance | **Irreversible flush** — `SliverVineRiskOracle` `STATUS_SHUTDOWN` | One-way poison pill; no un-pause | `IngressSafetySwitch` fail-closed without admin toggle |
+| **Soil Compute** | EVM `SLOAD` / oracle storage loops | **Wasm** `soil_core.wasm` + **Stylus** `SliverVineSoilCoprocessor` | **p50 ~106 µs** Edge · **&lt; 60 µs** Wasm warm | HFT reflex math off-chain; Stylus = on-chain parity |
+| **Gate Attestation** | Replayable sigs · upgradeable proxy | **Consume-once EIP-712** — `SliverVineGate` + `GatedExecutor` | **~26k gas** · TTL **≤ 30 s** | Payload-bound ALLOW; immutable gate |
+| **AA Bundler Path** | Blind retry on rejection | **EIP-7562 pre-screen** — `zerodev-aa-static-breaker` | Zero wasted bundler RTT on toxic UserOps | Soil + gas evaluated serially before dispatch |
+| **Anti-Copycat RPC** | Public endpoint lists | **Honeypot trap hosts** — 99% synthetic slippage | **&lt; 1 ms** decoy fail-closed | Scraper forks get fake state, not production RPC |
+| **Frontend Trust** | Client-trusted contract address | **G11** `verifyGateDomainSeparator()` HUD badge | One `eth_call` domain fingerprint | Detects hijacked Gate contract in UI |
+| **Risk Posture** | Post-execution analytics (min–days) | **Interceptor Moat** — `checkSoilResistance()` pre-broadcast | **p50 ~106 µs** vs governance loop | Prevent MEV/LVR, don't rebalance after fill |
+
 ---
 
 ## 4-Dimension Positioning Matrix (Text-UI)
@@ -150,11 +180,11 @@ ORDER BY 1 DESC;
 
 **Demo & storyboard:** [`Grant Pitch & Video Storyboard — The Storm & 3-Options`](../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) · 35s evaluator script · Three-Pillar architecture walkthrough.
 
-> **Regression SSOT:** Vitest **172/172 files | 758/758 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Cargo Stylus **`cargo test` 5/5 PASS** · Forge **60/60** · Security-tier **5/0/0 PASS**.
+> **Regression SSOT:** Vitest **173/173 files | 761/761 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Cargo Stylus **`cargo test` 5/5 PASS** · Forge **60/60** · Security-tier **5/0/0 PASS**.
 
 ---
 
-> **Proposal Locked Baseline:** Vitest **168 test files | 742 PASS (100% Clean)** · **Current Live Suite:** **172/172 files | 758/758 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` Cloudflare budget, `<60µs` execution.
+> **Proposal Locked Baseline:** Vitest **168 test files | 742 PASS (100% Clean)** · **Current Live Suite:** **173/173 files | 761/761 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` Cloudflare budget, `<60µs` execution.
 
 **Audience:** Arbitrum Open House / Buildathon / chain security diligence.  
 **Out of scope here:** GMX builder fee pitch → [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md) (monetization only — not the innovation claim).
@@ -251,13 +281,13 @@ Replace zero addresses above with Arbiscan-verified deployments before final gra
 
 ```bash
 pnpm install
-pnpm test -- --run        # Current Live Suite: 172/172 files | 758/758 PASS (Proposal Locked Baseline: 168 | 742)
+pnpm test -- --run        # Current Live Suite: 173/173 files | 761/761 PASS (Proposal Locked Baseline: 168 | 742)
 pnpm run audit:security   # 5/0/0 PASS
 cd SliverVineGate && forge test --gas-report && cd ..
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualLegProof
 ```
 
-**Regression bar:** **Proposal Locked Baseline:** 168 files | 742 PASS (100% Clean) · **Current Live Suite:** 172/172 files | 758/758 PASS (100% Clean · Exit Code 0) · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
+**Regression bar:** **Proposal Locked Baseline:** 168 files | 742 PASS (100% Clean) · **Current Live Suite:** 173/173 files | 761/761 PASS (100% Clean · Exit Code 0) · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
 
 ---
 

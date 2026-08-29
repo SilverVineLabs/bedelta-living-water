@@ -7,7 +7,7 @@
 > **Doc log (2026-08-25):** Tier-0 root [`Dockerfile`](../Dockerfile) E2E · Sidecar Tier-5 · R03/R04 RTT 200/500ms · 5-TX provenance SSOT.
 
 **Entity:** SilverVine Labs · **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) · **Upstream:** `https://bedeltawater.slivervine.xyz/api/telemetry/health`  
-**Regression bar:** **172 files | 758 PASS (100% Clean · Exit Code 0)** *(Locked Baseline: 168 \| 742)* · `tsc --noEmit` CLEAN
+**Regression bar:** **173 files | 761 PASS (100% Clean · Exit Code 0)** *(Locked Baseline: 168 \| 742)* · `tsc --noEmit` CLEAN
 
 ---
 
@@ -23,7 +23,7 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 |------|-------|
 | Dockerfile | [`../Dockerfile`](../Dockerfile) (repo root) |
 | Default CMD | `pnpm run demo:e2e` → `[tier0] demo:e2e PASS` |
-| Full Vitest bar | `docker run --rm slivervine-citadel pnpm test` → **758 PASS** *(Locked Baseline: 742)* |
+| Full Vitest bar | `docker run --rm slivervine-citadel pnpm test` → **761 PASS** *(Locked Baseline: 742)* |
 | Isolation | No host Node 22 / pnpm / WSL required |
 
 Sidecar telemetry (Tier 5) remains [`Dockerfile.sidecar`](./Dockerfile.sidecar) below.

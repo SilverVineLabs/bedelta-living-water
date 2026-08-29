@@ -13,9 +13,9 @@
 
 | Metric | Locked value | Artifact / verifier |
 |--------|--------------|---------------------|
-| **Vitest Baseline** | **172 files | 758 PASS (100% Clean)** *(Locked Proposal Baseline: 168 \| 742)* | `pnpm test` · security-tier Vitest in [`static-analysis-report.json`](./static-analysis-report.json) |
+| **Vitest Baseline** | **173 files | 761 PASS (100% Clean)** *(Locked Proposal Baseline: 168 \| 742)* | `pnpm test` · security-tier Vitest in [`static-analysis-report.json`](./static-analysis-report.json) |
 | **Wasm Core Budget** | **`<28kb` Cloudflare budget, `<60µs` execution (`<150µs` P99 tail)** | [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) · [`soil_core.rs`](../../src/wasm/soil_core.rs) · `WASM_BUDGET_BYTES` in [`soil-wasm.ts`](../../src/sdk/soil-wasm.ts) |
-| **Active Guards** | **`agent-citadel-guard` (50 bps Slippage Deadman)** + R01–R20 matrix **17 Active \| 2 Refactored \| 1 Deprecated** | `src/core/agent-citadel-guard.ts` (`AGENT_DEADMAN_SLIPPAGE_BPS = 50`) |
+| **Active Guards** | **`agent-citadel-guard` (Configurable Dynamic Slippage Deadman)** + R01–R20 matrix **17 Active \| 2 Refactored \| 1 Deprecated** | `src/core/agent-citadel-guard.ts` |
 | **Revenue Integration** | GMX v2 **`uiFeeReceiver` (+10 bps protocol yield accrual)** + up to **25%** referral rebate | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` |
 | **Security Matrix** | **3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)** | `pnpm run audit:security` → [`static-analysis-report.json`](./static-analysis-report.json) `summary.pass=5` |
 | **Fuzzing Baseline** | **327,675 Property Fuzz Executions** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep` · 5×65,535) · standard `forge test` = **5,120** (5×1,024) | Forge property suite · Gate unit **60 Passed** |
@@ -23,7 +23,7 @@
 | **Chaos matrix** | **255 / 255** toxic scenarios blocked · `failClosedRate: 100.00%` · `capitalLossUsd: 0` | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) |
 
 **Single regression phrase (all audit prose):**  
-`172 files | 758 PASS (100% Clean)` *(Locked Proposal Baseline: 168 \| 742)* · `3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)` · Wasm `<28kb` / `<60µs` (`<150µs` P99 tail).
+`173 files | 761 PASS (100% Clean)` *(Locked Proposal Baseline: 168 \| 742)* · `3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)` · Wasm `<28kb` / `<60µs` (`<150µs` P99 tail).
 
 ---
 
@@ -47,7 +47,7 @@
 |-------|------------------------------|------|
 | Unscoped `ORDER_EXECUTE` | Blocked — ZeroDev Kernel v3 session scopes + R06 | `hl-session/permissions.ts` · ZeroDev AA gate |
 | Notional overrun | Blocked at **$5,000** single-order cap (R07) | `SESSION_KEY_NOTIONAL_CAP_USD` |
-| Deadman bypass | Impossible — `guardAgentUserOp` → `evaluateAgentCitadelGuard` → soil; **50 bps** trip emits `CITADEL_SLIPPAGE_EXCEEDED` | `agent-citadel-guard.ts` |
+| Deadman bypass | Impossible — `guardAgentUserOp` → `evaluateAgentCitadelGuard` → soil; Configurable Dynamic Slippage Deadman trip emits `CITADEL_SLIPPAGE_EXCEEDED` | `agent-citadel-guard.ts` |
 
 **Verdict:** Auth surface is ephemeral-session + EIP-712 intent; no LLM prompt interpretation — predicate / intent hard assertions only.
 
@@ -66,7 +66,7 @@
 | Probe | Expected fail-closed posture | SSOT |
 |-------|------------------------------|------|
 | Price impact **>10 bps** vs local depth | `checkSoilResistance()` short-circuits pre-broadcast (p50 ~106 µs) | R01 · soil + Wasm |
-| Cross-venue slip **>50 bps** | Deadman trips (`AGENT_DEADMAN_SLIPPAGE_BPS`) | `agent-citadel-guard` |
+| Cross-venue slip breach | Configurable Dynamic Slippage Deadman trips | `agent-citadel-guard` |
 | Sequencer / oracle lag | Sequencer grace + oracle-lag sensors fail-closed before payload | Supporting sensors · R03 / R04 family |
 | Receiver / parameter tamper | Asymmetric predicate bytecode assertions on ERC-4337 UserOp (`sender ≡ receiver`, `acceptablePrice` bounds) | Tech Spec §0.4 |
 
@@ -107,7 +107,7 @@
 | Artifact | `pkg/soil_core.wasm` |
 | Cloudflare budget | **`<28kb`** (`WASM_BUDGET_BYTES = 28 * 1024`) |
 | Hot-path exec | **`<60µs`** warm; **`<150µs` P99 tail** |
-| Entry | `soil_core_eval` — 8×f64 LE input → trip flags (cross-venue / depth / insufficient) + Dynamic Max SL (`account × 1% + $100`) |
+| Entry | `soil_core_eval` — 8×f64 LE input → trip flags (cross-venue / depth / insufficient) + Dynamic Account Risk Ceiling (V0.8 Baseline: Equity-Weighted SL; V1.0 Mainnet: Dynamic Adaptive Engine) |
 | Session helper | `session_core_ok` — clip + TTL breach → 0 |
 | TS wire | `src/sdk/soil-wasm.ts` (production); TS sim fallback for dev |
 | Coupling | Called under Shield / `checkSoilResistance()`; Deadman (`agent-citadel-guard`) cannot bypass soil |
@@ -121,7 +121,7 @@
 | Control | Bound |
 |---------|-------|
 | Soil impact fuse | Short-circuit when local GM depth cannot absorb institutional size without **>10 bps** impact |
-| Deadman | **`agent-citadel-guard` @ 50 bps** cross-venue / depth failure → signed reject payload |
+| Deadman | **`agent-citadel-guard` Configurable Dynamic Slippage Deadman** — cross-venue / depth failure → signed reject payload |
 | Protocol lock-up | **Zero protocol lock-up** — liquidity uses GMX v2 **3–5 minute async redemption** |
 | Reverse AML | Inbound block on reverse escort path; outbound-only `46630` → `42161` |
 | Blue-chip restraint | v0.9 **ETH/USDC only** — oracle reliability under Sequencer desync |
@@ -156,7 +156,7 @@ SilverVine is the **infrastructure-layer armored pipeline**. Application-layer s
 
 1. Wire through Gatehouse session scopes (ZeroDev Kernel v3 → ERC-7715 evolution).  
 2. Never reverse the Firewall escort (no inbound AML path).  
-3. Honor Shield short-circuit (`checkSoilResistance` + `agent-citadel-guard` 50 bps).  
+3. Honor Shield short-circuit (`checkSoilResistance` + `agent-citadel-guard` Configurable Dynamic Slippage Deadman).  
 4. Preserve `uiFeeReceiver` **+10 bps** on every GMX v2 unsigned payload.  
 5. Expand markets only via V1.0 config maps (BTC/USDC · USDG Robinhood Chain) — no fork of Wasm soil core.
 
@@ -167,7 +167,7 @@ Cohort contrast matrix (infra vs app): see grant audit matrix generator narrativ
 ## Verification (Principal — 60s)
 
 ```bash
-pnpm install && pnpm test -- --run # 172 files | 758 PASS (Locked Baseline: 168 | 742)
+pnpm install && pnpm test -- --run # 173 files | 761 PASS (Locked Baseline: 168 | 742)
 pnpm run audit:security            # 3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)
 pnpm run audit:fast                # fast tier scorecard → security-scorecard.json
 cd SliverVineGate && forge test && cd ..

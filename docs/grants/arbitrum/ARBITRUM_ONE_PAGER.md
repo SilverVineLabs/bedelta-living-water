@@ -9,7 +9,7 @@
 | Official Site  | [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal                        |
 | Repo           | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)   |
 | Live DApp      | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)                              |
-| Regression bar | **172 test files | 758 PASS (100% Clean)** *(Locked Baseline: 168 \| 742)* · `tsc --noEmit` clean                             |
+| Regression bar | **173 test files | 761 PASS (100% Clean)** *(Locked Baseline: 168 \| 742)* · `tsc --noEmit` clean                             |
 | License        | BUSL-1.1 → Apache-2.0 at M2 / $10M TVL or 24 months                                             |
 | Spec SSOT      | `[docs/architecture/TECHNICAL_SPECIFICATION.md](../../architecture/TECHNICAL_SPECIFICATION.md)` |
 
@@ -52,7 +52,7 @@ Before any GMX DataStore broadcast, the Citadel edge evaluates sequencer health,
 | -------------------------- | ------------------------------------------------- |
 | Chainlink Sequencer Uptime | 600s grace · fail-closed                          |
 | Canonical Oracle Lag       | <30s (30,000ms) vs L2 block headers · fail-closed |
-| Dynamic Max SL             | `Balance × 1% + $100`                             |
+| Dynamic Max SL             | Dynamic Account Risk Ceiling (V0.8 Baseline: Equity-Weighted SL; V1.0 Mainnet: Dynamic Adaptive Engine) |
 | CrossVenueNetSlippage      | >0.5% → soil trip + TWAP                          |
 | NTP / Pgate latency        | <200ms drift / RTT fuse                           |
 | Emergency Margin Buffer    | 5%                                                |

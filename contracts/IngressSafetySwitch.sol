@@ -3,8 +3,8 @@ pragma solidity ^0.8.24;
 
 import {SliverVineRiskOracle} from "./SliverVineRiskOracle.sol";
 
-/// @title RobinhoodSafetySwitch — ArbOS 61 compliance filter (oracle flush + institutional blacklist)
-contract RobinhoodSafetySwitch {
+/// @title IngressSafetySwitch — venue-agnostic ingress compliance filter (oracle flush + institutional blacklist)
+contract IngressSafetySwitch {
     SliverVineRiskOracle public immutable riskOracle;
     mapping(address => bool) public institutionalBlacklist;
 
