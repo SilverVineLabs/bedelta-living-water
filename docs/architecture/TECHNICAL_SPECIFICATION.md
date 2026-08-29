@@ -509,8 +509,8 @@ Gates must not assume instant atomicity across the triangle; inventory accountin
 
 | Item | Definition | Status |
 |------|------------|--------|
-| **Builder UI Fee** | **+5 bps** `uiFeeReceiver` on every unsigned GMX v2 increase / decrease / deposit payload | ✅ Code-Verified |
-| **Referral** | Optional `referralCode` (bytes32) on unsigned payloads | ✅ Code-Verified |
+| **Builder UI Fee** | **+10 bps** `uiFeeReceiver` on every unsigned GMX v2 increase / decrease / deposit payload (`GMX_UI_FEE_BPS`) | ✅ Code-Verified |
+| **Referral Rebate** | Up to **25%** of GMX trading fees via registered `referralCode` (`GMX_REFERRAL_CODE_BYTES32`) | ✅ Code-Verified |
 
 ### 5.3 Performance Fee Tokenomics (V1.5 Roadmap)
 
@@ -519,13 +519,97 @@ Gates must not assume instant atomicity across the triangle; inventory accountin
 | **Benchmark** | **Aave v3 USDC (Arbitrum) — APY Benchmark / Default Yield Source** (not a live execution adapter); same fallback used by Arbitrum yield ingress |
 | **Performance Fee** | **10% of Excess Yield Above Aave Benchmark Rate** |
 | **Excess Yield** | `max(0, Net Strategy APY − Aave Benchmark APY)` after friction buffer |
-| **Status** | **V1.5 roadmap** — not accrued on current v0.9 builder UI-fee path (+5 bps `uiFeeReceiver`) |
+| **Status** | **V1.5 roadmap** — not accrued on current v0.9 builder UI-fee path (+10 bps `uiFeeReceiver` + 25% referral rebate) |
 
 B2B Option B (slippage-savings fee) remains a separate commercial SKU and is not the V1.5 vault performance fee above.
 
 ### 5.4 Public Audit Surface
 
 `GET /api/grant-audit` — guard states, TVL, `provenanceVerified`, `sepoliaDualLegProof`. No signing material or proprietary encode paths.
+
+---
+
+## 6. ERC-7579 Pre-Execution Hook Alignment — AI Agent Reflex Architecture
+
+> **Design thesis:** ERC-7579 modular smart accounts provide **permission scope**; BDLW provides **reflex speed**. Together they form the pre-execution hook stack that AI agents and institutional vaults require to avoid MEV/LVR traps without surrendering custody.
+
+### 6.1 Two-Plane Hook Stack
+
+| Plane | Component | Latency | Function |
+|-------|-----------|---------|----------|
+| **① Validator (ERC-7579)** | ZeroDev Kernel v3 modular session module | **&lt;1 ms** | Scoped `ORDER_EXECUTE` · whitelisted target/selector · R06 notional cap · R07 daily clip · R14 re-auth |
+| **② Reflex Hook (Wasm + Stylus)** | Edge `checkSoilResistance()` ∥ `SliverVineSoilCoprocessor` | **p50 ~106 µs** Edge · on-chain coprocessor reinforcement | Soil fuse · cross-spread · oracle-lag · depth fail-closed **before** UserOp reaches bundler |
+
+```text
+AI Agent Intent (seconds)
+        │
+        ▼
+┌───────────────────────────────────────────────────────────┐
+│  ERC-7579 Validator (ZeroDev Kernel v3)                   │
+│  · Session key scope · clip · TTL · callData whitelist    │
+└─────────────────────────┬─────────────────────────────────┘
+                          │ UserOp draft passes structural auth
+                          ▼
+┌───────────────────────────────────────────────────────────┐
+│  BDLW Pre-Execution Reflex Hook (106µs Cerebellum)        │
+│  Edge: verifyAgentIntent() → evaluateSoilCore()           │
+│        → checkSoilResistance() [pkg/soil_core.wasm]         │
+│  On-chain: SliverVineSoilCoprocessor.evaluate_soil_…()    │
+│        [contracts/stylus-probe/src/lib.rs]                │
+└─────────────────────────┬─────────────────────────────────┘
+                          │ AllowedToSign = true
+                          ▼
+              Paymaster → Bundler → EntryPoint → GMX / HL
+```
+
+### 6.2 ZeroDev Kernel v3 Validator Module (Pillar 1)
+
+| Hook point | ERC-7579 module role | BDLW invariant |
+|------------|---------------------|----------------|
+| **`validateUserOp`** | Session module verifies scoped signature + callData shape | Whitelisted GMX ExchangeRouter · HL adapter selectors only |
+| **`isValidSignature` (ERC-1271)** | Kernel returns `0x1626ba7e` on scoped intent digest | Dual plane: Kernel ERC-1271 ∥ Gate ECDSA m-of-n attestation |
+| **Session TTL** | Module-enforced expiry | `DEFAULT_TTL_MS` · heartbeat · deadman switch (`agent-citadel-guard`) |
+| **Notional cap (R07)** | `SESSION_KEY_NOTIONAL_CAP_USD` = **$5,000** | Physical severance on breach — no partial fill escape |
+
+**Code anchors:** `src/adapters/arbitrum/zerodev-aa/` · `src/core/agent-citadel-guard.ts` · `src/sdk/agent-intent.ts` · §2.4.2 Kernel v3 / v4 Session Keys.
+
+### 6.3 Stylus Wasm Soil Hook (Pillar 3 Reinforcement)
+
+| Property | Edge Wasm (`pkg/soil_core.wasm`) | Stylus Coprocessor (`contracts/stylus-probe/src/lib.rs`) |
+|----------|----------------------------------|----------------------------------------------------------|
+| **Entry** | `evaluateSoilCore()` via `@slivervine/citadel-sdk` | `evaluate_soil_coprocessor(spread_bps, depth_usd, slippage_bps)` |
+| **Math** | TS fallback + Wasm hot path | u128 fixed-point score · quadratic spread/slippage penalty |
+| **Fail-closed** | `depthUsd < minDepthUsd` → trip | `depth_usd < 10_000` → `(false, u64::MAX)` |
+| **Status** | ✅ v0.9 Code-Verified · p50 ~106 µs | ✅ **Code-Verified & Deployed Coprocessor** · `cargo test` **5/5 PASS** |
+
+**Alignment rule:** Edge remains the **pre-broadcast SSOT** (fastest path). Stylus coprocessor provides **on-chain auditable parity** for grant diligence and future ERC-7579 executor-module co-location on ArbOS — never a weaker substitute for Edge fail-closed gates.
+
+### 6.4 AllowedToSign Predicate (Reflex Contract)
+
+Production decision formula shared by SDK, Worker, and grant-audit telemetry:
+
+```text
+allowedToSign =
+  injectionOk ∧ digestOk ∧ soilOk ∧ sessionOk ∧ gasOk
+  ∧ deadmanOk ∧ armorOk ∧ attOk ∧ wasmOk
+```
+
+| Gate | Module | ERC-7579 / Hook role |
+|------|--------|---------------------|
+| `sessionOk` | `session-key-gates.ts` | ERC-7579 module clip enforcement |
+| `soilOk` | `checkSoilResistance()` · Wasm · Stylus | **Pre-execution reflex hook** |
+| `attOk` | `SliverVineGate.sol` | Consume-once EIP-712 attestation |
+| `deadmanOk` | `agent-citadel-guard.ts` | Cross-venue slippage severance |
+
+### 6.5 AI Agent Integration Surface
+
+| Consumer | Integration | Reflex hook |
+|----------|-------------|-------------|
+| **Third-party dApps** | `@slivervine/citadel-sdk` · `verifyAgentIntent()` | Apache-2.0 · sub-ms soil gate |
+| **Institutional vaults** | ZeroDev Kernel + Citadel Worker BUSL payload path | ERC-7579 session + 106µs Shield |
+| **Grant audit / Dune** | `GET /api/grant-audit` · §SUBMISSION Dune SQL spec | Pillar 2 ingress · Pillar 3 intercepts · 10 bps builder revenue |
+
+**Migration safety:** Kernel v3 → v4 adapter swap (Gatehouse only) — **Shield, Wasm, Stylus coprocessor, and EIP-712 Gate require zero rewrite** (§2.4.2 migration rule).
 
 ---
 

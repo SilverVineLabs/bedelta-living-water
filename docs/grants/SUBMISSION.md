@@ -7,6 +7,132 @@
 
 ---
 
+## Section 0: Elevator Pitch & AI Agent Cerebellum Paradigm Shift
+
+**One line:** BDLW is **The 106µs Physical Cerebellum for ERC-7579 AI Agents & Institutional Vaults** — a **p50 ~106 µs pre-execution Citadel** on **Arbitrum One** where every GMX / Hyperliquid broadcast passes Wasm soil fuse, EIP-712 Gate attestation, and ZeroDev scoped session keys **before** mempool exposure.
+
+### Why LLMs Need a Microsecond Cerebellum
+
+| Layer | Latency | Role | Failure mode without BDLW |
+|-------|---------|------|---------------------------|
+| **LLM / Agent Planner** | **seconds** | Intent composition · natural-language policy | Too slow for mempool race · reactive hedging after LVR/MEV damage |
+| **ERC-7579 Session Validator** | **&lt;1 ms** | ZeroDev Kernel v3 scoped `ORDER_EXECUTE` · R06/R07 clip | Approves structurally valid UserOps that are **economically toxic** |
+| **BDLW Wasm / Stylus Hook** | **p50 ~106 µs** | `checkSoilResistance()` · `SliverVineSoilCoprocessor` | — **fail-closed before broadcast** |
+
+**Paradigm shift:** LLMs are the **cortex** (slow, strategic). BDLW is the **cerebellum** (fast, reflexive) — the ERC-7579 pre-execution hook that blocks MEV sandwiches, oracle-lag deadlocks, and cross-venue slippage **before** the Sequencer or HL mempool ever sees the order. Without this reflex layer, AI agents and institutional vaults inherit **reactive** risk — adjusting after toxic fills, not preventing them.
+
+**Product identity:** Delta-neutral **GMX v2 ETH/USDC GM + Hyperliquid 1× short** on Arbitrum One · **`@slivervine/citadel-sdk`** (Apache-2.0) for third-party dApps & AI agents.
+
+---
+
+## 4-Dimension Positioning Matrix (Text-UI)
+
+Absolute positioning on **[Pre-Execution Gate] × [Microsecond Latency]** — the blue-ocean quadrant no post-execution analytics stack occupies:
+
+```text
+                    POST-EXECUTION                          PRE-EXECUTION
+                 (Dashboards · DAO)                    (Inline Gate · Fail-Closed)
+              ┌─────────────────────────┬─────────────────────────────────────────┐
+   SLOW       │  Gauntlet / Chaos Labs  │  Manual Multisig + Policy Scripts         │
+ (min–days)   │  Parameter tuning       │  (human-in-the-loop · too late for MEV)   │
+              ├─────────────────────────┼─────────────────────────────────────────┤
+   FAST       │  Reactive Vault Bots    │  ★ BDLW Microsecond Shield ★            │
+ (µs–ms)      │  (post-fill rebalance)  │  p50 ~106µs · ERC-7579 Hook · Wasm/Stylus│
+              └─────────────────────────┴─────────────────────────────────────────┘
+                                        ▲
+                          Blue Ocean: Pre-Exec × Microsecond
+```
+
+| Dimension | Legacy Stack | BDLW Citadel |
+|-----------|--------------|--------------|
+| **Execution phase** | Post-trade analytics · governance votes | **Pre-broadcast inline gate** |
+| **Latency SLO** | Minutes → days | **p50 ~106 µs** Edge · **&lt;60 µs** Wasm warm |
+| **Account model** | EOA / broad smart-wallet scopes | **ERC-7579** modular session keys · scoped clip |
+| **On-chain reinforcement** | Off-chain simulation only | **Stylus Soil Coprocessor** (`contracts/stylus-probe/src/lib.rs`) |
+
+---
+
+## Strategic Radar Comparison Table
+
+Five-star institutional diligence lens — **Manual Hedging vs Reactive Vaults vs BDLW Microsecond Shield**:
+
+| Capability | Manual Hedging | Reactive Vault Bots | **BDLW Microsecond Shield** |
+|------------|:--------------:|:-------------------:|:---------------------------:|
+| **Pre-execution MEV / LVR block** | ★☆☆☆☆ | ★★☆☆☆ | ★★★★★ |
+| **Sub-ms soil / slippage fuse** | ★☆☆☆☆ | ★★☆☆☆ | ★★★★★ |
+| **ERC-7579 session scope (R06/R07)** | ★★☆☆☆ | ★★★☆☆ | ★★★★★ |
+| **Cross-venue Δ-neutral (GMX + HL)** | ★★★☆☆ | ★★★★☆ | ★★★★★ |
+| **Non-custodial / `lostUsd ≡ 0`** | ★★★☆☆ | ★★★☆☆ | ★★★★★ |
+| **Observability (Dune + grant-audit)** | ★★☆☆☆ | ★★★☆☆ | ★★★★☆ |
+| **Operational burden (24/7 ops)** | ★☆☆☆☆ | ★★★☆☆ | ★★★★★ |
+
+**Verdict:** Reactive vaults optimize **after** toxic flow; BDLW optimizes **before** — the only five-star row on pre-execution × microsecond latency.
+
+---
+
+## Dune Analytics Observability Integration Spec
+
+Public grant diligence requires **on-chain + Edge telemetry parity**. BDLW exposes `GET /api/grant-audit` as the live SSOT; Dune dashboards mirror the same pillars for institutional allocators.
+
+**Dashboard SSOT targets:**
+
+| Panel | Metric | Source |
+|-------|--------|--------|
+| **Pillar 2 — Ingress** | Robinhood → Arbitrum escort volume · `IN_FLIGHT_BRIDGE_CAPITAL` events | Across bridge · `RobinhoodSafetySwitch` |
+| **Pillar 3 — Intercepts** | `SOIL_RESISTANCE_TRIP` count · fail-closed saves (USD notional blocked) | Edge Worker logs → KV → Dune spell |
+| **CaaS Revenue — 10 bps Builder** | GMX `uiFeeReceiver` accrual · routed notional × 10 bps | GMX v2 ExchangeRouter order events |
+
+**Suggested Dune SQL — Pillar 2 Ingress (Robinhood escort volume, Arbitrum One):**
+
+```sql
+-- Pillar 2: Outbound Robinhood → Arbitrum ingress (Across bridge fills)
+SELECT
+  date_trunc('day', block_time) AS day,
+  COUNT(*) AS bridge_tx_count,
+  SUM(amount_usd) AS ingress_volume_usd
+FROM dune.silvervinelabs.result_across_bridge_fills   -- custom spell · 46630/4663 → 42161
+WHERE dest_chain_id = 42161
+  AND sender NOT IN (SELECT address FROM dune.silvervinelabs.dim_blocked_senders)
+GROUP BY 1
+ORDER BY 1 DESC;
+```
+
+**Suggested Dune SQL — Pillar 3 Intercepts (fail-closed soil trips):**
+
+```sql
+-- Pillar 3: Pre-execution intercepts (SOIL_TRIPPED · capital saved)
+SELECT
+  date_trunc('hour', evt_block_time) AS hour,
+  COUNT(*) AS intercept_count,
+  SUM(blocked_notional_usd) AS notional_saved_usd,
+  AVG(elapsed_us_us) AS p50_shield_latency_us
+FROM dune.silvervinelabs.result_citadel_soil_trips   -- Edge Worker → spell ingest
+WHERE chain = 'arbitrum'
+  AND evt_name = 'SOIL_RESISTANCE_TRIP'
+GROUP BY 1
+ORDER BY 1 DESC;
+```
+
+**Suggested Dune SQL — 10 bps Builder Revenue (GMX uiFeeReceiver):**
+
+```sql
+-- CaaS: GMX v2 builder fee accrual @ 10 bps (GMX_UI_FEE_RECEIVER SSOT)
+SELECT
+  date_trunc('day', block_time) AS day,
+  SUM(size_usd) AS routed_volume_usd,
+  SUM(size_usd * 0.0010) AS builder_fee_usd_10bps,   -- 10 bps = 0.10%
+  COUNT(DISTINCT tx_hash) AS order_count
+FROM gmx_v2_arbitrum.order_created
+WHERE ui_fee_receiver = '0xc9BddABD80982d2201376195DD9B85fb7951546f'  -- GMX_UI_FEE_RECEIVER
+  AND block_time >= NOW() - INTERVAL '90' DAY
+GROUP BY 1
+ORDER BY 1 DESC;
+```
+
+> **Integration note:** Custom spells ingest `GET /api/grant-audit` KV snapshots (`gmxBuilderProof.uiFeeAccrualUsd`, `arbitrumCitadel.soilTrips`) as reconciliation anchors against on-chain GMX events.
+
+---
+
 ## 30-Second Elevator Pitch & Business Model
 
 **One line:** BDLW is a **p50 ~106 µs pre-execution Citadel** on **Arbitrum One** — every GMX / Hyperliquid broadcast passes Wasm soil fuse, EIP-712 Gate attestation, and ZeroDev scoped session keys **before** mempool exposure.

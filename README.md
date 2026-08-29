@@ -1,6 +1,7 @@
 # 🛡️ BeΔLivingWater SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway
 
 [![Vitest](https://img.shields.io/badge/Vitest-753%20PASS%20%28171%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![Stylus Coprocessor](https://img.shields.io/badge/Stylus-5%2F5%20PASS-blue?logo=rust)](./contracts/stylus-probe/)
 [![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts)
 [![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-255%2F255%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![Benchmark Latency](https://img.shields.io/badge/Benchmark-p50_106%CE%BCs_E2E_Shield_(Kernel_200ns)-blueviolet?logo=speedtest)](https://github.com/SilverVineLabs/bedelta-living-water)
@@ -20,7 +21,7 @@
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) · **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
 **Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (**Apache-2.0** · EIP-712 domain `SliverVineCitadel`) · **Architect:** qum0x (20+ Year Enterprise Web & Systems Architect) — All claims verifiable via CLI (`pnpm test`) and live JSON telemetry (`/api/grant-audit`).
 
-**Core Product (center of gravity):** **Sub-ms Pre-Execution Risk Gateway** protecting a **Delta-Neutral GM Yield Engine on Arbitrum One** — GMX v2 **ETH/USDC** GM pool + Hyperliquid **1× short hedge**. **CaaS monetization:** **10 bps GMX Native Builder Fee** (`uiFeeReceiver`) **+ Up to 25% GMX Referral Rebate** — venue-native ExchangeRouter parameters; zero additional overhead on v0.9 execution safety.
+**Core Product (center of gravity):** **Sub-ms Pre-Execution Risk Gateway** protecting a **Delta-Neutral GM Yield Engine on Arbitrum One** — GMX v2 **ETH/USDC** GM pool + Hyperliquid **1× short hedge**. **CaaS monetization:** **10 bps GMX Builder Fee** + **25% GMX Referral Rebate** — venue-native ExchangeRouter parameters; zero additional overhead on v0.9 execution safety. **Architecture:** **106µs Physical Cerebellum** for **ERC-7579 AI Agents** — Wasm/Stylus pre-execution hook before LLM-planned orders reach mempool.
 
 **Primary Venue:** Arbitrum One (`42161`) · **Hedge Venue:** Hyperliquid · **Technical Moat:** Interceptor Moat — Pillar 3 Sub-ms Wasm Armor (`checkSoilResistance()`, p50 ~106 μs) before any broadcast.
 
