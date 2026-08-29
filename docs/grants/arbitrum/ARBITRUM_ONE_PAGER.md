@@ -9,7 +9,7 @@
 | Official Site  | [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal                        |
 | Repo           | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)   |
 | Live DApp      | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)                              |
-| Regression bar | **164 test files | 735 PASS (100% Clean)** · `tsc --noEmit` clean                             |
+| Regression bar | **172 test files | 758 PASS (100% Clean)** *(Locked Baseline: 168 \| 742)* · `tsc --noEmit` clean                             |
 | License        | BUSL-1.1 → Apache-2.0 at M2 / $10M TVL or 24 months                                             |
 | Spec SSOT      | `[docs/architecture/TECHNICAL_SPECIFICATION.md](../../architecture/TECHNICAL_SPECIFICATION.md)` |
 
@@ -67,7 +67,7 @@ Before any GMX DataStore broadcast, the Citadel edge evaluates sequencer health,
 
 1. Sticky GM TVL — time-weighted retained positions.
 2. Imbalance healing — underweight-side routing reduces pool skew · positive skew rebate capture.
-3. Builder fee alignment — +5 bps `uiFeeReceiver` on every routed unsigned payload.
+3. Builder fee alignment — +10 bps `uiFeeReceiver` + up to **25%** referral rebate on every routed unsigned payload.
 4. Native LP premium — **+15 ~ 30 bps** for direct Arbitrum One providers.
 5. Audit transparency — provenance badges, open-source guard SSOT, redacted public API.
 

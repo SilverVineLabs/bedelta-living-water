@@ -78,7 +78,7 @@ Public grant diligence requires **on-chain + Edge telemetry parity**. BDLW expos
 
 | Panel | Metric | Source |
 |-------|--------|--------|
-| **Pillar 2 — Ingress** | Robinhood → Arbitrum escort volume · `IN_FLIGHT_BRIDGE_CAPITAL` events | Across bridge · `RobinhoodSafetySwitch` |
+| **Pillar 2 — Ingress** | Robinhood → Arbitrum escort volume · `IN_FLIGHT_BRIDGE_CAPITAL` events | Across bridge · `IngressSafetySwitch` |
 | **Pillar 3 — Intercepts** | `SOIL_RESISTANCE_TRIP` count · fail-closed saves (USD notional blocked) | Edge Worker logs → KV → Dune spell |
 | **CaaS Revenue — 10 bps Builder** | GMX `uiFeeReceiver` accrual · routed notional × 10 bps | GMX v2 ExchangeRouter order events |
 
@@ -150,11 +150,11 @@ ORDER BY 1 DESC;
 
 **Demo & storyboard:** [`Grant Pitch & Video Storyboard — The Storm & 3-Options`](../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) · 35s evaluator script · Three-Pillar architecture walkthrough.
 
-> **Regression SSOT:** Vitest **171 test files | 753 PASS (100% Clean)** on `pnpm test -- --run` · Cargo Stylus **`cargo test` 5/5 PASS** · Forge **60/60** · Security-tier **5/0/0 PASS**.
+> **Regression SSOT:** Vitest **172/172 files | 758/758 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Cargo Stylus **`cargo test` 5/5 PASS** · Forge **60/60** · Security-tier **5/0/0 PASS**.
 
 ---
 
-> **Proposal Locked Baseline:** Vitest **168 test files | 742 PASS (100% Clean)** · **Current Live Suite:** **171 test files | 753 PASS (100% Clean)** on `pnpm test -- --run` · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` Cloudflare budget, `<60µs` execution.
+> **Proposal Locked Baseline:** Vitest **168 test files | 742 PASS (100% Clean)** · **Current Live Suite:** **172/172 files | 758/758 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` Cloudflare budget, `<60µs` execution.
 
 **Audience:** Arbitrum Open House / Buildathon / chain security diligence.  
 **Out of scope here:** GMX builder fee pitch → [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md) (monetization only — not the innovation claim).
@@ -172,7 +172,7 @@ ORDER BY 1 DESC;
 | L1 Gate | `SliverVineGate/src/SliverVineGate.sol` | Consume-once attestation · replay lock · gas-bounded `verifyAndConsume` |
 | Edge Citadel | Workers on Arbitrum One | Sequencer · oracle-lag · soil fail-closed |
 | Sepolia proof | `sepoliaDualLegProof` | Arbiscan-anchored dual-leg diligence |
-| On-chain gate (Sepolia) | `scripts/deploy-sepolia-gate.sol` | Forge deploy + Arbiscan verify for `SliverVineGate` · `RobinhoodSafetySwitch` |
+| On-chain gate (Sepolia) | `scripts/deploy-sepolia-gate.sol` | Forge deploy + Arbiscan verify for `SliverVineGate` · `IngressSafetySwitch` |
 | **On-Chain HF Math Coprocessor (Stylus)** | [`contracts/stylus-probe/`](../contracts/stylus-probe/) | **`SliverVineSoilCoprocessor`** · fixed-point `evaluate_soil_coprocessor(spread_bps, depth_usd, slippage_bps)` |
 | Security matrix | `pnpm run audit:security` | Vitest + Forge + Slither + Aderyn + pnpm-audit |
 
@@ -208,7 +208,7 @@ Live envelopes: `GET /api/grant-audit`.
 | Pillar | Role | SSOT |
 |--------|------|------|
 | **Gatehouse (Auth)** | ZeroDev scoped session keys · Kernel v3 · R06 / R07 | `zerodev-aa-*` · Gate attestation |
-| **Pillar 2: Compliance Ingress Firewall (with Robinhood Ingress as Reference Adapter)** | Venue-agnostic unidirectional AML escort · inbound AML blocked · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** on `IN_FLIGHT_BRIDGE_CAPITAL` until explicit timeout (`BRIDGE_TIMEOUT_FAIL_CLOSED`) · Robinhood Chain (`46630`/`4663` → `42161`) is the inaugural Code-Verified / Dry-Run Verified reference adapter — not the protocol anchor | `robinhood-across-bridge.ts` · `RobinhoodSafetySwitch.sol` · `tests/adapters/robinhood-*` |
+| **Pillar 2: Compliance Ingress Firewall (with Robinhood Ingress as Reference Adapter)** | Venue-agnostic unidirectional AML escort · inbound AML blocked · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** on `IN_FLIGHT_BRIDGE_CAPITAL` until explicit timeout (`BRIDGE_TIMEOUT_FAIL_CLOSED`) · Robinhood Chain (`46630`/`4663` → `42161`) is the inaugural Code-Verified / Dry-Run Verified reference adapter — not the protocol anchor | `across-ingress-bridge.ts` · `IngressSafetySwitch.sol` · `tests/adapters/across-ingress-bridge.test.ts` |
 | **Shield (CORE MOAT)** | Sub-ms Wasm pre-execution armor · p50 ~106 μs · fail-closed before mempool | `checkSoilResistance()` · `soil_core.wasm` |
 
 **Pending-Capital Recognition Invariant:** During active bridge execution, in-flight liquidity is labelled `IN_FLIGHT_BRIDGE_CAPITAL`; **`lostUsd` is strictly `0`** — the protocol never prematurely writes off pending bridge capital as principal loss until an explicit fail-closed timeout. SDK enforcement: `assertUnidirectionalBridge()` · `exportRobinhoodAuditSnapshot()` throw on `lostUsd ≠ 0`.
@@ -219,9 +219,11 @@ Live envelopes: `GET /api/grant-audit`.
 
 | Contract | Role | Verified Address (Sepolia) | Source |
 |----------|------|----------------------------|--------|
-| `SliverVineGate` | Consume-once EIP-712 attestation anchor | `0x0000000000000000000000000000000000000000` *(pending `forge script`)* | [`SliverVineGate/src/SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) |
-| `RobinhoodSafetySwitch` | Pillar 2 compliance filter (oracle flush + blacklist) | `0x0000000000000000000000000000000000000000` *(pending `forge script`)* | [`contracts/RobinhoodSafetySwitch.sol`](../../contracts/RobinhoodSafetySwitch.sol) |
-| `SliverVineSoilCoprocessor` (Stylus) | **On-Chain High-Frequency Math Coprocessor for Pre-Execution Soil Verification** — u128 fixed-point score · quadratic spread/slippage penalty · fail-closed `depth_usd ≥ 10_000` · score ceiling `10_000` | `0x0000000000000000000000000000000000000000` *(pending `cargo stylus deploy`)* | [`contracts/stylus-probe/src/lib.rs`](../../contracts/stylus-probe/src/lib.rs) |
+| **Deployer / Admin / Signer** | OpSec-isolated Forge broadcast signer · gate stack admin | `0xbd65d785Dac74EBa9efFdB357b2dC52fCC26EC7F` | [`scripts/deploy-sepolia-gate.sol`](../../scripts/deploy-sepolia-gate.sol) |
+| `SliverVineGate` | Consume-once EIP-712 attestation anchor | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` | [`SliverVineGate/src/SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) |
+| `SliverVineRiskOracle` | EIP-712 offline risk report · `STATUS_SHUTDOWN` flush | `0x3FFa2539f502682E8145e6Eb427ff78d258D53a4` | [`contracts/SliverVineRiskOracle.sol`](../../contracts/SliverVineRiskOracle.sol) |
+| `IngressSafetySwitch` | Pillar 2 compliance filter (oracle flush + blacklist) | `0x3E4298e2b8d4e30396A54C1817Eb71c9272Ffb4B` | [`contracts/IngressSafetySwitch.sol`](../../contracts/IngressSafetySwitch.sol) |
+| `SliverVineSoilCoprocessor` (Stylus) | **On-Chain High-Frequency Math Coprocessor for Pre-Execution Soil Verification** — u128 fixed-point score · quadratic spread/slippage penalty · fail-closed `depth_usd ≥ 10_000` · score ceiling `10_000` | **Code-Verified** (Cargo **5/5**, Wasm Sandbox Vitest Passed, On-chain Deploy Pending Tooling Lock) | [`contracts/stylus-probe/src/lib.rs`](../../contracts/stylus-probe/src/lib.rs) |
 
 **Deploy (Sepolia gate stack):**
 
@@ -249,13 +251,13 @@ Replace zero addresses above with Arbiscan-verified deployments before final gra
 
 ```bash
 pnpm install
-pnpm test -- --run        # Current Live Suite: 171 files | 753 PASS (Proposal Locked Baseline: 168 | 742)
+pnpm test -- --run        # Current Live Suite: 172/172 files | 758/758 PASS (Proposal Locked Baseline: 168 | 742)
 pnpm run audit:security   # 5/0/0 PASS
 cd SliverVineGate && forge test --gas-report && cd ..
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualLegProof
 ```
 
-**Regression bar:** **Proposal Locked Baseline:** 168 files | 742 PASS (100% Clean) · **Current Live Suite:** 171 files | 753 PASS (100% Clean) · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
+**Regression bar:** **Proposal Locked Baseline:** 168 files | 742 PASS (100% Clean) · **Current Live Suite:** 172/172 files | 758/758 PASS (100% Clean · Exit Code 0) · Forge 60/60 · 327,675 fuzz · Wasm `<28kb` / `<60µs`.
 
 ---
 

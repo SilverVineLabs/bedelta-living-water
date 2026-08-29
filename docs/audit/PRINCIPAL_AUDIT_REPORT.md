@@ -13,17 +13,17 @@
 
 | Metric | Locked value | Artifact / verifier |
 |--------|--------------|---------------------|
-| **Vitest Baseline** | **168 files | 742 PASS (100% Clean)** | `pnpm test` · security-tier Vitest in [`static-analysis-report.json`](./static-analysis-report.json) |
+| **Vitest Baseline** | **172 files | 758 PASS (100% Clean)** *(Locked Proposal Baseline: 168 \| 742)* | `pnpm test` · security-tier Vitest in [`static-analysis-report.json`](./static-analysis-report.json) |
 | **Wasm Core Budget** | **`<28kb` Cloudflare budget, `<60µs` execution (`<150µs` P99 tail)** | [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) · [`soil_core.rs`](../../src/wasm/soil_core.rs) · `WASM_BUDGET_BYTES` in [`soil-wasm.ts`](../../src/sdk/soil-wasm.ts) |
 | **Active Guards** | **`agent-citadel-guard` (50 bps Slippage Deadman)** + R01–R20 matrix **17 Active \| 2 Refactored \| 1 Deprecated** | `src/core/agent-citadel-guard.ts` (`AGENT_DEADMAN_SLIPPAGE_BPS = 50`) |
-| **Revenue Integration** | GMX v2 **`uiFeeReceiver` (+5 bps protocol yield accrual)** | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` |
+| **Revenue Integration** | GMX v2 **`uiFeeReceiver` (+10 bps protocol yield accrual)** + up to **25%** referral rebate | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` |
 | **Security Matrix** | **3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)** | `pnpm run audit:security` → [`static-analysis-report.json`](./static-analysis-report.json) `summary.pass=5` |
 | **Fuzzing Baseline** | **327,675 Property Fuzz Executions** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep` · 5×65,535) · standard `forge test` = **5,120** (5×1,024) | Forge property suite · Gate unit **60 Passed** |
 | **Decision latency** | p50 ~106 µs (`checkSoilResistance()` / Shield hot path) | Resilience / soil benchmark harness |
 | **Chaos matrix** | **255 / 255** toxic scenarios blocked · `failClosedRate: 100.00%` · `capitalLossUsd: 0` | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) |
 
 **Single regression phrase (all audit prose):**  
-`168 files | 742 PASS (100% Clean)` · `3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)` · Wasm `<28kb` / `<60µs` (`<150µs` P99 tail).
+`172 files | 758 PASS (100% Clean)` *(Locked Proposal Baseline: 168 \| 742)* · `3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)` · Wasm `<28kb` / `<60µs` (`<150µs` P99 tail).
 
 ---
 
@@ -76,7 +76,7 @@
 
 | Probe | Expected posture | SSOT |
 |-------|------------------|------|
-| `uiFeeReceiver` injection | Every unsigned increase / decrease / deposit carries **+5 bps** accrual | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` |
+| `uiFeeReceiver` injection | Every unsigned increase / decrease / deposit carries **+10 bps** accrual + optional referral rebate | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` |
 | L1 consume-once | `SliverVineGate.sol` `verifyAndConsume` — replay-safe, gas-bounded | Forge 60/60 · Slither / Aderyn in 5/0/0 |
 | Public JSON leakage | `/api/grant-audit` redacts signing material and proprietary encode paths | Grant-audit route surface |
 
@@ -157,7 +157,7 @@ SilverVine is the **infrastructure-layer armored pipeline**. Application-layer s
 1. Wire through Gatehouse session scopes (ZeroDev Kernel v3 → ERC-7715 evolution).  
 2. Never reverse the Firewall escort (no inbound AML path).  
 3. Honor Shield short-circuit (`checkSoilResistance` + `agent-citadel-guard` 50 bps).  
-4. Preserve `uiFeeReceiver` **+5 bps** on every GMX v2 unsigned payload.  
+4. Preserve `uiFeeReceiver` **+10 bps** on every GMX v2 unsigned payload.  
 5. Expand markets only via V1.0 config maps (BTC/USDC · USDG Robinhood Chain) — no fork of Wasm soil core.
 
 Cohort contrast matrix (infra vs app): see grant audit matrix generator narrative (`scripts/generate-grant-audit-matrix.ts` — Carbon / LayerV / T3tris / SilverVine).
@@ -167,7 +167,7 @@ Cohort contrast matrix (infra vs app): see grant audit matrix generator narrativ
 ## Verification (Principal — 60s)
 
 ```bash
-pnpm install && pnpm test -- --run # 168 files | 742 PASS (100% Clean)
+pnpm install && pnpm test -- --run # 172 files | 758 PASS (Locked Baseline: 168 | 742)
 pnpm run audit:security            # 3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)
 pnpm run audit:fast                # fast tier scorecard → security-scorecard.json
 cd SliverVineGate && forge test && cd ..

@@ -69,7 +69,7 @@ export function NirvanaEvacuationShield({
         </h2>
         <p className="mb-6 text-xs leading-relaxed text-zinc-400">
           Off-chain sentinel reported non-linear market stress. SilverVineRiskOracle latched
-          SHUTDOWN (statusCode 3). RobinhoodSafetySwitch blocked institutional ingress.
+          SHUTDOWN (statusCode 3). Ingress Safety Switch blocked institutional ingress.
           Wallet exposure was atomically rotated into 0-entropy RWA vault custody.
         </p>
 

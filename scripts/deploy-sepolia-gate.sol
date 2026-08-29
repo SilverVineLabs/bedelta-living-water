@@ -4,10 +4,10 @@ pragma solidity 0.8.28;
 import {Script, console2} from "forge-std/Script.sol";
 import {SliverVineGate} from "../SliverVineGate/src/SliverVineGate.sol";
 import {SliverVineRiskOracle} from "../contracts/SliverVineRiskOracle.sol";
-import {RobinhoodSafetySwitch} from "../contracts/RobinhoodSafetySwitch.sol";
+import {IngressSafetySwitch} from "../contracts/IngressSafetySwitch.sol";
 
 /// @title DeploySepoliaGate — Arbitrum Sepolia (421614) gate + compliance stack
-/// @notice Deploys SliverVineGate, SliverVineRiskOracle, and RobinhoodSafetySwitch;
+/// @notice Deploys SliverVineGate, SliverVineRiskOracle, and IngressSafetySwitch;
 ///         records SliverVineSoilCoprocessor (Stylus) deployment reference;
 ///         prints Arbiscan verification parameters for grant diligence.
 ///
@@ -29,7 +29,7 @@ contract DeploySepoliaGate is Script {
     struct DeployResult {
         SliverVineGate gate;
         SliverVineRiskOracle riskOracle;
-        RobinhoodSafetySwitch safetySwitch;
+        IngressSafetySwitch safetySwitch;
         bytes gateCtorArgs;
         bytes oracleCtorArgs;
         bytes switchCtorArgs;
@@ -59,7 +59,7 @@ contract DeploySepoliaGate is Script {
 
         result.gate = new SliverVineGate(signers, threshold, guardian, gateAdmin);
         result.riskOracle = new SliverVineRiskOracle(riskOracleSigner, sloWindowSec);
-        result.safetySwitch = new RobinhoodSafetySwitch(address(result.riskOracle), blacklist);
+        result.safetySwitch = new IngressSafetySwitch(address(result.riskOracle), blacklist);
 
         vm.stopBroadcast();
 
@@ -72,7 +72,7 @@ contract DeploySepoliaGate is Script {
         console2.log("chainId                 ", block.chainid);
         console2.log("SliverVineGate          ", address(result.gate));
         console2.log("SliverVineRiskOracle    ", address(result.riskOracle));
-        console2.log("RobinhoodSafetySwitch   ", address(result.safetySwitch));
+        console2.log("IngressSafetySwitch     ", address(result.safetySwitch));
         console2.log("SliverVineSoilCoprocessor (Stylus)", vm.envOr("SOIL_COPROCESSOR_ADDRESS", address(0)));
         console2.log("  deploy: cd contracts/stylus-probe && cargo stylus deploy --network arbitrum-sepolia");
         console2.log("  verify: cargo stylus verify --network arbitrum-sepolia");
@@ -83,7 +83,7 @@ contract DeploySepoliaGate is Script {
         console2.log("forge verify-contract <addr> <path>:<Contract> --chain-id 421614 --constructor-args-hex <hex> --watch");
         console2.log("SliverVineGate path: SliverVineGate/src/SliverVineGate.sol:SliverVineGate");
         console2.log("RiskOracle path: contracts/SliverVineRiskOracle.sol:SliverVineRiskOracle");
-        console2.log("SafetySwitch path: contracts/RobinhoodSafetySwitch.sol:RobinhoodSafetySwitch");
+        console2.log("SafetySwitch path: contracts/IngressSafetySwitch.sol:IngressSafetySwitch");
         console2.log("gateCtorArgsHex   ");
         console2.logBytes(result.gateCtorArgs);
         console2.log("oracleCtorArgsHex ");

@@ -8,7 +8,7 @@
 | **實體** | SilverVine Labs |
 | **協議** | SliverVine / BeΔ Living Water (BDLW) · Santenmoku 風控引擎 |
 | **受眾** | Arbitrum Foundation · ZeroDev Grant 委員會 · 機構配置者 · Fund-of-Funds 盡職 |
-| **基線** | Vitest **168 檔 \| 742 PASS (100% Clean)** · Wasm 熱路徑 **87.76 KiB gzip** · Shield **p50 ~106 µs** |
+| **基線** | **鎖定基線：** Vitest **168 檔 \| 742 PASS** · **當前 Live：** **172 檔 \| 758 PASS** · Wasm 熱路徑 **87.76 KiB gzip** · Shield **p50 ~106 µs** |
 | **即時驗證** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **規格 SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **風控框架 SSOT** | [`../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) |
@@ -33,17 +33,17 @@ BeΔ Living Water (BDLW) 為包裹 Arbitrum One 上 GMX v2 GM Pool 與 Hyperliqu
 | 支柱 | 姿態 | 主要證據 |
 |------|------|---------|
 | **預執行盾牌** | 廣播前 Fail-Closed | `checkSoilResistance()` · `pkg/soil_core.wasm` · R01–R20 矩陣 |
-| **資金會計** | 待結算橋接流動性 `lostUsd ≡ 0` | `robinhood-across-bridge.ts` · Vitest 5/5 |
+| **資金會計** | 待結算橋接流動性 `lostUsd ≡ 0` | `across-ingress-bridge.ts` · Vitest 5/5 |
 | **Session / AA 安全** | 範圍金鑰 · 名義上限 · Gas 帳本 | ZeroDev AA 閘門 · `session-key-gates.ts` |
 | **壓力與模擬** | 30D Survival Benchmark + 742 測試回歸 | `generate-survival-report.ts` · `pnpm test -- --run` |
-| **合規隔離** | Robinhood 單向出站 · AML 入站阻擋 | `RobinhoodSafetySwitch.sol` · 防火牆柱審計 |
+| **合規隔離** | Robinhood 單向出站 · AML 入站阻擋 | `IngressSafetySwitch.sol` · 防火牆柱審計 |
 
 ### 1.2 鎖定 SSOT 指標（評委可直接複製）
 
 | 指標 | 鎖定值 | 驗證方式 |
 |------|--------|---------|
-| **Vitest 回歸** | **168 檔 \| 742 PASS** | `pnpm test -- --run` |
-| **橋接不變量** | **5/5 PASS** | `pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts` |
+| **Vitest 回歸** | **172 檔 \| 758 PASS** *(鎖定基線：168 \| 742)* | `pnpm test -- --run` |
+| **橋接不變量** | **5/5 PASS** | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` |
 | **ZeroDev AA 閘門** | **4/4 PASS** | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` |
 | **混沌矩陣** | **255/255 阻擋 · `capitalLossUsd: 0`** | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) |
 | **安全矩陣** | **三層級 5/0/0 PASS** | `pnpm audit:security` |
@@ -109,7 +109,7 @@ BeΔ Living Water (BDLW) 為包裹 Arbitrum One 上 GMX v2 GM Pool 與 Hyperliqu
 ```bash
 pnpm test -- --run
 pnpm audit:security
-pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts
+pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
 ```
 
@@ -129,7 +129,7 @@ BDLW 將**誠實會計**作為硬不變量——在途流動性永不誤記為�
 | `BRIDGE_TIMEOUT_FAIL_CLOSED` | >1h 逾時 Fail-Closed | 否 | **0** |
 | `AML_INBOUND_TO_ROBINHOOD_BLOCKED` | 反向路徑阻擋 | 否 | **0** |
 
-**SSOT：** `evaluateAcrossBridgeTransfer()` · [`robinhood-across-bridge.ts`](../../src/adapters/robinhood/robinhood-across-bridge.ts)
+**SSOT：** `evaluateAcrossBridgeTransfer()` · [`across-ingress-bridge.ts`](../../src/adapters/across-ingress-bridge.ts)
 
 ### 3.2 動態風險預算 (R11)
 
@@ -145,7 +145,7 @@ BDLW 將**誠實會計**作為硬不變量——在途流動性永不誤記為�
 ### 3.3 非託管語義
 
 - 用戶本金存放於 **ZeroDev Kernel Smart Account** — 非協議國庫。
-- GMX `uiFeeReceiver`（+5 bps）為協議收益 — 不與用戶本金混淆。
+- GMX `uiFeeReceiver`（**+10 bps**）與最高 **25%** referral rebate 為協議收益 — 不與用戶本金混淆。
 - 在途橋接資金僅**標記、不借出** — 程式路徑無再質押宣稱。
 
 ### 3.4 容量與入場模式摘要
@@ -167,7 +167,7 @@ BDLW 將**誠實會計**作為硬不變量——在途流動性永不誤記為�
 
 | 框架 | 命令 | 預期 |
 |------|------|------|
-| **全量 Vitest** | `pnpm test -- --run` | **168 檔 \| 742 PASS** |
+| **全量 Vitest** | `pnpm test -- --run` | **172 檔 \| 758 PASS** *(鎖定基線：168 \| 742)* |
 | **Grant v0.9 切片** | `pnpm test:grant-v09-sim` | AA / 風控 sim PASS |
 | **Wasm 可行性** | `pnpm test:wasm-feasibility` | Soil Wasm sim PASS |
 | **ZeroDev dry-run** | `pnpm test:zerodev` | Mock Bundler PASS |
@@ -191,7 +191,7 @@ pnpm tsx scripts/generate-survival-report.ts
 |---------|------|---------|
 | **深度不足** | `pnpm verify:negative` | Soil 熔斷 |
 | **黑天鵝矩陣** | `chaos-blackswan-metrics.json` | 255/255 · `capitalLossUsd: 0` |
-| **橋接逾時** | `robinhood-across-bridge.test.ts` | Fail-Closed · `lostUsd: 0` |
+| **橋接逾時** | `across-ingress-bridge.test.ts` | Fail-Closed · `lostUsd: 0` |
 | **Soil 滑點** | `zerodev-aa-gate.test.ts` | UserOp 前 `TRIP_SOIL_RESISTANCE` |
 | **HL 恐慌沙盒** | `dry-run-sandbox.ts` | 記憶體內 · 無 live 廣播 |
 
@@ -225,7 +225,7 @@ pnpm tsx scripts/generate-survival-report.ts
 |------|------|------|
 | **單向護航** | Robinhood → Arbitrum（`46630`/`4663` → `42161`） | `validateAcrossBridgeDirection()` |
 | **入站隔離** | `AML_INBOUND_TO_ROBINHOOD_BLOCKED` | 防火牆柱 |
-| **鏈上安全開關** | `RobinhoodSafetySwitch.sol` | Robinhood 審計報告 |
+| **鏈上安全開關** | `IngressSafetySwitch.sol` | Robinhood 審計報告 |
 
 ### 5.3 三道防線
 
@@ -233,7 +233,7 @@ pnpm tsx scripts/generate-survival-report.ts
 |------|------|----------|
 | **第一道** | 業務營運 | 收益門檻 · 緩衝引擎 · 再平衡規則 |
 | **第二道** | 風控合規 | Soil · PGATE · Sequencer/Oracle · 橋接 AML |
-| **第三道** | 獨立保證 | 742 PASS · Survival Benchmark · 安全矩陣 · DDIP |
+| **第三道** | 獨立保證 | 758 PASS · Survival Benchmark · 安全矩陣 · DDIP |
 
 ### 5.4 配置者 FAQ（盡職熱點）
 
@@ -251,8 +251,8 @@ pnpm tsx scripts/generate-survival-report.ts
 
 | # | 檢查項 | 命令 / 介面 | 通過標準 |
 |---|--------|------------|---------|
-| 1 | 全量回歸 | `pnpm test -- --run` | 168 \| 742 PASS |
-| 2 | 橋接會計 | `robinhood-across-bridge.test.ts` | 5/5 |
+| 1 | 全量回歸 | `pnpm test -- --run` | 172 \| 758 PASS *(鎖定：168 \| 742)* |
+| 2 | 橋接會計 | `across-ingress-bridge.test.ts` | 5/5 |
 | 3 | ZeroDev 閘門 | `zerodev-aa-gate.test.ts` | 4/4 |
 | 4 | 安全矩陣 | `pnpm audit:security` | 5/0/0 |
 | 5 | 即時審計 | `GET /api/grant-audit` | `lostUsd: 0` |

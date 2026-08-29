@@ -5,8 +5,7 @@
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)  
 **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 
-> **Baseline (locked):** Vitest `164 test files | 735 PASS (100% Clean)` · Security-tier `5/0/0 PASS` (`docs/audit/static-analysis-report.json`; Vitest, Forge, Slither, Aderyn, pnpm-audit) · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.  
-> Fast-tier scorecard (`docs/audit/security-scorecard.json`) is overwritten by the last `audit:*` run — do not mix tiers.
+> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · **Current Live Suite:** **172 files | 758 PASS** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
 
 **Audience:** Arbitrum ecosystem / Open House / future Security Grant.  
 **Not this pack:** GMX `uiFeeReceiver` economics → [`../gmx/`](../gmx/).
@@ -17,7 +16,7 @@
 
 SliverVine deploys a **Zero-Trust Pre-Execution Citadel** on **Arbitrum One**, with **Sepolia** dual-leg provenance and an L1 **`SliverVineGate.sol`** consume-once attestation lock. Before any Arbitrum broadcast, Edge sensors (sequencer, oracle lag, soil) fail-closed; production attestations bind to Gate `verifyingContract`.
 
-**Interceptor Moat:** Deciding transaction execution safety at **p50 ~106 μs** BEFORE MEV bots or Sequencer mempools ever see it. Builder **+5 bps `uiFeeReceiver`** is standard GMX Builders monetization — secondary to the sub-ms risk gateway.
+**Interceptor Moat:** Deciding transaction execution safety at **p50 ~106 μs** BEFORE MEV bots or Sequencer mempools ever see it. Builder **+10 bps `uiFeeReceiver`** + up to **25% referral rebate** is standard GMX Builders monetization — secondary to the sub-ms risk gateway.
 
 For LP exit semantics, the protocol enforces **zero protocol-level lock-up (100% non-custodial); redemption speed is subject only to GMX v2's native 3–5 min async Keeper settlement.**
 
@@ -55,12 +54,12 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v0.9 Delivered (100% Code & Tested)** | ✅ Live | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX +5 bps UI Fee (monetization, not moat) · **164 test files / 735 PASS (100% Clean)** · Sepolia / dry-run verified; mainnet ties to M6 |
+| **v0.9 Delivered (100% Code & Tested)** | ✅ Live | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee (monetization, not moat) · **172 test files / 758 PASS (100% Clean)** *(Locked Baseline: 168 \| 742)* · Sepolia / dry-run verified; mainnet ties to M6 |
 | **V1.0 Roadmap (Planned Post-Grant)** | ⏳ Planned | **Citadel-as-a-Service (CaaS)** — productize `@slivervine/citadel-sdk` as an open sub-ms pre-execution risk layer for all Arbitrum dApps & AI Agent frameworks · **Hedge Leg Depth Guard** — dedicated Hyperliquid L2 orderbook depth sensing prior to hedge execution (zero-market-impact 1× short even during flash-liquidity drawdowns) · On-chain ECDSA Signer Recovery · Production GM Vault deployment · BTC/USDC isomorphic pools |
 
 | Phase | Scope | Status |
 |-------|-------|--------|
-| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **164/735** bar · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
+| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **172/758** bar *(Locked: 168/742)* · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
 | Security Grant pack | Cold audit pack · R01–R20 + Slither/Echidna narrative | ⏳ Planned |
 | Institutional AA | Kernel v3 Session Key (draft: `docs/internal/zerodev/`) | ✅ Delivered in v0.9 |
 
@@ -70,7 +69,7 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 ```bash
 pnpm install
-pnpm test                 # 164 test files | 735 PASS (100% Clean)
+pnpm test                 # 172 test files | 758 PASS (Locked Baseline: 168 | 742)
 pnpm run audit:security   # 5/0/0 PASS
 pnpm run demo:e2e         # 5-step Citadel E2E (dry-run)
 cd SliverVineGate && forge test && cd ..

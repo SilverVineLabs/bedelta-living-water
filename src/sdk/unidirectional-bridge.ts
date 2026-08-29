@@ -16,7 +16,7 @@ import {
   DEFAULT_ACROSS_BRIDGE_TIMEOUT_MS,
   evaluateAcrossBridgeTransfer,
   type BridgeCapitalLabel,
-} from "../adapters/robinhood/robinhood-across-bridge";
+} from "../adapters/across-ingress-bridge";
 import {
   ROBINHOOD_MAINNET_CHAIN_ID,
   ROBINHOOD_TESTNET_CHAIN_ID,

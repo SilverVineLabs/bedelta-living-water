@@ -92,7 +92,7 @@ export const SLIVERVINE_RISK_ORACLE_ABI = [
 /** @deprecated Use SLIVERVINE_RISK_ORACLE_ABI — protocol brand SSOT is SliverVine. */
 export const SILVERVINE_RISK_ORACLE_ABI = SLIVERVINE_RISK_ORACLE_ABI;
 
-export const ROBINHOOD_SAFETY_SWITCH_ABI = [
+export const INGRESS_SAFETY_SWITCH_ABI = [
   {
     type: "function",
     name: "riskOracle",
@@ -147,6 +147,9 @@ export const ROBINHOOD_SAFETY_SWITCH_ABI = [
     ],
   },
 ] as const satisfies Abi;
+
+/** @deprecated Use INGRESS_SAFETY_SWITCH_ABI — protocol SSOT is venue-agnostic IngressSafetySwitch. */
+export const ROBINHOOD_SAFETY_SWITCH_ABI = INGRESS_SAFETY_SWITCH_ABI;
 
 export interface RiskOracleSnapshot {
   isSystemFlushed: boolean;

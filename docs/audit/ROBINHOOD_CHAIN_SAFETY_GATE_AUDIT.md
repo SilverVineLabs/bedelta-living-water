@@ -22,7 +22,7 @@
 | **Vitest — Robinhood Across Bridge** | **5/5 PASS** |
 | **Unidirectional Escort (46630/4663 → 42161)** | **ALLOWED** |
 | **AML Inbound Block (42161 → 46630/4663)** | **BLOCKED** |
-| **On-chain `RobinhoodSafetySwitch.sol`** | **Invariants verified** |
+| **On-chain `IngressSafetySwitch.sol`** | **Invariants verified** |
 | **Capital loss invariant** | **`lostUsd ≡ 0`** |
 
 **Robinhood Chain status:** Testnet **46630** — **ACTIVE / TESTED** · Mainnet **4663** — **DEPLOYMENT READY** (inbound blocked at protocol filter).
@@ -44,7 +44,7 @@
     ┌─────────────────────────────────────────────────────────┐
     │ Pillar 2: THE FIREWALL (Compliance — Robinhood Chain Gate)      │
     │ Unidirectional Escort · AML inbound isolation           │
-    │ RobinhoodSafetySwitch.sol · lostUsd ≡ 0                   │
+    │ IngressSafetySwitch.sol · lostUsd ≡ 0                   │
     └──────────────────────┬──────────────────────────────────┘
                            │
                            ▼
@@ -78,7 +78,7 @@
 ### 2.1 Vitest Verification — 5/5 PASS
 
 ```bash
-pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts
+pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 ```
 
 | # | Test Case | Result |
@@ -89,8 +89,8 @@ pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts
 | 4 | AML isolation: **42161 → 46630 / 4663** inbound blocked | ✅ PASS |
 | 5 | Bridge timeout fail-closed; capital never marked as lost | ✅ PASS |
 
-**Module:** `src/adapters/robinhood/robinhood-across-bridge.ts`  
-**Test file:** `tests/adapters/robinhood-across-bridge.test.ts`
+**Module:** `src/adapters/across-ingress-bridge.ts`  
+**Test file:** `tests/adapters/across-ingress-bridge.test.ts`
 
 ### 2.2 Unidirectional Escort Routing Matrix
 
@@ -109,9 +109,9 @@ pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts
 - **46630 (testnet):** Active integration sandbox — outbound escort to Arbitrum One operational.
 - **4663 (mainnet):** Deployment-ready — outbound escort allowed; **inbound from 42161 blocked** at protocol filter (Permissioned RWA tranche policy per Tech Spec § Segregated Tranches).
 
-### 2.3 On-Chain Invariants — `RobinhoodSafetySwitch.sol`
+### 2.3 On-Chain Invariants — `IngressSafetySwitch.sol`
 
-**Contract:** [`contracts/RobinhoodSafetySwitch.sol`](../../contracts/RobinhoodSafetySwitch.sol)  
+**Contract:** [`contracts/IngressSafetySwitch.sol`](../../contracts/IngressSafetySwitch.sol)  
 **Oracle anchor:** [`contracts/SliverVineRiskOracle.sol`](../../contracts/SliverVineRiskOracle.sol)
 
 | Invariant | Mechanism | On Violation |
@@ -164,11 +164,11 @@ The bridge state machine in `evaluateAcrossBridgeTransfer()` enforces:
 ## CLI Reproduction
 
 ```bash
-# Full Vitest suite (168 files | 742 PASS (100% Clean))
+# Full Vitest suite (172 files | 758 PASS — Locked Baseline: 168 | 742)
 pnpm test
 
 # Targeted Robinhood Chain bridge gate
-pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts
+pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 
 # On-chain contract tests (Foundry)
 cd SliverVineGate && forge test && cd ..
@@ -182,9 +182,9 @@ cd SliverVineGate && forge test && cd ..
 |------|------|
 | [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | Triangle Liquidity Loop · Segregated Tranches · Elara alignment |
 | [`docs/audit/PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) | Principal Audit v1.0.0-rc1 · survival matrix |
-| [`src/adapters/robinhood/robinhood-across-bridge.ts`](../../src/adapters/robinhood/robinhood-across-bridge.ts) | Edge adapter — unidirectional routing + AML block |
-| [`contracts/RobinhoodSafetySwitch.sol`](../../contracts/RobinhoodSafetySwitch.sol) | On-chain compliance filter |
-| [`tests/adapters/robinhood-across-bridge.test.ts`](../../tests/adapters/robinhood-across-bridge.test.ts) | Vitest gate verification |
+| [`src/adapters/across-ingress-bridge.ts`](../../src/adapters/across-ingress-bridge.ts) | Edge adapter — unidirectional routing + AML block |
+| [`contracts/IngressSafetySwitch.sol`](../../contracts/IngressSafetySwitch.sol) | On-chain compliance filter |
+| [`tests/adapters/across-ingress-bridge.test.ts`](../../tests/adapters/across-ingress-bridge.test.ts) | Vitest gate verification |
 
 ---
 

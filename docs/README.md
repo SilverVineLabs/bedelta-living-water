@@ -3,7 +3,7 @@
 **Entity:** SilverVine Labs · **Protocol:** SliverVine · **Branch:** `v1.0_push_BDLW`  
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · **Contact:** `grants@silvervinelabs.com`
 
-> **Baseline (locked):** Vitest **168 files | 742 PASS (100% Clean)** · `pnpm test -- --run` · live proof `GET /api/grant-audit`.
+> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · **Current Live Suite:** **172 files | 758 PASS** · `pnpm test -- --run` · live proof `GET /api/grant-audit`.
 
 > **Language policy:** English SSOT files are self-contained — professional English only, no CJK characters, no cross-language links.
 
@@ -25,7 +25,7 @@
 | 2 | [`architecture/TECHNICAL_SPECIFICATION.md`](./architecture/TECHNICAL_SPECIFICATION.md) | **Yellow Paper** — R01–R20 Risk Matrix · Three Pillars · Arbitrum-centric topology |
 | 3 | [`audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | **Institutional DDIP** — allocator diligence · Basel III alignment · chaos 255/255 |
 | 4 | [`audit/ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md`](./audit/ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md) | **ZeroDev AA vs. Pre-execution Wasm Risk Substrate** — Kernel v3 institutional differentiation |
-| 5 | [`sdk/CITADEL_SDK_BLUEPRINT.md`](./sdk/CITADEL_SDK_BLUEPRINT.md) | **B2B CaaS Integration Blueprint** — `@slivervine/citadel-sdk` · 5 bps model |
+| 5 | [`sdk/CITADEL_SDK_BLUEPRINT.md`](./sdk/CITADEL_SDK_BLUEPRINT.md) | **B2B CaaS Integration Blueprint** — `@slivervine/citadel-sdk` · 10 bps builder + referral rebate model |
 
 ---
 

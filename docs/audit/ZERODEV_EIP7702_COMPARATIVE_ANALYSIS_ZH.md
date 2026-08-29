@@ -60,7 +60,7 @@ Pillar 3 SHIELD      → checkSoilResistance() · pkg/soil_core.wasm · Fail-Clo
 | **意圖綁定** | 可選 calldata hash | **`payloadHash()`** → `SliverVineGate.sol` 單次消耗 |
 | **橋接在途** | 常計為 live NAV | **`IN_FLIGHT_BRIDGE_CAPITAL`** · **`lostUsd ≡ 0`** · `SETTLED` 前禁止裸倉 |
 | **緊急響應** | Admin pause · 多簽 | **自動化** R17 · R20 · `rootProtection()` |
-| **回歸證明** | 廠商 QA / 審計快照 | **742 PASS** · `zerodev-aa-gate` **4/4** · chaos **255/255** |
+| **回歸證明** | 廠商 QA / 審計快照 | **758 PASS** (172 檔 Live) · 鎖定基線 **742 PASS** · `zerodev-aa-gate` **4/4** · chaos **255/255** |
 
 ---
 
@@ -97,7 +97,7 @@ Pillar 3 SHIELD      → checkSoilResistance() · pkg/soil_core.wasm · Fail-Clo
 | `BRIDGE_TIMEOUT_FAIL_CLOSED` | **否** | **0** |
 | `SETTLED` / Arbitrum 原生 | 是 | **0** |
 
-**測試錨點：** `robinhood-across-bridge.test.ts` · **5/5 PASS**
+**測試錨點：** `across-ingress-bridge.test.ts` · **5/5 PASS**
 
 ---
 
@@ -124,11 +124,11 @@ Kernel Smart Account → payloadHash 綁定 → checkSoilResistance() (106µs)
 
 | # | 宣稱 | 命令 | 預期 |
 |---|------|------|------|
-| 1 | 全量回歸 | `pnpm test -- --run` | **168 檔 \| 742 PASS** |
+| 1 | 全量回歸 | `pnpm test -- --run` | **172 檔 \| 758 PASS** *(鎖定：168 \| 742)* |
 | 2 | ZeroDev AA gate | `vitest run tests/adapters/zerodev-aa-gate.test.ts` | **4/4** |
 | 3 | R07 $5k cap | `vitest run tests/services/session-key-gates.test.ts` | 超限 severance |
 | 4 | 30s 心跳 | `vitest run tests/services/nonce-auto-healing.test.ts` | 過期鎖定 |
-| 5 | 橋接會計 | `vitest run tests/adapters/robinhood-across-bridge.test.ts` | **5/5** |
+| 5 | 橋接會計 | `vitest run tests/adapters/across-ingress-bridge.test.ts` | **5/5** |
 
 ---
 

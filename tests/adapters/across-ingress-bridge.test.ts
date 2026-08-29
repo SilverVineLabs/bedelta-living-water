@@ -11,12 +11,12 @@ import {
   isInboundToRobinhoodRoute,
   isRobinhoodToArbitrumRoute,
   validateAcrossBridgeDirection,
-} from "../../src/adapters/robinhood/robinhood-across-bridge";
+} from "../../src/adapters/across-ingress-bridge";
 
 const WALLET = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 const T0 = 1_700_000_000_000;
 
-describe("robinhood-across-bridge", () => {
+describe("across-ingress-bridge", () => {
   it("allows unidirectional outbound Robinhood (46630) → Arbitrum One (42161)", () => {
     expect(
       isRobinhoodToArbitrumRoute(ROBINHOOD_TESTNET_CHAIN_ID, ARBITRUM_ONE_CHAIN_ID),

@@ -2,7 +2,7 @@
 
 > **Document Status:** Official SSOT for Arbitrum Foundation & ZeroDev Grant Committees  
 > **Version:** v1.0 → v2.0 Roadmap Alignment  
-> **Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs**  
+> **Baseline:** Vitest **172 files | 758 PASS (100% Clean)** *(Locked Proposal Baseline: 168 \| 742)* · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs**  
 > **Core Principle:** Honest Accounting, Physical Invariants (`lostUsd ≡ 0`), and Venue-Agnostic Pre-Execution Citadel Protection.  
 > **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md)
 
@@ -51,7 +51,7 @@ This document outlines BDLW's 3-Stage Evolutionary Roadmap, its Tiered Liquidity
 
 | Stage | Status | Center of Gravity |
 |-------|--------|-------------------|
-| **A — V1.0** | ✅ Code-Verified (168 files \| 742 PASS) | Arbitrum GMX v2 + HL 1× short · Robinhood outbound escort |
+| **A — V1.0** | ✅ Code-Verified (172 files \| 758 PASS · Locked Baseline: 168 \| 742) | Arbitrum GMX v2 + HL 1× short · Robinhood outbound escort |
 | **B — V1.5** | ⏳ Roadmap | Aave/Morpho base + Variational native hedge PoC |
 | **C — V2.0** | ⏳ Design Spec | 100% Arbitrum atomic intent stack · CaaS monetization |
 
@@ -76,7 +76,7 @@ This document outlines BDLW's 3-Stage Evolutionary Roadmap, its Tiered Liquidity
 
 When funds cross via Across Bridge, BDLW labels capital as `IN_FLIGHT_BRIDGE_CAPITAL`. **`lostUsd ≡ 0`** holds strictly because capital is not yet exposed to market delta. If bridge execution exceeds `DEFAULT_ACROSS_BRIDGE_TIMEOUT_MS` (1 hour), the system triggers `BRIDGE_TIMEOUT_FAIL_CLOSED`, refusing to open naked positions.
 
-**Code SSOT:** `src/adapters/robinhood/robinhood-across-bridge.ts` · Vitest 5/5 PASS (`tests/adapters/robinhood-across-bridge.test.ts`)
+**Code SSOT:** `src/adapters/across-ingress-bridge.ts` · Vitest 5/5 PASS (`tests/adapters/across-ingress-bridge.test.ts`)
 
 ### 2.2 Tiered Liquidity Stacking (Aave v3 / Morpho Blue Fallback) — ⏳ Roadmap Spec (V1.5)
 
@@ -141,7 +141,7 @@ BDLW does **not** compete on vanity fee minimization. We compete on **honest net
 | Dimension | Unsustainable low-fee / emission model | BDLW V1.0 approach |
 |-----------|----------------------------------------|---------------------|
 | **Yield governance** | Narrative APY · mutable emissions | **Mathematical invariants** — soil fuse · hurdle gate · honest bridge accounting |
-| **Protocol revenue capture** | Often absent or extracted via hidden spread | **GMX v2 `uiFeeReceiver` +5 bps** on every unsigned payload (`GMX_UI_FEE_BPS`) |
+| **Protocol revenue capture** | Often absent or extracted via hidden spread | **GMX v2 `uiFeeReceiver` +10 bps** on every unsigned payload (`GMX_UI_FEE_BPS`) + up to **25%** referral rebate |
 | **Friction vs net gain** | Ignored until LP capital is impaired | **`FRICTION_BUFFER_APY = 0.005` (0.5%) Hurdle Gate** — DN opens only when `targetNetApy > nativeEarnApy + buffer` |
 | **Slippage budget** | Socialized across passive LPs | **Pre-execution soil fuse** — cross-venue slip **> 0.5%** trips fail-closed · TWAP path slicing |
 | **Allocator disclosure** | Fixed "guaranteed" APY | **Dynamic Target Range 8.2% ~ 11.8%** (non-guaranteed HUD band) |
@@ -164,7 +164,7 @@ GMX skew premium (+5~10 bps uiFeeReceiver) + funding cushion
 
 **Design rule:** Citadel Safety Buffer and builder UI fee exist to **capture real economic surplus** from GMX v2 skew routing — not to mask slippage with emissions. The 0.5% Hurdle Gate ensures **net gains always outpace friction** before Delta-Neutral capital is deployed or rebalanced.
 
-**Code anchors:** `src/services/yield/rebalance-rules.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `src/services/risk-control-lib/soil-resistance.ts` · Vitest **742 PASS** regression.
+**Code anchors:** `src/services/yield/rebalance-rules.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `src/services/risk-control-lib/soil-resistance.ts` · Vitest **758 PASS** regression *(Locked Baseline: 742)*.
 
 ### 2.6 Real Yield vs. Toxic Inflation
 
@@ -197,7 +197,7 @@ BDLW composes yield from **three exogenous legs**, each with an identifiable eco
 | Cash-flow leg | Source | Economic payer | Stage | Code / spec anchor |
 |---------------|--------|----------------|-------|-------------------|
 | **Risk-free base** | Aave v3 / Morpho Blue USDC earn on Arbitrum One | Borrowers pay lending spread | A (probe) · B (fallback) | `arbitrum-yield-ingress.ts` · `rebalance-rules.ts` |
-| **GMX skew rebate + builder fee** | Underweight-side GM LP · `uiFeeReceiver` **+5 bps** · positive skew price-impact rebate (+5~10 bps band) | Traders / skew rebalancers on GMX v2 | A ✅ | `gmx-v2-order-payload.ts` · `GMX_UI_FEE_BPS` · Invariant #25–#27 |
+| **GMX skew rebate + builder fee** | Underweight-side GM LP · `uiFeeReceiver` **+10 bps** · positive skew price-impact rebate (+5~10 bps band) | Traders / skew rebalancers on GMX v2 | A ✅ | `gmx-v2-order-payload.ts` · `GMX_UI_FEE_BPS` · Invariant #25–#27 |
 | **HL funding cushion** | 1× short leg on Hyperliquid — hourly funding when perp > spot | Counterparty funding flow on HL book | A ✅ | HL session pipeline · Survival Benchmark funding replay |
 
 **Delta-neutral structure:** Long GM pool exposure (Arbitrum) is hedged by 1× HL short — net directional delta ≈ 0. Yield is therefore **carry and fee capture**, not leveraged directional bet + emission subsidy.
@@ -205,7 +205,7 @@ BDLW composes yield from **three exogenous legs**, each with an identifiable eco
 ```text
 Real yield stack (conceptual):
   Base floor     ← Aave / Morpho USDC earn (~4–5% probe · V1.5 storm fallback)
-  + GMX surplus  ← skew rebate + uiFeeReceiver (+5 bps builder · +5~10 bps skew band)
+  + GMX surplus  ← skew rebate + uiFeeReceiver (+10 bps builder · +5~10 bps skew band)
   + HL funding   ← 1× short funding cushion (hourly · regime-dependent)
   − friction     ← bridge · basis · MEV · slippage (Citadel Safety Buffer absorbs)
   > hurdle       ← Native Earn + FRICTION_BUFFER_APY (0.5%) before DN redeploy
@@ -229,7 +229,7 @@ Real yield stack (conceptual):
 | **Payer identity** | Future token holders / dilution | Traders, borrowers, funding counterparties |
 | **TVL retention** | Mercenary — exits when emissions drop | Hurdle-gated — deploys only when net > friction |
 | **Downside in storm** | Raise emissions (spiral) | Fail-closed + Aave/Morpho fallback (V1.5) |
-| **Protocol revenue** | Often token-dilutive | **+5 bps `uiFeeReceiver`** — venue-native builder fee |
+| **Protocol revenue** | Often token-dilutive | **+10 bps `uiFeeReceiver`** + up to **25%** referral rebate — venue-native builder stack |
 
 > **Allocator note:** Real yield **does not mean risk-free**. Funding can flip negative, skew rebates compress, and Aave rates move. BDLW quantifies and buffers these residuals (§2.5 · §6) — it simply refuses to **substitute** them with empty token inflation.
 
@@ -255,7 +255,7 @@ Real yield stack (conceptual):
 | 7 | ✅ | **Non-Custodial Escrow** | User principal never booked as protocol-owned; Kernel account SSOT |
 | 8 | ✅ | **Basis Risk Quantification** | Cross-venue delta tracked; friction absorbed by Citadel Safety Buffer |
 | 9 | ✅ | **Across Bridge SSOT** | `evaluateAcrossBridgeTransfer()` + `evaluateBridgeTimeout()` pure functions |
-| 10 | ✅ | **Robinhood Safety Switch** | On-chain `RobinhoodSafetySwitch.sol` inbound invariant enforcement |
+| 10 | ✅ | **Ingress Safety Switch** | On-chain **`IngressSafetySwitch.sol`** address-level oracle flush + blacklist · inbound AML at Edge adapter |
 
 ### II. ZeroDev & Account Abstraction (11–20)
 
@@ -280,12 +280,12 @@ Real yield stack (conceptual):
 | 22 | ⏳ | **Tiered Liquidity Stacking** | Aave/Morpho risk-free base + dynamic GMX skew arbitrage |
 | 23 | ⏳ | **Aave Cap Isolation** | Aave USDC 100% supply cap → automatic Morpho Blue fallback |
 | 24 | ⏳ | **Dynamic Hurdle Rate** | Performance fee only on yield exceeding Aave base + 1.5% |
-| 25 | ✅ | **Builder UI Fee** | +5 bps `uiFeeReceiver` on every GMX v2 payload (v1.0 active) |
+| 25 | ✅ | **Builder UI Fee** | +10 bps `uiFeeReceiver` on every GMX v2 payload (v1.0 active) |
 | 26 | ✅ | **Skew Neutralizer Premium** | Positive skew / price-impact rebate — never conflated with UI fee |
 | 27 | ✅ | **Citadel Safety Buffer** | Excess GMX yield absorbs bridge fees, basis drift, MEV slippage |
 | 28 | ⏳ | **Risk-Free Storm Fallback** | 4%~5% Aave/Morpho yield during 3σ / oracle-lag / sequencer grace |
 | 29 | ⏳ | **Performance Fee (V1.5)** | 10% of excess yield above Aave benchmark — not on v1.0 UI fee path |
-| 30 | ⏳ | **CaaS Monetization** | B2B Wasm Firewall license · 5 bps protocol authorization fee |
+| 30 | ⏳ | **CaaS Monetization** | B2B Wasm Firewall license · 10 bps protocol authorization fee |
 
 ### IV. Wasm Shield & Pre-Execution Moat (31–40)
 
@@ -447,7 +447,7 @@ USDG on 46630 → evaluateAcrossBridgeTransfer() state machine:
 | Settled | `SETTLED` | Yes — full Citadel envelope | **0** |
 | Timeout | `BRIDGE_TIMEOUT_FAIL_CLOSED` | **No** — fail-closed severance | **0** |
 
-**Code SSOT:** `evaluateAcrossBridgeTransfer()` in `src/adapters/robinhood/robinhood-across-bridge.ts` · Vitest **5/5 PASS**.
+**Code SSOT:** `evaluateAcrossBridgeTransfer()` in `src/adapters/across-ingress-bridge.ts` · Vitest **5/5 PASS**.
 
 **Settlement latency honesty (Invariant #6):** GMX async settlement **3–5 min** · HL withdrawal **~15 min** · Across bridge escort **≤ 1 h** before timeout fail-closed. Arbitrum-native ingress bypasses bridge latency entirely but retains GMX/HL settlement windows.
 
@@ -480,7 +480,7 @@ USDG on 46630 → evaluateAcrossBridgeTransfer() state machine:
 Basel operational-risk frameworks require that **pending/settlement exposures are not mis-booked as realized losses**. BDLW enforces this as a **hard invariant**:
 
 ```typescript
-// robinhood-across-bridge.ts — lostUsd is always 0 until explicit timeout labeling
+// across-ingress-bridge.ts — lostUsd is always 0 until explicit timeout labeling
 lostUsd: number; // Always 0 — pending bridge liquidity is never booked as loss.
 ```
 
@@ -497,7 +497,7 @@ lostUsd: number; // Always 0 — pending bridge liquidity is never booked as los
 | **Historical simulation** | Survival Benchmark 30D HL funding + L2 book | On-demand (`generate-survival-report.ts`) |
 | **Stress scenarios** | $100k canonical + **$1M** stress notional (`STRESS_NOTIONAL_USD`) | Same report |
 | **Reverse stress** | Negative proofs — depth breach, soil trip, bridge timeout | `pnpm verify:negative` |
-| **Model validation** | Vitest **742 PASS** full regression | CI / pre-release |
+| **Model validation** | Vitest **758 PASS** full regression *(Locked Baseline: 742)* | CI / pre-release |
 
 ### 6.4 Three Lines of Defense Mapping
 
@@ -514,7 +514,7 @@ lostUsd: number; // Always 0 — pending bridge liquidity is never booked as los
 | Layer | Compliance function | Transaction-ordering awareness | Status |
 |-------|---------------------|-------------------------------|--------|
 | **Edge Citadel (SSOT)** | `checkSoilResistance()` · R01–R20 · signing channel severance | Pre-broadcast intent ordering · UserOp gate before bundler | ✅ v0.9 Code-Verified |
-| **Pillar 2 AML Firewall + ArbOS Elara** | Outbound-only Robinhood escort · `AML_INBOUND_TO_ROBINHOOD_BLOCKED` · Elara ingress drops non-compliant / blacklisted senders before GM payload construction | Sequencer / ArbOS ordering sensor alignment · complements `RobinhoodSafetySwitch.sol` | ⏳ V1.0 Design Spec ([`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md) §4.2) |
+| **Pillar 2 AML Firewall + ArbOS Elara** | Outbound-only Robinhood escort · `AML_INBOUND_TO_ROBINHOOD_BLOCKED` · Elara ingress drops non-compliant / blacklisted senders before GM payload construction | Sequencer / ArbOS ordering sensor alignment · complements **`IngressSafetySwitch.sol`** | ⏳ V1.0 Design Spec ([`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md) §4.2) |
 | **UI reactive HUD** | `LivingWaterShieldCard` · `AMLShieldCard` · `SmartRoutingDepositCard` tranche switcher | Trip banners · Tranche A native vs Tranche B bridge state machine | ✅ v1.0 UI SSOT |
 
 **Dynamic Target Range (non-guaranteed yield band):**
@@ -543,7 +543,7 @@ Evaluators should trace claims in this document to the following SSOT paths:
 
 | Pillar | Claim | Code SSOT | Test Anchor |
 |--------|-------|-----------|-------------|
-| **Bridge accounting** | `IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0` | [`src/adapters/robinhood/robinhood-across-bridge.ts`](../../src/adapters/robinhood/robinhood-across-bridge.ts) | [`tests/adapters/robinhood-across-bridge.test.ts`](../../tests/adapters/robinhood-across-bridge.test.ts) (5/5) |
+| **Bridge accounting** | `IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0` | [`src/adapters/across-ingress-bridge.ts`](../../src/adapters/across-ingress-bridge.ts) | [`tests/adapters/across-ingress-bridge.test.ts`](../../tests/adapters/across-ingress-bridge.test.ts) (5/5) |
 | **ZeroDev AA gate** | Citadel risk gate before UserOp · failover · gas ledger | [`src/adapters/arbitrum/zerodev-aa/zerodev-aa-gate.ts`](../../src/adapters/arbitrum/zerodev-aa/zerodev-aa-gate.ts) (`zerodev-aa/zerodev-aa-gate.ts`) | [`tests/adapters/zerodev-aa-gate.test.ts`](../../tests/adapters/zerodev-aa-gate.test.ts) |
 | **Smart Routing calldata** | USDG → GMX `ExchangeRouter` · `payloadHash()` binding | [`src/services/adapters/gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-smart-route-payload-binding.ts) | [`tests/adapters/gmx-smart-route-payload-binding.test.ts`](../../tests/adapters/gmx-smart-route-payload-binding.test.ts) |
 | **Wasm Soil Shield** | p50 ~106 µs pre-execution fuse | [`src/services/risk-control-lib/soil-resistance.ts`](../../src/services/risk-control-lib/soil-resistance.ts) · [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) | `tests/risk-control/*` |
@@ -564,8 +564,8 @@ gmx-smart-route-payload-binding.ts → buildGmxSmartRoutePayloadBinding()
 
 | Check | Command / Surface | Expected |
 |-------|-------------------|----------|
-| Full regression | `pnpm test -- --run` | **168 files \| 742 PASS** |
-| Bridge invariants | `pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts` | **5/5 PASS** |
+| Full regression | `pnpm test -- --run` | **172 files \| 758 PASS** *(Locked: 168 \| 742)* |
+| Bridge invariants | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` | **5/5 PASS** |
 | Live audit | `GET /api/grant-audit` | `lostUsd: 0` · guard states exposed |
 
 | Document | Purpose |

@@ -28,7 +28,7 @@ export type {
   RobinhoodAuditSnapshot,
   RobinhoodAuditSnapshotInput,
 } from "./robinhood-audit-snapshot";
-export { AML_INBOUND_TO_ROBINHOOD_BLOCKED } from "../adapters/robinhood/robinhood-across-bridge";
+export { AML_INBOUND_TO_ROBINHOOD_BLOCKED } from "../adapters/across-ingress-bridge";
 export { quoteRChainYieldToArbitrumGm } from "../adapters/robinhood/r-chain-yield-router";
 export type {
   RChainYieldEscortInput,

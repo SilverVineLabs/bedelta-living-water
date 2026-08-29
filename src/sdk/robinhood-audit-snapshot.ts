@@ -5,7 +5,7 @@
  */
 import { sha256 } from "@noble/hashes/sha2";
 import { bytesToHex } from "@noble/hashes/utils";
-import { AML_INBOUND_TO_ROBINHOOD_BLOCKED } from "../adapters/robinhood/robinhood-across-bridge";
+import { AML_INBOUND_TO_ROBINHOOD_BLOCKED } from "../adapters/across-ingress-bridge";
 import {
   ARBITRUM_ONE_CHAIN_ID,
   ROBINHOOD_MAINNET_CHAIN_ID,
