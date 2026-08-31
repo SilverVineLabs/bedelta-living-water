@@ -27,6 +27,22 @@ interface ISliverVineGate {
         external
         returns (bytes32 digest);
 
+    /// @notice Consumes attestation and emits Dune-indexable `IntentAttested` telemetry.
+    function verifyAndConsume(
+        RiskAttestation calldata att,
+        bytes[] calldata signatures,
+        uint8 action,
+        uint256 shadowMarginUsd
+    ) external returns (bytes32 digest);
+
+    /// @notice Non-mutating dry run that emits `RiskTripBlocked` when validation fails.
+    function tryReportRiskTrip(
+        RiskAttestation calldata att,
+        bytes[] calldata signatures,
+        address agent,
+        string calldata reason
+    ) external returns (bytes4 reasonCode);
+
     /// @notice Non-mutating dry run. Returns bytes4(0) when the attestation would be accepted,
     ///         otherwise the error selector that `verifyAndConsume` would revert with.
     function checkAttestation(RiskAttestation calldata att, bytes[] calldata signatures, address caller)

@@ -15,6 +15,7 @@ export type {
 } from "./grant-audit-lib/grant-audit.types";
 
 export type { GrantAuditBlockProofs } from "./grant-audit-lib/grant-audit-block-proofs";
+export type { GrantAuditDuneTelemetry } from "./grant-audit-lib/grant-audit-dune-telemetry";
 
 export { extractTxHashes, proveZeroDelta } from "./grant-audit-lib/grant-audit-zero-delta";
 export { buildGrantAuditPayload } from "./grant-audit-lib/grant-audit-payload";

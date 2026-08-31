@@ -12,6 +12,7 @@ import { attachCitadelFields, attachGrantAuditExtensions, emptyCitadelMetrics } 
 import { attachProvenanceVerifiedTrades } from "./grant-audit-provenance";
 import type { GrantAuditPayload } from "./grant-audit.types";
 import { attachSepoliaDualLegProof } from "./grant-audit-v0-telemetry-fallback";
+import { buildGrantAuditDuneTelemetry } from "./grant-audit-dune-telemetry";
 import { buildZeroDevAaGatewayStatus } from "./grant-audit-zerodev-aa";
 import { evaluateZeroDevAaGatewayBadge } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gateway-badge";
 import {
@@ -105,5 +106,6 @@ export function buildGrantAuditSwrFallbackPayload(
       dydxPerp: 3500,
       depthUsd: 200_000,
     }),
+    duneTelemetry: buildGrantAuditDuneTelemetry(fetchedAt),
   }));
 }

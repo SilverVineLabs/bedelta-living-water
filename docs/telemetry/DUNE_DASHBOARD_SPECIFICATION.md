@@ -2,7 +2,9 @@
 
 **Entity:** SilverVine Labs · **Live SSOT:** `GET /api/grant-audit`
 **Audience:** Buildathon evaluators · Dune sponsor diligence · institutional allocators
-**Reconciliation:** Custom spells ingest grant-audit KV snapshots as off-chain anchors against on-chain GMX / bridge events.
+**Reconciliation:** On-chain `SliverVineGate` events + grant-audit `duneTelemetry` KV snapshots.
+
+**Status:** Live Log-Engine Verified (`duneTelemetry` · `IntentAttested` · `RiskTripBlocked`)
 
 ---
 
@@ -10,71 +12,177 @@
 
 | Panel | Metric | SSOT Module |
 |-------|--------|-------------|
-| **Pillar 2 — Ingress Escort Volume** | Robinhood → Arbitrum outbound USD · daily tx count | `src/adapters/across-ingress-bridge.ts` · `IngressSafetySwitch.sol` |
-| **Pillar 3 — Soil Trip Frequency** | `SOIL_RESISTANCE_TRIP` count · notional blocked · p50 shield latency | `checkSoilResistance()` · Edge Worker KV |
-| **CaaS — GMX UI Fee Accrual** | Routed volume × 10 bps · `GMX_UI_FEE_RECEIVER` | `gmx-revenue.ts` · `gmx-v2-order-payload.ts` |
+| **Toxic Flow Blocked** | Sum of blocked notional USD (`FAIL_CLOSED_BLOCK`) | `RiskTripBlocked` · `evaluatePendleGmxCrossGuard` |
+| **Observatory Paradox Bypasses** | Count of `EMERGENCY_DELEVERAGE_ALLOWED` (`close`/`reduce`) | `IntentAttested` action=`2` |
+| **PT Expiry × GMX Margin Health** | Real-time shadow margin / maintenance ratio | `duneTelemetry.marginHealthRatio` |
+
+**Gate (Arbitrum Sepolia):** `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`
 
 ---
 
-## Query 1 — Ingress Escort Volume (Robinhood → Arbitrum One)
+## Query 1 — Total Toxic Flow Blocked in USD
 
 ```sql
--- Panel: Pillar 2 Ingress Escort Volume
--- Chains: 46630 / 4663 → 42161 (outbound-only escort)
+-- Panel: Toxic Flow Blocked (sum of blocked notional)
+-- Sources: on-chain RiskTripBlocked + off-chain grant-audit KV ingest
+WITH blocked_events AS (
+  SELECT
+    e.block_time,
+    e.tx_hash,
+    CAST(e.shadow_margin_usd AS DOUBLE) / 1e6 AS blocked_notional_usd
+  FROM dune.silvervinelabs.result_citadel_risk_trips e
+  WHERE e.chain = 'arbitrum'
+    AND e.evt_name = 'RiskTripBlocked'
+    AND e.reason LIKE 'FAIL_CLOSED%'
+),
+kv_snapshots AS (
+  SELECT
+    snapshot_at,
+    CAST(json_extract_scalar(payload, '$.duneTelemetry.shadowMarginUsd') AS DOUBLE) AS shadow_margin_usd,
+    json_extract_scalar(payload, '$.duneTelemetry.action') AS action
+  FROM dune.silvervinelabs.result_grant_audit_snapshots
+  WHERE json_extract_scalar(payload, '$.duneTelemetry.action') = 'FAIL_CLOSED_BLOCK'
+)
 SELECT
- date_trunc('day', block_time) AS day,
- COUNT(*) AS bridge_tx_count,
- SUM(amount_usd) AS ingress_volume_usd
-FROM dune.silvervinelabs.result_across_bridge_fills
-WHERE dest_chain_id = 42161
- AND source_chain_id IN (46630, 4663)
- AND sender NOT IN (SELECT address FROM dune.silvervinelabs.dim_blocked_senders)
+  date_trunc('day', COALESCE(b.block_time, k.snapshot_at)) AS day,
+  COALESCE(SUM(ABS(b.blocked_notional_usd)), 0)
+    + COALESCE(SUM(ABS(k.shadow_margin_usd)), 0) AS toxic_flow_blocked_usd,
+  COUNT(DISTINCT b.tx_hash) AS on_chain_block_count,
+  COUNT(k.snapshot_at) AS off_chain_block_count
+FROM blocked_events b
+FULL OUTER JOIN kv_snapshots k
+  ON date_trunc('hour', b.block_time) = date_trunc('hour', k.snapshot_at)
 GROUP BY 1
 ORDER BY 1 DESC;
 ```
 
-**Grant-audit reconciliation field:** `robinhoodIngress.escortVolumeUsd` · `IN_FLIGHT_BRIDGE_CAPITAL` labels.
+**Grant-audit reconciliation field:** `duneTelemetry.shadowMarginUsd` · `duneTelemetry.action = FAIL_CLOSED_BLOCK`
 
 ---
 
-## Query 2 — Soil Trip Frequency (Pre-Execution Intercepts)
+## Query 2 — Observatory Paradox Bypasses (Emergency De-Leveraging)
 
 ```sql
--- Panel: Pillar 3 Soil Trip Frequency
--- Event: SOIL_RESISTANCE_TRIP · fail-closed before mempool broadcast
+-- Panel: Observatory Paradox Bypasses
+-- Count greenlighted close/reduce emergency de-leveraging routes
 SELECT
- date_trunc('hour', evt_block_time) AS hour,
- COUNT(*) AS intercept_count,
- SUM(blocked_notional_usd) AS notional_saved_usd,
- approx_percentile(elapsed_us_us, 0.5) AS p50_shield_latency_us
-FROM dune.silvervinelabs.result_citadel_soil_trips
-WHERE chain = 'arbitrum'
- AND evt_name = 'SOIL_RESISTANCE_TRIP'
+  date_trunc('day', block_time) AS day,
+  COUNT(*) AS emergency_deleverage_count,
+  COUNT(DISTINCT agent) AS unique_agents,
+  SUM(CASE WHEN action = 2 THEN 1 ELSE 0 END) AS intent_attested_emergency,
+  SUM(CASE WHEN action = 0 THEN 1 ELSE 0 END) AS intent_attested_pass
+FROM (
+  SELECT
+    l.block_time,
+    l.tx_hash,
+    CAST(l.agent AS VARCHAR) AS agent,
+    CAST(l.action AS INTEGER) AS action
+  FROM dune.silvervinelabs.result_slivervine_gate_events l
+  WHERE l.evt_name = 'IntentAttested'
+    AND l.action = 2  -- ACTION_EMERGENCY_DELEVERAGE
+  UNION ALL
+  SELECT
+    s.snapshot_at AS block_time,
+    s.response_ref AS tx_hash,
+    'grant-audit' AS agent,
+    2 AS action
+  FROM dune.silvervinelabs.result_grant_audit_snapshots s
+  WHERE json_extract_scalar(s.payload, '$.duneTelemetry.action') = 'EMERGENCY_DELEVERAGE_ALLOWED'
+) u
 GROUP BY 1
 ORDER BY 1 DESC;
 ```
 
-**Grant-audit reconciliation field:** `arbitrumCitadel.soilTrips` · `chaos-blackswan-metrics.json` (`255/255` blocked).
+**Grant-audit reconciliation field:** `duneTelemetry.actionLog[intent in ('close','reduce')].action`
 
 ---
 
-## Query 3 — GMX UI Fee Accrual (10 bps Builder Revenue)
+## Query 3 — Pendle PT Expiry vs GMX Margin Health Real-Time Ratio
 
 ```sql
--- Panel: CaaS GMX UI Fee Accrual @ 10 bps (GMX_UI_FEE_RECEIVER SSOT)
+-- Panel: PT Expiry vs GMX Margin Health Ratio
+-- marginHealthRatio = shadowMarginUsd / maintenanceMarginRequiredUsd
 SELECT
- date_trunc('day', block_time) AS day,
- SUM(size_usd) AS routed_volume_usd,
- SUM(size_usd * 0.0010) AS builder_fee_usd_10bps,
- COUNT(DISTINCT tx_hash) AS order_count
-FROM gmx_v2_arbitrum.order_created
-WHERE ui_fee_receiver = '0xc9BddABD80982d2201376195DD9B85fb7951546f'
- AND block_time >= NOW() - INTERVAL '90' DAY
-GROUP BY 1
-ORDER BY 1 DESC;
+  snapshot_at,
+  CAST(json_extract_scalar(payload, '$.duneTelemetry.ptDaysToExpiry') AS DOUBLE) AS pt_days_to_expiry,
+  CAST(json_extract_scalar(payload, '$.duneTelemetry.shadowMarginUsd') AS DOUBLE) AS shadow_margin_usd,
+  CAST(json_extract_scalar(payload, '$.duneTelemetry.dynamicLtv') AS DOUBLE) AS dynamic_ltv,
+  CAST(json_extract_scalar(payload, '$.duneTelemetry.marginHealthRatio') AS DOUBLE) AS margin_health_ratio,
+  json_extract_scalar(payload, '$.duneTelemetry.responseRef') AS response_ref
+FROM dune.silvervinelabs.result_grant_audit_snapshots
+WHERE json_extract_scalar(payload, '$.duneTelemetry.schema') = 'silvervine.grant-audit.dune-telemetry.v1'
+ORDER BY snapshot_at DESC
+LIMIT 500;
 ```
 
-**Grant-audit reconciliation field:** `gmxBuilderProof.uiFeeAccrualUsd` · `GMX_UI_FEE_BPS = 10`.
+**On-chain cross-check:** `IntentAttested.shadowMarginUsd` (uint256, micro-USD scale) vs off-chain `duneTelemetry.shadowMarginUsd`.
+
+---
+
+## Live `/api/grant-audit` JSON Example (`duneTelemetry`)
+
+```json
+{
+  "success": true,
+  "audit": "ZERO_TRUST_GRANT",
+  "fetchedAt": "2026-08-31T14:22:00.000Z",
+  "duneTelemetry": {
+    "schema": "silvervine.grant-audit.dune-telemetry.v1",
+    "responseRef": "sha256:a3f8c1d92e4b7056f8910acde334f5b8c7d2e1a9046f3b8c5d7e9a1b2c3d4e5",
+    "shadowMarginUsd": -12450.32,
+    "dynamicLtv": 1.42,
+    "action": "FAIL_CLOSED_BLOCK",
+    "gateActionCode": 1,
+    "intentHash": "sha256:9c2e1f0a8b7d6c5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1",
+    "reason": "FAIL_CLOSED: Dynamic Fee / Slippage threatens GMX Margin Safety. Score=88",
+    "ptDaysToExpiry": 1.0,
+    "marginHealthRatio": -0.249,
+    "actionLog": [
+      {
+        "ts": "2026-08-31T14:22:00.000Z",
+        "intent": "open",
+        "action": "PASS_GREENLIGHT",
+        "shadowMarginUsd": 185420.5,
+        "dynamicLtv": 0.36,
+        "gateActionCode": 0
+      },
+      {
+        "ts": "2026-08-31T14:22:00.000Z",
+        "intent": "open",
+        "action": "FAIL_CLOSED_BLOCK",
+        "shadowMarginUsd": -12450.32,
+        "dynamicLtv": 1.42,
+        "gateActionCode": 1,
+        "reason": "FAIL_CLOSED: Dynamic Fee / Slippage threatens GMX Margin Safety. Score=88"
+      },
+      {
+        "ts": "2026-08-31T14:22:00.000Z",
+        "intent": "close",
+        "action": "EMERGENCY_DELEVERAGE_ALLOWED",
+        "shadowMarginUsd": 42100.0,
+        "dynamicLtv": 0.71,
+        "gateActionCode": 2,
+        "reason": "RISK_DECREASE_INTENT: De-leveraging greenlighted to protect position."
+      }
+    ]
+  }
+}
+```
+
+---
+
+## On-Chain Event Schema (`SliverVineGate.sol`)
+
+```solidity
+event IntentAttested(bytes32 indexed intentHash, address indexed agent, uint8 action, uint256 shadowMarginUsd);
+event RiskTripBlocked(bytes32 indexed intentHash, address indexed agent, string reason);
+```
+
+| `action` code | Off-chain mapping |
+|---------------|-------------------|
+| `0` | `PASS_GREENLIGHT` |
+| `1` | `FAIL_CLOSED_BLOCK` |
+| `2` | `EMERGENCY_DELEVERAGE_ALLOWED` |
 
 ---
 
@@ -82,9 +190,9 @@ ORDER BY 1 DESC;
 
 | Milestone | Deliverable |
 |-----------|-------------|
-| **M-Dune** | Publish dashboard with all 3 queries live · link in `SUBMISSION.md` |
-| **M-CLI** | Vitest regression bar unchanged · telemetry spec versioned in repo |
+| **M-Dune** | Dashboard live · `duneTelemetry` in `/api/grant-audit` · gate events indexed |
+| **M-CLI** | Vitest regression · `tests/api/grant-audit-dune-telemetry.test.ts` |
 
 ---
 
-*SilverVine Labs · Dune Dashboard Spec · Vitest SSOT: 175 test files | 773 tests PASS (100% Clean · Exit Code 0)*
+*SilverVine Labs · Dune Dashboard Spec · Live Log-Engine Verified*

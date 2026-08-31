@@ -49,6 +49,32 @@ contract SliverVineGateTest is GateFixture {
         );
     }
 
+    function test_IntentAttested_EmitsOnTelemetryConsume() public {
+        ISliverVineGate.RiskAttestation memory a = _att(subject, 40);
+        bytes[] memory sigs = _sign(a, 2);
+        uint8 action = 2; // ACTION_EMERGENCY_DELEVERAGE
+        uint256 shadowUsd = 42_100e6;
+
+        vm.expectEmit(true, true, false, true);
+        emit SliverVineGate.IntentAttested(a.payloadHash, subject, action, shadowUsd);
+
+        vm.prank(subject);
+        gate.verifyAndConsume(a, sigs, action, shadowUsd);
+    }
+
+    function test_TryReportRiskTrip_EmitsRiskTripBlocked() public {
+        ISliverVineGate.RiskAttestation memory a = _att(subject, 41);
+        a.verdict = 0; // DENY
+        bytes[] memory sigs = _sign(a, 2);
+        string memory reason = "FAIL_CLOSED_BLOCK";
+
+        vm.expectEmit(true, true, false, true);
+        emit SliverVineGate.RiskTripBlocked(a.payloadHash, subject, reason);
+
+        bytes4 code = gate.tryReportRiskTrip(a, sigs, subject, reason);
+        assertEq(code, SliverVineGate.Denied.selector);
+    }
+
     /* ====================================================================== */
     /*                       I1  halted denies everything                     */
     /* ====================================================================== */

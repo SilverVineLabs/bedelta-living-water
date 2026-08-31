@@ -86,6 +86,11 @@ contract SliverVineGate is ISliverVineGate {
     /// @notice ALLOW is the only accepted verdict. Any other value denies.
     uint8 public constant VERDICT_ALLOW = 1;
 
+    /// @notice Dune telemetry action codes — mirrors off-chain `evaluatePendleGmxCrossGuard`.
+    uint8 public constant ACTION_PASS_GREENLIGHT = 0;
+    uint8 public constant ACTION_FAIL_CLOSED_BLOCK = 1;
+    uint8 public constant ACTION_EMERGENCY_DELEVERAGE = 2;
+
     /// @notice Maximum attestation lifetime. Mirrors the engine's 30s Oracle Lag Shield.
     uint64 public constant MAX_TTL = 30;
 
@@ -168,6 +173,8 @@ contract SliverVineGate is ISliverVineGate {
     event AttestationConsumed(
         bytes32 indexed digest, address indexed subject, bytes32 payloadHash, uint16 riskBps, uint256 nonce
     );
+    event IntentAttested(bytes32 indexed intentHash, address indexed agent, uint8 action, uint256 shadowMarginUsd);
+    event RiskTripBlocked(bytes32 indexed intentHash, address indexed agent, string reason);
     event GateHalted(address indexed by);
     event UnhaltScheduled(address indexed by, uint64 eta);
     event GateUnhalted(address indexed by);
@@ -227,12 +234,30 @@ contract SliverVineGate is ISliverVineGate {
         external
         returns (bytes32 digest)
     {
-        bytes4 reason;
-        (reason, digest) = _validate(att, signatures, msg.sender);
-        if (reason != bytes4(0)) _revertWith(reason);
+        digest = _verifyAndConsume(att, signatures, ACTION_PASS_GREENLIGHT, 0);
+    }
 
-        consumed[digest] = true; // I9
-        emit AttestationConsumed(digest, att.subject, att.payloadHash, att.riskBps, att.nonce);
+    function verifyAndConsume(
+        RiskAttestation calldata att,
+        bytes[] calldata signatures,
+        uint8 action,
+        uint256 shadowMarginUsd
+    ) external returns (bytes32 digest) {
+        digest = _verifyAndConsume(att, signatures, action, shadowMarginUsd);
+    }
+
+    /// @inheritdoc ISliverVineGate
+    function tryReportRiskTrip(
+        RiskAttestation calldata att,
+        bytes[] calldata signatures,
+        address agent,
+        string calldata reason
+    ) external returns (bytes4 reasonCode) {
+        (reasonCode,) = _validate(att, signatures, agent);
+        if (reasonCode != bytes4(0)) {
+            emit RiskTripBlocked(att.payloadHash, agent, reason);
+        }
+        return reasonCode;
     }
 
     /// @inheritdoc ISliverVineGate
@@ -251,6 +276,21 @@ contract SliverVineGate is ISliverVineGate {
 
     function domainSeparator() external view returns (bytes32) {
         return _domainSeparator();
+    }
+
+    function _verifyAndConsume(
+        RiskAttestation calldata att,
+        bytes[] calldata signatures,
+        uint8 action,
+        uint256 shadowMarginUsd
+    ) private returns (bytes32 digest) {
+        bytes4 reason;
+        (reason, digest) = _validate(att, signatures, msg.sender);
+        if (reason != bytes4(0)) _revertWith(reason);
+
+        consumed[digest] = true; // I9
+        emit AttestationConsumed(digest, att.subject, att.payloadHash, att.riskBps, att.nonce);
+        emit IntentAttested(att.payloadHash, att.subject, action, shadowMarginUsd);
     }
 
     /* ---------------------------------------------------------------------- */
