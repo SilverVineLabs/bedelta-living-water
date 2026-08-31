@@ -10,7 +10,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Live Query URL** | [https://dune.com/silvervine_labs/silvervine-citadel-telemetry](https://dune.com/silvervine_labs/silvervine-citadel-telemetry) |
+| **Live Query URL** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 | **On-chain ingest source** | Sepolia `SliverVineGate` `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
 | **Decoded events** | `IntentAttested` · `RiskTripBlocked` · `AttestationConsumed` |
 | **Off-chain anchor** | `/api/grant-audit` → `duneTelemetry.responseRef` (sha256) |

@@ -69,7 +69,7 @@ SilverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 
 ### 5. Dune Analytics
 
-* **Live Dashboard:** [https://dune.com/silvervine_labs/silvervine-citadel-telemetry](https://dune.com/silvervine_labs/silvervine-citadel-telemetry)
+* **Live Dashboard:** [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)
 * **Integration**: [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) · Live `/api/grant-audit` `duneTelemetry` JSON.
 * **On-chain ingest:** Dune engine actively ingests **decoded events** from Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` (`IntentAttested` · `RiskTripBlocked`).
 * **Mechanism**: Three production SQL panels — Toxic Flow Blocked · Observatory Paradox Bypasses · PT Expiry × GMX Margin Health — reconciled against `duneTelemetry.responseRef` sha256 provenance.
@@ -137,7 +137,7 @@ SilverVine rejects unrealistic B2B sales models (e.g. charging DAOs $8k/mo upfro
 | **M-CLI** | Vitest **175/175 files \| 773/773 PASS (100% Clean · Exit Code 0)** | All | ✅ Delivered |
 | **M-RH-Demo** | `46630`/`4663` → `42161` outbound escort OK · inbound AML blocked · `lostUsd ≡ 0` | Robinhood Chain | ✅ Code-verified · ⏳ video |
 | **M-GMX-Fee** | Unsigned GMX v2 payload injects **10 bps** `uiFeeReceiver` | GMX | ✅ Injected · ⏳ `claimUiFees` |
-| **M-Dune** | Publish Dune dashboard per [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Dune | ✅ [Live dashboard](https://dune.com/silvervine_labs/silvervine-citadel-telemetry) |
+| **M-Dune** | Publish Dune dashboard per [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Dune | ✅ [Live dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 | **M6-Mainnet** | Arbitrum One limited-capital deployment · institutional AA on Kernel v3 | Arbitrum · Grant | ⏳ Post-grant |
 
 ---
