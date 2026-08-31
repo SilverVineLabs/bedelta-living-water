@@ -3,15 +3,15 @@
 **GMX v2 Pre-Execution Security Gateway & Underweight Router on Arbitrum One.**
 
 
-|                |                                                                                                 |
+| | |
 | -------------- | ----------------------------------------------------------------------------------------------- |
-| Entity         | SilverVine Labs · `grants@silvervinelabs.com`                                                   |
-| Official Site  | [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal                        |
-| Repo           | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)   |
-| Live DApp      | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)                              |
-| Regression bar | **174 test files | 768 PASS (100% Clean)** *(Locked Baseline: 168 \| 742)* · `tsc --noEmit` clean                             |
-| License        | BUSL-1.1 → Apache-2.0 at M2 / $10M TVL or 24 months                                             |
-| Spec SSOT      | `[docs/architecture/TECHNICAL_SPECIFICATION.md](../../architecture/TECHNICAL_SPECIFICATION.md)` |
+| Entity | SilverVine Labs · `grants@silvervinelabs.com` |
+| Official Site | [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal |
+| Repo | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) |
+| Live DApp | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) |
+| Regression bar | **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · `tsc --noEmit` clean |
+| License | BUSL-1.1 → Apache-2.0 at M2 / $10M TVL or 24 months |
+| Spec SSOT | `[docs/architecture/TECHNICAL_SPECIFICATION.md](../../architecture/TECHNICAL_SPECIFICATION.md)` |
 
 
 ---
@@ -29,10 +29,10 @@ Before any GMX DataStore broadcast, the Citadel edge evaluates sequencer health,
 ## Robinhood Chain Status
 
 
-| Network           | Chain ID  | Status                                                                       |
+| Network | Chain ID | Status |
 | ----------------- | --------- | ---------------------------------------------------------------------------- |
-| Robinhood Testnet | **46630** | **ACTIVE / TESTED**                                                          |
-| Robinhood Mainnet | **4663**  | **DEPLOYMENT READY** (permissioned RWA tranche · inbound blocked by default) |
+| Robinhood Testnet | **46630** | **ACTIVE / TESTED** |
+| Robinhood Mainnet | **4663** | **DEPLOYMENT READY** (permissioned RWA tranche · inbound blocked by default) |
 
 
 
@@ -48,17 +48,17 @@ Before any GMX DataStore broadcast, the Citadel edge evaluates sequencer health,
 ## Defense Posture
 
 
-| Guard                      | Threshold                                         |
+| Guard | Threshold |
 | -------------------------- | ------------------------------------------------- |
-| Chainlink Sequencer Uptime | 600s grace · fail-closed                          |
-| Canonical Oracle Lag       | <30s (30,000ms) vs L2 block headers · fail-closed |
-| Dynamic Max SL             | Dynamic Account Risk Ceiling (V0.8 Baseline: Equity-Weighted SL; V1.0 Mainnet: Dynamic Adaptive Engine) |
-| CrossVenueNetSlippage      | >0.5% → soil trip + TWAP                          |
-| NTP / Pgate latency        | <200ms drift / RTT fuse                           |
-| Emergency Margin Buffer    | 5%                                                |
-| Daily Loss Breaker         | 1.5% MDD · Root lockout                           |
-| Decision SLO               | 500ms · fail-closed                               |
-| Cron Auto-Rebalancer       | 5-min · $10 drift gate · circuit breaker          |
+| Chainlink Sequencer Uptime | 600s grace · fail-closed |
+| Canonical Oracle Lag | <30s (30,000ms) vs L2 block headers · fail-closed |
+| Dynamic Max SL | Dynamic Account Risk Ceiling (V0.8 Baseline: Equity-Weighted SL; V1.0 Mainnet: Dynamic Adaptive Engine) |
+| CrossVenueNetSlippage | >0.5% → soil trip + TWAP |
+| NTP / Pgate latency | <200ms drift / RTT fuse |
+| Emergency Margin Buffer | 5% |
+| Daily Loss Breaker | 1.5% MDD · Root lockout |
+| Decision SLO | 500ms · fail-closed |
+| Cron Auto-Rebalancer | 5-min · $10 drift gate · circuit breaker |
 
 
 

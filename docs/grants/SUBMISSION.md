@@ -2,9 +2,9 @@
 
 > **Execution Safety Layer & Sub-millisecond Risk Navigator for AI Trading Agents**
 
-**Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com`  
-**Official Site:** [silvervinelabs.com](https://silvervinelabs.com)  
-**Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit`  
+**Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com`
+**Official Site:** [silvervinelabs.com](https://silvervinelabs.com)
+**Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit`
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
 
 ---
@@ -33,12 +33,12 @@ SilverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 
 ## Architectural SSOT & Hardened Metrics
 
-* **Test Suite**: **175 test files | 773 tests PASS (100% Clean · Exit Code 0)**. Coverage on core risk control module (`risk-control.ts`) is 100%.
+* **Test Suite**: **175 test files | 773 tests PASS (100% Clean · Exit Code 0)**. Vitest coverage thresholds on `src/services/risk-control.ts`: functions **100%**, lines **90%**, branches **70%**.
 * **Formal Verification**: Halmos symbolic execution proofs (`contracts/test/formal/HalmosGateInvariant.t.sol`) mathematically prove that single-use digest attestations cannot be replayed across $2^{256}$ state spaces.
 * **Game-Theoretic Simulation**: 10,000 Monte Carlo simulation runs blocking **87.39% of toxic flow**, protecting $9.88M nominal LP capital (`docs/telemetry/game_theory_simulation_results.json`).
 * **Deployments**: Verified live on **Arbitrum Sepolia** (`0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`) and configured for **Robinhood Chain** (Chain ID: 46630/4663).
 
-**Latency SSOT:** p50 ~106 µs Edge `checkSoilResistance()` · Wasm warm &lt;60 µs · M2M reflex `agent-citadel-guard` &lt;12 µs. Full spec: [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md).
+**Latency SSOT:** p50 ~106 µs Edge `checkSoilResistance()` · Wasm warm &lt;60 µs · M2M reflex `src/core/agent-citadel-guard.ts` &lt;12 µs. Full spec: [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md).
 
 ---
 
@@ -47,31 +47,31 @@ SilverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 ### 1. Arbitrum One / Sepolia (Core Base)
 
 * **Integration**: Citadel Gate Verifier contract (`SliverVineGate.sol`) deployed and verified at `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`.
-* **Mechanism**: Intercepts AI Trade Intents in sub-millisecond off-chain pipeline (`agent-citadel-guard.ts`), validating EIP-712 Domain Fingerprints and single-use digests before emitting on-chain execution events (0-Gas Fail-Closed).
+* **Mechanism**: Intercepts AI Trade Intents in sub-millisecond off-chain pipeline (`src/core/agent-citadel-guard.ts`), validating soil fuse + deadman switch before settlement-layer EIP-712 attestation (`SliverVineGate.sol`) (0-Gas Fail-Closed).
 
 ### 2. Robinhood Chain (Chain ID: 46630 / 4663)
 
-* **Integration**: Pillar 2 Ingress Bridge Adapter (`across-ingress-bridge.ts`) & R20 Circuit Breaker Sever Pipeline (`circuit-breaker-sever.ts`).
+* **Integration**: Pillar 2 Ingress Bridge Adapter (`src/adapters/across-ingress-bridge.ts`) & R20 Circuit Breaker Sever Pipeline (`src/services/root-protection-lib/circuit-breaker-sever.ts`).
 * **Mechanism**: Serves as a **reference ingress adapter** (not the protocol anchor) for stock tokens and low-latency L2 assets (`46630 → 42161`). When deadlock condition R20 is triggered, `severSigningChannel()` immediately severs hot-key signature pipelines, locking the engine into read-only observer mode to isolate on-chain capital. **Pending-Capital Recognition Invariant:** `lostUsd ≡ 0` on `IN_FLIGHT_BRIDGE_CAPITAL` until explicit timeout.
 
 ### 3. Pendle Finance
 
-* **Integration**: `pendle-gmx-cross-guard.ts` & `pendle-pt-expiry-guard.ts`.
+* **Integration**: `src/guards/pendle-gmx-cross-guard.ts` & `src/adapters/pendle/pendle-pt-expiry-guard.ts`.
 * **Mechanism**: Monitors Pendle PT markets approaching maturity boundaries (&lt;7 days) and yield jitter (&gt;200 bps). Integrates dynamic fee curve decay and time-dependent AMM convexity into the off-chain Reflector.
 
 ### 4. GMX
 
-* **Integration**: `evaluatePendleGmxCrossGuard` & GMX Order Payload Guard (`gmx-v2-order-payload-guards.ts`).
-* **Mechanism**: Implements Shadow Margin accounting. Evaluates whether swapping out PT collateral under dynamic fees threatens GMX Maintenance Margin. Explicitly enforces a 10 bps fee/slippage safety buffer (`gmx10bpsFee`), ensuring AI positions do not trigger bad debt cascades.
+* **Integration**: `evaluatePendleGmxCrossGuard` (`src/guards/pendle-gmx-cross-guard.ts`) & GMX Order Payload Guard (`src/services/adapters/gmx-v2-order-payload-guards.ts`).
+* **Mechanism**: Implements Shadow Margin accounting. Evaluates whether swapping out PT collateral under dynamic fees threatens GMX Maintenance Margin. Builder fee SSOT: **`GMX_UI_FEE_BPS` = 10** (`src/config/gmx-revenue.ts`); payload price-impact gate uses **`DEFAULT_GMX_PENALTY_BPS` = 50** (`src/services/yield/gmx-v2-price-impact.ts`).
 
 ### 5. Dune Analytics
 
 * **Integration**: [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) & Live `/api/grant-audit` JSON Telemetry.
-* **Mechanism**: Every decision rendered by SilverVine's core generates structured, single-use EIP-712 telemetry (`verified-5tx-provenance.ts`). Includes 3 production SQL specifications tracking protected TVL, blocked toxic intents, and emergency de-leveraging routes.
+* **Mechanism**: Grant-audit telemetry surfaces HL 5-TX TCA provenance (`src/data/verified-5tx-lib/verified-5tx-provenance.ts`) and soil intercept logs via `/api/grant-audit`. Includes 3 production SQL specifications tracking protected TVL, blocked toxic intents, and emergency de-leveraging routes.
 
 ### Execution Speed & Protocol-Agnostic Resilience (HL Delta Pool)
 
-Hyperliquid Session Key Adapter and TCA provenance (`verified-5tx-provenance.ts`) are framed as **cross-venue Δ-neutral execution speed proofs** — GMX v2 ETH/USDC GM + HL 1× short — complementing (not competing with) the Shield pre-execution narrative. SSOT: `src/adapters/hl/execution-wire.ts` · `src/adapters/hl/session-key-executor.ts`.
+Hyperliquid Session Key Adapter and TCA provenance (`src/data/verified-5tx-lib/verified-5tx-provenance.ts`) are framed as **cross-venue Δ-neutral execution speed proofs** — GMX v2 ETH/USDC GM + HL 1× short — complementing (not competing with) the Shield pre-execution narrative. SSOT: `src/adapters/hl/execution-wire.ts` · `src/adapters/hl/session-key-executor.ts`.
 
 ---
 
@@ -81,7 +81,7 @@ Hyperliquid Session Key Adapter and TCA provenance (`verified-5tx-provenance.ts`
 | :--- | :--- | :--- | :--- |
 | `close` / `reduce` (`RISK_DECREASE`) | Any Market State | `EMERGENCY_DELEVERAGE_ALLOWED` | **Fixes Observatory Paradox**: Applies -40 risk score discount; always greenlights risk reduction to prevent forced liquidation on GMX. |
 | `open` / `increase` (`RISK_INCREASE`) | Raw Risk Score &gt; 75 OR Shadow Margin &lt; 0 | `FAIL_CLOSED_BLOCK` | **0-Gas Defense**: Blocks toxic/hallucinated leverage before mempool ingress. |
-| `open` / `increase` (`RISK_INCREASE`) | Raw Risk Score ≤ 75 AND Shadow Margin ≥ 0 | `PASS_GREENLIGHT` | Grants EIP-712 cryptographic attestation signature. |
+| `open` / `increase` (`RISK_INCREASE`) | Raw Risk Score ≤ 75 AND Shadow Margin ≥ 0 | `PASS_GREENLIGHT` | Eligible for downstream EIP-712 attestation pipeline (`SliverVineGate.sol`). |
 
 **Demo tests:** [`tests/guards/pendle-gmx-cross-guard.test.ts`](../../tests/guards/pendle-gmx-cross-guard.test.ts) · [`tests/adapters/pendle-pt-expiry-guard.test.ts`](../../tests/adapters/pendle-pt-expiry-guard.test.ts).
 
@@ -92,7 +92,7 @@ Hyperliquid Session Key Adapter and TCA provenance (`verified-5tx-provenance.ts`
 | Pillar | Role | SSOT |
 |--------|------|------|
 | **Gatehouse (Auth)** | ZeroDev scoped session keys · Kernel v3 · R06 / R07 | `zerodev-aa-*` · Gate attestation |
-| **Pillar 2: Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort · Robinhood (`46630`/`4663` → `42161`) as reference adapter | `across-ingress-bridge.ts` · `IngressSafetySwitch.sol` |
+| **Pillar 2: Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort · Robinhood (`46630`/`4663` → `42161`) as reference adapter | `src/adapters/across-ingress-bridge.ts` · `contracts/IngressSafetySwitch.sol` |
 | **Shield (CORE MOAT)** | Sub-ms Wasm pre-execution armor · p50 ~106 μs · fail-closed before mempool | `checkSoilResistance()` · `soil_core.wasm` · Stylus `SliverVineSoilCoprocessor` |
 
 ---
@@ -102,12 +102,12 @@ Hyperliquid Session Key Adapter and TCA provenance (`verified-5tx-provenance.ts`
 SilverVine rejects unrealistic B2B sales models (e.g. charging DAOs $8k/mo upfront) and adopts an **Infra-First, Multi-Tiered Monetization Engine**:
 
 1. **Pay-per-Intent Micro-Attestation Fee (Primary Engine)**:
-   * AI Agents and Vault Operators connect via SilverVine's Secure RPC Gateway (`@slivervine/citadel-sdk`).
-   * Charged $0.01 – $0.05 per signed attestation, deducting micro-fees automatically without requiring credit card friction.
+ * AI Agents and Vault Operators connect via SilverVine's Secure RPC Gateway (`@slivervine/citadel-sdk`).
+ * Charged $0.01 – $0.05 per signed attestation, deducting micro-fees automatically without requiring credit card friction.
 2. **Telemetry & Risk Data API (Data Engine)**:
-   * Access to real-time Yield Convexity and Liquidity Void feeds via WebSocket/REST for hedge funds and quant vaults ($499 – $2,499/month).
+ * Access to real-time Yield Convexity and Liquidity Void feeds via WebSocket/REST for hedge funds and quant vaults ($499 – $2,499/month).
 3. **Edge Execution Alliance (Partnership Model)**:
-   * Acts as the **Sub-ms Intent Execution Edge** for macro risk engines (e.g., Chaos Labs, Gauntlet). Chaos Labs provides macro parameter tuning; SilverVine enforces microsecond off-chain intent protection.
+ * Acts as the **Sub-ms Intent Execution Edge** for macro risk engines (e.g., Chaos Labs, Gauntlet). Chaos Labs provides macro parameter tuning; SilverVine enforces microsecond off-chain intent protection.
 
 **GMX builder lane (adjacent):** +10 bps `uiFeeReceiver` on unsigned GMX v2 payloads — see [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md).
 
@@ -116,11 +116,11 @@ SilverVine rejects unrealistic B2B sales models (e.g. charging DAOs $8k/mo upfro
 ## Post-Hackathon Expansion Roadmap
 
 * **Phase 1: Milestone Dune & PoV (Day 7 – 30)**
-  * Deploy live Dune Analytics dashboards and onboarding 3 design partners (AI Agent creators on Virtuals/ElizaOS and GMX Vault Managers) for $0-fee Proof-of-Value testing.
+ * Deploy live Dune Analytics dashboards and onboarding 3 design partners (AI Agent creators on Virtuals/ElizaOS and GMX Vault Managers) for $0-fee Proof-of-Value testing.
 * **Phase 2: Milestone Prediction (Design Spec / Post-Hackathon Roadmap)**
-  * Expand off-chain Event-Driven Risk Adapters (`polymarket-event-guard` spec) to protect AI trading agents in prediction markets (Polymarket / Azuro) during breaking news liquidity voids.
+ * Expand off-chain Event-Driven Risk Adapters (`polymarket-event-guard` spec) to protect AI trading agents in prediction markets (Polymarket / Azuro) during breaking news liquidity voids.
 * **Phase 3: Milestone Citadel (Day 60 – 90)**
-  * Institutional rollout of TEE-enclosed (SGX/Automata) Reflector nodes and Secure RPC Gateway across Arbitrum Orbit chains.
+ * Institutional rollout of TEE-enclosed (SGX/Automata) Reflector nodes and Secure RPC Gateway across Arbitrum Orbit chains.
 
 ---
 
@@ -153,8 +153,8 @@ SilverVine rejects unrealistic B2B sales models (e.g. charging DAOs $8k/mo upfro
 
 ```bash
 pnpm install
-pnpm test -- --run        # 175/175 files | 773/773 PASS
-pnpm run audit:security   # 5/0/0 PASS
+pnpm test -- --run # 175/175 files | 773/773 PASS
+pnpm run audit:security # 5/0/0 PASS
 cd SliverVineGate && forge test --gas-report && cd ..
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualLegProof
 ```

@@ -1,12 +1,12 @@
 # BDLW Architecture Evolution & Risk Mitigation Framework
 
-> **Document Status:** Official SSOT for Arbitrum Foundation & ZeroDev Grant Committees  
-> **Version:** v1.0 → v2.0 Roadmap Alignment  
-> **Baseline:** Vitest **174 files | 768 PASS (100% Clean)** *(Locked Proposal Baseline: 168 \| 742)* · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs**  
-> **Core Principle:** Honest Accounting, Physical Invariants (`lostUsd ≡ 0`), and Venue-Agnostic Pre-Execution Citadel Protection.  
+> **Document Status:** Official SSOT for Arbitrum Foundation & ZeroDev Grant Committees
+> **Version:** v1.0 → v2.0 Roadmap Alignment
+> **Baseline:** Vitest **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs**
+> **Core Principle:** Honest Accounting, Physical Invariants (`lostUsd ≡ 0`), and Venue-Agnostic Pre-Execution Citadel Protection.
 > **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md)
 
-**Entity:** SilverVine Labs · **Protocol:** SliverVine / BeΔ Living Water (BDLW)  
+**Entity:** SilverVine Labs · **Protocol:** SliverVine / BeΔ Living Water (BDLW)
 **Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 
 ---
@@ -23,35 +23,35 @@ This document outlines BDLW's 3-Stage Evolutionary Roadmap, its Tiered Liquidity
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│ Stage A (Current V1.0): Arbitrum Primary + Hyperliquid 1× Short                  │
-│ · Primary Vault: Arbitrum One GMX v2 GM Pools (ETH/USDC, BTC/USDC)              │
-│ · Hedge Leg: Hyperliquid 1× Short (EIP-712 Session Key, 30s TTL)                │
-│ · Ingress Escort: Robinhood Chain 46630 (USDG) via Across Bridge (1h timeout)   │
-│ · Protection: p50 106µs Wasm Soil Engine + ZeroDev Kernel v3 AA                 │
+│ Stage A (Current V1.0): Arbitrum Primary + Hyperliquid 1× Short │
+│ · Primary Vault: Arbitrum One GMX v2 GM Pools (ETH/USDC, BTC/USDC) │
+│ · Hedge Leg: Hyperliquid 1× Short (EIP-712 Session Key, 30s TTL) │
+│ · Ingress Escort: Robinhood Chain 46630 (USDG) via Across Bridge (1h timeout) │
+│ · Protection: p50 106µs Wasm Soil Engine + ZeroDev Kernel v3 AA │
 └────────────────────────────────────────┬────────────────────────────────────────┘
-                                         │
-                                         ▼
+ │
+ ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │ Stage B (V1.5): Tiered Liquidity Stacking (Aave v3 / Morpho Blue + Variational) │
 │ · Risk-Free Base: Automatic fallback to Aave v3 / Morpho Blue (4%~5% Base Yield)│
-│ · Native Arbitrum Hedge: Shadow trading on Variational Perp DEX                 │
-│ · Citadel Yield Buffer: Excess yield above Aave benchmark absorbs bridge costs  │
-│ · UX Infrastructure: ZeroDev Kernel v4 EIP-7702 Intent Composer                 │
+│ · Native Arbitrum Hedge: Shadow trading on Variational Perp DEX │
+│ · Citadel Yield Buffer: Excess yield above Aave benchmark absorbs bridge costs │
+│ · UX Infrastructure: ZeroDev Kernel v4 EIP-7702 Intent Composer │
 └────────────────────────────────────────┬────────────────────────────────────────┘
-                                         │
-                                         ▼
+ │
+ ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│ Stage C (V2.0): 100% Native Arbitrum Ultra-Vault (Zero Cross-Chain Friction)    │
-│ · 100% Volume & TVL Retention on Arbitrum One (GMX v2 + Variational)           │
-│ · Atomic Intent Composition: Single-click Aave withdraw → GMX deposit → Short   │
-│ · Bridge Latency: Completely eliminated; Robinhood retained as opt-in escort    │
-│ · Citadel CaaS: Monetized B2B Wasm Firewall for external protocols              │
+│ Stage C (V2.0): 100% Native Arbitrum Ultra-Vault (Zero Cross-Chain Friction) │
+│ · 100% Volume & TVL Retention on Arbitrum One (GMX v2 + Variational) │
+│ · Atomic Intent Composition: Single-click Aave withdraw → GMX deposit → Short │
+│ · Bridge Latency: Completely eliminated; Robinhood retained as opt-in escort │
+│ · Citadel CaaS: Monetized B2B Wasm Firewall for external protocols │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 | Stage | Status | Center of Gravity |
 |-------|--------|-------------------|
-| **A — V1.0** | ✅ Code-Verified (174 files \| 768 PASS · Locked Baseline: 168 \| 742) | Arbitrum GMX v2 + HL 1× short · Robinhood outbound escort |
+| **A — V1.0** | ✅ Code-Verified (175 test files | 773 tests PASS (100% Clean · Exit Code 0)) | Arbitrum GMX v2 + HL 1× short · Robinhood outbound escort |
 | **B — V1.5** | ⏳ Roadmap | Aave/Morpho base + Variational native hedge PoC |
 | **C — V2.0** | ⏳ Design Spec | 100% Arbitrum atomic intent stack · CaaS monetization |
 
@@ -127,11 +127,11 @@ Mature stableswap and ve(3,3)-style venues (e.g. **Curve**, **Equalizer** and pe
 
 ```text
 Low headline fee / high emission APY
-  → toxic flow & arb extract value from LPs
-  → realized slippage + IL > advertised yield
-  → LP exit · depth thins
-  → worse execution for every $1 deployed
-  → emissions subsidize a shrinking book → spiral repeats until TVL collapse
+ → toxic flow & arb extract value from LPs
+ → realized slippage + IL > advertised yield
+ → LP exit · depth thins
+ → worse execution for every $1 deployed
+ → emissions subsidize a shrinking book → spiral repeats until TVL collapse
 ```
 
 BDLW does **not** compete on vanity fee minimization. We compete on **honest net yield after friction** — enforced by code, not marketing copy.
@@ -157,14 +157,14 @@ export const FRICTION_BUFFER_APY = 0.005 as const; // 0.5% friction buffer
 
 ```text
 GMX skew premium (+5~10 bps uiFeeReceiver) + funding cushion
-  − bridge / basis / MEV friction
-  > Native Earn APY + FRICTION_BUFFER_APY (0.5%)
-  ⇔ capital deployment allowed (else park in Native Earn · fail-closed)
+ − bridge / basis / MEV friction
+ > Native Earn APY + FRICTION_BUFFER_APY (0.5%)
+ ⇔ capital deployment allowed (else park in Native Earn · fail-closed)
 ```
 
 **Design rule:** Citadel Safety Buffer and builder UI fee exist to **capture real economic surplus** from GMX v2 skew routing — not to mask slippage with emissions. The 0.5% Hurdle Gate ensures **net gains always outpace friction** before Delta-Neutral capital is deployed or rebalanced.
 
-**Code anchors:** `src/services/yield/rebalance-rules.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `src/services/risk-control-lib/soil-resistance.ts` · Vitest **768 PASS** regression *(Locked Baseline: 742)*.
+**Code anchors:** `src/services/yield/rebalance-rules.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `src/services/risk-control-lib/soil-resistance.ts` · Vitest **773 tests PASS** regression **.
 
 ### 2.6 Real Yield vs. Toxic Inflation
 
@@ -183,9 +183,9 @@ BDLW **does not** operate an empty emission token model. There is **no** native 
 
 ```text
 Toxic inflation loop:
-  Mint emissions → advertise 40% APY → mercenary TVL in
-    → emissions sold / diluted → real cash flow < headline APY
-    → exit cascade → emissions must rise → spiral until insolvency narrative
+ Mint emissions → advertise 40% APY → mercenary TVL in
+ → emissions sold / diluted → real cash flow < headline APY
+ → exit cascade → emissions must rise → spiral until insolvency narrative
 ```
 
 This pattern is **explicitly rejected** by BDLW architecture. Allocator-facing disclosure uses a **non-guaranteed Dynamic Target Range (8.2% ~ 11.8%)** — not emission-inflated marketing APY.
@@ -204,11 +204,11 @@ BDLW composes yield from **three exogenous legs**, each with an identifiable eco
 
 ```text
 Real yield stack (conceptual):
-  Base floor     ← Aave / Morpho USDC earn (~4–5% probe · V1.5 storm fallback)
-  + GMX surplus  ← skew rebate + uiFeeReceiver (+10 bps builder · +5~10 bps skew band)
-  + HL funding   ← 1× short funding cushion (hourly · regime-dependent)
-  − friction     ← bridge · basis · MEV · slippage (Citadel Safety Buffer absorbs)
-  > hurdle       ← Native Earn + FRICTION_BUFFER_APY (0.5%) before DN redeploy
+ Base floor ← Aave / Morpho USDC earn (~4–5% probe · V1.5 storm fallback)
+ + GMX surplus ← skew rebate + uiFeeReceiver (+10 bps builder · +5~10 bps skew band)
+ + HL funding ← 1× short funding cushion (hourly · regime-dependent)
+ − friction ← bridge · basis · MEV · slippage (Citadel Safety Buffer absorbs)
+ > hurdle ← Native Earn + FRICTION_BUFFER_APY (0.5%) before DN redeploy
 ```
 
 #### 2.6.3 Why BDLW Rejects Empty Emissions — Design Rules
@@ -239,7 +239,7 @@ Real yield stack (conceptual):
 
 ## 3. The 60 Reflective Architectural Invariants (Summary Matrix)
 
-> **Defense Matrix (R01–R20):** 17 Active · 2 Refactored · 1 Deprecated — see [`TECHNICAL_SPECIFICATION.md` §3.3](./TECHNICAL_SPECIFICATION.md)  
+> **Defense Matrix (R01–R20):** 17 Active · 2 Refactored · 1 Deprecated — see [`TECHNICAL_SPECIFICATION.md` §3.3](./TECHNICAL_SPECIFICATION.md)
 > **Status legend:** **✅ Code-Verified** = v1.0 baseline with code/test anchor · **⏳ Roadmap Spec** = V1.5/V2.0 design — not claimed as shipped
 
 ### I. Honest Accounting & Cross-Chain Physics (1–10)
@@ -385,11 +385,11 @@ pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
 **Read order for evaluators:**
 
 ```text
-zerodev-aa-gate.test.ts     → assertCitadelRiskGate() + evaluateZeroDevGasGuards()
-zerodev-aa-gate.ts          → evaluateStaticBreakerMatrix() + Citadel risk gate
-  ├─ zerodev-aa-failover.ts     → Arbitrum One health / AA probe route
-  ├─ zerodev-aa-static-breaker.ts → soil + gas sponsorship limits
-  └─ zerodev-aa-userop.ts       → Paymaster + bundler dispatch (after gate PASS)
+zerodev-aa-gate.test.ts → assertCitadelRiskGate() + evaluateZeroDevGasGuards()
+zerodev-aa-gate.ts → evaluateStaticBreakerMatrix() + Citadel risk gate
+ ├─ zerodev-aa-failover.ts → Arbitrum One health / AA probe route
+ ├─ zerodev-aa-static-breaker.ts → soil + gas sponsorship limits
+ └─ zerodev-aa-userop.ts → Paymaster + bundler dispatch (after gate PASS)
 ```
 
 ### 4.3 ZeroDev / HL Dry-Run Harnesses (No Live Broadcast)
@@ -428,16 +428,16 @@ Stage A (V1.0) operates two **distinct capital ingress modes**. They share the s
 Arbitrum Native (Instant Path)
 ──────────────────────────────
 User USDC on 42161 → checkSoilResistance() → GMX GM deposit + HL 1× short
-                     └─ p50 ~106 µs Wasm fuse · sub-second intent-to-gate
+ └─ p50 ~106 µs Wasm fuse · sub-second intent-to-gate
 
 Robinhood Escort (Deferred Path)
 ────────────────────────────────
 USDG on 46630 → evaluateAcrossBridgeTransfer() state machine:
 
-  AVAILABLE ──(initiate)──► IN_FLIGHT_BRIDGE_CAPITAL ──(settle)──► SETTLED
-                                    │
-                                    └──(> 1h timeout)──► BRIDGE_TIMEOUT_FAIL_CLOSED
-                                                              lostUsd ≡ 0
+ AVAILABLE ──(initiate)──► IN_FLIGHT_BRIDGE_CAPITAL ──(settle)──► SETTLED
+ │
+ └──(> 1h timeout)──► BRIDGE_TIMEOUT_FAIL_CLOSED
+ lostUsd ≡ 0
 ```
 
 | State | `capitalLabel` | Deployable? | `lostUsd` |
@@ -480,7 +480,7 @@ USDG on 46630 → evaluateAcrossBridgeTransfer() state machine:
 Basel operational-risk frameworks require that **pending/settlement exposures are not mis-booked as realized losses**. BDLW enforces this as a **hard invariant**:
 
 ```typescript
-// across-ingress-bridge.ts — lostUsd is always 0 until explicit timeout labeling
+// src/adapters/across-ingress-bridge.ts — lostUsd is always 0 until explicit timeout labeling
 lostUsd: number; // Always 0 — pending bridge liquidity is never booked as loss.
 ```
 
@@ -497,7 +497,7 @@ lostUsd: number; // Always 0 — pending bridge liquidity is never booked as los
 | **Historical simulation** | Survival Benchmark 30D HL funding + L2 book | On-demand (`generate-survival-report.ts`) |
 | **Stress scenarios** | $100k canonical + **$1M** stress notional (`STRESS_NOTIONAL_USD`) | Same report |
 | **Reverse stress** | Negative proofs — depth breach, soil trip, bridge timeout | `pnpm verify:negative` |
-| **Model validation** | Vitest **768 PASS** full regression *(Locked Baseline: 742)* | CI / pre-release |
+| **Model validation** | Vitest **773 tests PASS** full regression ** | CI / pre-release |
 
 ### 6.4 Three Lines of Defense Mapping
 
@@ -526,9 +526,9 @@ lostUsd: number; // Always 0 — pending bridge liquidity is never booked as los
 | **Performance hurdle (planned)** | Aave benchmark + 1.5% before fee crystallization | Invariant #24 · #59 (⏳) |
 
 ```text
-Net deployable excess  = observed_yield − (Aave_base + FRICTION_BUFFER_APY)
-Rebalance allowed      ⇔ excess ≥ FRICTION_BUFFER_APY   // Hurdle Gate
-UI display band        = 8.2% ~ 11.8% Dynamic Target Range (Non-Guaranteed)
+Net deployable excess = observed_yield − (Aave_base + FRICTION_BUFFER_APY)
+Rebalance allowed ⇔ excess ≥ FRICTION_BUFFER_APY // Hurdle Gate
+UI display band = 8.2% ~ 11.8% Dynamic Target Range (Non-Guaranteed)
 ```
 
 **Design rule (Elara):** Elara ingress filtering and ArbOS transaction-ordering awareness **reinforce** Edge fail-closed — they do not bypass `signingChannelOpen: false`, `BRIDGE_TIMEOUT_FAIL_CLOSED`, or `ORACLE_LAG_DEADLOCK` severance.
@@ -551,20 +551,20 @@ Evaluators should trace claims in this document to the following SSOT paths:
 **ZeroDev AA execution path (read order):**
 
 ```text
-zerodev-aa-gate.ts          → evaluateStaticBreakerMatrix() + Citadel risk gate
-  ├─ zerodev-aa-failover.ts     → Arbitrum One health / AA probe route
-  ├─ zerodev-aa-static-breaker.ts → soil + gas sponsorship limits
-  └─ zerodev-aa-userop.ts       → Paymaster + bundler dispatch (after gate PASS)
+zerodev-aa-gate.ts → evaluateStaticBreakerMatrix() + Citadel risk gate
+ ├─ zerodev-aa-failover.ts → Arbitrum One health / AA probe route
+ ├─ zerodev-aa-static-breaker.ts → soil + gas sponsorship limits
+ └─ zerodev-aa-userop.ts → Paymaster + bundler dispatch (after gate PASS)
 
 gmx-smart-route-payload-binding.ts → buildGmxSmartRoutePayloadBinding()
-  └─ gated-executor-payload.ts     → computeGatedExecutorPayloadHash() → SliverVineGate
+ └─ gated-executor-payload.ts → computeGatedExecutorPayloadHash() → SliverVineGate
 ```
 
 > **Note:** `zerodev-aa-gate.ts` is an opt-in CLI/SDK Citadel risk gate — not mounted on the Worker hot path. Production soil fuse remains `checkSoilResistance()` on Edge.
 
 | Check | Command / Surface | Expected |
 |-------|-------------------|----------|
-| Full regression | `pnpm test -- --run` | **174 files \| 768 PASS** *(Locked: 168 \| 742)* |
+| Full regression | `pnpm test -- --run` | **175 test files \| 773 tests PASS (100% Clean · Exit Code 0)** |
 | Bridge invariants | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` | **5/5 PASS** |
 | Live audit | `GET /api/grant-audit` | `lostUsd: 0` · guard states exposed |
 

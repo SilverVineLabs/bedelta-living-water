@@ -8,7 +8,7 @@
 | **Entity** | SilverVine Labs |
 | **Protocol** | SliverVine / BeΔ Living Water (BDLW) · Santenmoku Risk Engine |
 | **Audience** | Arbitrum Foundation · ZeroDev Grant Committee · Institutional allocators · Fund-of-funds diligence |
-| **Baseline** | **Locked Minimum Proposal Baseline:** 168 files \| 742 PASS · **Current Branch Live Expected Output:** 174 files \| 768 PASS · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway) · Wasm warm **&lt;60 µs** |
+| **Baseline** | **Vitest SSOT:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway) · Wasm warm **&lt;60 µs** |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **Spec SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **Risk Framework SSOT** | [`../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) |
@@ -36,15 +36,15 @@ BeDelta Living Water (BDLW) is a **sophisticated, non-custodial DeFi execution p
 | **Pillar 3 — Pre-Execution Shield** | **Fail-Closed** Citadel gate **before** broadcast | `checkSoilResistance()` · `pkg/soil_core.wasm` |
 | **Wasm Soil Engine** | **p50 ~106 µs** hot-path fuse on Edge | R01–R20 matrix · Vitest regression |
 | **Pillar 1 — Gatehouse** | Scoped Session Keys · EIP-712 · ZeroDev Kernel v3 AA | `session-key-gates.ts` |
-| **Pillar 2 — Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort & Pending-Capital Recognition Invariant (`IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0`); inbound AML blocked. **Robinhood Chain is the inaugural Code-Verified / Dry-Run Verified reference adapter** — not the product identity | `across-ingress-bridge.ts` · `IngressSafetySwitch.sol` |
+| **Pillar 2 — Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort & Pending-Capital Recognition Invariant (`IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0`); inbound AML blocked. **Robinhood Chain is the inaugural Code-Verified / Dry-Run Verified reference adapter** — not the product identity | `src/adapters/across-ingress-bridge.ts` · `IngressSafetySwitch.sol` |
 | **Venue legs** | GMX v2 GM pools (Arbitrum One) + Hyperliquid 1× short hedge | Tech Spec §2 |
 
 **Fail-Closed posture:** When soil, oracle, sequencer, bridge, or session sensors trip, BDLW **prefers no action over wrong action** — `signingChannelOpen: false`, UserOp rejected pre-bundler, bridge state `BRIDGE_TIMEOUT_FAIL_CLOSED`. This is a **pre-execution safety layer**, not a guarantee of profit, principal protection, or elimination of market risk.
 
 ```text
 User intent → 106µs Wasm Soil Engine (Fail-Closed) → Gate attestation → Venue broadcast
-                    │
-                    └── trip → severance (no broadcast) — NOT "zero financial risk"
+ │
+ └── trip → severance (no broadcast) — NOT "zero financial risk"
 ```
 
 ### R.2 Non-Custodial Execution Substrate
@@ -67,7 +67,7 @@ BDLW **does not** market "zero risk," "guaranteed yield," or "capital-protected 
 | **Basis drift (GM vs HL)** | Dual-leg delta tracking · Citadel Safety Buffer · Survival Benchmark 3σ replay | Persistent funding/basis divergence · venue-specific insolvency |
 | **Oracle staleness** | `ORACLE_LAG_DEADLOCK` (>30s) · fail-closed severance | Oracle manipulation · feed outage beyond modeled thresholds |
 | **Sequencer / ArbOS desync** | 600s recovery grace · no naked opens during desync | Extended L2 outage · reordering/MEV beyond PGATE budget |
-| **Smart-contract risk** | Immutable Wasm · L1 consume-once gate · 742-test + chaos matrix | Unknown vulnerabilities · upgrade/key compromise · third-party venue bugs |
+| **Smart-contract risk** | Immutable Wasm · L1 consume-once gate · 773-test + chaos matrix | Unknown vulnerabilities · upgrade/key compromise · third-party venue bugs |
 | **Market / liquidity** | `MIN_DEPTH_USD` · 0.5% slippage fuse · TWAP path slicing | Gap windows · depth evaporation · black-swan tail beyond stress replay |
 | **Yield variability** | Dynamic Target Range **8.2% ~ 11.8%** (non-guaranteed HUD band) · **0.5% Hurdle Gate** | Negative funding · fee compression · emission-independent return shortfall |
 
@@ -121,16 +121,16 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 | Pillar | Posture | Primary evidence |
 |--------|---------|------------------|
 | **Pre-execution shield** | Fail-closed before broadcast | `checkSoilResistance()` · `pkg/soil_core.wasm` · R01–R20 matrix |
-| **Capital accounting** | `lostUsd ≡ 0` on pending bridge liquidity | `across-ingress-bridge.ts` · 5/5 Vitest |
+| **Capital accounting** | `lostUsd ≡ 0` on pending bridge liquidity | `src/adapters/across-ingress-bridge.ts` · 5/5 Vitest |
 | **Session / AA security** | Scoped keys · notional cap · gas ledger | ZeroDev AA gate · `session-key-gates.ts` |
-| **Stress & simulation** | 30D Survival Benchmark + 742-test regression | `generate-survival-report.ts` · `pnpm test -- --run` |
+| **Stress & simulation** | 30D Survival Benchmark + 773-test regression | `generate-survival-report.ts` · `pnpm test -- --run` |
 | **Compliance isolation** | Pillar 2 Compliance Ingress Firewall — outbound-only escort · AML inbound block · Robinhood Chain as inaugural reference adapter | `IngressSafetySwitch.sol` · [`ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) |
 
 ### 1.2 Locked SSOT Metrics (Evaluator Copy-Paste)
 
 | Metric | Locked value | Verifier |
 |--------|--------------|----------|
-| **Vitest regression** | **174 files \| 768 PASS** *(Locked Proposal Baseline: 168 \| 742)* | `pnpm test -- --run` |
+| **Vitest regression** | **175 test files \| 773 tests PASS (100% Clean · Exit Code 0)** | `pnpm test -- --run` |
 | **Bridge invariants** | **5/5 PASS** | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` |
 | **ZeroDev AA gate** | **4/4 PASS** | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` |
 | **Chaos matrix** | **255/255 blocked · `capitalLossUsd: 0`** | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) |
@@ -182,32 +182,32 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 
 ### 2.3 Three Pillars Architecture (Evaluator Mental Model)
 
-**Pillar 2 — Compliance Ingress Firewall (with Robinhood Ingress as Reference Adapter):** A **venue-agnostic**, unidirectional AML firewall and escort accounting layer. Capital from permissioned ingress sources is escorted outbound-only into Arbitrum; inbound AML paths are fail-closed at the **Edge ingress adapter** (`across-ingress-bridge.ts`); in-flight bridge capital is honestly labeled via the **Pending-Capital Recognition Invariant** (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`) until settled. **Robinhood Chain (`46630`/`4663`) is the inaugural Code-Verified / Dry-Run Verified reference adapter** — adapter SSOT is venue-agnostic (`across-ingress-bridge.ts`); Robinhood Chain remains the inaugural reference route; on-chain SSOT is **`IngressSafetySwitch.sol`** (Phase A rename); the architectural pillar is not Robinhood-bound.
+**Pillar 2 — Compliance Ingress Firewall (with Robinhood Ingress as Reference Adapter):** A **venue-agnostic**, unidirectional AML firewall and escort accounting layer. Capital from permissioned ingress sources is escorted outbound-only into Arbitrum; inbound AML paths are fail-closed at the **Edge ingress adapter** (`src/adapters/across-ingress-bridge.ts`); in-flight bridge capital is honestly labeled via the **Pending-Capital Recognition Invariant** (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`) until settled. **Robinhood Chain (`46630`/`4663`) is the inaugural Code-Verified / Dry-Run Verified reference adapter** — adapter SSOT is venue-agnostic (`src/adapters/across-ingress-bridge.ts`); Robinhood Chain remains the inaugural reference route; on-chain SSOT is **`IngressSafetySwitch.sol`** (Phase A rename); the architectural pillar is not Robinhood-bound.
 
 ```text
 [ Allocator Capital ]
-         │
-         ▼
+ │
+ ▼
 ┌─────────────────────────────────────┐
-│ Pillar 1: GATEHOUSE (Auth)          │  ZeroDev Kernel v3 · EIP-712 · Session Keys
+│ Pillar 1: GATEHOUSE (Auth) │ ZeroDev Kernel v3 · EIP-712 · Session Keys
 └──────────────────┬──────────────────┘
-                   ▼
+ ▼
 ┌─────────────────────────────────────┐
-│ Pillar 2: COMPLIANCE INGRESS        │  Venue-agnostic AML escort & accounting
-│         FIREWALL                    │  Robinhood Chain = inaugural ref adapter
-│                                     │  · outbound-only · AML inbound block
+│ Pillar 2: COMPLIANCE INGRESS │ Venue-agnostic AML escort & accounting
+│ FIREWALL │ Robinhood Chain = inaugural ref adapter
+│ │ · outbound-only · AML inbound block
 └──────────────────┬──────────────────┘
-                   ▼
+ ▼
 ┌─────────────────────────────────────┐
-│ Pillar 3: SHIELD (Pre-Execution)    │  checkSoilResistance() · Wasm · R01–R20
+│ Pillar 3: SHIELD (Pre-Execution) │ checkSoilResistance() · Wasm · R01–R20
 └─────────────────────────────────────┘
 ```
 
 **Evaluator command pack:**
 
 ```bash
-pnpm test -- --run                                    # 174 files | 768 PASS (Locked Baseline: 168 | 742)
-pnpm audit:security                                   # 3-Tier matrix
+pnpm test -- --run # 175 test files | 773 tests PASS (100% Clean · Exit Code 0)
+pnpm audit:security # 3-Tier matrix
 pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
 ```
@@ -219,9 +219,9 @@ pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
 BDLW maintains a **three-layer simulation stack** — institutional market replay (Survival Benchmark), AA/session dry-run gates (ZeroDev + HL), and adversarial chaos matrix — each producing CLI-verifiable artifacts with **`capitalLossUsd: 0`** as the pass criterion.
 
 ```text
-Layer 1 — Survival Benchmark     scripts/survival-benchmark/   (30D HL L2 + Dual-Radar replay)
-Layer 2 — AA / Session Dry-Run     tests/adapters/*              (Pre-bundler fail-closed proofs)
-Layer 3 — Chaos Engineering        scripts/chaos-blackswan-stress.ts  (255-scenario matrix)
+Layer 1 — Survival Benchmark scripts/survival-benchmark/ (30D HL L2 + Dual-Radar replay)
+Layer 2 — AA / Session Dry-Run tests/adapters/* (Pre-bundler fail-closed proofs)
+Layer 3 — Chaos Engineering scripts/chaos-blackswan-stress.ts (255-scenario matrix)
 ```
 
 > **Path note:** The Survival Benchmark engine lives under **`scripts/survival-benchmark/`** (invoked via `scripts/generate-survival-report.ts`). There is no `tests/survival-benchmark/` directory — regression coverage for chaos lives in `tests/scripts/chaos-blackswan-stress.test.ts`.
@@ -287,9 +287,9 @@ The AA/session dry-run stack proves **Gatehouse fail-closed behavior** before an
 
 ```bash
 pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
-pnpm test:zerodev    # Mock bundler + session constraint audit
-pnpm exec vitest run tests/services/session-key-gates.test.ts   # R07 $5K cap
-pnpm exec vitest run tests/services/nonce-auto-healing.test.ts  # 30s heartbeat expiry
+pnpm test:zerodev # Mock bundler + session constraint audit
+pnpm exec vitest run tests/services/session-key-gates.test.ts # R07 $5K cap
+pnpm exec vitest run tests/services/nonce-auto-healing.test.ts # 30s heartbeat expiry
 ```
 
 #### 3.2.1 `zerodev-aa-gate.test.ts` — Citadel + Paymaster Fail-Closed
@@ -362,7 +362,7 @@ When heartbeat expires, `auditSessionKeyHeartbeat()` sets `revocationLocked: tru
 
 | Harness | Command | Expected |
 |---------|---------|----------|
-| **Full Vitest** | `pnpm test -- --run` | **174 files \| 768 PASS** *(Locked Baseline: 168 \| 742)* |
+| **Full Vitest** | `pnpm test -- --run` | **175 test files \| 773 tests PASS (100% Clean · Exit Code 0)** |
 | **Grant v0.9 sim** | `pnpm test:grant-v09-sim` | AA / risk sim PASS |
 | **Wasm feasibility** | `pnpm test:wasm-feasibility` | Soil Wasm sim PASS |
 | **Security matrix** | `pnpm audit:security` | **3-Tier 5/0/0 PASS** |
@@ -400,7 +400,7 @@ Stage A (V1.0) exposes two **capital ingress modes** that converge on the same C
 | Path | Module | Test |
 |------|--------|------|
 | Arbitrum native sizing | `trade-pipeline-order-sizing.ts` · `soil-resistance-types.ts` | `tests/risk-control/*` |
-| Robinhood escort | `across-ingress-bridge.ts` | `tests/adapters/across-ingress-bridge.test.ts` (**5/5**) |
+| Robinhood escort | `src/adapters/across-ingress-bridge.ts` | `tests/adapters/across-ingress-bridge.test.ts` (**5/5**) |
 | On-chain AML firewall | `IngressSafetySwitch.sol` | [`ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) |
 
 ### 4.2 Execution Timing — Instant vs. In-Flight State Machine
@@ -409,12 +409,12 @@ Stage A (V1.0) exposes two **capital ingress modes** that converge on the same C
 
 ```text
 USDC on 42161
-    │
-    ▼
-checkSoilResistance()          ← p50 ~106 µs · MAX_SLIPPAGE 0.5% · MIN_DEPTH $100k
-    │
-    ├─► GMX v2 GM deposit      ← async settlement 3–5 min
-    └─► HL 1× short (Session Key)  ← EIP-712 · R07 $5k live cap
+ │
+ ▼
+checkSoilResistance() ← p50 ~106 µs · MAX_SLIPPAGE 0.5% · MIN_DEPTH $100k
+ │
+ ├─► GMX v2 GM deposit ← async settlement 3–5 min
+ └─► HL 1× short (Session Key) ← EIP-712 · R07 $5k live cap
 ```
 
 Capital is **deployable immediately** after soil pass. No bridge state machine; latency is dominated by GMX keeper settlement and HL signing pipeline — not cross-chain transfer.
@@ -423,19 +423,19 @@ Capital is **deployable immediately** after soil pass. No bridge state machine; 
 
 ```text
 USDG on 46630/4663
-    │
-    ▼
-evaluateAcrossBridgeTransfer()     ← validateAcrossBridgeDirection() — outbound-only
-    │
-    ├── AVAILABLE
-    │       │
-    │       └── initiate Across ──► IN_FLIGHT_BRIDGE_CAPITAL  (lostUsd ≡ 0 · no naked delta)
-    │                                      │
-    │                                      ├── settle ──► SETTLED  → full Citadel envelope
-    │                                      │
-    │                                      └── > 1h ──► BRIDGE_TIMEOUT_FAIL_CLOSED
-    │
-    └── 42161 → Robinhood inbound ──► AML_INBOUND_TO_ROBINHOOD_BLOCKED  (fail-closed)
+ │
+ ▼
+evaluateAcrossBridgeTransfer() ← validateAcrossBridgeDirection() — outbound-only
+ │
+ ├── AVAILABLE
+ │ │
+ │ └── initiate Across ──► IN_FLIGHT_BRIDGE_CAPITAL (lostUsd ≡ 0 · no naked delta)
+ │ │
+ │ ├── settle ──► SETTLED → full Citadel envelope
+ │ │
+ │ └── > 1h ──► BRIDGE_TIMEOUT_FAIL_CLOSED
+ │
+ └── 42161 → Robinhood inbound ──► AML_INBOUND_TO_ROBINHOOD_BLOCKED (fail-closed)
 ```
 
 | `capitalLabel` | Deployable NAV? | Naked GM/HL allowed? | `lostUsd` |
@@ -510,9 +510,9 @@ Expected Shortfall captures **average loss beyond a confidence threshold** — t
 | **3σ basis blow-out** | Dual-Radar S5 · composite < 30 → degrade + anti-fragile | §3.1 · `scoreS5BasisZ()` |
 
 ```text
-Per-clip tail  ≤ min($1,100, notional × 0.5%)     ← R11 + soil fuse
-Daily tail     ≤ Effective Max SL × 3               ← R17 severance
-Portfolio tail ≤ $100k Alpha Cap + stress replay    ← §4 + Survival Benchmark
+Per-clip tail ≤ min($1,100, notional × 0.5%) ← R11 + soil fuse
+Daily tail ≤ Effective Max SL × 3 ← R17 severance
+Portfolio tail ≤ $100k Alpha Cap + stress replay ← §4 + Survival Benchmark
 ```
 
 **Honest accounting (`lostUsd ≡ 0`):** Pending bridge liquidity is **never booked into the loss distribution** — eliminating phantom ES inflation from in-flight capital. Only explicit, soil-bounded execution losses can accrue; bridge timeout labels state without P&L recognition.
@@ -524,7 +524,7 @@ Portfolio tail ≤ $100k Alpha Cap + stress replay    ← §4 + Survival Benchma
 | Soil-trip rejected order | **No** — fail-closed pre-execution | **0** |
 | Bounded execution slippage | **Yes** — capped by order-aware Max SL | ≤ fuse budget |
 
-**SSOT:** `evaluateAcrossBridgeTransfer()` · `computeOrderAwareMaxSlUsd()` · Vitest **768 PASS** *(Locked Baseline: 742)*.
+**SSOT:** `evaluateAcrossBridgeTransfer()` · `computeOrderAwareMaxSlUsd()` · Vitest **773 tests PASS** **.
 
 ### 5.3 0-Proxy Immutable Infrastructure (SOC 2–Aligned)
 
@@ -542,9 +542,9 @@ Portfolio tail ≤ $100k Alpha Cap + stress replay    ← §4 + Survival Benchma
 **Immutability stack:**
 
 ```text
-Layer 1 — Wasm Soil Core (#![no_std], <28kb)     → hot-path fuse, no runtime injection
-Layer 2 — SliverVineGate.sol (consume-once)      → L1 attestation digest lock
-Layer 3 — Negative proofs + 742-test regression → silent fuse widening impossible
+Layer 1 — Wasm Soil Core (#![no_std], <28kb) → hot-path fuse, no runtime injection
+Layer 2 — SliverVineGate.sol (consume-once) → L1 attestation digest lock
+Layer 3 — Negative proofs + 773-test regression → silent fuse widening impossible
 ```
 
 > **SOC 2 note:** Controls are **mapped** to AICPA Trust Services Criteria for transparency — BDLW does **not** claim SOC 2 Type II certification. See also §2.1 for full TSC table.
@@ -558,23 +558,23 @@ MiCA (Markets in Crypto-Assets Regulation) emphasizes **operational resilience, 
 | **Asset segregation** | User funds in Kernel Smart Accounts — not protocol treasury | ZeroDev Kernel v3 · non-custodial SSOT |
 | **Operational resilience** | Fail-closed on bridge timeout · sequencer grace · soil trip | R01–R20 matrix |
 | **Conflicts / contamination prevention** | **Outbound-only** escort · inbound reverse path blocked | `validateAcrossBridgeDirection()` |
-| **AML inbound isolation** | `42161 → 46630/4663` → `AML_INBOUND_TO_ROBINHOOD_BLOCKED` | `across-ingress-bridge.ts` |
-| **On-chain invariant enforcement** | **`IngressSafetySwitch.sol`** address-level oracle flush + blacklist · inbound AML at **`across-ingress-bridge.ts`** | [`ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) |
+| **AML inbound isolation** | `42161 → 46630/4663` → `AML_INBOUND_TO_ROBINHOOD_BLOCKED` | `src/adapters/across-ingress-bridge.ts` |
+| **On-chain invariant enforcement** | **`IngressSafetySwitch.sol`** address-level oracle flush + blacklist · inbound AML at **`src/adapters/across-ingress-bridge.ts`** | [`ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) |
 | **Honest pending-asset labeling** | `IN_FLIGHT_BRIDGE_CAPITAL` · **`lostUsd ≡ 0`** | Vitest **5/5** |
 
 ```text
 [ Robinhood USDG ] ──outbound-only──► [ Arbitrum Citadel Vault ]
-        ▲                                      │
-        │                                      │
-   INBOUND BLOCKED ◄───────────────────────────┘
-   AML_INBOUND_TO_ROBINHOOD_BLOCKED
+ ▲ │
+ │ │
+ INBOUND BLOCKED ◄───────────────────────────┘
+ AML_INBOUND_TO_ROBINHOOD_BLOCKED
 ```
 
 **Evaluator verification:**
 
 ```bash
-pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts   # 5/5 — AML + in-flight
-pnpm test -- --run                                                     # 768 PASS — full regression (Locked Baseline: 742)
+pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts # 5/5 — AML + in-flight
+pnpm test -- --run # 773 tests PASS — full regression
 ```
 
 ### 5.6 ArbOS Elara Compliance Alignment & Dynamic Target Range
@@ -584,7 +584,7 @@ pnpm test -- --run                                                     # 768 PAS
 | Compliance plane | Function | UI / code anchor |
 |------------------|----------|------------------|
 | **Edge SSOT (pre-broadcast)** | Soil matrix · signing channel severance · UserOp gate | `checkSoilResistance()` · `zerodev-aa-gate.ts` |
-| **Pillar 2 Compliance Ingress Firewall + ArbOS Elara** | Venue-agnostic outbound escort · inbound AML block · Robinhood Chain as inaugural reference adapter · Elara drops non-compliant / blacklisted senders before GM payload construction | Tech Spec §4.2 · `IngressSafetySwitch.sol` · `across-ingress-bridge.ts` |
+| **Pillar 2 Compliance Ingress Firewall + ArbOS Elara** | Venue-agnostic outbound escort · inbound AML block · Robinhood Chain as inaugural reference adapter · Elara drops non-compliant / blacklisted senders before GM payload construction | Tech Spec §4.2 · `IngressSafetySwitch.sol` · `src/adapters/across-ingress-bridge.ts` |
 | **Sequencer / ordering sensor** | ArbOS base-fee velocity · sequencer grace — no naked opens during desync | `arbitrum-gas-guard.ts` · `sequencer-guard.ts` |
 | **Multi-tranche demo HUD** | Tranche A native vault vs Tranche B bridge state machine | `SmartRoutingDepositCard` · `deposit-tranche-config.ts` |
 | **Reactive HUD alerts** | Institutional trip copy for allocators | `compliance-trip-alerts.ts` · `LivingWaterShieldCard` · `AMLShieldCard` |
@@ -613,7 +613,7 @@ pnpm test -- --run                                                     # 768 PAS
 |------|----------|------------|
 | **First** | Business operations | Yield hurdle · buffer engine (5–10%) · rebalance rules |
 | **Second** | Risk & compliance | Fail-closed soil · PGATE · AML firewall · bridge accounting |
-| **Third** | Independent assurance | 768 PASS · Survival Benchmark (§3) · chaos matrix · DDIP |
+| **Third** | Independent assurance | 773 tests PASS · Survival Benchmark (§3) · chaos matrix · DDIP |
 
 | Question | Answer | Verify |
 |----------|--------|--------|
@@ -673,7 +673,7 @@ Ingress capacity and execution timing are fully specified in **§4**. Basel / ES
 
 | # | Check | Command / surface | Pass |
 |---|-------|-------------------|------|
-| 1 | Full regression | `pnpm test -- --run` | 174 \| 768 PASS *(Locked: 168 \| 742)* |
+| 1 | Full regression | `pnpm test -- --run` | 175 \| 773 tests PASS (100% Clean · Exit Code 0) |
 | 2 | Bridge accounting | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` | 5/5 |
 | 3 | ZeroDev gate | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` | 4/4 |
 | 4 | Security matrix | `pnpm audit:security` | 5/0/0 |
@@ -683,7 +683,7 @@ Ingress capacity and execution timing are fully specified in **§4**. Basel / ES
 | 8 | Session R07 cap | `tests/services/session-key-gates.test.ts` | `SESSION_CAP>5000` severed |
 | 9 | Negative proofs | `pnpm verify:negative` | Soil trips confirmed |
 | 10 | Ingress path comparison | §4.1 table · `across-ingress-bridge.test.ts` | 5/5 · state machine verified |
-| 11 | Regulatory mapping | §5.1–§5.4 · `pnpm test -- --run` | Basel/ES/MiCA tables · 768 PASS |
+| 11 | Regulatory mapping | §5.1–§5.4 · `pnpm test -- --run` | Basel/ES/MiCA tables · 175 test files | 773 tests PASS (100% Clean · Exit Code 0) |
 
 ---
 
@@ -700,5 +700,5 @@ Ingress capacity and execution timing are fully specified in **§4**. Basel / ES
 
 ---
 
-**Prepared by:** SilverVine Labs Risk & Compliance Documentation  
+**Prepared by:** SilverVine Labs Risk & Compliance Documentation
 **Last updated:** 2026-08-27 · Branch baseline: `v1.0_push_BDLW` · **Risk & Disclaimer** section (Fail-Closed · non-custodial · residual risk disclosure)

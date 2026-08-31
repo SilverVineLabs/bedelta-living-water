@@ -7,7 +7,7 @@
 | **Classification** | Grant / Institutional Pitch · Live Demo Script |
 | **Branch baseline** | `v1.0_push_BDLW` |
 | **Entity** | SilverVine Labs · BeΔ Living Water (BDLW) |
-| **Baseline** | Vitest **168 files \| 742 PASS (100% Clean)** · live **`768 PASS`** on `pnpm test -- --run` · Wasm **p50 ~106 µs** · chaos **255/255** |
+| **Baseline** | Vitest **175 test files \| 773 tests PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Wasm **p50 ~106 µs** · chaos **255/255** |
 | **Live proof** | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` |
 | **Related SSOT** | [`VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) · [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 
@@ -28,15 +28,15 @@
 | **Onboarding** | **1-click** ZeroDev Smart Routing deposit (Pillar 2 surface) + Kernel v3 session keys — no hot-wallet custody |
 | **Yield architecture** | Delta-neutral **GMX v2 GM + Hyperliquid 1× short** with **0.5% Hurdle Gate** (`FRICTION_BUFFER_APY`) — dynamic target band **8.2% ~ 11.8%** (non-guaranteed display) |
 | **Honest accounting** | Bridge in-flight capital labeled **`IN_FLIGHT_BRIDGE_CAPITAL`** — **`lostUsd ≡ 0`** until settled |
-| **Proof** | **768 PASS** Vitest · **255/255** chaos matrix · **4/4** ZeroDev gate · **5/5** bridge tests |
+| **Proof** | **773 tests PASS** Vitest · **255/255** chaos matrix · **4/4** ZeroDev gate · **5/5** bridge tests |
 
 **Three Pillars (evaluator mental model):**
 
 ```text
-Pillar 1 GATEHOUSE              → ZeroDev Kernel v3 · 30s TTL session keys · $5k notional cap
-Pillar 2 COMPLIANCE INGRESS     → Venue-agnostic AML escort & accounting
-         FIREWALL                → Robinhood Chain = inaugural reference adapter
-Pillar 3 SHIELD (CORE MOAT)     → pkg/soil_core.wasm · checkSoilResistance() · R01–R20
+Pillar 1 GATEHOUSE → ZeroDev Kernel v3 · 30s TTL session keys · $5k notional cap
+Pillar 2 COMPLIANCE INGRESS → Venue-agnostic AML escort & accounting
+ FIREWALL → Robinhood Chain = inaugural reference adapter
+Pillar 3 SHIELD (CORE MOAT) → pkg/soil_core.wasm · checkSoilResistance() · R01–R20
 ```
 
 **Center of gravity:** Arbitrum One GMX v2 + HL hedge. Permissioned ingress (Robinhood) is a **supported example**, not the product identity.
@@ -50,18 +50,18 @@ Pillar 3 SHIELD (CORE MOAT)     → pkg/soil_core.wasm · checkSoilResistance() 
 **Axes:** Speed · Fail-Closed Security · 1-Click Onboarding · Dynamic Yield Efficiency
 
 ```text
-                        HIGH Fail-Closed
-                              ▲
-                              │         ★ BDLW
-                              │        (106µs Wasm Gate)
-                              │
-    LOW Speed ◄───────────────┼───────────────► HIGH Speed
-                              │
-         Traditional Vaults   │    Consumer AA Apps
-         (DAO governance)     │    (post-hoc policy)
-                              │
-                              ▼
-                        LOW Fail-Closed (Fail-Open window)
+ HIGH Fail-Closed
+ ▲
+ │ ★ BDLW
+ │ (106µs Wasm Gate)
+ │
+ LOW Speed ◄───────────────┼───────────────► HIGH Speed
+ │
+ Traditional Vaults │ Consumer AA Apps
+ (DAO governance) │ (post-hoc policy)
+ │
+ ▼
+ LOW Fail-Closed (Fail-Open window)
 ```
 
 | Player archetype | Speed (decision latency) | Fail-Closed security | 1-click onboarding | Dynamic yield efficiency | BDLW gap |
@@ -88,7 +88,7 @@ Pillar 3 SHIELD (CORE MOAT)     → pkg/soil_core.wasm · checkSoilResistance() 
 | **AML isolation** | Pillar 2 **Compliance Ingress Firewall** — outbound-only escort; inbound blocked | Generic contract scopes | KYC at onboarding only | None on-chain |
 | **Wasm soil fuse** | **`pkg/soil_core.wasm`** · `<28kb` budget | None | None | None |
 | **ZeroDev integration** | Kernel v3 production · gate **before** paymaster sign | Kernel / 7702 UX-first | None | None |
-| **Regression proof** | **768 PASS** · `zerodev-aa-gate` **4/4** · bridge **5/5** | Vendor QA snapshots | Audit letters | Partial |
+| **Regression proof** | **773 tests PASS** · `zerodev-aa-gate` **4/4** · bridge **5/5** | Vendor QA snapshots | Audit letters | Partial |
 
 ---
 
@@ -104,20 +104,20 @@ Pillar 3 SHIELD (CORE MOAT)     → pkg/soil_core.wasm · checkSoilResistance() 
 | **Stolen session key** | Hours of delegated authority | Key revoke lag | **~30s blast radius** · **$5k notional cap** |
 
 ```text
-         STORM EVENT
-              │
-    ┌─────────┼─────────┐
-    ▼         ▼         ▼
- Option A  Option B  Option C (BDLW)
- Fail-Open Manual    106µs Wasm Gate
- LIQUIDATED STUCK    SEVERED · lostUsd≡0
+ STORM EVENT
+ │
+ ┌─────────┼─────────┐
+ ▼ ▼ ▼
+ Option A Option B Option C (BDLW)
+ Fail-Open Manual 106µs Wasm Gate
+ LIQUIDATED STUCK SEVERED · lostUsd≡0
 ```
 
 ---
 
 ## 3. Complete Video Storyboard — "The Storm & The 3 Options"
 
-**Format:** 35-second institutional demo · 1920×1080 · dark HUD ([bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz))  
+**Format:** 35-second institutional demo · 1920×1080 · dark HUD ([bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz))
 **Narration tone:** Calm, precise, no yield guarantees · emphasize **pre-execution severance**
 
 ### Production timeline overview
@@ -178,12 +178,12 @@ pnpm exec vitest run tests/risk-control/soil-circuit-breaker.test.ts
 | **0:28–0:30** | Pillar 2 overlay: bridge state **`IN_FLIGHT_BRIDGE_CAPITAL`** · no GM open | **`lostUsd ≡ 0`** green lock | `src/adapters/robinhood/robinhood-across-bridge.ts` |
 | **0:30–0:32** | Pillar 1: session key **30s TTL** countdown · `$5k cap` badge | VO: *"Scoped keys. Honest labels. Zero naked broadcast."* | `session-key-gates.ts` · `nonce-auto-healing.ts` |
 | **0:32–0:34** | Storm passes · HUD green **READY** · no loss counter | **`capitalLossUsd: 0`** · chaos 255/255 | `docs/audit/chaos-blackswan-metrics.json` |
-| **0:34–0:35** | Logo · URL · QR to `/api/grant-audit` | **BeΔ Living Water · SilverVine Labs** | `pnpm test -- --run` · **768 PASS** |
+| **0:34–0:35** | Logo · URL · QR to `/api/grant-audit` | **BeΔ Living Water · SilverVine Labs** | `pnpm test -- --run` · **773 tests PASS** |
 
 **End card verification strip (on-screen, 0:34–0:35):**
 
 ```text
-768 PASS · 255/255 chaos · 4/4 ZeroDev gate · 5/5 bridge · p50 106µs Wasm
+773 tests PASS · 255/255 chaos · 4/4 ZeroDev gate · 5/5 bridge · p50 106µs Wasm
 ```
 
 ---
@@ -198,7 +198,7 @@ pnpm exec vitest run tests/risk-control/soil-circuit-breaker.test.ts
 | UI trip banners | 0:02–0:04 | `src/components/compliance-trip-alerts.ts` | `tests/components/compliance-trip-alerts.test.ts` |
 | Session TTL / cap | 0:30–0:32 | `src/services/session-key-adapter-lib/session-key-gates.ts` | `tests/services/session-key-gates.test.ts` |
 | Chaos / zero loss | 0:32–0:34 | `docs/audit/chaos-blackswan-metrics.json` | `tests/scripts/chaos-blackswan-stress.test.ts` |
-| Full regression | End card | — | `pnpm test -- --run` → **768 PASS** |
+| Full regression | End card | — | `pnpm test -- --run` → **773 tests PASS** |
 
 **Grant evaluator one-liner (post-video):**
 
@@ -214,22 +214,22 @@ pnpm test -- --run && pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.t
 
 | Metric | Doc lock | Live CLI (`pnpm test -- --run`) |
 |--------|----------|----------------------------------|
-| Vitest | **168 files \| 742 PASS (100% Clean)** | **174 files \| 768 PASS** |
+| Vitest | **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** | **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** |
 | ZeroDev gate | **4/4** | `tests/adapters/zerodev-aa-gate.test.ts` |
 | Robinhood bridge | **5/5** | `tests/adapters/robinhood-across-bridge.test.ts` |
 | Chaos matrix | **255/255 · capitalLossUsd: 0** | `docs/audit/chaos-blackswan-metrics.json` |
 | Wasm shield | **p50 ~106 µs** · `<28kb` artifact budget | `tests/services/wasm-feasibility-lib/soil-core-sim.test.ts` |
 
-> **Note for evaluators:** Documentation SSOT locks **742 PASS** as the grant regression phrase; the live suite on `v1.0_push_BDLW` runs **768 PASS** (additional component/compliance tests). Both are 100% clean — re-run CLI to confirm on your machine.
+> **Note for evaluators:** Documentation SSOT: **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** — re-run `pnpm test -- --run` to confirm on your machine.
 
 ### Tier 0–5 entry point
 
 Start at [`docs/VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md):
 
 ```bash
-docker build -t slivervine-citadel . && docker run --rm slivervine-citadel   # Tier 0
-pnpm test -- --run                                                          # Tier 1
-pnpm test:zerodev                                                           # Tier 4 — ZeroDev dry-run
+docker build -t slivervine-citadel . && docker run --rm slivervine-citadel # Tier 0
+pnpm test -- --run # Tier 1
+pnpm test:zerodev # Tier 4 — ZeroDev dry-run
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .provenanceVerified
 ```
 
@@ -246,5 +246,5 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .provenanceVe
 
 ---
 
-**Prepared by:** SilverVine Labs · Grant & Institutional Pitch  
+**Prepared by:** SilverVine Labs · Grant & Institutional Pitch
 **Last updated:** 2026-08-27 · Branch: `v1.0_push_BDLW`

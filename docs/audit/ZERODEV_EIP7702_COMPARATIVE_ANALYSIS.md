@@ -7,7 +7,7 @@
 | **Classification** | Grant / Institutional Allocator · AA Architecture Benchmark |
 | **Branch baseline** | `v1.0_push_BDLW` |
 | **Entity** | SilverVine Labs · BeΔ Living Water (BDLW) |
-| **Baseline** | **Locked Minimum Proposal Baseline:** 168 files \| 742 PASS · **Current Branch Live Expected Output:** 174 files \| 768 PASS · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
+| **Baseline** | **Vitest SSOT:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
 | **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
 > **Scope note:** This document compares **consumer-focused EIP-7702 AA implementations** with BDLW's **institutional-grade pre-execution risk substrate**. It is an architectural diligence artifact — not legal or investment advice.
@@ -21,10 +21,10 @@ EIP-7702 and ERC-7579 enable EOAs to delegate execution to smart-account logic �
 BeDelta Living Water (BDLW) adopts ZeroDev Kernel v3 as **Code-Verified / Dry-Run Verified** (Kernel v4 + EIP-7702 intent composer on the **⏳ V1.5 roadmap**) but **never substitutes UX for risk governance**. Frictionless onboarding rides on the same **Three Pillars** stack:
 
 ```text
-Pillar 1 GATEHOUSE   → ZeroDev Kernel · scoped Session Keys · Paymaster caps
+Pillar 1 GATEHOUSE → ZeroDev Kernel · scoped Session Keys · Paymaster caps
 Pillar 2 COMPLIANCE INGRESS FIREWALL (Robinhood = inaugural ref adapter)
-                       → outbound escort · AML inbound block · payloadHash binding
-Pillar 3 SHIELD      → checkSoilResistance() · pkg/soil_core.wasm · Fail-Closed pre-broadcast
+ → outbound escort · AML inbound block · payloadHash binding
+Pillar 3 SHIELD → checkSoilResistance() · pkg/soil_core.wasm · Fail-Closed pre-broadcast
 ```
 
 **Institutional differentiation:** BDLW binds every UserOp to a **p50 ~106 µs Wasm soil gate** (Shield/TS Gateway path), **30s TTL Heartbeat / Intent Execution Window** (distinct from underlying session key lifetime bounded up to **24h / 7d**), and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** — before any GMX or Hyperliquid broadcast.
@@ -60,7 +60,7 @@ These patterns are appropriate for **retail conversion funnels**. They are **ins
 | **Intent binding** | Optional calldata hashing | **`payloadHash()`** → `SliverVineGate.sol` consume-once attestation |
 | **Bridge in-flight** | Often booked as live NAV | **`IN_FLIGHT_BRIDGE_CAPITAL`** · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** · no naked GM/HL until `SETTLED` |
 | **Emergency response** | Admin pause · multisig | **Automated** R17 daily severance · R20 physical deadlock · `rootProtection()` |
-| **Regression proof** | Vendor QA / audit snapshots | **768 PASS** (174 files live) · Locked Minimum Proposal Baseline **742 PASS** · `zerodev-aa-gate.test.ts` **4/4** · chaos matrix **255/255** |
+| **Regression proof** | Vendor QA / audit snapshots | **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · `zerodev-aa-gate.test.ts` **4/4** · chaos matrix **255/255** |
 
 ---
 
@@ -81,8 +81,8 @@ Consumer AA extends session duration to reduce wallet prompts. BDLW **minimizes 
 
 ```text
 Session key minted → 30s heartbeat / intent window (crypto key may live up to 24h/7d)
-  ├─ valid heartbeat + soil PASS → ORDER_EXECUTE allowed
-  └─ expiry / cap breach → signingChannelOpen: false (Fail-Closed)
+ ├─ valid heartbeat + soil PASS → ORDER_EXECUTE allowed
+ └─ expiry / cap breach → signingChannelOpen: false (Fail-Closed)
 ```
 
 > **Institutional rationale:** A stolen session key has **at most ~30 seconds** of active intent window and **$5k notional** blast radius — not an hours-long delegated wallet.
@@ -102,12 +102,12 @@ Consumer stacks often simulate transactions **after** UserOp construction. BDLW 
 
 ```text
 UserOp draft
-    │
-    ▼
-verifyAgentIntent() / checkSoilResistance()   ← p50 ~106 µs Wasm (Fail-Closed)
-    │
-    ├─ ALLOW → payloadHash bind → Paymaster → bundler
-    └─ TRIP   → signingChannelOpen: false (never reaches mempool)
+ │
+ ▼
+verifyAgentIntent() / checkSoilResistance() ← p50 ~106 µs Wasm (Fail-Closed)
+ │
+ ├─ ALLOW → payloadHash bind → Paymaster → bundler
+ └─ TRIP → signingChannelOpen: false (never reaches mempool)
 ```
 
 > **EIP-7702 roadmap alignment:** Kernel v4 intent composition adds **UX surface area** — the **106 µs Shield does not move**. Edge remains SSOT; ZeroDev delivers execution plumbing, Citadel decides.
@@ -134,24 +134,24 @@ Consumer bridge UX often treats in-flight tokens as deployable balance. BDLW **l
 
 ```text
 EOA → EIP-7702 delegate → UserOp → bundler → venue
-                         ↑
-              policy check (soft / post-hoc)
+ ↑
+ policy check (soft / post-hoc)
 ```
 
 ### 5.2 BDLW Institutional Stack (V1.0)
 
 ```text
 Kernel Smart Account (ZeroDev v3)
-    │
-    ▼
+ │
+ ▼
 Pillar 2 Compliance Ingress Firewall — payloadHash() bind · bridge direction validate
-    │
-    ▼
+ │
+ ▼
 Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
-    │
-    ├─ soil TRIP → sever signing channel
-    │
-    └─ soil ALLOW → SliverVineGate attestation → GMX / HL broadcast
+ │
+ ├─ soil TRIP → sever signing channel
+ │
+ └─ soil ALLOW → SliverVineGate attestation → GMX / HL broadcast
 ```
 
 ---
@@ -173,7 +173,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 | # | Claim | Command / artifact | Expected |
 |---|-------|-------------------|----------|
-| 1 | Full regression | `pnpm test -- --run` | **174 files \| 768 PASS** *(Locked Minimum Proposal Baseline: 168 \| 742)* |
+| 1 | Full regression | `pnpm test -- --run` | **175 test files \| 773 tests PASS (100% Clean · Exit Code 0)** |
 | 2 | ZeroDev AA gate fail-closed | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` | **4/4 PASS** |
 | 3 | Session R07 $5k cap | `pnpm exec vitest run tests/services/session-key-gates.test.ts` | Severance on breach |
 | 4 | 30s heartbeat expiry | `pnpm exec vitest run tests/services/nonce-auto-healing.test.ts` | Lock on expiry |
@@ -202,5 +202,5 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 ---
 
-**Prepared by:** SilverVine Labs · Risk & Compliance Documentation  
+**Prepared by:** SilverVine Labs · Risk & Compliance Documentation
 **Last updated:** 2026-08-27 · Branch: `v1.0_push_BDLW`

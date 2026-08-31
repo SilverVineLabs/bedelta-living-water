@@ -33,27 +33,27 @@
 
 ```text
 [ Institutional Treasury (Robinhood Chain 46630 / 4663) ]
-                           │
-                           ▼
-    ┌─────────────────────────────────────────────────────────┐
-    │ Pillar 1: THE GATEHOUSE (Auth)                          │
-    │ ZeroDev Kernel v3 Session Keys & EIP-712 Scopes         │
-    └──────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-    ┌─────────────────────────────────────────────────────────┐
-    │ Pillar 2: THE FIREWALL (Compliance — Robinhood Chain Gate)      │
-    │ Unidirectional Escort · AML inbound isolation           │
-    │ IngressSafetySwitch.sol · lostUsd ≡ 0                   │
-    └──────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-    ┌─────────────────────────────────────────────────────────┐
-    │ Pillar 3: THE SHIELD (Core Moat)                        │
-    │ Sub-ms checkSoilResistance() & Wasm engine              │
-    └──────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
+ │
+ ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │ Pillar 1: THE GATEHOUSE (Auth) │
+ │ ZeroDev Kernel v3 Session Keys & EIP-712 Scopes │
+ └──────────────────────┬──────────────────────────────────┘
+ │
+ ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │ Pillar 2: THE FIREWALL (Compliance — Robinhood Chain Gate) │
+ │ Unidirectional Escort · AML inbound isolation │
+ │ IngressSafetySwitch.sol · lostUsd ≡ 0 │
+ └──────────────────────┬──────────────────────────────────┘
+ │
+ ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │ Pillar 3: THE SHIELD (Core Moat) │
+ │ Sub-ms checkSoilResistance() & Wasm engine │
+ └──────────────────────┬──────────────────────────────────┘
+ │
+ ▼
 [ Safe Execution on Arbitrum One GMX v2 GM Pools ]
 ```
 
@@ -89,7 +89,7 @@ pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 | 4 | AML isolation: **42161 → 46630 / 4663** inbound blocked | ✅ PASS |
 | 5 | Bridge timeout fail-closed; capital never marked as lost | ✅ PASS |
 
-**Module:** `src/adapters/across-ingress-bridge.ts`  
+**Module:** `src/adapters/across-ingress-bridge.ts`
 **Test file:** `tests/adapters/across-ingress-bridge.test.ts`
 
 ### 2.2 Unidirectional Escort Routing Matrix
@@ -111,7 +111,7 @@ pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 
 ### 2.3 On-Chain Invariants — `IngressSafetySwitch.sol`
 
-**Contract:** [`contracts/IngressSafetySwitch.sol`](../../contracts/IngressSafetySwitch.sol)  
+**Contract:** [`contracts/IngressSafetySwitch.sol`](../../contracts/IngressSafetySwitch.sol)
 **Oracle anchor:** [`contracts/SliverVineRiskOracle.sol`](../../contracts/SliverVineRiskOracle.sol)
 
 | Invariant | Mechanism | On Violation |
@@ -164,7 +164,7 @@ The bridge state machine in `evaluateAcrossBridgeTransfer()` enforces:
 ## CLI Reproduction
 
 ```bash
-# Full Vitest suite (174 files | 768 PASS — Locked Baseline: 168 | 742)
+# Full Vitest suite (175 test files | 773 tests PASS (100% Clean · Exit Code 0))
 pnpm test
 
 # Targeted Robinhood Chain bridge gate

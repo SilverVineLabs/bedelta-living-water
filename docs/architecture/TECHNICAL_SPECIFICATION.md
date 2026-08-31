@@ -1,10 +1,10 @@
 # SliverVine Protocol — Santenmoku Engine: Technical Specification & Risk Topology
 
-> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · **Current Live Suite:** **174 files | 768 PASS** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
-> **This file SSOT:** R01–R20 invariants · dual-engine topology · KV / MDD · settlement & fee bounds.  
+> **Locked Minimum Proposal Baseline:** Vitest **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · **Current Live Suite:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
+> **This file SSOT:** R01–R20 invariants · dual-engine topology · KV / MDD · settlement & fee bounds.
 > **Docs index:** [`docs/README.md`](../README.md) · **Grants:** [`docs/grants/`](../grants/)
 
-**Entity:** SilverVine Labs · **Protocol brand:** SliverVine  
+**Entity:** SilverVine Labs · **Protocol brand:** SliverVine
 **Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 
 This document is **invariant-first** (Yellow Paper style): topology, thresholds, and fail-closed semantics. Monetization pitches live under `docs/grants/`.
@@ -17,35 +17,35 @@ Santenmoku is a **unified sub-millisecond pre-execution gateway**. **Center of g
 
 ```text
 [ Optional Permissioned Ingress (e.g. Robinhood Chain 46630 / 4663) ]
-                           │
-                           ▼
-    ┌─────────────────────────────────────────────────────────┐
-    │ 1. THE GATEHOUSE (Auth) — ZeroDev Kernel v3 Session Keys│
-    │    Scopes agent permissions & eliminates credential drift│
-    └──────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-    ┌─────────────────────────────────────────────────────────┐
-    │ 2. PILLAR 2: COMPLIANCE INGRESS FIREWALL              │
-    │    Venue-agnostic unidirectional AML escort & accounting│
-    │    Robinhood Chain = inaugural reference adapter        │
-    │    · ZeroDev Smart Routing Addr (1-Click Deposit/Swap)  │
-    └──────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-    ┌─────────────────────────────────────────────────────────┐
-    │ 3. THE SHIELD (CORE MOAT — PRIMARY TECH) — Sub-ms Wasm │
-    │    checkSoilResistance() & Wasm engine at p50 ~106 μs   │
-    └──────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
+ │
+ ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │ 1. THE GATEHOUSE (Auth) — ZeroDev Kernel v3 Session Keys│
+ │ Scopes agent permissions & eliminates credential drift│
+ └──────────────────────┬──────────────────────────────────┘
+ │
+ ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │ 2. PILLAR 2: COMPLIANCE INGRESS FIREWALL │
+ │ Venue-agnostic unidirectional AML escort & accounting│
+ │ Robinhood Chain = inaugural reference adapter │
+ │ · ZeroDev Smart Routing Addr (1-Click Deposit/Swap) │
+ └──────────────────────┬──────────────────────────────────┘
+ │
+ ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │ 3. THE SHIELD (CORE MOAT — PRIMARY TECH) — Sub-ms Wasm │
+ │ checkSoilResistance() & Wasm engine at p50 ~106 μs │
+ └──────────────────────┬──────────────────────────────────┘
+ │
+ ▼
 [ PRIMARY: Arbitrum One GMX v2 ETH/USDC GM + Hyperliquid 1× Short ]
 ```
 
 | Pillar | Role | SSOT / Mechanism |
 |--------|------|------------------|
 | **Gatehouse (Auth)** | ZeroDev scoped session keys | Kernel v3 · `ORDER_EXECUTE` bounds · daily gas sponsorship limits · R06 / R07 |
-| **Pillar 2: Compliance Ingress Firewall** | **Venue-agnostic unidirectional AML firewall & escort accounting layer** — permissioned ingress sources escort outbound-only into Arbitrum; inbound AML blocked; honest `IN_FLIGHT_BRIDGE_CAPITAL` / Pending-Capital Recognition Invariant (`lostUsd ≡ 0`) labels. **Robinhood Chain (`46630`/`4663`) is the inaugural Code-Verified / Dry-Run Verified reference adapter**, not the product identity. Includes ZeroDev Smart Routing Address for 1-click USDG deposit/swap via `GMX_V2_EXCHANGE_ROUTER_ARBITRUM` (`ZERODEV_SMART_ROUTE_TARGETS`); calldata bound at `GatedExecutor.payloadHash()` | `across-ingress-bridge.ts` · `IngressSafetySwitch.sol` · `ZERODEV_SMART_ROUTE_TARGETS` |
+| **Pillar 2: Compliance Ingress Firewall** | **Venue-agnostic unidirectional AML firewall & escort accounting layer** — permissioned ingress sources escort outbound-only into Arbitrum; inbound AML blocked; honest `IN_FLIGHT_BRIDGE_CAPITAL` / Pending-Capital Recognition Invariant (`lostUsd ≡ 0`) labels. **Robinhood Chain (`46630`/`4663`) is the inaugural Code-Verified / Dry-Run Verified reference adapter**, not the product identity. Includes ZeroDev Smart Routing Address for 1-click USDG deposit/swap via `GMX_V2_EXCHANGE_ROUTER_ARBITRUM` (`ZERODEV_SMART_ROUTE_TARGETS`); calldata bound at `GatedExecutor.payloadHash()` | `src/adapters/across-ingress-bridge.ts` · `IngressSafetySwitch.sol` · `ZERODEV_SMART_ROUTE_TARGETS` |
 | **Shield (CORE MOAT)** | Sub-ms Wasm pre-execution armor — **primary technical moat** | `checkSoilResistance()` p50 ~106 μs · Wasm warm path &lt;60µs · R01 / R04 |
 
 > *While single components like `checkSoilResistance()` formulas are kept standard and open for seamless `@slivervine/citadel-sdk` adoption across Arbitrum, our core moat lies in the production integration complexity—stitching Rust `#![no_std]` Wasm, Edge Worker execution, and EIP-712 Gate into a sub-ms, fail-closed system.*
@@ -75,7 +75,7 @@ SilverVine does not interpret natural-language LLM prompts. The Shield enforces 
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v0.9 Delivered (100% Code & Tested)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee · **174 files | 768 PASS (100% Clean)** *(Locked Proposal Baseline: 168 \| 742)* |
+| **v0.9 Delivered (100% Code & Tested)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee · **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** |
 | **v0.9 Active Target** | ✅ Code-Verified (Sepolia & Dry-Run) | Single blue-chip anchor: **GMX v2 ETH/USDC GM Pool** + Hyperliquid **1× short** hedge · Mainnet deployment ties to **M6 Grant distribution** |
 | **v0.9 Partial — HL Orderbook Gap Guard** | ✅ Code-Verified | `evaluateHlOrderbookGapGuard()` in [`hl-orderbook-gap-guard.ts`](../../src/services/risk-control-lib/hl-orderbook-gap-guard.ts) · wired via [`soil-resistance.ts`](../../src/services/risk-control-lib/soil-resistance.ts) — gap-window leverage scale-down + 2× depth floor |
 | **V1.0 Isomorphic Extension** | ⏳ Planned | **BTC/USDC GM Pool** — zero bytecode / Wasm changes; config-driven market address mapping |
@@ -113,9 +113,9 @@ Closed-loop three-venue routing with **Arbitrum One as the primary yield base**.
 
 ```text
 Arbitrum One (GMX GM Yield Base — PRIMARY · ETH/USDC)
-        ↕  1× Δ-neutral hedge
+ ↕ 1× Δ-neutral hedge
 Hyperliquid (1× Short Hedge)
-        ↑  optional permissioned ingress (e.g. Robinhood Chain 46630 / 4663)
+ ↑ optional permissioned ingress (e.g. Robinhood Chain 46630 / 4663)
 ```
 
 | Leg | Venue | Role |
@@ -134,7 +134,7 @@ Solidity vault surface splits capital into two non-fungible risk lanes:
 
 | Tranche | Chain policy | Behavior |
 |---------|--------------|----------|
-| **Permissioned RWA Tranche** | Robinhood Chain **4663** inbound **BLOCKED** at Edge protocol filter | Institutional / RWA-tagged deposits only · **`across-ingress-bridge.ts`** AML inbound block · **`IngressSafetySwitch`** oracle flush + address blacklist · no permissionless public mint path from 4663 |
+| **Permissioned RWA Tranche** | Robinhood Chain **4663** inbound **BLOCKED** at Edge protocol filter | Institutional / RWA-tagged deposits only · **`src/adapters/across-ingress-bridge.ts`** AML inbound block · **`IngressSafetySwitch`** oracle flush + address blacklist · no permissionless public mint path from 4663 |
 | **Permissionless DeFi Tranche** | Arbitrum One + HL | Open GM / hedge flow behind Citadel fail-closed gate · standard DeFi UX |
 
 **Invariant:** RWA capital on the permissioned lane cannot be atomically reminted into the permissionless DeFi tranche without an explicit, audited bridge + compliance gate (Across + AA). Chain **4663 → Arbitrum** inbound is denied by default; Testnet **46630** remains the active integration sandbox.
@@ -157,7 +157,7 @@ Solidity vault surface splits capital into two non-fungible risk lanes:
 
 | Layer | Responsibility | Module |
 |-------|----------------|--------|
-| **Edge ingress adapter** | Chain ID unidirectional escort · `AML_INBOUND_TO_ROBINHOOD_BLOCKED` | `across-ingress-bridge.ts` (Robinhood = reference adapter) |
+| **Edge ingress adapter** | Chain ID unidirectional escort · `AML_INBOUND_TO_ROBINHOOD_BLOCKED` | `src/adapters/across-ingress-bridge.ts` (Robinhood = reference adapter) |
 | **On-chain ingress switch** | Oracle flush + institutional blacklist per address | `IngressSafetySwitch.sol` |
 | **Pre-execution shield** | Sub-ms soil fuse · R17/R20 · Hot Key / `rootProtection()` | Pillar 3 Edge · Wasm · **not** IngressSafetySwitch |
 
@@ -200,8 +200,8 @@ ZeroDev provides three capabilities BDLW **cannot replicate in-house**:
 
 ```text
 UserOp draft → verifyAgentIntent() [Edge Shield · p50 ~106µs]
-           → evaluateStaticBreakerMatrix() [soil + gas ledger]
-           → Paymaster sign → Bundler → EntryPoint → Kernel validateUserOp
+ → evaluateStaticBreakerMatrix() [soil + gas ledger]
+ → Paymaster sign → Bundler → EntryPoint → Kernel validateUserOp
 ```
 
 The Shield decides **before broadcast**; ZeroDev handles **non-custodial account delivery only**. Citadel never holds user keys or principal — capital remains in the **Kernel `sender` smart account** (R06–R07 · ERC-7579).
@@ -260,9 +260,9 @@ ZeroDev v4 converges the smart-wallet lifecycle into **seven stages, one stack**
 
 ```text
 Sign in ──► Fund ──► Gas ──► Authorize ──► Execute
-  │          │        │         │            │
- Kernel    Smart    Paymaster  Session    Shield 106µs
- Account   Route    Ledger     Keys R06   + Venue
+ │ │ │ │ │
+ Kernel Smart Paymaster Session Shield 106µs
+ Account Route Ledger Keys R06 + Venue
 ```
 
 **One Stack semantics:** All five stages share one Kernel account, `sender` identity, and Citadel `AllowedToSign` predicate — institutions need not switch wallets between Robinhood Chain and Arbitrum One or repeat onboarding.
@@ -333,7 +333,7 @@ Python-verified **48-day runway** under sustained negative funding. Automated 3-
 
 **Status:** **17 Active | 2 Refactored | 1 Deprecated**
 
-Core invariants: Edge / Session / Saga (`src/services/`, `src/core/`, `src/adapters/`).  
+Core invariants: Edge / Session / Saga (`src/services/`, `src/core/`, `src/adapters/`).
 L1 lock: `SliverVineGate.sol` consume-once attestation. SDK surface: [`../sdk/CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md).
 
 | ID | Name | Status | Code SSOT |
@@ -406,7 +406,7 @@ Official infrastructure standards map — each row links a public ERC/EIP (or ve
 | **[EIP-7562](https://eips.ethereum.org/EIPS/eip-7562)** | AA storage-access rules — **Zero-Bundler-Rejection Invariant** | Session-key `callData` whitelist · static breaker · `BUNDLER_TIMEOUT_FAIL_CLOSED` | Bundler smoke probe · `zerodev-aa-bundler.ts` |
 | **[EIP-712](https://eips.ethereum.org/EIPS/eip-712)** | Typed structured data hashing · domain binding `SliverVineCitadel` | `SliverVineGate.sol` · `src/sdk/constants.ts` · `evaluateAttestation()` | Forge I1–I12 · SDK citadel tests |
 | **[ERC-1271](https://eips.ethereum.org/EIPS/eip-1271)** | Contract signature validation for Kernel smart accounts | ZeroDev Kernel `isValidSignature` · Gate ECDSA m-of-n on `RiskAttestation` | Gate Forge suite · agent-intent SDK |
-| **[ERC-20](https://eips.ethereum.org/EIPS/eip-20) / [ERC-777](https://eips.ethereum.org/EIPS/eip-777)** | Non-custodial asset transfer & in-flight escrow semantics | `GMX_USDC_ARBITRUM` · `across-ingress-bridge.ts` · `GatedExecutor` payload binding | Across bridge tests · GMX payload tests |
+| **[ERC-20](https://eips.ethereum.org/EIPS/eip-20) / [ERC-777](https://eips.ethereum.org/EIPS/eip-777)** | Non-custodial asset transfer & in-flight escrow semantics | `GMX_USDC_ARBITRUM` · `src/adapters/across-ingress-bridge.ts` · `GatedExecutor` payload binding | Across bridge tests · GMX payload tests |
 | **[OpenZeppelin Contracts v5](https://docs.openzeppelin.com/contracts/5.x/)** | On-chain gate access control & reentrancy guard | `SliverVineGate.sol` · OZ `ECDSA.tryRecover` alignment · `IngressSafetySwitch.sol` is a stateless compliance filter (no OZ import) | Foundry Gate **60 passed** · Forge property fuzz |
 | **[ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** | Modular smart-account modules — session-key permission scopes | ZeroDev Kernel v3 modular session keys · scoped `ORDER_EXECUTE` clip · daily gas sponsorship limits | Gatehouse (Pillar 1) · agent-intent SDK |
 | **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** | Dynamic base-fee congestion sensing on Arbitrum One | Tri-Sensor **BaseFee Velocity** channel · `arbitrum-gas-guard.ts` | Gas-guard tests · Tri-Sensor Matrix |
@@ -565,24 +565,24 @@ B2B Option B (slippage-savings fee) remains a separate commercial SKU and is not
 
 ```text
 AI Agent Intent (seconds)
-        │
-        ▼
+ │
+ ▼
 ┌───────────────────────────────────────────────────────────┐
-│  ERC-7579 Validator (ZeroDev Kernel v3)                   │
-│  · Session key scope · clip · TTL · callData whitelist    │
+│ ERC-7579 Validator (ZeroDev Kernel v3) │
+│ · Session key scope · clip · TTL · callData whitelist │
 └─────────────────────────┬─────────────────────────────────┘
-                          │ UserOp draft passes structural auth
-                          ▼
+ │ UserOp draft passes structural auth
+ ▼
 ┌───────────────────────────────────────────────────────────┐
-│  BDLW Pre-Execution Reflex Hook (106µs Cerebellum)        │
-│  Edge: verifyAgentIntent() → evaluateSoilCore()           │
-│        → checkSoilResistance() [pkg/soil_core.wasm]         │
-│  On-chain: SliverVineSoilCoprocessor.evaluate_soil_…()    │
-│        [contracts/stylus-probe/src/lib.rs]                │
+│ BDLW Pre-Execution Reflex Hook (106µs Cerebellum) │
+│ Edge: verifyAgentIntent() → evaluateSoilCore() │
+│ → checkSoilResistance() [pkg/soil_core.wasm] │
+│ On-chain: SliverVineSoilCoprocessor.evaluate_soil_…() │
+│ [contracts/stylus-probe/src/lib.rs] │
 └─────────────────────────┬─────────────────────────────────┘
-                          │ AllowedToSign = true
-                          ▼
-              Paymaster → Bundler → EntryPoint → GMX / HL
+ │ AllowedToSign = true
+ ▼
+ Paymaster → Bundler → EntryPoint → GMX / HL
 ```
 
 ### 6.2 ZeroDev Kernel v3 Validator Module (Pillar 1)
@@ -613,8 +613,8 @@ Production decision formula shared by SDK, Worker, and grant-audit telemetry:
 
 ```text
 allowedToSign =
-  injectionOk ∧ digestOk ∧ soilOk ∧ sessionOk ∧ gasOk
-  ∧ deadmanOk ∧ armorOk ∧ attOk ∧ wasmOk
+ injectionOk ∧ digestOk ∧ soilOk ∧ sessionOk ∧ gasOk
+ ∧ deadmanOk ∧ armorOk ∧ attOk ∧ wasmOk
 ```
 
 | Gate | Module | ERC-7579 / Hook role |
@@ -662,14 +662,14 @@ allowedToSign =
 
 ### 6.7 Architectural Benchmark: SilverVine High-Performance Innovations vs. Legacy Web3 Standards
 
-> **Audit scope:** `src/` · `contracts/` · `SliverVineGate/` — proprietary designs that intentionally depart from conventional ERC/EIP patterns to achieve sub-millisecond HFT reflexes and AI-agent swarm protection.  
-> **SSOT modules:** `agent-citadel-guard.ts` · `session-key-gates.ts` · `circuit-breaker-sever.ts` · `soil_core.wasm` / `SliverVineSoilCoprocessor`.
+> **Audit scope:** `src/` · `contracts/` · `SliverVineGate/` — proprietary designs that intentionally depart from conventional ERC/EIP patterns to achieve sub-millisecond HFT reflexes and AI-agent swarm protection.
+> **SSOT modules:** `agent-citadel-guard.ts` · `session-key-gates.ts` · `src/services/root-protection-lib/circuit-breaker-sever.ts` · `soil_core.wasm` / `SliverVineSoilCoprocessor`.
 
 | Dimension | Legacy Web3 Standard (ERC/EIP) | SilverVine Engineered Standard | Latency / Gas Improvement | Architectural Reason |
 |-----------|-------------------------------|--------------------------------|---------------------------|----------------------|
 | **AI Agent Rejection Proof** | [EIP-712](https://eips.ethereum.org/EIPS/eip-712) typed-data ECDSA (secp256k1 + wallet IPC) | **Sub-ms M2M Rejection Standard** — `agent-citadel-guard` deterministic **HMAC-SHA256 Session Proof** (`evaluateAgentCitadelGuard()` · `guardAgentUserOp()`) | **~200×** — **&lt; 12 µs** vs **1.2 – 3.5 ms** (ECDSA) | High-frequency agent reject storms must not block on signing latency; EIP-712 reserved for human / on-chain settlement (`SliverVineGate.verifyAndConsume`) |
 | **Session Authorization Gate** | [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) UserOp → Bundler → EntryPoint validation (network RTT + mempool queue) | **SystemState single-flight** — `assertSessionKeyExecutionGates()` · `assertSigningChannelOpen()` (`session-key-gates.ts` · `hl/auth/signing-gate.ts`) | **~10³–10⁴×** — in-process **&lt; 1 ms** vs **50 – 500 ms+** bundler round-trip | Structural session scope (R06/R07 clip) enforced **before** HL signature leaves Edge; bundler only delivers already-shielded intents |
-| **Circuit Breaker / Kill Switch** | OpenZeppelin `Pausable` · on-chain `pause()` (≥ **1 block** · Arbitrum ~250 ms · mainnet ~12 s) | **Edge physical sever** — `severCircuitBreakerPipeline()` R17/R20 (`circuit-breaker-sever.ts`) · `severSigningChannel()` · EIP-712 pipe severed in-process | **~10⁵×** — **&lt; 1 ms** Edge sever vs **≥ 250 ms** on-chain pause | Toxic-fill window closes **before** mempool exposure; `SliverVineGate.halt()` is settlement-plane backup, not hot-path reflex |
+| **Circuit Breaker / Kill Switch** | OpenZeppelin `Pausable` · on-chain `pause()` (≥ **1 block** · Arbitrum ~250 ms · mainnet ~12 s) | **Edge physical sever** — `severCircuitBreakerPipeline()` R17/R20 (`src/services/root-protection-lib/circuit-breaker-sever.ts`) · `severSigningChannel()` · EIP-712 pipe severed in-process | **~10⁵×** — **&lt; 1 ms** Edge sever vs **≥ 250 ms** on-chain pause | Toxic-fill window closes **before** mempool exposure; `SliverVineGate.halt()` is settlement-plane backup, not hot-path reflex |
 | **Risk Oracle Flush** | `Ownable` / `Pausable` admin toggle (mutable · governance delay) | **Irreversible flush** — `SliverVineRiskOracle.applySignedReport(STATUS_SHUTDOWN)` → `isSystemFlushed = true` (one-way poison pill) | Same block on trigger; **zero** post-flush un-pause path | Compliance ingress (`IngressSafetySwitch`) fail-closed without independent admin surface |
 | **Soil / Slippage Compute** | EVM Solidity storage reads + oracle `SLOAD` loops (gas-heavy · block-bound) | **Wasm hot path** `pkg/soil_core.wasm` (`#![no_std]`) + **Stylus coprocessor** `evaluate_soil_coprocessor()` (stateless u128 fixed-point) | **~10²×** latency — Edge **p50 ~106 µs** · Wasm warm **&lt; 60 µs** vs multi-ms EVM path; Stylus **stateless** (no storage reads) | Pre-broadcast math must run at HFT reflex speed; on-chain coprocessor = auditable parity, not hot-path substitute |
 | **Gate Attestation Model** | Replayable signatures · mutable proxy upgrades | **Consume-once EIP-712** — `consumed[digest]` burned before external call (`SliverVineGate` · `GatedExecutor`) · immutable gate (no proxy) | `verifyAndConsume` **~25.8k – 28k gas** · attestation TTL **≤ 30 s** | One ALLOW cannot be redirected to arbitrary calldata; asymmetric authority (halt immediate · unhalt timelocked) |

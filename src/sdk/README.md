@@ -1,12 +1,12 @@
 # `@slivervine/citadel-sdk`
 
-**License:** Apache-2.0 · see [`LICENSE`](./LICENSE) · **Entity:** SilverVine Labs · **Protocol brand:** SliverVine  
+**License:** Apache-2.0 · see [`LICENSE`](./LICENSE) · **Entity:** SilverVine Labs · **Protocol brand:** SliverVine
 **EIP-712 domain:** `SliverVineCitadel` · **Gate anchor:** `SLIVERVINE_GATE_ADDRESS`
 
-> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS** · **Current Live Suite:** **174 files | 768 PASS** · Security-tier `5/0/0 PASS` · Wasm `<28kb` / `<60µs`.
+> **Locked Minimum Proposal Baseline:** Vitest **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · **Current Live Suite:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Security-tier `5/0/0 PASS` · Wasm `<28kb` / `<60µs`.
 
-> **"Behavioral pass does not imply Web3 security."**  
-> `@slivervine/citadel-sdk` currently performs **stateless attestation envelope validation** (EIP-712 structural checks: digest match, expiry, `verifyingContract`, domain `SliverVineCitadel`, sig hex shape) plus `&lt;28kb` Wasm soil evaluation **BEFORE** any UserOp hits the mempool.  
+> **"Behavioral pass does not imply Web3 security."**
+> `@slivervine/citadel-sdk` currently performs **stateless attestation envelope validation** (EIP-712 structural checks: digest match, expiry, `verifyingContract`, domain `SliverVineCitadel`, sig hex shape) plus `&lt;28kb` Wasm soil evaluation **BEFORE** any UserOp hits the mempool.
 > **Full cryptographic signature recovery / m-of-n quorum is bound at the L1 `SliverVineGate` contract layer** (`verifyAndConsume`) — not claimed as complete off-chain ECDSA recovery in this SDK package.
 
 Stateless pre-execution harness. No private keys. No custody. Fail-closed by default.
@@ -23,10 +23,10 @@ Stateless pre-execution harness. No private keys. No custody. Fail-closed by def
 
 ```ts
 import {
-  verifyAgentIntent,
-  assertUnidirectionalBridge,
-  SLIVERVINE_GATE_ADDRESS,
-  EIP712_DOMAIN_NAME,
+ verifyAgentIntent,
+ assertUnidirectionalBridge,
+ SLIVERVINE_GATE_ADDRESS,
+ EIP712_DOMAIN_NAME,
 } from "../sdk"; // or `@slivervine/citadel-sdk` when published
 ```
 
@@ -36,22 +36,22 @@ import {
 
 ```ts
 const verdict = verifyAgentIntent({
-  intentDigest, // 0x + 32-byte UserOp / calldata digest
-  sessionKey: { agentAddress, maxOrderClipUsd: 30, expiresAtMs },
-  soil: { symbol: "ETH-PERP", hlSpot, hlPerp, dydxPerp, depthUsd, isTestnet: false },
-  gasBurst: { estimatedGasCostUsd: 0.1, sponsored: true },
-  attestation: {
-    digest: intentDigest,
-    expiresAtMs: Date.now() + 30_000,
-    sig: "0x…", // Risk Oracle / Gate signer
-    verifyingContract: SLIVERVINE_GATE_ADDRESS,
-    domainName: EIP712_DOMAIN_NAME,
-  },
-  preset: "production", // default — missing attestation ⇒ allowedToSign: false
+ intentDigest, // 0x + 32-byte UserOp / calldata digest
+ sessionKey: { agentAddress, maxOrderClipUsd: 30, expiresAtMs },
+ soil: { symbol: "ETH-PERP", hlSpot, hlPerp, dydxPerp, depthUsd, isTestnet: false },
+ gasBurst: { estimatedGasCostUsd: 0.1, sponsored: true },
+ attestation: {
+ digest: intentDigest,
+ expiresAtMs: Date.now() + 30_000,
+ sig: "0x…", // Risk Oracle / Gate signer
+ verifyingContract: SLIVERVINE_GATE_ADDRESS,
+ domainName: EIP712_DOMAIN_NAME,
+ },
+ preset: "production", // default — missing attestation ⇒ allowedToSign: false
 });
 
 if (!verdict.allowedToSign) {
-  // Do not request wallet / Session Key signature
+ // Do not request wallet / Session Key signature
 }
 ```
 
@@ -72,11 +72,11 @@ Dev bypass only with explicit `allowDevBypass: true` or `preset: "test"` + `soil
 
 ```ts
 const escort = assertUnidirectionalBridge({
-  sourceChainId: 46630, // or 4663 mainnet alias
-  destChainId: 42161,
-  amountUsd: 1000,
-  wallet,
-  initiatedAtMs: Date.now(),
+ sourceChainId: 46630, // or 4663 mainnet alias
+ destChainId: 42161,
+ amountUsd: 1000,
+ wallet,
+ initiatedAtMs: Date.now(),
 });
 // inbound (→ Robinhood) ⇒ capitalLabel AML_INBOUND_TO_ROBINHOOD_BLOCKED, lostUsd === 0
 ```

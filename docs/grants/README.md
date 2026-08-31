@@ -1,9 +1,9 @@
 # Grants — Public Submission Index
 
-**Entity:** SilverVine Labs · `grants@silvervinelabs.com`  
+**Entity:** SilverVine Labs · `grants@silvervinelabs.com`
 **OpSec:** External-facing grant packs only.
 
-> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS** · **Current Live Suite:** **174 files | 768 PASS** · `pnpm test -- --run`.
+> **Locked Minimum Proposal Baseline:** Vitest **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · **Current Live Suite:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · `pnpm test -- --run`.
 
 | Track | Status | Entry |
 |-------|--------|-------|

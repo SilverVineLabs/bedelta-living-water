@@ -1,7 +1,7 @@
 # Security Policy — SliverVine Protocol (bedelta-living-water)
 
-**Entity:** SilverVine Labs · **Contact:** `security@silvervinelabs.com`  
-**Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal  
+**Entity:** SilverVine Labs · **Contact:** `security@silvervinelabs.com`
+**Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal
 **Grant / audit:** `grants@silvervinelabs.com`
 
 ---
@@ -11,9 +11,9 @@
 We take security reports seriously. Please **do not** open public GitHub issues for exploitable findings.
 
 1. Email `security@silvervinelabs.com` with:
-   - Description and impact
-   - Reproduction steps or proof-of-concept
-   - Affected commit or deployed version ID (from `wrangler deploy` output)
+ - Description and impact
+ - Reproduction steps or proof-of-concept
+ - Affected commit or deployed version ID (from `wrangler deploy` output)
 2. We acknowledge within **72 hours** and aim for an initial assessment within **7 business days**.
 3. Coordinate disclosure — we prefer coordinated release before public disclosure.
 

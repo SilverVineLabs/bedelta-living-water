@@ -1,33 +1,33 @@
 {
   "schema": "silvervine.live-96h-telemetry.v1",
   "startedAt": "2026-08-25T09:12:13.604Z",
-  "lastUpdatedAt": "2026-08-29T18:50:35.534Z",
+  "lastUpdatedAt": "2026-08-29T18:51:07.187Z",
   "daemonEndsAt": "2026-08-29T09:12:13.605Z",
   "intervalSec": 30,
   "durationHours": 96,
   "snapshot": {
     "arbitrum-sepolia": {
-      "timestamp": "2026-08-29T18:50:35.258Z",
+      "timestamp": "2026-08-29T18:51:05.283Z",
       "venue": "arbitrum-sepolia",
-      "rttMs": 276,
-      "jitterMs": 19,
+      "rttMs": 1342,
+      "jitterMs": 1066,
       "status": "Trip",
-      "detail": "eth_blockNumber=0x12149a49"
+      "detail": "eth_blockNumber=0x12149ac6"
     },
     "hyperliquid-testnet": {
-      "timestamp": "2026-08-29T18:50:35.258Z",
+      "timestamp": "2026-08-29T18:51:05.386Z",
       "venue": "hyperliquid-testnet",
-      "rttMs": 226,
-      "jitterMs": 35,
-      "status": "OK",
-      "detail": "meta+l2Book ETH spreadBps=1.24"
+      "rttMs": 1800,
+      "jitterMs": 1574,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
     },
     "robinhood-worker": {
-      "timestamp": "2026-08-29T18:50:35.258Z",
+      "timestamp": "2026-08-29T18:51:05.387Z",
       "venue": "robinhood-worker",
-      "rttMs": 57,
-      "jitterMs": 21,
-      "status": "OK",
+      "rttMs": 746,
+      "jitterMs": 689,
+      "status": "Trip",
       "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
     }
   },
@@ -83287,12 +83287,36 @@
       "jitterMs": 21,
       "status": "OK",
       "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
+    },
+    {
+      "timestamp": "2026-08-29T18:51:05.283Z",
+      "venue": "arbitrum-sepolia",
+      "rttMs": 1342,
+      "jitterMs": 1066,
+      "status": "Trip",
+      "detail": "eth_blockNumber=0x12149ac6"
+    },
+    {
+      "timestamp": "2026-08-29T18:51:05.386Z",
+      "venue": "hyperliquid-testnet",
+      "rttMs": 1800,
+      "jitterMs": 1574,
+      "status": "Trip",
+      "detail": "meta+l2Book ETH spreadBps=0.41"
+    },
+    {
+      "timestamp": "2026-08-29T18:51:05.387Z",
+      "venue": "robinhood-worker",
+      "rttMs": 746,
+      "jitterMs": 689,
+      "status": "Trip",
+      "detail": "worker=https://bedeltawater.slivervine.xyz/api/telemetry/health"
     }
   ],
   "totals": {
-    "probes": 10407,
+    "probes": 10410,
     "ok": 5020,
     "degraded": 1021,
-    "trip": 4366
+    "trip": 4369
   }
 }

@@ -1,6 +1,6 @@
 # 🛡️ BeΔLivingWater SliverVine Protocol — GMX v2 / Arbitrum Citadel Pre-Execution Gateway
 
-[![Vitest](https://img.shields.io/badge/Vitest-768%20PASS%20%28174%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![Vitest](https://img.shields.io/badge/Vitest-773%20PASS%20%28175%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![Stylus Coprocessor](https://img.shields.io/badge/Stylus-5%2F5%20PASS-blue?logo=rust)](./contracts/stylus-probe/)
 [![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts)
 [![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-255%2F255%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water)
@@ -16,9 +16,9 @@
 >
 > *Sub-ms End-to-End Shield Path (Pure-Math Kernel: 200 ns / 0.0002 ms) · < 1.0ms SLO Session Key verification · Primary venue: **Arbitrum One** GMX v2 ETH/USDC GM + Hyperliquid 1× short (`checkSoilResistance()`).*
 
-**Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`  
-**Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal & landing page  
-**Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) · **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)  
+**Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`
+**Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal & landing page
+**Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) · **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 **Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (**Apache-2.0** · EIP-712 domain `SliverVineCitadel`) · **Architect:** qum0x (20+ Year Enterprise Web & Systems Architect) — All claims verifiable via CLI (`pnpm test`) and live JSON telemetry (`/api/grant-audit`).
 
 **Core Product (center of gravity):** **Sub-ms Pre-Execution Risk Gateway** protecting a **Delta-Neutral GM Yield Engine on Arbitrum One** — GMX v2 **ETH/USDC** GM pool + Hyperliquid **1× short hedge**. **CaaS monetization:** **10 bps GMX Builder Fee** + **25% GMX Referral Rebate** — venue-native ExchangeRouter parameters; zero additional overhead on v0.9 execution safety. **Architecture:** **106µs Physical Cerebellum** for **ERC-7579 AI Agents** — Wasm/Stylus pre-execution hook before LLM-planned orders reach mempool.
@@ -33,8 +33,8 @@
 
 **Arbitrum Native Execution Premium:** Direct Arbitrum One LPs earn an estimated **+15 ~ 30 bps** vs bridged / multi-hop routes *(design estimate — not a locked test assertion)*.
 
-> **SSOT Realignment (2026-08-25):** v0.9 = Sepolia + dry-run verified · mainnet → M6 · deep fuzz 327,675 requires `audit:nightly` / `FOUNDRY_PROFILE=deep` · **Tier-0 Docker** = root [`Dockerfile`](./Dockerfile) · see [`docs/README.md`](./docs/README.md).  
-> **Locked Minimum Proposal Baseline:** **168 files | 742 PASS (100% Clean)** — official Grant proposal bar. **Current Branch Live Expected Output:** **174 files | 768 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run`.
+> **SSOT Realignment (2026-08-31):** v0.9 = Sepolia + dry-run verified · mainnet → M6 · deep fuzz 327,675 requires `audit:nightly` / `FOUNDRY_PROFILE=deep` · **Tier-0 Docker** = root [`Dockerfile`](./Dockerfile) · see [`docs/README.md`](./docs/README.md).
+> **Vitest SSOT:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run`.
 
 ---
 
@@ -46,7 +46,7 @@
 docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 ```
 
-Isolated container execution of 5-step `demo:e2e` dry-run; full regression **174 files | 768 PASS (100% Clean · Exit Code 0)** → `docker run --rm slivervine-citadel pnpm test`. Sidecar → [`docker/README.md`](./docker/README.md).
+Isolated container execution of 5-step `demo:e2e` dry-run; full regression **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** → `docker run --rm slivervine-citadel pnpm test`. Sidecar → [`docker/README.md`](./docker/README.md).
 
 **Tier 1+ — Monorepo CLI:**
 
@@ -61,7 +61,7 @@ Canonical interactive demo command for judges:
 
 1. **Tier 0:** `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` — isolated E2E, no host toolchain drift.
 2. Run `pnpm run demo:e2e` as the single interactive Citadel demo entry point.
-3. `pnpm test -- --run` verifies **Current Branch Live Expected Output:** **174 files | 768 PASS (100% Clean · Exit Code 0)** *(Locked Minimum Proposal Baseline: 168 files | 742 PASS)*.
+3. `pnpm test -- --run` verifies **Current Branch Live Expected Output:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** *(Locked Minimum Proposal Baseline: 175 test files | 773 tests PASS (100% Clean · Exit Code 0))*.
 4. `grant-advanced-resilience-benchmark.ts` shows the sub-ms Wasm Shield latency path.
 
 For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API Verification` section below.
@@ -100,8 +100,8 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 * **Runtime Bytecode**: 📦 **8,716 Bytes (8.71 KiB)** — Zero External Dependencies (`Assembly-optimized`)
 
 ### 2. Off-Chain Pre-Execution Radar (TypeScript / V8 Runtime)
-* **Locked Minimum Proposal Baseline**: 🧪 **168 files | 742 PASS (100% Clean)**
-* **Current Branch Live Expected Output**: 🎯 **174 files | 768 PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run`
+* **Locked Minimum Proposal Baseline**: 🧪 **175 test files | 773 tests PASS (100% Clean · Exit Code 0)**
+* **Current Branch Live Expected Output**: 🎯 **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run`
 * **Chaos Matrix**: 🌪️ **255 Severe Failure Cases | 0 Crashes**
 * **Edge Decision Latency**: ⏱️ **SLO &lt; 1.0ms | p50 ~106 μs Shield/TS Gateway | Wasm warm &lt;60 μs | Pure Math: 0.0002 ms (200 ns)**
 * **Worker Bundle**: 📦 **87.76 KiB gzip** measured hot path (`pnpm bundle:measure`) · **162.49 KiB gzip** full Edge deployment artifact
@@ -114,7 +114,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 |-----------|--------|-----------------------------|
 | **M0: Operational Foundation** | ✅ Delivered | WSL / PNPM Monorepo, Cloudflare Edge Worker pipeline, and CI/CD strict typecheck. |
 | **M1: On-Chain Citadel Gate** | ✅ Delivered | `SliverVineGate.sol` core invariant locks · **327,675 deep fuzz** (`FOUNDRY_PROFILE=deep`) · 25k gas bounds. |
-| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, **168 files | 742 PASS (100% Clean)**, 162.49 KiB gzip bundle, sub-ms latency. |
+| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, **175 test files | 773 tests PASS (100% Clean · Exit Code 0)**, 162.49 KiB gzip bundle, sub-ms latency. |
 | **M3: Dual-Chain & ZeroDev AA** | ✅ Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7) | ZeroDev Kernel v3 AA Adapter · optional Robinhood Chain (`46630`/`4663`) permissioned ingress escort into Arbitrum. |
 | **M4: WASM Engine & IP Moat** | ✅ Delivered | Rust `#![no_std]` Wasm core (`pkg/soil_core.wasm`) — Cloudflare budget `<28kb`, hot-path exec `<60µs` — & `@slivervine/citadel-sdk` shipped. |
 | **M5: TCA Data & Hyperliquid** | ✅ Delivered (evolving) | TCA / grant-audit surfaces & HL Testnet 5-trade provenance — **Live TCA Analytics HUD actively evolving**. |
@@ -125,17 +125,17 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 ## 🛡️ Auditor — 30-Second CLI & API Verification
 
 ```bash
-# 1. Full Vitest suite (168 files | 742 PASS — live: 174 / 768)
+# 1. Full Vitest suite (175 test files | 773 tests PASS (100% Clean · Exit Code 0))
 pnpm test -- --run
 
 # 2. 3-Tier Security Matrix (Fast / Security / Nightly)
-pnpm run audit:fast       # fast tier → docs/audit/security-scorecard.json (tsc + security slice + Solhint + Gitleaks)
-pnpm run audit:security   # security tier 5/0/0 → docs/audit/static-analysis-report.json (Vitest + Forge + Slither + Aderyn + pnpm-audit)
-pnpm run audit:nightly    # Echidna Property Fuzz + Halmos Symbolic + Deep Fuzz
+pnpm run audit:fast # fast tier → docs/audit/security-scorecard.json (tsc + security slice + Solhint + Gitleaks)
+pnpm run audit:security # security tier 5/0/0 → docs/audit/static-analysis-report.json (Vitest + Forge + Slither + Aderyn + pnpm-audit)
+pnpm run audit:nightly # Echidna Property Fuzz + Halmos Symbolic + Deep Fuzz
 
 # 3. Contract unit tests, fuzzing, & gas benchmark
-cd SliverVineGate && forge test --gas-report && cd ..   # default fuzz: 5,120 (5×1,024)
-pnpm audit:nightly                                     # deep fuzz: 327,675 (5×65,535)
+cd SliverVineGate && forge test --gas-report && cd .. # default fuzz: 5,120 (5×1,024)
+pnpm audit:nightly # deep fuzz: 327,675 (5×65,535)
 
 # 4. Run Off-chain Resilience & Latency Benchmark
 npx tsx scripts/grant-advanced-resilience-benchmark.ts
@@ -167,29 +167,29 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 
 ```text
 [ Optional Permissioned Ingress (e.g. Robinhood Chain 46630 / 4663) ]
-                           │
-                           ▼
-    ┌─────────────────────────────────────────────────────────┐
-    │ Pillar 1: GATEHOUSE (Account Abstraction)               │
-    │ ZeroDev Kernel v3 · 30s TTL Heartbeat / Intent Window   │
-    │ Paymaster gas-free onboarding (conditional sponsorship) │
-    └──────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-    ┌─────────────────────────────────────────────────────────┐
-    │ Pillar 2: COMPLIANCE INGRESS FIREWALL (Escort Acct.)  │
-    │ Unidirectional AML firewall · IN_FLIGHT_BRIDGE_CAPITAL  │
-    │ Pending-Capital Recognition (lostUsd ≡ 0) · ref adapter  │
-    └──────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-    ┌─────────────────────────────────────────────────────────┐
-    │ Pillar 3: SHIELD (Pre-Execution Risk Engine)            │
-    │ p50 ~106 µs Shield/TS Gateway · Wasm warm &lt;60 µs       │
-    │ R01–R20 Defense Matrix (17|2|1) · signingChannelOpen: false │
-    └──────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
+ │
+ ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │ Pillar 1: GATEHOUSE (Account Abstraction) │
+ │ ZeroDev Kernel v3 · 30s TTL Heartbeat / Intent Window │
+ │ Paymaster gas-free onboarding (conditional sponsorship) │
+ └──────────────────────┬──────────────────────────────────┘
+ │
+ ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │ Pillar 2: COMPLIANCE INGRESS FIREWALL (Escort Acct.) │
+ │ Unidirectional AML firewall · IN_FLIGHT_BRIDGE_CAPITAL │
+ │ Pending-Capital Recognition (lostUsd ≡ 0) · ref adapter │
+ └──────────────────────┬──────────────────────────────────┘
+ │
+ ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │ Pillar 3: SHIELD (Pre-Execution Risk Engine) │
+ │ p50 ~106 µs Shield/TS Gateway · Wasm warm &lt;60 µs │
+ │ R01–R20 Defense Matrix (17|2|1) · signingChannelOpen: false │
+ └──────────────────────┬──────────────────────────────────┘
+ │
+ ▼
 [ PRIMARY: Arbitrum One GMX v2 ETH/USDC GM + Hyperliquid 1× Short ]
 ```
 

@@ -1,8 +1,8 @@
 # Performance & On-Chain Gate Audit — Arbitrum Buildathon V1.0
 
-**Audit Date:** 2026-08-17 (UTC+8)  
-**Auditor Role:** Cursor Senior Systems Engineer  
-**Repo:** `bedelta-citadel-core` (`feat/v1.0-expansion` @ `56cfe58`)  
+**Audit Date:** 2026-08-17 (UTC+8)
+**Auditor Role:** Cursor Senior Systems Engineer
+**Repo:** `bedelta-citadel-core` (`feat/v1.0-expansion` @ `56cfe58`)
 **Domain:** `bedeltawater.slivervine.xyz` (SliverVine Protocol)
 
 ---
@@ -39,30 +39,30 @@
 
 ```json
 {
-  "benchmark": "checkSoilResistance() pure path",
-  "node": "v22.23.1",
-  "iterations": 10000,
-  "warmup": 2000,
-  "claimTargetNs": 1000,
-  "claimLabel": "Sub-Microsecond (<1.0 µs)",
-  "performanceNow": {
-    "minNs": 56109,
-    "p50Ns": 106628,
-    "p95Ns": 257390,
-    "p99Ns": 589181,
-    "maxNs": 8558158,
-    "meanNs": 134744
-  },
-  "hrtimeBigint": {
-    "minNs": 55904,
-    "p50Ns": 105951,
-    "p95Ns": 256019,
-    "p99Ns": 585661,
-    "maxNs": 8554588,
-    "meanNs": 133565
-  },
-  "passSubMicrosecond_p50": false,
-  "passSubMillisecond_p50": true
+ "benchmark": "checkSoilResistance() pure path",
+ "node": "v22.23.1",
+ "iterations": 10000,
+ "warmup": 2000,
+ "claimTargetNs": 1000,
+ "claimLabel": "Sub-Microsecond (<1.0 µs)",
+ "performanceNow": {
+ "minNs": 56109,
+ "p50Ns": 106628,
+ "p95Ns": 257390,
+ "p99Ns": 589181,
+ "maxNs": 8558158,
+ "meanNs": 134744
+ },
+ "hrtimeBigint": {
+ "minNs": 55904,
+ "p50Ns": 105951,
+ "p95Ns": 256019,
+ "p99Ns": 585661,
+ "maxNs": 8554588,
+ "meanNs": 133565
+ },
+ "passSubMicrosecond_p50": false,
+ "passSubMillisecond_p50": true
 }
 ```
 
@@ -80,27 +80,27 @@
 
 ```117:165:src/services/risk-control-lib/soil-resistance.ts
 export function checkSoilResistance(
-  input: SoilResistanceInput,
+ input: SoilResistanceInput,
 ): SoilResistanceResult {
-  // ...
-  if (isTsunamiShieldWindow(input.at)) { ... }
-  if (!isSequencerSafe(input.at?.getTime())) { ... }
-  if (!isArbitrumStatusSequencerHealthy(input.at?.getTime())) { ... }
-  if (!isRpcRadarSequencerHealthy(input.at?.getTime())) { ... }
-  if (isArbitrumGasGuardBlocked()) { ... }
-  if (!isSoftConfirmationSafe(input.at?.getTime())) { ... }
-  // + crossSpread, gmxPriceImpact, hlOrderbookGap, rwaSettlement, slippage math, telemetry emit on trip
+ // ...
+ if (isTsunamiShieldWindow(input.at)) { ... }
+ if (!isSequencerSafe(input.at?.getTime())) { ... }
+ if (!isArbitrumStatusSequencerHealthy(input.at?.getTime())) { ... }
+ if (!isRpcRadarSequencerHealthy(input.at?.getTime())) { ... }
+ if (isArbitrumGasGuardBlocked()) { ... }
+ if (!isSoftConfirmationSafe(input.at?.getTime())) { ... }
+ // + crossSpread, gmxPriceImpact, hlOrderbookGap, rwaSettlement, slippage math, telemetry emit on trip
 ```
 
 **Cross-reference — internal SLO harness** (`scripts/grant-advanced-resilience-benchmark.ts`, 10k iters, `evaluateGatewayRules` + `checkSoilResistance`):
 
 ```json
 "benchmark": {
-  "pass": true,
-  "meanLatencyMs": 0.0004,
-  "iterations": 10000,
-  "sloTargetMs": 1,
-  "soilSloMs": 500
+ "pass": true,
+ "meanLatencyMs": 0.0004,
+ "iterations": 10000,
+ "sloTargetMs": 1,
+ "soilSloMs": 500
 }
 ```
 
@@ -122,20 +122,20 @@ That harness SLO is **< 1.0 ms** (millisecond), **not** sub-microsecond. The `.c
 
 ```bash
 pnpm run bundle:measure
-# equivalent: pnpm run build:worker  →  vite build + tsc + wrangler deploy --dry-run
+# equivalent: pnpm run build:worker → vite build + tsc + wrangler deploy --dry-run
 ```
 
 ### Raw Output — `bundle:measure`
 
 ```json
 {
-  "measuredAt": "2026-08-17T15:14:07.819Z",
-  "entry": "src/worker-entry.ts",
-  "artifact": "dist-worker/worker-entry.js",
-  "rawKiB": 767.34,
-  "gzipKiB": 158.99,
-  "wranglerTotalUploadKiB": 767.34,
-  "wranglerTotalGzipKiB": 158.99
+ "measuredAt": "2026-08-17T15:14:07.819Z",
+ "entry": "src/worker-entry.ts",
+ "artifact": "dist-worker/worker-entry.js",
+ "rawKiB": 767.34,
+ "gzipKiB": 158.99,
+ "wranglerTotalUploadKiB": 767.34,
+ "wranglerTotalGzipKiB": 158.99
 }
 ```
 
@@ -182,15 +182,15 @@ Ran 4 test suites in 11.79s: 60 tests passed, 0 failed, 0 skipped (60 total test
 
 ```
 ╭------------------------------------------------+-----------------+-------+--------+-------+---------╮
-| src/SliverVineGate.sol:SliverVineGate Contract |                 |       |        |       |         |
+| src/SliverVineGate.sol:SliverVineGate Contract | | | | | |
 +=====================================================================================================+
-| Deployment Cost                                | Deployment Size |       |        |       |         |
+| Deployment Cost | Deployment Size | | | | |
 |------------------------------------------------+-----------------+-------+--------+-------+---------|
-|                                        2090241 |           10216 |       |        |       |         |
+| 2090241 | 10216 | | | | |
 |------------------------------------------------+-----------------+-------+--------+-------+---------|
-| Function Name                                  | Min             | Avg   | Median | Max   | # Calls |
+| Function Name | Min | Avg | Median | Max | # Calls |
 |------------------------------------------------+-----------------+-------+--------+-------+---------|
-| verifyAndConsume                               |           25853 | 29550 |  28043 | 77128 |   17991 |
+| verifyAndConsume | 25853 | 29550 | 28043 | 77128 | 17991 |
 ╰------------------------------------------------+-----------------+-------+--------+-------+---------╯
 ```
 
@@ -204,10 +204,10 @@ Ran 4 test suites in 11.79s: 60 tests passed, 0 failed, 0 skipped (60 total test
 
 ```
 ╭-----------------+------------------+-------------------+--------------------+---------------------╮
-| Contract        | Runtime Size (B) | Initcode Size (B) | Runtime Margin (B) | Initcode Margin (B) |
+| Contract | Runtime Size (B) | Initcode Size (B) | Runtime Margin (B) | Initcode Margin (B) |
 +===================================================================================================+
-| SliverVineGate  | 8,916            | 9,960             | 15,660             | 39,192              |
-| GatedExecutor     | 3,771            | 4,431             | 20,805             | 44,721              |
+| SliverVineGate | 8,916 | 9,960 | 15,660 | 39,192 |
+| GatedExecutor | 3,771 | 4,431 | 20,805 | 44,721 |
 ╰-----------------+------------------+-------------------+--------------------+---------------------╯
 ```
 

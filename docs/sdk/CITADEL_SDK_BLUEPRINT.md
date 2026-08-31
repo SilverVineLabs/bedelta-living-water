@@ -1,9 +1,9 @@
 # `@slivervine/citadel-sdk` — Integration Blueprint
 
-**License:** Apache-2.0 · **Entity:** SilverVine Labs  
-**Package:** `@slivervine/citadel-sdk` (monorepo: [`src/sdk/`](../../src/sdk/))  
-**EIP-712 domain:** `SliverVineCitadel` · **Version:** `1`  
-**Primary execution anchor:** **Arbitrum One (`42161`)** — GMX v2 native gateway + Gate domain SSOT  
+**License:** Apache-2.0 · **Entity:** SilverVine Labs
+**Package:** `@slivervine/citadel-sdk` (monorepo: [`src/sdk/`](../../src/sdk/))
+**EIP-712 domain:** `SliverVineCitadel` · **Version:** `1`
+**Primary execution anchor:** **Arbitrum One (`42161`)** — GMX v2 native gateway + Gate domain SSOT
 **Gate verifyingContract:** `SLIVERVINE_GATE_ADDRESS` ([`src/sdk/constants.ts`](../../src/sdk/constants.ts))
 
 > **Non-inflatable posture:** This SDK performs **stateless pre-execution validation** before UserOp / Session Key signing. Full cryptographic quorum and replay protection are enforced on-chain by `SliverVineGate.verifyAndConsume` — not claimed as complete off-chain ECDSA recovery in this package.
@@ -20,30 +20,30 @@
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────────┐
-│  dApp / AI Agent / Institutional Router                                   │
+│ dApp / AI Agent / Institutional Router │
 └───────────────────────────────┬──────────────────────────────────────────┘
-                                │
-                                ▼
+ │
+ ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
-│  @slivervine/citadel-sdk (Apache-2.0) — PRIMARY ANCHOR: Arbitrum One      │
-│  ├─ verifyAgentIntent()          — soil + session + deadman + armor       │
-│  ├─ evaluateSoilCore()           — Wasm soil_core (p50 ~106μs / <60μs)   │
-│  ├─ guardAgentUserOp()           — Agent-Citadel-Guard (chainId 42161)     │
-│  ├─ assertUnidirectionalBridge() — Robinhood ingress EXAMPLE (→ 42161)     │
-│  ├─ exportRobinhoodAuditSnapshot() — AML cut-off audit cert                │
-│  └─ legacy-risk barrel           — HL Session Key gates (Worker re-export) │
+│ @slivervine/citadel-sdk (Apache-2.0) — PRIMARY ANCHOR: Arbitrum One │
+│ ├─ verifyAgentIntent() — soil + session + deadman + armor │
+│ ├─ evaluateSoilCore() — Wasm soil_core (p50 ~106μs / <60μs) │
+│ ├─ guardAgentUserOp() — Agent-Citadel-Guard (chainId 42161) │
+│ ├─ assertUnidirectionalBridge() — Robinhood ingress EXAMPLE (→ 42161) │
+│ ├─ exportRobinhoodAuditSnapshot() — AML cut-off audit cert │
+│ └─ legacy-risk barrel — HL Session Key gates (Worker re-export) │
 └───────────────────────────────┬──────────────────────────────────────────┘
-                                │ fail-closed deny
-                                ▼
+ │ fail-closed deny
+ ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
-│  Cloudflare Edge Worker (BUSL-1.1)                                        │
-│  checkSoilResistance() · buildGmxV2UnsignedOrderPayload() · sequencer-guard│
+│ Cloudflare Edge Worker (BUSL-1.1) │
+│ checkSoilResistance() · buildGmxV2UnsignedOrderPayload() · sequencer-guard│
 └───────────────────────────────┬──────────────────────────────────────────┘
-                                │ unsigned payload / attestation
-                                ▼
+ │ unsigned payload / attestation
+ ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
-│  SliverVineGate.sol (on-chain, Arbitrum One)                              │
-│  EIP-712 verifyAndConsume · TTL ≤30s · single-use digest                   │
+│ SliverVineGate.sol (on-chain, Arbitrum One) │
+│ EIP-712 verifyAndConsume · TTL ≤30s · single-use digest │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -52,22 +52,22 @@
 Closed-loop three-venue routing with **Arbitrum One as the primary yield base**. Hyperliquid provides the Δ-neutral hedge leg; Robinhood Chain is an **optional permissioned ingress** — never a secondary execution anchor.
 
 ```text
-                    ┌─────────────────────────────────────┐
-                    │  Robinhood Chain (Optional Ingress)  │
-                    │  46630 testnet · 4663 mainnet filter │
-                    │  outbound-only → 42161               │
-                    └──────────────────┬──────────────────┘
-                                       │ Across escort
-                                       ▼
+ ┌─────────────────────────────────────┐
+ │ Robinhood Chain (Optional Ingress) │
+ │ 46630 testnet · 4663 mainnet filter │
+ │ outbound-only → 42161 │
+ └──────────────────┬──────────────────┘
+ │ Across escort
+ ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
-│  Arbitrum One (42161) — PRIMARY YIELD BASE                               │
-│  GMX v2 ETH/USDC GM · EIP-712 Gate · uiFeeReceiver · Citadel pre-sign    │
+│ Arbitrum One (42161) — PRIMARY YIELD BASE │
+│ GMX v2 ETH/USDC GM · EIP-712 Gate · uiFeeReceiver · Citadel pre-sign │
 └───────────────────────────────┬──────────────────────────────────────────┘
-                                │  1× Δ-neutral hedge
-                                ▼
+ │ 1× Δ-neutral hedge
+ ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
-│  Hyperliquid — 1× Short Emergency Liquidity Sponge                       │
-│  Session-key signing · nonce-healed · soil + deadman cross-venue fuse    │
+│ Hyperliquid — 1× Short Emergency Liquidity Sponge │
+│ Session-key signing · nonce-healed · soil + deadman cross-venue fuse │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -231,12 +231,12 @@ SDK gates signing on **Arbitrum One (`42161`)**. GMX unsigned payload constructi
 
 ```ts
 import {
-  verifyAgentIntent,
-  evaluateSoilCore,
-  ensureSoilWasm,
-  ARBITRUM_ONE_CHAIN_ID,
-  EIP712_DOMAIN_NAME,
-  SLIVERVINE_GATE_ADDRESS,
+ verifyAgentIntent,
+ evaluateSoilCore,
+ ensureSoilWasm,
+ ARBITRUM_ONE_CHAIN_ID,
+ EIP712_DOMAIN_NAME,
+ SLIVERVINE_GATE_ADDRESS,
 } from "@slivervine/citadel-sdk";
 
 // Worker (BUSL monorepo internal — not SDK export):
@@ -247,26 +247,26 @@ import {
 ensureSoilWasm();
 const { hlSpot, hlPerp, dydxPerp, depthUsd } = await fetchGmSoilSnapshot();
 const soil = evaluateSoilCore({
-  hlSpot, hlPerp, dydxPerp, depthUsd,
-  orderSizeUsd: 500, accountBalanceUsd: 10_000,
-  maxSlippage: 0.005, minDepthUsd: 50_000,
+ hlSpot, hlPerp, dydxPerp, depthUsd,
+ orderSizeUsd: 500, accountBalanceUsd: 10_000,
+ maxSlippage: 0.005, minDepthUsd: 50_000,
 });
 if (soil.output.tripped) throw new Error("SOIL_TRIPPED");
 
 const intentDigest = "0x…"; // keccak256(unsigned GMX v2 order bytes)
 const verdict = verifyAgentIntent({
-  intentDigest,
-  sessionKey: { agentAddress: "0x…", maxOrderClipUsd: 30, expiresAtMs: Date.now() + 86_400_000 },
-  soil: { symbol: "ETH-PERP", hlSpot, hlPerp, dydxPerp, depthUsd },
-  gasBurst: { estimatedGasCostUsd: 0.12, sponsored: true, chainId: ARBITRUM_ONE_CHAIN_ID },
-  attestation: {
-    digest: intentDigest,
-    expiresAtMs: Date.now() + 30_000,
-    sig: "0x…",
-    verifyingContract: SLIVERVINE_GATE_ADDRESS,
-    domainName: EIP712_DOMAIN_NAME,
-  },
-  preset: "production",
+ intentDigest,
+ sessionKey: { agentAddress: "0x…", maxOrderClipUsd: 30, expiresAtMs: Date.now() + 86_400_000 },
+ soil: { symbol: "ETH-PERP", hlSpot, hlPerp, dydxPerp, depthUsd },
+ gasBurst: { estimatedGasCostUsd: 0.12, sponsored: true, chainId: ARBITRUM_ONE_CHAIN_ID },
+ attestation: {
+ digest: intentDigest,
+ expiresAtMs: Date.now() + 30_000,
+ sig: "0x…",
+ verifyingContract: SLIVERVINE_GATE_ADDRESS,
+ domainName: EIP712_DOMAIN_NAME,
+ },
+ preset: "production",
 });
 if (!verdict.allowedToSign) throw new Error(verdict.reasons.join("|"));
 // → proceed to GMX broadcast on Arbitrum One only after verdict.ok
@@ -278,42 +278,42 @@ Cross-venue soil + Session Key clip + RPC latency armor before HL short-leg sign
 
 ```ts
 import {
-  verifyAgentIntent,
-  guardAgentUserOp,
-  AGENT_DEADMAN_SLIPPAGE_BPS,
-  EIP712_DOMAIN_NAME,
-  SLIVERVINE_GATE_ADDRESS,
+ verifyAgentIntent,
+ guardAgentUserOp,
+ AGENT_DEADMAN_SLIPPAGE_BPS,
+ EIP712_DOMAIN_NAME,
+ SLIVERVINE_GATE_ADDRESS,
 } from "@slivervine/citadel-sdk";
 
 const intentDigest = "0x…"; // HL Session Key order digest (1× short hedge leg)
 const verdict = verifyAgentIntent({
-  intentDigest,
-  sessionKey: { agentAddress: "0x…", maxOrderClipUsd: 30, expiresAtMs: Date.now() + 7 * 86_400_000 },
-  soil: {
-    symbol: "ETH-PERP",
-    hlSpot: 3500,
-    hlPerp: 3501.2,   // cross-venue spread monitored
-    dydxPerp: 3500.5,
-    depthUsd: 500_000,
-    isTestnet: false,
-  },
-  deadman: { maxSlippageBps: AGENT_DEADMAN_SLIPPAGE_BPS, soilResistanceThreshold: 50 },
-  armor: { rpcLatencyMs: 85 }, // fail-closed if > PGATE_MAX_LATENCY_MS (200)
-  attestation: {
-    digest: intentDigest,
-    expiresAtMs: Date.now() + 30_000,
-    sig: "0x…",
-    verifyingContract: SLIVERVINE_GATE_ADDRESS,
-    domainName: EIP712_DOMAIN_NAME,
-  },
-  preset: "production",
+ intentDigest,
+ sessionKey: { agentAddress: "0x…", maxOrderClipUsd: 30, expiresAtMs: Date.now() + 7 * 86_400_000 },
+ soil: {
+ symbol: "ETH-PERP",
+ hlSpot: 3500,
+ hlPerp: 3501.2, // cross-venue spread monitored
+ dydxPerp: 3500.5,
+ depthUsd: 500_000,
+ isTestnet: false,
+ },
+ deadman: { maxSlippageBps: AGENT_DEADMAN_SLIPPAGE_BPS, soilResistanceThreshold: 50 },
+ armor: { rpcLatencyMs: 85 }, // fail-closed if > PGATE_MAX_LATENCY_MS (200)
+ attestation: {
+ digest: intentDigest,
+ expiresAtMs: Date.now() + 30_000,
+ sig: "0x…",
+ verifyingContract: SLIVERVINE_GATE_ADDRESS,
+ domainName: EIP712_DOMAIN_NAME,
+ },
+ preset: "production",
 });
 if (!verdict.allowedToSign) throw new Error(verdict.reasons.join("|"));
 
 // Optional: Agent-Citadel-Guard deadman reject envelope (chainId 42161)
 const guard = await guardAgentUserOp({
-  intent: { maxSlippageBps: 50, soilResistanceThreshold: 50, targetMarket: "ETH-PERP" },
-  soil: { symbol: "ETH-PERP", hlSpot: 3500, hlPerp: 3501.2, dydxPerp: 3500.5, depthUsd: 500_000 },
+ intent: { maxSlippageBps: 50, soilResistanceThreshold: 50, targetMarket: "ETH-PERP" },
+ soil: { symbol: "ETH-PERP", hlSpot: 3500, hlPerp: 3501.2, dydxPerp: 3500.5, depthUsd: 500_000 },
 });
 if (!guard.allowed) throw new Error("DEADMAN_SWITCH_TRIPPED");
 ```
@@ -324,49 +324,49 @@ Legacy-risk barrel (same package) also exports `assertSessionKeyExecutionGates` 
 
 ```ts
 import {
-  assertUnidirectionalBridge,
-  exportRobinhoodAuditSnapshot,
-  quoteRChainYieldToArbitrumGm,
-  AML_INBOUND_TO_ROBINHOOD_BLOCKED,
-  ROBINHOOD_TESTNET_CHAIN_ID,
-  ARBITRUM_ONE_CHAIN_ID,
+ assertUnidirectionalBridge,
+ exportRobinhoodAuditSnapshot,
+ quoteRChainYieldToArbitrumGm,
+ AML_INBOUND_TO_ROBINHOOD_BLOCKED,
+ ROBINHOOD_TESTNET_CHAIN_ID,
+ ARBITRUM_ONE_CHAIN_ID,
 } from "@slivervine/citadel-sdk";
 
 // Outbound escort: Robinhood → Arbitrum One (primary anchor)
 const escort = assertUnidirectionalBridge({
-  sourceChainId: ROBINHOOD_TESTNET_CHAIN_ID, // or 4663 mainnet
-  destChainId: ARBITRUM_ONE_CHAIN_ID,
-  amountUsd: 2_500,
-  wallet: "0x…",
-  initiatedAtMs: Date.now(),
+ sourceChainId: ROBINHOOD_TESTNET_CHAIN_ID, // or 4663 mainnet
+ destChainId: ARBITRUM_ONE_CHAIN_ID,
+ amountUsd: 2_500,
+ wallet: "0x…",
+ initiatedAtMs: Date.now(),
 });
 if (!escort.ok || escort.lostUsd !== 0) throw new Error(escort.reasons.join("|"));
 
 // Inbound reverse path — always blocked
 const inbound = assertUnidirectionalBridge({
-  sourceChainId: ARBITRUM_ONE_CHAIN_ID,
-  destChainId: ROBINHOOD_TESTNET_CHAIN_ID,
-  amountUsd: 10,
-  wallet: "0x…",
-  initiatedAtMs: Date.now(),
+ sourceChainId: ARBITRUM_ONE_CHAIN_ID,
+ destChainId: ROBINHOOD_TESTNET_CHAIN_ID,
+ amountUsd: 10,
+ wallet: "0x…",
+ initiatedAtMs: Date.now(),
 });
 // inbound.ok === false · inbound.capitalLabel === AML_INBOUND_TO_ROBINHOOD_BLOCKED
 
 const quote = quoteRChainYieldToArbitrumGm({
-  wallet: "0x…",
-  symbol: "USDC",
-  assetKind: "idle",
-  amountUsd: 2_500,
-  sourceChainId: ROBINHOOD_TESTNET_CHAIN_ID,
+ wallet: "0x…",
+ symbol: "USDC",
+ assetKind: "idle",
+ amountUsd: 2_500,
+ sourceChainId: ROBINHOOD_TESTNET_CHAIN_ID,
 });
 // quote.destChainId === 42161 · quote.bridgeEscortOk === true
 
 const cert = await exportRobinhoodAuditSnapshot({
-  robinhoodChainId: ROBINHOOD_TESTNET_CHAIN_ID,
-  amountUsd: 2_500,
-  wallet: "0x…",
-  initiatedAtMs: Date.now(),
-  cutoffTimestamp: new Date().toISOString(),
+ robinhoodChainId: ROBINHOOD_TESTNET_CHAIN_ID,
+ amountUsd: 2_500,
+ wallet: "0x…",
+ initiatedAtMs: Date.now(),
+ cutoffTimestamp: new Date().toISOString(),
 });
 // cert.inboundBlocked === true · cert.lostUsd === 0
 ```
@@ -426,12 +426,12 @@ Verified by [`tests/risk-control/margin-buffer.test.ts`](../../tests/risk-contro
 ```bash
 pnpm exec vitest run tests/sdk/citadel-sdk-intent.test.ts
 pnpm exec vitest run tests/sdk/citadel-sdk-bridge-armor.test.ts
-pnpm test -- --run                           # Current Branch Live Expected Output: 174 files | 768 PASS (Locked Minimum Proposal Baseline: 168 | 742)
+pnpm test -- --run # Current Branch Live Expected Output: 175 test files | 773 tests PASS (100% Clean · Exit Code 0)
 pnpm audit:fast
-pnpm build:wasm                              # rebuild pkg/soil_core.wasm
+pnpm build:wasm # rebuild pkg/soil_core.wasm
 ```
 
-**Locked Minimum Proposal Baseline:** `168 files | 742 PASS (100% Clean)` · **Current Branch Live Expected Output:** `174 files | 768 PASS (100% Clean)`
+**Locked Minimum Proposal Baseline:** `175 test files | 773 tests PASS (100% Clean · Exit Code 0)` · **Current Branch Live Expected Output:** `175 test files | 773 tests PASS (100% Clean · Exit Code 0)`
 
 ---
 

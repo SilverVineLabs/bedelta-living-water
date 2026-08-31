@@ -14,10 +14,10 @@ loosen anything without a timelock.
 ## Quick verification
 
 ```bash
-forge test                                      # 60 tests, 0 failures
-forge coverage                                  # 95.51% lines overall
+forge test # 60 tests, 0 failures
+forge coverage # 95.51% lines overall
 FOUNDRY_PROFILE=deep forge test --match-path test/SliverVineGate.fuzz.t.sol
-                                                # 5 properties x 65,535 runs
+ # 5 properties x 65,535 runs
 forge test --gas-report
 ```
 
@@ -45,33 +45,33 @@ Verified with forge 1.7.1 / solc 0.8.28 / optimizer 20,000 runs.
 ## Design decisions worth reading the code for
 
 - **chainId is inside the EIP-712 domain**, so the same CREATE2 address can be deployed to
-  Robinhood Chain (46630) and Arbitrum Sepolia (421614) with no cross-chain replay risk.
-  Proven by `test_CrossChainReplay_Impossible`.
+ Robinhood Chain (46630) and Arbitrum Sepolia (421614) with no cross-chain replay risk.
+ Proven by `test_CrossChainReplay_Impossible`.
 - **Duplicate-signer bypass is unrepresentable**, not merely detected: recovered addresses must be
-  strictly ascending.
+ strictly ascending.
 - **Strict ECDSA**: `v ∈ {27, 28}` with no normalisation, `s ≤ n/2`, `r ≠ 0`. Malleability rejection
-  is tested by actually constructing the flipped signature.
+ is tested by actually constructing the flipped signature.
 - **Authority is deliberately asymmetric**: halt is immediate, every loosening action is timelocked
-  and cancellable. A safety device should be easy to close and hard to open.
+ and cancellable. A safety device should be easy to close and hard to open.
 - **Only `block.timestamp` is used for timing.** On Arbitrum, `block.number` returns an approximate
-  *L1* height; the L2 height requires `ArbSys(0x64).arbBlockNumber()`.
+ *L1* height; the L2 height requires `ArbSys(0x64).arbBlockNumber()`.
 - **`checkAttestation` returns the same error selector** the mutating path would revert with, so the
-  off-chain engine can pre-flight a decision and get an identical reason code.
+ off-chain engine can pre-flight a decision and get an identical reason code.
 - **Digests are marked consumed before the external call** (checks-effects-interactions), on top of
-  the reentrancy lock — two independent defences, both asserted in `test_Reentrancy_Blocked`.
+ the reentrancy lock — two independent defences, both asserted in `test_Reentrancy_Blocked`.
 
 ## Layout
 
 ```
-src/    SliverVineGate.sol, GatedExecutor.sol, interfaces/
-test/   unit (I1-I12) · fuzz (properties) · invariant (handler) · GatedExecutor · helpers/
+src/ SliverVineGate.sol, GatedExecutor.sol, interfaces/
+test/ unit (I1-I12) · fuzz (properties) · invariant (handler) · GatedExecutor · helpers/
 script/ Deploy.s.sol — deterministic dual-chain CREATE2 deployment
 ```
 
 ## Deployment
 
 ```bash
-export PRIVATE_KEY=... GATE_SIGNERS=0x..,0x..,0x..   # ASCENDING order, enforced
+export PRIVATE_KEY=... GATE_SIGNERS=0x..,0x..,0x.. # ASCENDING order, enforced
 export GATE_THRESHOLD=2 GUARDIAN=0x.. GATE_ADMIN=0x.. EXEC_TARGETS=0x.. SALT=0x..
 
 forge script script/Deploy.s.sol:Deploy --rpc-url https://sepolia-rollup.arbitrum.io/rpc --broadcast

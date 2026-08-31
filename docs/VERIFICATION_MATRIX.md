@@ -1,10 +1,10 @@
 # SliverVine Citadel — Verification Matrix (Buildathon / Grant Evaluators)
 
-**Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com`  
-**Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit`  
+**Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com`
+**Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit`
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
 
-> **Locked Minimum Proposal Baseline:** Vitest **168 files | 742 PASS (100% Clean)** · **Current Branch Live Expected Output:** **174 files | 768 PASS (100% Clean)** on `pnpm test -- --run`. Forge **60/60** · Property Fuzz **327,675** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = **5,120** = 5×1,024) · ZeroDev AA **Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7)**.
+> **Vitest SSOT:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run`. Forge **60/60** · Cargo Stylus **5/5** · Property Fuzz **327,675** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = **5,120** = 5×1,024) · ZeroDev AA **Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7)**.
 
 Open this document first. Each tier is CLI-reproducible with **zero mainnet signing dependency** unless explicitly noted.
 
@@ -21,7 +21,7 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 | Command | Proves | Expected |
 |---------|--------|----------|
 | Default `docker run` | 5-step Citadel **`demo:e2e`** dry-run inside container | `[tier0] demo:e2e PASS` |
-| `docker run --rm slivervine-citadel pnpm test` | Full Vitest regression bar (host-free) | **174 files | 768 PASS** *(Locked Minimum Proposal Baseline: 168 \| 742)* |
+| `docker run --rm slivervine-citadel pnpm test` | Full Vitest regression bar (host-free) | **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** |
 | Sidecar (Tier 5) | Telemetry relay · fail-closed `/v1/intent` | [`docker/README.md`](../docker/README.md) |
 
 **Why Tier 0:** Eliminates judge laptop Node version drift, pnpm store corruption, and missing WSL deps — same PASS bar, hermetic container.
@@ -31,21 +31,21 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 ## Quick Start (≈ 3 minutes)
 
 ```bash
-docker build -t slivervine-citadel . && docker run --rm slivervine-citadel   # Tier 0 — zero host deps
+docker build -t slivervine-citadel . && docker run --rm slivervine-citadel # Tier 0 — zero host deps
 pnpm install
-pnpm test                 # Tier 1 — Current Branch Live Expected Output: 174 files | 768 PASS (Locked Minimum Proposal Baseline: 168 | 742)
-pnpm audit:fast           # Tier 2 — fast security scorecard
-pnpm test:zerodev         # Tier 4 — ZeroDev AA dry-run harness
+pnpm test # Tier 1 — Current Branch Live Expected Output: 175 test files | 773 tests PASS (100% Clean · Exit Code 0)
+pnpm audit:fast # Tier 2 — fast security scorecard
+pnpm test:zerodev # Tier 4 — ZeroDev AA dry-run harness
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .provenanceVerified
 ```
 
 Optional deeper tiers:
 
 ```bash
-pnpm audit:security                         # Tier 2 — full 5/0/0 matrix
-cd SliverVineGate && forge test && cd ..     # Tier 3 — Gate + default fuzz (5,120)
-cd SliverVineGate && FOUNDRY_PROFILE=deep forge test --match-path 'test/*.fuzz.t.sol' && cd ..  # 327,675 deep fuzz
-pnpm audit:nightly                          # Tier 2/3 deep — Echidna · Halmos · deep fuzz gate
+pnpm audit:security # Tier 2 — full 5/0/0 matrix
+cd SliverVineGate && forge test && cd .. # Tier 3 — Gate + default fuzz (5,120)
+cd SliverVineGate && FOUNDRY_PROFILE=deep forge test --match-path 'test/*.fuzz.t.sol' && cd .. # 327,675 deep fuzz
+pnpm audit:nightly # Tier 2/3 deep — Echidna · Halmos · deep fuzz gate
 # Tier 5 — see docker/README.md
 ```
 
@@ -56,7 +56,7 @@ pnpm audit:nightly                          # Tier 2/3 deep — Echidna · Halmo
 | Tier | Command | What it proves | Expected |
 |------|---------|----------------|----------|
 | **0** | `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` | Isolated **`demo:e2e`** · zero host Node/pnpm | `[tier0] demo:e2e PASS` |
-| **1** | `pnpm test` | Core engine · Soil · Wasm · Sequencer · Margin Buffer · adapters | **174 files | 768 PASS** *(Locked Minimum Proposal Baseline: 168 \| 742)* |
+| **1** | `pnpm test` | Core engine · Soil · Wasm · Sequencer · Margin Buffer · adapters | **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** |
 | **2** | `pnpm audit:fast` / `pnpm audit:security` | TSC · Vitest security · Solhint · Gitleaks · Slither · Aderyn | Fast PASS · Security **5/0/0** |
 | **3** | `cd SliverVineGate && forge test` | On-chain Gate · default property fuzz (5×1,024) · gas bounds | **60 Passed** · **5,120 fuzz** (default profile) |
 | **4** | `pnpm test:zerodev` | Kernel v3 UserOp draft · session scope · oracle gate (offline) | Dry-run harness **PASS** |
@@ -66,9 +66,9 @@ pnpm audit:nightly                          # Tier 2/3 deep — Echidna · Halmo
 
 ## Tier 1 — Core Engine & Risk Verification
 
-**Command:** `pnpm test`  
-**Definition:** `vitest run --dir . --coverage` (after coverage clean)  
-**SSOT:** **Locked Minimum Proposal Baseline:** 168 files | 742 PASS · **Current Branch Live Expected Output:** 174 files | 768 PASS · `risk-control.ts` 100% coverage
+**Command:** `pnpm test`
+**Definition:** `vitest run --dir . --coverage` (after coverage clean)
+**SSOT:** **Locked Minimum Proposal Baseline:** 175 test files | 773 tests PASS (100% Clean · Exit Code 0) · **Current Branch Live Expected Output:** 175 test files | 773 tests PASS (100% Clean · Exit Code 0) · `risk-control.ts` functions 100% (vitest threshold)
 
 | Domain | Coverage focus | Example paths |
 |--------|----------------|---------------|
@@ -137,7 +137,7 @@ pnpm audit:nightly
 
 ## Tier 4 — ZeroDev AA Dry-Run
 
-**Command:** `pnpm test:zerodev`  
+**Command:** `pnpm test:zerodev`
 **Definition:** `vitest run tests/adapters/zerodev-aa-dryrun-harness.test.ts`
 
 | Assertion | Status |
@@ -180,7 +180,7 @@ Automated dependency audit (2026-08-24): **no TS/JS runtime import** of `contrac
 | `contracts/SliverVineRiskOracle.sol` | `src/services/aa-adapter/risk-oracle.ts` → `SLIVERVINE_RISK_ORACLE_ABI` | `risk-oracle-gate.ts` · viem `readContract` when `SLIVERVINE_RISK_ORACLE_ADDRESS` set |
 | `contracts/IngressSafetySwitch.sol` | `risk-oracle.ts` → `INGRESS_SAFETY_SWITCH_ABI` | `risk-oracle-adapter.ts` · `evaluateComplianceAdapter()` (fail-closed logic) |
 
-**Static analysis:** Solhint / Slither scan repo-wide `*.sol` (includes `contracts/`).  
+**Static analysis:** Solhint / Slither scan repo-wide `*.sol` (includes `contracts/`).
 **Verdict:** `contracts/` is **not** a safe delete — it is the canonical Solidity spec for Robinhood ingress; TS adapters intentionally mirror ABIs (no Forge artifact import at Edge).
 
 ---
@@ -216,4 +216,4 @@ Automated dependency audit (2026-08-24): **no TS/JS runtime import** of `contrac
 
 ---
 
-*SilverVine Labs · BUSL-1.1 · Verification Matrix · Locked Minimum Proposal Baseline: 168 \| 742 · Current Branch Live Expected Output: 174 \| 768*
+*SilverVine Labs · BUSL-1.1 · Verification Matrix · 175 test files | 773 tests PASS (100% Clean · Exit Code 0)*
