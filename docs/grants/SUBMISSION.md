@@ -70,6 +70,7 @@ SilverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 ### 5. Dune Analytics
 
 * **Live Dashboard:** [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)
+* **Heartbeat (Dune V2 / Trino):** `arbitrum.blocks` liveness + Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` — see Query 0 in [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md).
 * **Integration**: [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) · Live `/api/grant-audit` `duneTelemetry` JSON.
 * **On-chain ingest:** Dune engine actively ingests **decoded events** from Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` (`IntentAttested` · `RiskTripBlocked`).
 * **Mechanism**: Three production SQL panels — Toxic Flow Blocked · Observatory Paradox Bypasses · PT Expiry × GMX Margin Health — reconciled against `duneTelemetry.responseRef` sha256 provenance.
@@ -173,7 +174,7 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualL
 | Document | Purpose |
 |----------|---------|
 | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | R01–R20 Defense Matrix · latency benchmarks |
-| [`../telemetry/DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | 3 production SQL panels |
+| [`../telemetry/DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | V2 Trino heartbeat + 3 production SQL panels · [live dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 | [`arbitrum/ARBITRUM_ONE_PAGER.md`](./arbitrum/ARBITRUM_ONE_PAGER.md) | One-pager |
 | [`arbitrum/GRANT_PROPOSAL.md`](./arbitrum/GRANT_PROPOSAL.md) | Scope & roadmap |
 | [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md) | GMX builder economics |

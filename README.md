@@ -19,7 +19,7 @@
 **Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal & landing page
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) · **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
-**Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (**Apache-2.0** · EIP-712 domain `SliverVineCitadel`) · **Architect:** qum0x (20+ Year Enterprise Web & Systems Architect) — All claims verifiable via CLI (`pnpm test`) and live JSON telemetry (`/api/grant-audit`).
+**Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (**Apache-2.0** · EIP-712 domain `SliverVineCitadel`) · **Architect:** qum0x (20+ Year Enterprise Web & Systems Architect) — All claims verifiable via CLI (`pnpm test`), live JSON telemetry (`/api/grant-audit`), and the [Dune Citadel dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry).
 
 **Core Product (center of gravity):** **Sub-ms Pre-Execution Risk Gateway** protecting a **Delta-Neutral GM Yield Engine on Arbitrum One** — GMX v2 **ETH/USDC** GM pool + Hyperliquid **1× short hedge**. **CaaS monetization:** **10 bps GMX Builder Fee** + **25% GMX Referral Rebate** — venue-native ExchangeRouter parameters; zero additional overhead on v0.9 execution safety. **Architecture:** **106µs Physical Cerebellum** for **ERC-7579 AI Agents** — Wasm/Stylus pre-execution hook before LLM-planned orders reach mempool.
 
@@ -145,6 +145,9 @@ pnpm exec vitest run tests/services/hl-5-trade-provenance.test.ts
 
 # 6. Robinhood Chain (46630) → Arbitrum unidirectional Across bridge edge cases
 pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
+
+# 7. Dune V2 heartbeat dashboard (live Trino query)
+# https://dune.com/silvervinelabs/silvervine-citadel-telemetry
 ```
 
 ---

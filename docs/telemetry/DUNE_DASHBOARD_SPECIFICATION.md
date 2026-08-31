@@ -23,11 +23,38 @@
 
 | Panel | Metric | SSOT Module |
 |-------|--------|-------------|
+| **Heartbeat (V2 Trino)** | Arbitrum block liveness · Gate `ACTIVE_MONITORING` | `arbitrum.blocks` · Sepolia Gate |
 | **Toxic Flow Blocked** | Sum of blocked notional USD (`FAIL_CLOSED_BLOCK`) | `RiskTripBlocked` · `evaluatePendleGmxCrossGuard` |
 | **Observatory Paradox Bypasses** | Count of `EMERGENCY_DELEVERAGE_ALLOWED` (`close`/`reduce`) | `IntentAttested` action=`2` |
 | **PT Expiry × GMX Margin Health** | Real-time shadow margin / maintenance ratio | `duneTelemetry.marginHealthRatio` |
 
 **Gate (Arbitrum Sepolia):** `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`
+
+**SQL dialect:** Production heartbeat uses **Dune V2 (Trino)**. Panels 1–3 below reference custom spell tables (`dune.silvervinelabs.*`) for grant-audit reconciliation.
+
+---
+
+## Query 0 — Telemetry Heartbeat & Active Risk Monitor (Dune V2 / Trino)
+
+Live dashboard query — verifies Arbitrum indexer liveness and pins the Sepolia Gate contract under active monitoring.
+
+```sql
+-- SilverVine Citadel: Telemetry Heartbeat & Active Risk Monitor
+-- Contract: 0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1 (Arbitrum Sepolia)
+
+SELECT
+    number AS block_number,
+    time AS block_time,
+    '0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1' AS gate_contract,
+    'ACTIVE_MONITORING' AS status
+FROM
+    arbitrum.blocks
+ORDER BY
+    time DESC
+LIMIT 10;
+```
+
+**Dashboard:** [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)
 
 ---
 

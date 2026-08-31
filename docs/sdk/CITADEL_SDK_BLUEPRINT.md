@@ -417,7 +417,7 @@ Verified by [`tests/risk-control/margin-buffer.test.ts`](../../tests/risk-contro
 
 **Pendle risk guard:** [`pendle-pt-expiry-guard.ts`](../../src/adapters/pendle/pendle-pt-expiry-guard.ts) · `evaluatePendlePtExpiryRisk()` — fail-closed when PT maturity **&lt; 7 days** AND yield jitter **&gt; 200 bps**.
 
-**Dune telemetry:** [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md).
+**Dune telemetry:** [Live dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) (V2 Trino heartbeat + reconciliation panels).
 
 ---
 

@@ -8,7 +8,7 @@
 | **Branch baseline** | `v1.0_push_BDLW` |
 | **Entity** | SilverVine Labs · BeΔ Living Water (BDLW) |
 | **Baseline** | Vitest **175 test files \| 773 tests PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Wasm **p50 ~106 µs** · chaos **255/255** |
-| **Live proof** | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` |
+| **Live proof** | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 | **Related SSOT** | [`VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) · [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 
 > **Pitch posture:** BDLW is **institutional pre-execution infrastructure** — not a retail yield app. Every claim below maps to CLI-verifiable code anchors.
