@@ -1,3 +1,5 @@
+import { resolvePendlePtMarketState } from '../adapters/pendle/pendle-pt-registry';
+
 export interface PTMarketState {
   expiry: number; // Unix timestamp in seconds
   impliedYield: number; // e.g. 0.05 (5%)
@@ -21,6 +23,7 @@ export interface ShadowMarginResult {
   dynamicLtv: number;
   action: 'PASS_GREENLIGHT' | 'FAIL_CLOSED_BLOCK' | 'EMERGENCY_DELEVERAGE_ALLOWED';
   reason?: string;
+  registrySymbol?: string;
 }
 
 export function evaluatePendleGmxCrossGuard(
@@ -95,4 +98,27 @@ export function evaluatePendleGmxCrossGuard(
     dynamicLtv,
     action: 'PASS_GREENLIGHT',
   };
+}
+
+/** Resolve PT parameters from Arbitrum One registry, then run cross-guard. */
+export function evaluatePendleGmxCrossGuardFromRegistry(
+  marketKeyOrAddress: string,
+  gmxPos: GMXPositionState,
+  assetUsdPrice?: number,
+  ptOverrides: Partial<PTMarketState> = {},
+): ShadowMarginResult {
+  const resolved = resolvePendlePtMarketState(marketKeyOrAddress, ptOverrides);
+  if (!resolved) {
+    return {
+      passed: false,
+      effectiveScore: 100,
+      shadowMarginUsd: 0,
+      dynamicLtv: 999,
+      action: 'FAIL_CLOSED_BLOCK',
+      reason: `FAIL_CLOSED: Unknown Pendle PT market ${marketKeyOrAddress}`,
+    };
+  }
+  const px = assetUsdPrice ?? resolved.entry.underlyingAssetUsdRef;
+  const result = evaluatePendleGmxCrossGuard(resolved.market, gmxPos, px);
+  return { ...result, registrySymbol: resolved.entry.symbol };
 }

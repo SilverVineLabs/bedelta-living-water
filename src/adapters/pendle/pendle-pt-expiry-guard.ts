@@ -6,6 +6,11 @@
  * Prevents wrapping unsettled GMX async GM into PT without soil-aligned expiry checks.
  */
 
+import {
+  logPendlePtRegistryVerification,
+  resolvePendlePtRegistryEntry,
+} from "./pendle-pt-registry";
+
 export const PENDLE_PT_MIN_DAYS_TO_MATURITY = 7 as const;
 export const PENDLE_IMPLICIT_YIELD_JITTER_FAIL_BPS = 200 as const;
 export const MS_PER_DAY = 86_400_000 as const;
@@ -18,6 +23,7 @@ export interface PendlePtExpiryRiskVerdict {
   daysToMaturity: number;
   impliedYieldJitterBps: number;
   reasons: string[];
+  registrySymbol?: string;
 }
 
 function toMillis(timestamp: number): number {
@@ -47,4 +53,24 @@ export function evaluatePendlePtExpiryRisk(
     impliedYieldJitterBps,
     reasons,
   };
+}
+
+/** Resolve PT maturity from Arbitrum One registry, then run expiry guard. */
+export function evaluatePendlePtExpiryRiskFromRegistry(
+  marketKeyOrAddress: string,
+  currentYieldBps?: number,
+  nowMs: number = Date.now(),
+  maturityOverrideSec?: number,
+): PendlePtExpiryRiskVerdict | null {
+  const entry = resolvePendlePtRegistryEntry(marketKeyOrAddress);
+  if (!entry) return null;
+  logPendlePtRegistryVerification(entry);
+  const yieldBps =
+    currentYieldBps ??
+    Math.round(
+      Math.abs(entry.historicalYield24h - entry.impliedYield) * 10_000,
+    );
+  const maturity = maturityOverrideSec ?? entry.expirySec;
+  const verdict = evaluatePendlePtExpiryRisk(maturity, yieldBps, nowMs);
+  return { ...verdict, registrySymbol: entry.symbol };
 }

@@ -56,8 +56,11 @@ SilverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 
 ### 3. Pendle Finance
 
-* **Integration**: `src/guards/pendle-gmx-cross-guard.ts` & `src/adapters/pendle/pendle-pt-expiry-guard.ts`.
-* **Mechanism**: Monitors Pendle PT markets approaching maturity boundaries (&lt;7 days) and yield jitter (&gt;200 bps). Integrates dynamic fee curve decay and time-dependent AMM convexity into the off-chain Reflector.
+* **Integration**: [`pendle-pt-registry.ts`](../../src/adapters/pendle/pendle-pt-registry.ts) · `evaluatePendleGmxCrossGuardFromRegistry` · `evaluatePendlePtExpiryRiskFromRegistry`.
+* **Arbitrum One PT Markets (Registry SSOT)**:
+  * **PT-eETH:** `0x8B330d3A50a624f1fE1744d037048BdBc9664E5D`
+  * **PT-USDC:** `0x156291C6e10E8a1B9f95475A9C0c5E3eCe1d1e44`
+* **Mechanism**: Resolves real Pendle PT market parameters from registry, then monitors maturity boundaries (&lt;7 days) and yield jitter (&gt;200 bps). Integrates dynamic fee curve decay and Shadow Margin cross-guard with Observatory Paradox fix (`close`/`reduce` −40 score discount).
 
 ### 4. GMX
 
@@ -66,8 +69,10 @@ SilverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 
 ### 5. Dune Analytics
 
-* **Integration**: [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) & Live `/api/grant-audit` JSON Telemetry.
-* **Mechanism**: Grant-audit telemetry surfaces HL 5-TX TCA provenance (`src/data/verified-5tx-lib/verified-5tx-provenance.ts`) and soil intercept logs via `/api/grant-audit`. Includes 3 production SQL specifications tracking protected TVL, blocked toxic intents, and emergency de-leveraging routes.
+* **Live Dashboard:** [https://dune.com/silvervine_labs/silvervine-citadel-telemetry](https://dune.com/silvervine_labs/silvervine-citadel-telemetry)
+* **Integration**: [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) · Live `/api/grant-audit` `duneTelemetry` JSON.
+* **On-chain ingest:** Dune engine actively ingests **decoded events** from Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` (`IntentAttested` · `RiskTripBlocked`).
+* **Mechanism**: Three production SQL panels — Toxic Flow Blocked · Observatory Paradox Bypasses · PT Expiry × GMX Margin Health — reconciled against `duneTelemetry.responseRef` sha256 provenance.
 
 ### Execution Speed & Protocol-Agnostic Resilience (HL Delta Pool)
 
@@ -132,7 +137,7 @@ SilverVine rejects unrealistic B2B sales models (e.g. charging DAOs $8k/mo upfro
 | **M-CLI** | Vitest **175/175 files \| 773/773 PASS (100% Clean · Exit Code 0)** | All | ✅ Delivered |
 | **M-RH-Demo** | `46630`/`4663` → `42161` outbound escort OK · inbound AML blocked · `lostUsd ≡ 0` | Robinhood Chain | ✅ Code-verified · ⏳ video |
 | **M-GMX-Fee** | Unsigned GMX v2 payload injects **10 bps** `uiFeeReceiver` | GMX | ✅ Injected · ⏳ `claimUiFees` |
-| **M-Dune** | Publish Dune dashboard per [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Dune | ⏳ Spec ready · dashboard pending |
+| **M-Dune** | Publish Dune dashboard per [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Dune | ✅ [Live dashboard](https://dune.com/silvervine_labs/silvervine-citadel-telemetry) |
 | **M6-Mainnet** | Arbitrum One limited-capital deployment · institutional AA on Kernel v3 | Arbitrum · Grant | ⏳ Post-grant |
 
 ---
