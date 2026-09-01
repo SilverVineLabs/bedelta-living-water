@@ -1,6 +1,7 @@
 # GMX Builders Program — Application Pack
 
-**Project:** SliverVine Protocol — GMX v2 GM Pool Pre-Execution Gateway
+**Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
+**Project:** SliverVine Protocol — Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum (GMX v2 GM Pool Gateway)
 **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com`
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com)
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)

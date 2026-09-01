@@ -1,4 +1,4 @@
-# 🛡️ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
+# SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
 
 [![Vitest](https://img.shields.io/badge/Vitest-773%20PASS%20%28175%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![Stylus Coprocessor](https://img.shields.io/badge/Stylus-5%2F5%20PASS-blue?logo=rust)](./contracts/stylus-probe/)
@@ -15,6 +15,8 @@
 > **⚡ Interceptor Moat:** Deciding transaction execution safety at **p50 ~106 μs** BEFORE MEV bots or Sequencer mempools ever see it.
 >
 > *Sub-ms End-to-End Shield Path (Pure-Math Kernel: 200 ns / 0.0002 ms) · < 1.0ms SLO Session Key verification · Primary venue: **Arbitrum One** GMX v2 ETH/USDC GM + Hyperliquid 1× short (`checkSoilResistance()`).*
+
+**Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
 
 **Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal & landing page
@@ -76,7 +78,7 @@ For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API 
 | **Zero Protocol-Level Lock-Up** | Zero protocol-level lock-up (100% non-custodial); redemption speed is subject only to GMX v2's native 3–5 min async Keeper settlement. Optional ingress AML firewall (e.g. Robinhood **`4663` inbound block**). |
 | **V1.0 Roadmap** | **Citadel-as-a-Service (CaaS)** — productize [`@slivervine/citadel-sdk`](./src/sdk/README.md) into an open sub-ms pre-execution risk layer for all Arbitrum dApps & AI Agent frameworks · **Hedge Leg Depth Guard** — dedicated Hyperliquid L2 orderbook depth sensing prior to hedge execution (zero-market-impact 1× short even during flash-liquidity drawdowns) · **✅ Config-Driven GM Markets (ETH/USDC primary · BTC/USDC active registry)** · optional **USDG Robinhood Chain Treasury routing** (config-driven; no Wasm rewrite). |
 
-**Standards & Infrastructure:** Built on **[EIP-712](https://eips.ethereum.org/EIPS/eip-712)** attestation · **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) / [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** modular session keys (ZeroDev Kernel v3) · **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** base-fee sensing · **ArbOS 61** · Wasm soil core · optional permissioned ingress (e.g. Robinhood Chain) — full wiki: [`TECHNICAL_SPECIFICATION.md` §4 Standard Compliance](./docs/architecture/TECHNICAL_SPECIFICATION.md#4-standard-compliance--erceip-wiki).
+**Standards & Infrastructure:** Built on **[EIP-712](https://eips.ethereum.org/EIPS/eip-712)** attestation · **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) / [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** modular session keys (ZeroDev Kernel v3) · aligned with the emerging **ERC-8196 AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol) · **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** base-fee sensing · **ArbOS 61** · Wasm soil core · optional permissioned ingress (e.g. Robinhood Chain) — full wiki: [`TECHNICAL_SPECIFICATION.md` §4 Standard Compliance](./docs/architecture/TECHNICAL_SPECIFICATION.md#4-standard-compliance--erceip-wiki).
 
 ## ⚔️ Competitive Matrix — Pre-Execution vs. Post-Execution Risk
 

@@ -1,5 +1,6 @@
-# Dune Analytics Dashboard Specification — SilverVine Citadel
+# Dune Analytics Dashboard Specification — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
+**Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 **Entity:** SilverVine Labs · **Live SSOT:** `GET /api/grant-audit`
 **Audience:** Buildathon evaluators · Dune sponsor diligence · institutional allocators
 **Reconciliation:** On-chain `SliverVineGate` events + grant-audit `duneTelemetry` KV snapshots.

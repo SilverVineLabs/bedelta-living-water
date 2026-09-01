@@ -1,5 +1,6 @@
 # Principal Audit Report — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
+**Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 **Entity:** SilverVine Labs · **Protocol:** SliverVine
 **Audience:** Principal / security reviewers · GMX Builders · Arbitrum diligence
 **Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)

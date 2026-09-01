@@ -1,4 +1,4 @@
-# Robinhood Chain Safety Gate Audit — SliverVine Citadel Three Pillars
+# Robinhood Chain Safety Gate Audit — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) Three Pillars
 
 | Field | Value |
 |-------|-------|

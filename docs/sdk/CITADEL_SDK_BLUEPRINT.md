@@ -1,5 +1,6 @@
 # `@slivervine/citadel-sdk` — Integration Blueprint
 
+**Protocol:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 **License:** Apache-2.0 · **Entity:** SilverVine Labs
 **Package:** `@slivervine/citadel-sdk` (monorepo: [`src/sdk/`](../../src/sdk/))
 **EIP-712 domain:** `SliverVineCitadel` · **Version:** `1`

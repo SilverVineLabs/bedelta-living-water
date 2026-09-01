@@ -1,4 +1,4 @@
-# Security Policy — SliverVine Protocol (bedelta-living-water)
+# Security Policy — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
 **Entity:** SilverVine Labs · **Contact:** `security@silvervinelabs.com`
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal

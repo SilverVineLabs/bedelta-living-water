@@ -1,5 +1,6 @@
 # `@slivervine/citadel-sdk`
 
+**Protocol:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 **License:** Apache-2.0 · see [`LICENSE`](./LICENSE) · **Entity:** SilverVine Labs · **Protocol brand:** SliverVine
 **EIP-712 domain:** `SliverVineCitadel` · **Gate anchor:** `SLIVERVINE_GATE_ADDRESS`
 

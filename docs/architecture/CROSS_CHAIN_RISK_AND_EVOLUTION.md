@@ -1,4 +1,4 @@
-# BDLW Architecture Evolution & Risk Mitigation Framework
+# SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — Architecture Evolution & Risk Mitigation Framework
 
 > **Document Status:** Official SSOT for Arbitrum Foundation & ZeroDev Grant Committees
 > **Version:** v1.0 → v2.0 Roadmap Alignment
@@ -6,6 +6,7 @@
 > **Core Principle:** Honest Accounting, Physical Invariants (`lostUsd ≡ 0`), and Venue-Agnostic Pre-Execution Citadel Protection.
 > **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md)
 
+**Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 **Entity:** SilverVine Labs · **Protocol:** SliverVine / BeΔ Living Water (BDLW)
 **Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 

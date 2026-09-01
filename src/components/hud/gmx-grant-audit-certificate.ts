@@ -8,7 +8,7 @@ import { resolveGrantAuditVenueView } from "./citadel-grant-audit-metrics";
 export const GMX_GRANT_AUDIT_CERT_FILENAME = "GMX_v2_Grant_Audit_Certificate.json";
 
 export interface GmxGrantAuditCertificate {
-  protocol: "SliverVine Protocol (v0.8 Santenmoku)";
+  protocol: "SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)";
   gmxGmPoolTvl: string;
   aggregateHedgedTvl: string;
   status: "Zero-Δ Dynamic Shield Active";
@@ -31,7 +31,7 @@ export function buildGmxGrantAuditCertificate(
   const fmt = (n: number) =>
     n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const unsigned = {
-    protocol: "SliverVine Protocol (v0.8 Santenmoku)" as const,
+    protocol: "SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)" as const,
     gmxGmPoolTvl: `$${fmt(view.gmPoolUsd)} USDC`,
     aggregateHedgedTvl: `$${fmt(view.combinedTvlUsd)} USDC`,
     status: "Zero-Δ Dynamic Shield Active" as const,

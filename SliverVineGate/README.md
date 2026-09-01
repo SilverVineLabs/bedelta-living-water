@@ -1,6 +1,6 @@
-# SliverVine Citadel Gate
+# SliverVine Citadel Gate — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
-On-chain enforcement layer for the BeΔLivingWater / SliverVine pre-execution risk engine.
+On-chain enforcement layer for the BeDelta Living Water / SliverVine pre-execution risk engine (Santenmoku internal engine).
 
 The off-chain engine already decides whether an order is safe. This repo makes that decision
 **binding**: if the engine did not sign an ALLOW for *this exact payload*, from *this exact

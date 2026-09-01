@@ -1,5 +1,6 @@
-# Arbitrum Grant Proposal — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
+# Arbitrum Grant Proposal — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
 
+**Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com`
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com)
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)

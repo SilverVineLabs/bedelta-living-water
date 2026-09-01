@@ -1,4 +1,4 @@
-# BDLW Grant Pitch & 35-Second Demo Video Storyboard
+# SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — Grant Pitch & 35-Second Demo Video Storyboard
 
 | Field | Value |
 |-------|-------|

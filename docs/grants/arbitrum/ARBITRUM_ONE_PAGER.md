@@ -1,5 +1,7 @@
-# SliverVine Arbitrum Citadel — Technical One-Pager
+# SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
 
+**Document:** Arbitrum Technical One-Pager
+**Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 **GMX v2 Pre-Execution Security Gateway & Underweight Router on Arbitrum One.**
 
 

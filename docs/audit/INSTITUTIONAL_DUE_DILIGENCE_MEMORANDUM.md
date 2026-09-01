@@ -1,4 +1,4 @@
-# Institutional Due Diligence & Risk Compliance Memorandum (DDIP)
+# Institutional Due Diligence & Risk Compliance Memorandum (DDIP) — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
 | Field | Value |
 |-------|-------|

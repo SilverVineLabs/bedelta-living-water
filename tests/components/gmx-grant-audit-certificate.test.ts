@@ -9,7 +9,7 @@ const mockHl = { totalUsd: 499.96 } as HlTelemetryMetrics;
 describe("gmx-grant-audit-certificate", () => {
   it("builds SHA-256 GMX grant audit certificate payload", () => {
     const cert = buildGmxGrantAuditCertificate(mockMetrics, mockHl);
-    expect(cert.protocol).toBe("SliverVine Protocol (v0.8 Santenmoku)");
+    expect(cert.protocol).toBe("SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)");
     expect(cert.gmxGmPoolTvl).toBe("$802.43 USDC");
     expect(cert.aggregateHedgedTvl).toBe("$1,302.39 USDC");
     expect(cert.status).toBe("Zero-Δ Dynamic Shield Active");

@@ -1,4 +1,4 @@
-# SliverVine Citadel Telemetry Sidecar — User Guide & Testlist
+# SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — Citadel Telemetry Sidecar
 
 > **License:** BUSL-1.1 (Business Source License 1.1) · Copyright (c) 2026 SilverVine Labs
 

@@ -1,4 +1,4 @@
-# ZeroDev EIP-7702 vs. BDLW Institutional Pre-Execution Risk Substrate
+# ZeroDev EIP-7702 vs. SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) Institutional Pre-Execution Risk Substrate
 
 | Field | Value |
 |-------|-------|
@@ -6,7 +6,7 @@
 | **Version** | **v1.0.0** |
 | **Classification** | Grant / Institutional Allocator · AA Architecture Benchmark |
 | **Branch baseline** | `v1.0_push_BDLW` |
-| **Entity** | SilverVine Labs · BeΔ Living Water (BDLW) |
+| **Entity** | SilverVine Labs · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
 | **Baseline** | **Vitest SSOT:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
 | **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
