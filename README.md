@@ -18,25 +18,19 @@
 
 **Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
 
-**Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`
-**Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal & landing page
-**Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) · **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
-**Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (**Apache-2.0** · EIP-712 domain `SliverVineCitadel`) · **Architect:** qum0x (20+ Year Enterprise Web & Systems Architect) — All claims verifiable via CLI (`pnpm test`), live JSON telemetry (`/api/grant-audit`), and the [Dune Citadel dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry).
+**Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`  
+**Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`  
+**Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (Apache-2.0) · **Judge entry:** [Verification Matrix](./docs/VERIFICATION_MATRIX.md) · [Technical Specification](./docs/architecture/TECHNICAL_SPECIFICATION.md)
 
-**Core Product (center of gravity):** **Sub-ms Pre-Execution Risk Gateway** protecting a **Delta-Neutral GM Yield Engine on Arbitrum One** — GMX v2 **ETH/USDC** GM pool + Hyperliquid **1× short hedge**. **CaaS monetization:** **10 bps GMX Builder Fee** + **25% GMX Referral Rebate** — venue-native ExchangeRouter parameters; zero additional overhead on v1.0 execution safety. **Architecture:** **106µs Physical Cerebellum** for **ERC-7579 AI Agents** — Wasm/Stylus pre-execution hook before LLM-planned orders reach mempool.
+**Core product:** Sub-ms Pre-Execution Risk Gateway · Delta-Neutral GM Yield Engine on Arbitrum One (GMX v2 ETH/USDC GM + Hyperliquid 1× short) — [§1 Product Identity](./docs/architecture/TECHNICAL_SPECIFICATION.md#1-core-product-identity) · [Three Pillars pipeline](./docs/architecture/TECHNICAL_SPECIFICATION.md#0-unified-institutional-pre-execution-pipeline).
 
-**Primary Venue:** Arbitrum One (`42161`) · **Hedge Venue:** Hyperliquid · **Technical Moat:** Interceptor Moat — Pillar 3 Sub-ms Wasm Armor (`checkSoilResistance()`, p50 ~106 μs) before any broadcast.
+**Primary venue:** Arbitrum One (`42161`) · **Hedge:** Hyperliquid · **Moat:** Pillar 3 Wasm Shield `checkSoilResistance()` p50 ~106 μs — [§3 Defense Matrix](./docs/architecture/TECHNICAL_SPECIFICATION.md#3-cross-venue-risk-engine--defense-matrix-r01r20).
 
-> *While single components like `checkSoilResistance()` formulas are kept standard and open for seamless `@slivervine/citadel-sdk` adoption across Arbitrum, our core moat lies in the production integration complexity—stitching Rust `#![no_std]` Wasm, Edge Worker execution, and EIP-712 Gate into a sub-ms, fail-closed system.*
+**Ingress (optional):** Robinhood Chain `46630`/`4663` → Arbitrum — reference adapter only; [Pillar 2 audit](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md).
 
-**Supported ingress example:** Robinhood Chain may act as a **permissioned institutional ingress source** (`46630`/`4663` → Arbitrum); it is **not** the product identity.
+**Triangle loop:** [Technical Specification §2](./docs/architecture/TECHNICAL_SPECIFICATION.md#2-triangle-liquidity-loop--segregated-tranches) · **Arbitrum execution premium:** +15–30 bps vs bridged routes *(design estimate)*.
 
-**Triangle Liquidity Loop:** `Arbitrum One (GMX GM Yield Base — PRIMARY)` ↔ `Hyperliquid (1× Short Hedge)` ← optional permissioned ingress (e.g. Robinhood Chain) — see [`docs/architecture/TECHNICAL_SPECIFICATION.md`](./docs/architecture/TECHNICAL_SPECIFICATION.md).
-
-**Arbitrum Native Execution Premium:** Direct Arbitrum One LPs earn an estimated **+15 ~ 30 bps** vs bridged / multi-hop routes *(design estimate — not a locked test assertion)*.
-
-> **SSOT Realignment (2026-08-31):** v1.0 Delivered (Sepolia verified) · mainnet → M6 · deep fuzz 327,675 requires `audit:nightly` / `FOUNDRY_PROFILE=deep` · **Tier-0 Docker** = root [`Dockerfile`](./Dockerfile) · see [`docs/README.md`](./docs/README.md).
-> **Vitest SSOT:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run`.
+> **SSOT lock (Buildathon):** v1.0 Delivered (Sepolia verified) · Vitest **175 test files | 773 tests PASS** · deep fuzz **327,675** via `pnpm audit:nightly` · Tier-0 Docker [`Dockerfile`](./Dockerfile) · docs hub [`docs/README.md`](./docs/README.md).
 
 ---
 
@@ -76,9 +70,25 @@ For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API 
 |---------|--------|
 | **v1.0 Delivered (Sepolia verified)** | **Arbitrum One** GMX v2 **ETH/USDC GM Pool** (primary) + Hyperliquid **1× short** — eliminates oracle de-peg / FX slippage on the core yield leg. Mainnet deployment ties to **M6 Grant distribution**. |
 | **Zero Protocol-Level Lock-Up** | Zero protocol-level lock-up (100% non-custodial); redemption speed is subject only to GMX v2's native 3–5 min async Keeper settlement. Optional ingress AML firewall (e.g. Robinhood **`4663` inbound block**). |
-| **V1.0 Roadmap** | **Citadel-as-a-Service (CaaS)** — productize [`@slivervine/citadel-sdk`](./src/sdk/README.md) into an open sub-ms pre-execution risk layer for all Arbitrum dApps & AI Agent frameworks · **Hedge Leg Depth Guard** — dedicated Hyperliquid L2 orderbook depth sensing prior to hedge execution (zero-market-impact 1× short even during flash-liquidity drawdowns) · **✅ Config-Driven GM Markets (ETH/USDC primary · BTC/USDC active registry)** · optional **USDG Robinhood Chain Treasury routing** (config-driven; no Wasm rewrite). |
+| **V1.0 Roadmap** | **Citadel-as-a-Service (CaaS)** — [`@slivervine/citadel-sdk`](./src/sdk/README.md) · **Hedge Leg Depth Guard** — [Technical Specification §0.2](./docs/architecture/TECHNICAL_SPECIFICATION.md#02-v10-delivered-scope-vs-post-grant-roadmap) · **✅ Config-Driven GM Markets** · optional **USDG Robinhood Treasury routing** |
 
-**Standards & Infrastructure:** Built on **[EIP-712](https://eips.ethereum.org/EIPS/eip-712)** attestation · **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) / [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** modular session keys (ZeroDev Kernel v3) · aligned with the emerging **ERC-8196 AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol) · **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** base-fee sensing · **ArbOS 61** · Wasm soil core · optional permissioned ingress (e.g. Robinhood Chain) — full wiki: [`TECHNICAL_SPECIFICATION.md` §4 Standard Compliance](./docs/architecture/TECHNICAL_SPECIFICATION.md#4-standard-compliance--erceip-wiki).
+**Standards & Infrastructure:** [EIP-712](https://eips.ethereum.org/EIPS/eip-712) · [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) / [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579) · ERC-8196 Draft (Virtuals Protocol) · [§4 ERC/EIP Wiki](./docs/architecture/TECHNICAL_SPECIFICATION.md#4-standard-compliance--erceip-wiki).
+
+### 📐 Core Risk Invariants (Judge Quick Reference)
+
+$$
+\Delta_{\text{net}} = \Delta_{\text{GMX\_GM}} + \Delta_{\text{HL\_Short}} \equiv 0
+$$
+
+$$
+\text{lostUsd} \equiv 0 \quad \forall \, \text{InFlightBridgeCapital}
+$$
+
+$$
+t_{\text{reflector\_p50}} \sim 106\,\mu\text{s} \ll t_{\text{mempool\_broadcast}}
+$$
+
+Derivations & R01–R20 bounds: [Technical Specification §3.1](./docs/architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats) · [Cross-Chain Risk §2.1](./docs/architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md#21-honest-bridge-accounting-in_flight_bridge_capital).
 
 ## 🛣️ Post-Buildathon B2B Commercialization & PMF Roadmap (Post-9/14)
 

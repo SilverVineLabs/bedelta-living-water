@@ -62,7 +62,20 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 |-------|-------|--------|
 | Open House / Buildathon | Live HUD · Gate · Sepolia proof · **175/773** bar *(Locked: 175/773)* · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
 | Security Grant pack | Cold audit pack · R01–R20 + Slither/Echidna narrative | ⏳ Planned |
-| Institutional AA | Kernel v3 Session Key (draft: `docs/internal/zerodev/`) | ✅ Delivered in v1.0 |
+| Institutional AA | Kernel v3 Session Key — [ZeroDev Comparative Analysis](../../audit/ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md) · [Technical Specification §2.4](../../architecture/TECHNICAL_SPECIFICATION.md#24-pillar-1--zerodev-account-abstraction-deep-specification) | ✅ Delivered in v1.0 |
+
+---
+
+## SSOT Verification Lock (Buildathon Judges)
+
+| Field | Locked value |
+|-------|--------------|
+| **Vitest baseline** | **175 test files \| 773 tests PASS** |
+| **Sepolia Gate** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
+| **Dune dashboard** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
+| **ERC-8196** | Aligned with emerging Draft (Virtuals Protocol) — **not a finalized standard** |
+
+**Core invariants:** $\Delta_{\text{net}} \equiv 0$ · $\text{lostUsd} \equiv 0$ on in-flight bridge capital · $t_{\text{reflector\_p50}} \sim 106\,\mu\text{s}$ — [Technical Specification §3.1](../../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats).
 
 ---
 

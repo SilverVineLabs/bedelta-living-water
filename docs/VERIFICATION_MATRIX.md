@@ -10,6 +10,20 @@
 
 Open this document first. Each tier is CLI-reproducible with **zero mainnet signing dependency** unless explicitly noted.
 
+### Absolute SSOT Lock (Evaluator Copy-Paste)
+
+| Field | Locked value | Verify |
+|-------|--------------|--------|
+| **Official H1** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum | [`README.md`](../README.md) · [`SUBMISSION.md`](../grants/SUBMISSION.md) |
+| **Vitest baseline** | **175 test files \| 773 tests PASS** | `pnpm test -- --run` |
+| **Sepolia Gate** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` | Arbiscan 421614 |
+| **Dune dashboard** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) | Public URL |
+| **ERC-8196** | Emerging Draft (Virtuals Protocol) — **not finalized** | [`SUBMISSION.md`](../grants/SUBMISSION.md) |
+
+**Core invariants:** $\Delta_{\text{net}} = \Delta_{\text{GMX\_GM}} + \Delta_{\text{HL\_Short}} \equiv 0$ · $\text{lostUsd} \equiv 0$ · $t_{\text{reflector\_p50}} \sim 106\,\mu\text{s}$ — [Technical Specification §3.1](../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats).
+
+> **OpSec:** Internal simulation reports live under `docs/internal/` only — not linked from public grant packs. No private keys in public docs.
+
 ---
 
 ## Tier 0 — Docker One-Click (Zero Host Node/pnpm)

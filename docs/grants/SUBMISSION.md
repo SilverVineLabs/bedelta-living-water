@@ -1,4 +1,4 @@
-# SUBMISSION.md: SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
+# SUBMISSION.md: SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
 
 | Field | Value |
 |-------|-------|
@@ -21,7 +21,18 @@
 
 ## Executive Summary & One-Page Strategic Memo
 
-**SilverVine Protocol (BeDelta Living Water v1.0 / BeΔ)** is a **Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator** for AI Trading Agents on Arbitrum. Built with the Santenmoku internal engine (p50 ~106µs), the Citadel SDK, and consume-once EIP-712 Gate attestation, SilverVine intercepts AI trade intents before mempool or bundler ingress — performing fail-closed pre-execution checks across Pendle PT risk and GMX maintenance margin.
+**Official pitch:** Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum — see metadata table above.
+
+| Judge pointer | SSOT document |
+|---------------|---------------|
+| Three Pillars · R01–R20 | [Technical Specification §0–§3](../architecture/TECHNICAL_SPECIFICATION.md) |
+| CLI Tier 0–5 verification | [Verification Matrix](../VERIFICATION_MATRIX.md) |
+| Dune telemetry · SQL panels | [Dune Dashboard Specification](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
+| Pendle × GMX cross-guard | [§ Core Risk Decision Matrix](#core-risk-decision-matrix-evaluatependlegmxcrossguard) · [`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts) |
+| ERC-8196 agent policy | [Technical Specification §0.1](../architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
+| Institutional DD / Basel mapping | [Due Diligence Memorandum](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
+
+Built on the Santenmoku internal engine (p50 ~106µs), [`@slivervine/citadel-sdk`](../../src/sdk/README.md), and consume-once EIP-712 Gate attestation — SilverVine intercepts AI trade intents **before** mempool or bundler ingress. Deep narrative: [Problem / Solution](#the-problem) · [Sponsor Integration Matrix](#sponsor-integration-matrix).
 
 ### The Problem
 
@@ -31,9 +42,9 @@ AI Trading Agents combine dynamic yield tokens (e.g., Pendle PTs), high-leverage
 
 SilverVine shifts risk management from "naive blocking" to **Intent-Aware Navigation**:
 
-1. **Observability**: Real-time monitoring of Pendle PT yield jitter/expiry dynamic fees, GMX maintenance margin buffers, and liquidity depth.
-2. **Intent Taxonomy**: Directional division separating `RISK_INCREASE` (`open`/`increase` → strict Fail-Closed evaluation) from `RISK_DECREASE` (`close`/`reduce` → greenlighted with safety routing).
-3. **Shadow Margin Engine**: Pre-execution calculation of PT exit proceeds (taking the maximum of discounted redemption value and AMM exit proceeds net of dynamic fees and slippage) to protect GMX margin health (`src/guards/pendle-gmx-cross-guard.ts`).
+1. **Observability**: Real-time monitoring of Pendle PT yield jitter/expiry dynamic fees, GMX maintenance margin buffers, and liquidity depth — [Pendle registry SSOT](../../src/adapters/pendle/pendle-pt-registry.ts) · [Technical Specification §1](../architecture/TECHNICAL_SPECIFICATION.md#1-core-product-identity).
+2. **Intent Taxonomy**: Directional division separating `RISK_INCREASE` (`open`/`increase` → strict Fail-Closed evaluation) from `RISK_DECREASE` (`close`/`reduce` → greenlighted with safety routing) — [§ Core Risk Decision Matrix](#core-risk-decision-matrix-evaluatependlegmxcrossguard).
+3. **Shadow Margin Engine**: Pre-execution PT exit proceeds vs GMX maintenance margin — [`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts) · [Technical Specification §3.1](../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats).
 
 ### Legal & Regulatory Positioning
 
@@ -43,10 +54,26 @@ SilverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 
 ## Architectural SSOT & Hardened Metrics
 
-* **Test Suite**: **175 test files | 773 tests PASS (100% Clean · Exit Code 0)**. Vitest coverage thresholds on `src/services/risk-control.ts`: functions **100%**, lines **90%**, branches **70%**.
-* **Formal Verification**: Halmos symbolic execution proofs (`contracts/test/formal/HalmosGateInvariant.t.sol`) mathematically prove that single-use digest attestations cannot be replayed across $2^{256}$ state spaces.
-* **Game-Theoretic Simulation**: 10,000 Monte Carlo simulation runs blocking **87.39% of toxic flow**, protecting $9.88M nominal LP capital (`docs/telemetry/game_theory_simulation_results.json`).
-* **Deployments**: Verified live on **Arbitrum Sepolia** (`0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`) and configured for **Robinhood Chain** (Chain ID: 46630/4663).
+* **Test Suite**: **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** — locked Buildathon baseline; re-run `pnpm test -- --run` to confirm. Full matrix: [Verification Matrix](../VERIFICATION_MATRIX.md).
+* **Formal Verification**: Halmos symbolic execution — [HalmosGateInvariant.t.sol](../../contracts/test/formal/HalmosGateInvariant.t.sol) · [Technical Specification §3](../architecture/TECHNICAL_SPECIFICATION.md#3-cross-venue-risk-engine--defense-matrix-r01r20).
+* **Game-Theoretic Simulation**: 10,000 Monte Carlo runs · **87.39% toxic flow blocked** · $9.88M **nominal simulated** LP capital — [`game_theory_simulation_results.json`](../telemetry/game_theory_simulation_results.json) *(simulation only; not live savings)*.
+* **Deployments**: Arbitrum Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` · Robinhood Chain `46630`/`4663` — [On-Chain Verification](#on-chain-verification--arbitrum-sepolia-421614).
+
+### Core Risk Invariants (Judge Quick Reference)
+
+$$
+\Delta_{\text{net}} = \Delta_{\text{GMX\_GM}} + \Delta_{\text{HL\_Short}} \equiv 0
+$$
+
+$$
+\text{lostUsd} \equiv 0 \quad \forall \, \text{InFlightBridgeCapital}
+$$
+
+$$
+t_{\text{reflector\_p50}} \sim 106\,\mu\text{s} \ll t_{\text{mempool\_broadcast}}
+$$
+
+Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats) · [Cross-Chain Risk §2.1](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md#21-honest-bridge-accounting-in_flight_bridge_capital).
 
 **Latency SSOT:** p50 ~106 µs Edge `checkSoilResistance()` · Wasm warm &lt;60 µs · M2M reflex `src/core/agent-citadel-guard.ts` &lt;12 µs. Full spec: [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md).
 
