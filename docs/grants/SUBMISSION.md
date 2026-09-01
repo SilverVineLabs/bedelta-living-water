@@ -130,6 +130,20 @@ SilverVine rejects unrealistic B2B sales models (e.g. charging DAOs $8k/mo upfro
 
 ---
 
+## 🛣️ Post-Buildathon B2B Commercialization & PMF Roadmap (Post-9/14)
+
+SilverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction Hackathon Verification with Long-Term Commercial Sustainability:
+
+- **Stage 1: Buildathon Verification Phase (Active Now — Pre-9/14)**
+  - **100% Free Public Telemetry**: Open-access Dune Live Telemetry Dashboard ([https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)) for zero-friction judge and developer auditing.
+  - **Sepolia Safety Gate**: Full EIP-712 session key validation and 0-Gas Fail-Closed protection verified on Arbitrum Sepolia (`0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`).
+
+- **Stage 2: B2B Monetization & Risk API Launch (Post-9/14)**
+  - **Dune Risk API & Bad Debt Calculator**: Commercialize Dune Telemetry data into a B2B "Bad Debt Savings Calculator & Risk API". Vault managers and AI Agent swarms (Wayfinder, Virtuals, M2M Treasury Funds) can query real-time liquidation risk metrics via API subscription tiers ($199/mo Pro to $1,999/mo Enterprise).
+  - **Citadel-as-a-Service (CaaS) 10 bps Rail**: Automatically inject venue-native 10 bps UI fees on protected live transactions across Arbitrum One GMX v2 & Pendle markets.
+
+---
+
 ## Post-Hackathon Expansion Roadmap
 
 * **Phase 1: Milestone Dune & PoV (Day 7 – 30)**
