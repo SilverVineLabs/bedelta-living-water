@@ -707,3 +707,33 @@ allowedToSign =
 | `src/services/risk/liquidation-meter.ts` | `DEFAULT_CROSS_MMR = 0.05` |
 | `src/services/session-key-adapter-lib/nonce-auto-healing.ts` | HL nonce auto-resync |
 | `src/services/execution/twap-engine-v2.ts` | TWAP path planner |
+
+---
+
+## Appendix: Industry References & Real-World Threat Anchors
+
+SilverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is engineered directly in response to emerging Web3 AI Agent execution vulnerabilities, real-world exploit vectors, and market loss events:
+
+- **1. MEV Bots & Thin-Liquidity Exploitation on Autonomous Agents**:
+  - *Threat*: Autonomous AI Agents (e.g., ElizaOS, Virtuals swarm bots) executing trades on DEXs without real-time L2 orderbook depth sensing are routinely sandwiched by MEV bots or suffer 5%+ extreme slippage in thin liquidity pools.
+  - *SilverVine Alignment*: Directly addressed by `checkSoilResistance()` depth & slippage sensing and `evaluateHlOrderbookGapGuard()`.
+
+- **2. Prompt Injection Attacks Leading to Unauthorized Key Hijacking**:
+  - *Threat*: Malicious prompts injected via Discord/Twitter trick the Agent's reasoning model (LLM) into generating unauthorized signatures or transferring vault assets to attacker addresses.
+  - *SilverVine Alignment*: Prevented at the "Cerebellum" execution layer via R20 Physical Deadlock (`severSigningChannel()`) and EIP-712 Consume-Once Gate. Even if the LLM "Brain" is compromised, the pre-broadcast signature pipe is severed within 106µs.
+
+- **3. Flash-Liquidity Crises & Cascading Liquidations in Derivatives Markets**:
+  - *Threat*: Sudden liquidity drawdowns on GMX v2 and Hyperliquid trigger flash slippage, forcing unhedged AI agents into toxic liquidations.
+  - *SilverVine Alignment*: Solved by our core invariant $\Delta_{\text{net}} \equiv 0$ and the Observatory Paradox (-40 score markdown) dynamic risk controller.
+
+- **4. Verified Real-World Loss Case ($441k+ Bot Execution Error)**:
+  - *Reference*: [PumpParade / Medium: AI Trading Bots Lost $441k in One Error](https://pumpparade.medium.com/ai-trading-bots-lost-441k-in-one-error-heres-what-actually-works-and-what-doesn-t-4f04f890c189)
+  - *SilverVine Alignment*: Proves the urgent necessity for sub-ms pre-broadcast safety checking before orders hit the public mempool.
+
+- **5. Industry Consensus on AI Antivirus Primitives**:
+  - *Reference*: [CertiK: AI Skill Scanner & Antivirus Software for the AI Age](https://www.tradingview.com/news/chainwire:d064d7d1f094b:0-certik-launches-ai-skill-scanner-an-antivirus-software-for-the-ai-age/)
+  - *SilverVine Alignment*: Validates the market demand for AI security, where SilverVine provides the execution-layer safety citadel.
+
+- **6. Institutional Focus on AI Agent Vulnerabilities**:
+  - *Reference*: [CryptoRank: AI Agents & Web3 Hacking Symposium](https://cryptorank.io/news/feed/fae5e-ai-agents-web3-hacking-wyoming-symposium)
+  - *SilverVine Alignment*: Directly maps to institutional standards for agent wallet protection and pre-execution threat mitigation.
