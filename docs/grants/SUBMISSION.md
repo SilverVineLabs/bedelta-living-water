@@ -139,7 +139,7 @@ SilverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
   - **Sepolia Safety Gate**: Full EIP-712 session key validation and 0-Gas Fail-Closed protection verified on Arbitrum Sepolia (`0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`).
 
 - **Stage 2: B2B Monetization & Risk API Launch (Post-9/14)**
-  - **Dune Risk API & Bad Debt Calculator**: Commercialize Dune Telemetry data into a B2B "Bad Debt Savings Calculator & Risk API". Vault managers and AI Agent swarms (Wayfinder, Virtuals, M2M Treasury Funds) can query real-time liquidation risk metrics via API subscription tiers ($199/mo Pro to $1,999/mo Enterprise).
+  - **SilverVine Citadel Risk API & Bad Debt Calculator (powered by on-chain telemetry & Dune Analytics visualization)**: Monetize SilverVine's proprietary sub-ms risk calculation algorithms and shadow margin telemetry via a B2B API — **not** Dune platform data resale. [Dune](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) remains the **free public visualization dashboard**; paid tiers ($199/mo Pro to $1,999/mo Enterprise) gate programmatic access to Citadel-computed liquidation risk, margin health, and bad-debt savings metrics for vault managers and AI Agent swarms (Wayfinder, Virtuals, M2M Treasury Funds).
   - **Citadel-as-a-Service (CaaS) 10 bps Rail**: Automatically inject venue-native 10 bps UI fees on protected live transactions across Arbitrum One GMX v2 & Pendle markets.
 
 ---
