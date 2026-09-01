@@ -13,8 +13,6 @@ import {
   resolveGmxMarketBySymbol,
 } from "../../config/gmx-markets";
 import {
-  getGmxGmBalanceCache,
-  setGmxGmBalanceCache,
   type GmxGmBalanceSnapshot,
 } from "./gmx-v2-gm-balance-cache";
 

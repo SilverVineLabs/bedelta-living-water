@@ -1,65 +1,51 @@
 {
   "schema": "silvervine.security-scorecard.v4",
   "protocol": "SliverVine / BeΔLivingWater",
-  "tier": "security",
-  "generatedAt": "2026-08-24T08:40:03.603Z",
+  "tier": "fast",
+  "generatedAt": "2026-09-01T09:45:21.289Z",
   "narrative": "behavioral_pass_does_not_imply_web3_security",
   "overallVerdict": "PASS",
   "gates": [
     {
-      "id": "vitest",
-      "label": "Full Vitest suite",
+      "id": "tsc",
+      "label": "TypeScript typecheck",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 32641,
-      "detail": "[SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when statusCode === 3 even if flush flag is false | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/v09/grant-v09-risk.test.ts > v0.9 grant risk simulation (OpSec state assertions) > F1+F3 gas spike scenario trips statusCode 3 before settlement | [SliverVineRiskOracle] ErrorTriggere",
-      "counterexamples": [
-        "✓ sessionOrderFillSync — waitForNewFill > throws OnChainFillFailedError after max attempts  506ms",
-        "stdout | tests/adapters/hl/execution-transport.test.ts > hl/execution — HTTP transport > handles HTTP error responses",
-        "stderr | tests/defense-matrix.test.ts > Defense Matrix — R20 Physical Deadlock Execution > vineWrapProtection criHardlock throws HardlockError (403 deadlock)"
-      ]
+      "elapsedMs": 13472,
+      "detail": "exit 0"
     },
     {
-      "id": "forge",
-      "label": "Forge unit + invariants",
+      "id": "vitest-security",
+      "label": "Vitest security slice",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 3530,
-      "detail": "|-------------+----------------+-------+---------+----------| | | GateHandler | warp           | 5390  | 0       | 0        | | ╰-------------+----------------+-------+---------+----------╯ |  | [PASS] test_HandlerCanSucceed() (gas: 122069) | Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 2.84s (8.20s CPU time) |  | Ran 4 test suites in 2.85s (8.85s CPU time): 60 tests passed, 0 failed, 0 skipped (60 total tests)"
+      "elapsedMs": 4981,
+      "detail": "RUN  v3.2.7 /home/lhsum/dev_slivervinelabs/bedelta-citadel-core |  |  ✓ |unit| tests/security/security-audit.test.ts (4 tests) 83ms |  |  Test Files  1 passed (1) |       Tests  4 passed (4) |    Start at  17:44:53 |    Duration  3.48s (transform 1.72s, setup 1.35s, collect 1.26s, tests 83ms, environment 0ms, prepare 224ms)"
     },
     {
-      "id": "slither",
-      "label": "Slither SliverVineGate",
+      "id": "solhint",
+      "label": "Solhint SliverVineGate/src",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 4978,
-      "detail": "'forge clean' running (wd: /home/lhsum/dev/bedelta-citadel-core/SliverVineGate) | 'forge config --json' running | 'forge build --build-info --deny never --skip ./test/** ./script/** --force' running (wd: /home/lhsum/dev/bedelta-citadel-core/SliverVineGate) |  | . analyzed (3 contracts with 96 detectors), 0 result(s) found | INFO:Slither:/home/lhsum/dev/bedelta-citadel-core/docs/audit/slither.json exists already, the overwrite is prevented"
+      "elapsedMs": 1678,
+      "detail": "exit 0"
     },
     {
-      "id": "aderyn",
-      "label": "Aderyn SliverVineGate",
+      "id": "gitleaks",
+      "label": "Gitleaks secret scan",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 2659,
-      "detail": "Detectors run, processing found issues | Found issues processed. Printing report | Report printed to report.md |  |  | thread 'main' (35632) panicked at /home/lhsum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aderyn-0.1.9/src/lib.rs:122:86: | called `Result::unwrap()` on an `Err` value: Error(\"unexpected character 'a' while parsing major version number\") | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
-    },
-    {
-      "id": "pnpm-audit",
-      "label": "pnpm audit --prod",
-      "verdict": "PASS",
-      "exitCode": 0,
-      "elapsedMs": 3273,
-      "detail": "No known vulnerabilities found"
+      "elapsedMs": 22591,
+      "detail": "○ |     │╲ |     │ ○ |     ○ ░ |     ░    gitleaks |  | 5:45PM INF scan completed in 22.5s | 5:45PM INF no leaks found"
     }
   ],
   "summary": {
-    "pass": 5,
+    "pass": 4,
     "fail": 0,
     "skipped": 0
   },
   "reports": {
-    "securityScorecard": "docs/audit/security-scorecard.json",
-    "staticAnalysisReport": "docs/audit/static-analysis-report.json"
+    "securityScorecard": "docs/audit/security-scorecard.json"
   },
-  "zeroKeyCommand": "pnpm run audit:security"
+  "zeroKeyCommand": "pnpm run audit:fast"
 }

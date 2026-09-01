@@ -8,12 +8,8 @@ import {
   __readCrossSpreadCacheRef,
   __writeCrossSpreadCacheRef,
   computeCrossFundingSpread,
-  crossSpreadForSoil,
-  evaluateCrossSpreadSoilGate,
-  MIN_CROSS_SPREAD_BPS,
   type CrossSpreadLegSnapshot,
   type CrossSpreadResult,
-  type CrossSpreadSoilInput,
   type ExecutionHedgeVenue,
 } from "./cross-spread-cache";
 

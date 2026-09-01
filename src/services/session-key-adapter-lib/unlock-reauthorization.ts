@@ -16,7 +16,6 @@ import {
 } from "../../core/state";
 import { saveSystemStateToKV } from "../kv-lib/system-state";
 import {
-  configureUnlockReauthorizationKv,
   readUnlockReauthorizationKv,
   __resetUnlockReauthorizationKvForTests,
 } from "./unlock-reauthorization-kv";

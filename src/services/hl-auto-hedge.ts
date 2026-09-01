@@ -18,7 +18,6 @@ import {
   HL_AUTO_HEDGE_MIN_NOTIONAL_USD,
   HL_ETH_PERP_ASSET_INDEX,
   HL_ETH_SZ_DECIMALS,
-  type HlAutoHedgeStatus,
   __readHlAutoHedgeStatusRef,
 } from "./hl-auto-hedge-status";
 
