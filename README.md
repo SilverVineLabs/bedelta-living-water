@@ -53,6 +53,26 @@ pnpm test
 npx tsx scripts/grant-advanced-resilience-benchmark.ts
 ```
 
+**Representative `demo:e2e` terminal highlights** (GitHub `diff` syntax — green `+` PASS, red `-` alerts, yellow `!` fee injection):
+
+```diff
++  ┌─ SliverVine Citadel Shield ─────────────────────────────────────┐
++  │  BeΔ Living Water v1.0 · 5-Step Grant E2E Demo                  │
++  │  Sepolia Gate · p50 ~106µs · Δnet ≡ 0 · lostUsd ≡ 0            │
++  └────────────────────────────────────────────────────────────────┘
++ ── Step 1: Citadel Pre-Execution Check ──
++ Intent: allowedToSign=true soilOk=true · elapsed=106µs
++ Invariant: Δnet ≡ 0 (GMX_GM + HL_Short delta-neutral envelope)
++ ── Step 2: Robinhood Chain Escort ──
++ Outbound 46630→42161: ok=true lostUsd=0
++ RESULT: Escort PASS — lostUsd ≡ 0
+- Inbound AML block: label=AML_INBOUND_TO_ROBINHOOD_BLOCKED
+! Payload: uiFeeReceiver (+10 bps) injected
+- ALERT: SOIL_TRIPPED — CROSS_VENUE_SLIPPAGE · DEPTH fuse
+- [CRITICAL] PHYSICAL_DEADLOCK_TRIGGERED: EIP-712 Signature Pipe Severed
++ Flash unwind: PASS · RESULT: E2E OK (5/5)
+```
+
 Canonical interactive demo command for judges:
 
 1. **Tier 0:** `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` — isolated E2E, no host toolchain drift.

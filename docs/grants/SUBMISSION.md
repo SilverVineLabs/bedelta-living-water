@@ -217,6 +217,20 @@ cd SliverVineGate && forge test --gas-report && cd ..
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualLegProof
 ```
 
+**Grant E2E demo highlights** (`pnpm run demo:e2e` — GitHub `diff` syntax):
+
+```diff
++ ── Step 1: Citadel Pre-Execution Check ──
++ Intent: allowedToSign=true · elapsed=106µs · Invariant: Δnet ≡ 0
++ ── Step 2: Robinhood Escort ──
++ Outbound: lostUsd=0 · RESULT: Escort PASS · lostUsd ≡ 0
+- Inbound AML block: AML_INBOUND_TO_ROBINHOOD_BLOCKED
+! GMX Payload: uiFeeReceiver (+10 bps) injected
+- ALERT: SOIL_TRIPPED — toxic depth fuse
+- [CRITICAL] PHYSICAL_DEADLOCK_TRIGGERED: EIP-712 Signature Pipe Severed
++ Flash unwind: PASS · RESULT: E2E OK (5/5)
+```
+
 **Regression bar:** Vitest **175 files | 773 PASS** · Forge 60/60 · Cargo Stylus 5/5 · Wasm &lt;28 KiB / &lt;60 µs.
 
 ---

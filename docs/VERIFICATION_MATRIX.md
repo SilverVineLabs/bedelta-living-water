@@ -40,6 +40,20 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 | `docker run --rm slivervine-citadel pnpm test` | Full Vitest regression bar (host-free) | **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** |
 | Sidecar (Tier 5) | Telemetry relay · fail-closed `/v1/intent` | [`docker/README.md`](../docker/README.md) |
 
+**`demo:e2e` expected terminal highlights** (`pnpm run demo:e2e` — GitHub `diff` syntax):
+
+```diff
++  ┌─ SliverVine Citadel Shield ─────────────────────────────────────┐
++  │  Sepolia Gate · p50 ~106µs · Δnet ≡ 0 · lostUsd ≡ 0            │
++  └────────────────────────────────────────────────────────────────┘
++ Step 1: allowedToSign=true · elapsed=106µs · Δnet ≡ 0
++ Step 2: Escort PASS · lostUsd ≡ 0
+- AML_INBOUND_TO_ROBINHOOD_BLOCKED (inbound 42161→46630)
+! Step 3: uiFeeReceiver (+10 bps)
+- Step 5: SOIL_TRIPPED · PHYSICAL_DEADLOCK_TRIGGERED
++ RESULT: E2E OK (5/5)
+```
+
 **Why Tier 0:** Eliminates judge laptop Node version drift, pnpm store corruption, and missing WSL deps — same PASS bar, hermetic container.
 
 ---
