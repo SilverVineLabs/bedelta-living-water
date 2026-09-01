@@ -53,7 +53,7 @@ Pillar 3 SHIELD      → checkSoilResistance() · pkg/soil_core.wasm · Fail-Clo
 | **帳戶 runtime** | EIP-7702 委派 / ERC-4337 智能帳戶 | ZeroDev **Kernel v3**（✅ 生產）→ **Kernel v4 + EIP-7702**（⏳ 路線圖） |
 | **Session TTL** | 數小時 / 數天 | **`WS_HEARTBEAT_INTERVAL_MS = 30_000`** · 過期 → `SESSION_KEY_HEARTBEAT_EXPIRED` |
 | **執行 scope** | 寬泛合約互動 | **僅 `ORDER_EXECUTE`** — 零提現權（R06） |
-| **名目上限** | 常無 cap 或錢包級 | **`SESSION_KEY_NOTIONAL_CAP_USD = $5,000`**（v0.9）· R07 物理 severance |
+| **名目上限** | 常無 cap 或錢包級 | **`SESSION_KEY_NOTIONAL_CAP_USD = $5,000`**（v1.0 live）· R07 物理 severance |
 | **風控閘門位置** | 事後模擬 / 後端政策 | **廣播前 Edge SSOT** — `checkSoilResistance()` **p50 ~106 µs** |
 | **閘門哲學** | 優先執行 + 監控 | **Fail-Closed** — `signingChannelOpen: false` |
 | **Paymaster 耗盡** | 回退用戶自付（未護航路徑風險） | **`ZERODEV_DAILY_SPONSORSHIP_EXHAUSTED`** → soil 通過後 fail-closed 自付 |

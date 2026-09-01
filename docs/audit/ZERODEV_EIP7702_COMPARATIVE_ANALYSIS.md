@@ -53,7 +53,7 @@ These patterns are appropriate for **retail conversion funnels**. They are **ins
 | **Account runtime** | EIP-7702 delegation / ERC-4337 smart account | ZeroDev **Kernel v3** (✅ Code-Verified / Dry-Run Verified) → **Kernel v4 + EIP-7702** (⏳ roadmap) |
 | **Session key TTL** | Hours / days (minimize re-auth) | **30s TTL Heartbeat / Intent Execution Window** (`WS_HEARTBEAT_INTERVAL_MS = 30_000` · `DEFAULT_TTL_MS = 30_000`); underlying cryptographic session key lifetime bounded up to **24h / 7d** · heartbeat expiry → `SESSION_KEY_HEARTBEAT_EXPIRED` |
 | **Execution scope** | Broad contract interaction | **`ORDER_EXECUTE` only** — zero withdrawal authority (R06) |
-| **Notional cap** | Often uncapped or wallet-level | **`SESSION_KEY_NOTIONAL_CAP_USD = $5,000`** (v0.9 live) · R07 physical severance |
+| **Notional cap** | Often uncapped or wallet-level | **`SESSION_KEY_NOTIONAL_CAP_USD = $5,000`** (v1.0 live) · R07 physical severance |
 | **Risk gate placement** | Post-simulation / backend policy (fail-open tendency) | **Pre-broadcast Edge SSOT** — `checkSoilResistance()` **p50 ~106 µs** Shield/TS Gateway · Wasm warm **&lt;60 µs** · `pkg/soil_core.wasm` |
 | **Gate philosophy** | Prefer execution with monitoring | **Fail-Closed** — `signingChannelOpen: false` · UserOp rejected pre-bundler |
 | **Paymaster exhaustion** | Fallback to user-paid gas (unguarded path risk) | **`ZERODEV_DAILY_SPONSORSHIP_EXHAUSTED`** → fail-closed to self-pay **after** soil gate — not unguarded broadcast |

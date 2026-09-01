@@ -6,7 +6,7 @@
 | **Version** | **v1.0.0** |
 | **Classification** | Grant / Institutional Pitch · Live Demo Script |
 | **Branch baseline** | `v1.0_push_BDLW` |
-| **Entity** | SilverVine Labs · BeΔ Living Water (BDLW) |
+| **Entity** | SilverVine Labs · BeDelta Living Water v1.0 / BeΔ |
 | **Baseline** | Vitest **175 test files \| 773 tests PASS (100% Clean · Exit Code 0)** on `pnpm test -- --run` · Wasm **p50 ~106 µs** · chaos **255/255** |
 | **Live proof** | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 | **Related SSOT** | [`VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) · [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
@@ -17,7 +17,7 @@
 
 ## 1. Executive Pitch Summary
 
-**One sentence:** BeDelta Living Water (BDLW) is a **106 µs pre-execution Wasm-gated, 1-click delta-neutral Citadel** on Arbitrum One — combining ZeroDev Kernel v3 smart accounts, a venue-agnostic **Compliance Ingress Firewall**, and a Rust `#![no_std]` soil engine that **fail-closes before mempool broadcast**.
+**One sentence:** SliverVine Protocol (BeDelta Living Water v1.0) is a **Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator** on Arbitrum — combining ZeroDev Kernel v3 smart accounts, a venue-agnostic **Compliance Ingress Firewall**, and the Santenmoku internal engine (Rust `#![no_std]` soil core) that **fail-closes before mempool broadcast** in **106 µs**.
 
 **Value proposition for Grant committees:**
 
@@ -99,7 +99,7 @@ Pillar 3 SHIELD (CORE MOAT) → pkg/soil_core.wasm · checkSoilResistance() · R
 | **3σ market shock** | UserOp broadcasts into thin book → slippage liquidation | Risk committee convenes → hours of naked delta | **`SYSTEM_FAIL_CLOSED_TRIP`** · soil depth fuse · no broadcast |
 | **Oracle lag > 30s** | Stale price fills at wrong mark | Trading halted manually · ops backlog | **`ORACLE_LAG_DEADLOCK`** · `signingChannelOpen: false` |
 | **Bridge latency / timeout** | In-flight funds counted as deployable NAV → naked GM open | Treasury stuck · manual reconciliation | **`IN_FLIGHT_BRIDGE_CAPITAL`** · **`BRIDGE_TIMEOUT_FAIL_CLOSED`** · **`lostUsd ≡ 0`** |
-| **Liquidity drain (HL book gap)** | Hedge leg fills at adverse price | Manual hedge unwind · gap risk | Session scope + soil matrix · **`evaluateHlOrderbookGapGuard()`** partial (v0.9) |
+| **Liquidity drain (HL book gap)** | Hedge leg fills at adverse price | Manual hedge unwind · gap risk | Session scope + soil matrix · **`evaluateHlOrderbookGapGuard()`** partial (v1.0) |
 | **Paymaster exhaustion** | Silent fallback to unguarded self-pay path | User blocked · poor UX | **`ZERODEV_DAILY_SPONSORSHIP_EXHAUSTED`** · fail-closed self-pay only after soil PASS |
 | **Stolen session key** | Hours of delegated authority | Key revoke lag | **~30s blast radius** · **$5k notional cap** |
 

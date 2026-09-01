@@ -128,7 +128,7 @@ See also: [`TECHNICAL_SPECIFICATION.md` §4.0](../architecture/TECHNICAL_SPECIFI
 
 Citadel routes institutional flow to the **underweight side** of GMX GM pools, capturing builder revenue, GMX referral rebates, and positive skew rebates while maintaining Δ-neutral hedge on Hyperliquid.
 
-> **Execution safety:** The **10 bps** builder fee is natively supported by GMX v2 **ExchangeRouter** `uiFeeReceiver` parameters (`GMX_UI_FEE_BPS`). It imposes **zero additional overhead** on the v0.9 sub-ms fail-closed execution path — SDK/Worker inject the fee field on unsigned payloads only; soil fuse, session gates, and Gate attestation are unchanged.
+> **Execution safety:** The **10 bps** builder fee is natively supported by GMX v2 **ExchangeRouter** `uiFeeReceiver` parameters (`GMX_UI_FEE_BPS`). It imposes **zero additional overhead** on the v1.0 sub-ms fail-closed execution path — SDK/Worker inject the fee field on unsigned payloads only; soil fuse, session gates, and Gate attestation are unchanged.
 
 | Revenue channel | Rate | Module |
 |-----------------|------|--------|

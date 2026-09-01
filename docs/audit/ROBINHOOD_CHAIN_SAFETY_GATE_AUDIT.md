@@ -6,7 +6,7 @@
 | **Version** | **v1.0.0** |
 | **Classification** | Public Grant / Institutional Diligence |
 | **Entity** | SilverVine Labs |
-| **Protocol** | SliverVine / BeΔ Living Water · Santenmoku Risk Engine |
+| **Protocol** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) · Santenmoku internal engine |
 | **Scope** | Robinhood Chain **46630** (testnet) · **4663** (mainnet) · Arbitrum One **42161** |
 | **Spec SSOT** | [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |

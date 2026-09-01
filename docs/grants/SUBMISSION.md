@@ -1,6 +1,16 @@
-# SUBMISSION.md: SilverVine Protocol (BeΔ Living Water v0.8 Santenmoku)
+# SUBMISSION.md: SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
-> **Execution Safety Layer & Sub-millisecond Risk Navigator for AI Trading Agents**
+| Field | Value |
+|-------|-------|
+| **Official Name** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
+| **Category** | Promising Products Track — AI Agents & Financial Primitives |
+| **Buildathon** | Arbitrum Open House Singapore Online Buildathon |
+| **Live Gate (Sepolia)** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
+| **Dune Telemetry** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
+
+> **Core Pitch:** SliverVine Protocol (BeDelta Living Water v1.0) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator on Arbitrum. It acts as the 0-Gas off-chain risk brain and on-chain execution gate for AI Agents trading across Pendle and GMX, stopping prompt injections and toxic liquidation cascades in 106µs to achieve true Delta-Neutral execution safety.
+
+**Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
 
 **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com`
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com)
@@ -11,7 +21,7 @@
 
 ## Executive Summary & One-Page Strategic Memo
 
-**SilverVine Protocol (BeΔ Living Water)** is an **algorithmic risk mitigation infrastructure** designed specifically for AI Trading Agents operating in high-leverage and dynamic yield environments. Built with a sub-millisecond off-chain Reflector and the Citadel SDK, SilverVine intercepts AI trade intents before they reach the mempool or bundler, performing 0-Gas, Fail-Closed pre-execution checks and generating single-use EIP-712 cryptographic attestations.
+**SilverVine Protocol (BeDelta Living Water v1.0 / BeΔ)** is a **Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator** for AI Trading Agents on Arbitrum. Built with the Santenmoku internal engine (p50 ~106µs), the Citadel SDK, and consume-once EIP-712 Gate attestation, SilverVine intercepts AI trade intents before mempool or bundler ingress — performing fail-closed pre-execution checks across Pendle PT risk and GMX maintenance margin.
 
 ### The Problem
 
@@ -48,6 +58,7 @@ SilverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 
 * **Integration**: Citadel Gate Verifier contract (`SliverVineGate.sol`) deployed and verified at `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`.
 * **Mechanism**: Intercepts AI Trade Intents in sub-millisecond off-chain pipeline (`src/core/agent-citadel-guard.ts`), validating soil fuse + deadman switch before settlement-layer EIP-712 attestation (`SliverVineGate.sol`) (0-Gas Fail-Closed).
+* **Agent policy alignment**: Aligned with the emerging **ERC-8196 AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol). **Not a finalized standard.**
 
 ### 2. Robinhood Chain (Chain ID: 46630 / 4663)
 

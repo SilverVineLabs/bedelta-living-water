@@ -1,5 +1,5 @@
 {
-  "protocol": "Santenmoku v0.9",
+  "protocol": "SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)",
   "harness": "grant-advanced-resilience-benchmark",
   "tests": {
     "toctou": {

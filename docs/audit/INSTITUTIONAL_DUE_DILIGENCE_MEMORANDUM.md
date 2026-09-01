@@ -6,7 +6,7 @@
 | **Version** | **v1.0.0** |
 | **Classification** | Public Grant / Institutional Allocator Diligence |
 | **Entity** | SilverVine Labs |
-| **Protocol** | SliverVine / BeΔ Living Water (BDLW) · Santenmoku Risk Engine |
+| **Protocol** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) · Santenmoku internal engine |
 | **Audience** | Arbitrum Foundation · ZeroDev Grant Committee · Institutional allocators · Fund-of-funds diligence |
 | **Baseline** | **Vitest SSOT:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway) · Wasm warm **&lt;60 µs** |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
@@ -53,7 +53,7 @@ BDLW operates on a **non-custodial execution substrate**:
 
 - User principal resides in **ZeroDev Kernel Smart Accounts** controlled by the user — not in a protocol treasury, omnibus wallet, or discretionary custodian account.
 - SilverVine Labs does **not** take discretionary possession of user funds, does **not** rehypothecate labeled in-flight bridge capital, and does **not** represent itself as a licensed custodian, broker-dealer, or payment institution.
-- Protocol yield accrual via GMX **`uiFeeReceiver` (+10 bps)** and **up to 25% GMX Referral Rebate** is **protocol revenue**, explicitly separated from user principal in accounting semantics (§6.3). The 10 bps builder fee is a native GMX v2 ExchangeRouter parameter — zero additional overhead on v0.9 execution safety.
+- Protocol yield accrual via GMX **`uiFeeReceiver` (+10 bps)** and **up to 25% GMX Referral Rebate** is **protocol revenue**, explicitly separated from user principal in accounting semantics (§6.3). The 10 bps builder fee is a native GMX v2 ExchangeRouter parameter — zero additional overhead on v1.0 execution safety.
 
 **0-Proxy architecture** (§5.3) means BDLW provides **risk gates and routing logic** — not balance-sheet intermediation. Users and institutions retain **direct smart-contract exposure** to underlying venues (GMX, Hyperliquid, Across bridge, Robinhood Chain escort path).
 
@@ -363,7 +363,7 @@ When heartbeat expires, `auditSessionKeyHeartbeat()` sets `revocationLocked: tru
 | Harness | Command | Expected |
 |---------|---------|----------|
 | **Full Vitest** | `pnpm test -- --run` | **175 test files \| 773 tests PASS (100% Clean · Exit Code 0)** |
-| **Grant v0.9 sim** | `pnpm test:grant-v09-sim` | AA / risk sim PASS |
+| **Grant risk sim (v1.0 suite)** | `pnpm test:grant-v09-sim` | AA / risk sim PASS |
 | **Wasm feasibility** | `pnpm test:wasm-feasibility` | Soil Wasm sim PASS |
 | **Security matrix** | `pnpm audit:security` | **3-Tier 5/0/0 PASS** |
 | **Property fuzz (Forge)** | `pnpm audit:nightly` | Gate + attestation properties |
@@ -382,7 +382,7 @@ Stage A (V1.0) exposes two **capital ingress modes** that converge on the same C
 | **V1.0 Alpha Vault TVL cap** | **$100,000** hard ceiling (roadmap spec) | **$100,000** — escort does not expand capacity |
 | **Ingress latency** | **Instant** — capital already on `42161` | **Across-bridge dependent** — typically minutes to ≤ **1 hour** |
 | **Time-to-soil-gate** | **p50 ~106 µs** Wasm fuse · sub-second intent-to-gate | Same after `SETTLED`; **zero** pre-settlement deploy |
-| **Single-order cap (v0.9 live)** | `SESSION_KEY_NOTIONAL_CAP_USD` = **$5,000** | N/A until bridge settles |
+| **Single-order cap (v1.0 live)** | `SESSION_KEY_NOTIONAL_CAP_USD` = **$5,000** | N/A until bridge settles |
 | **Single-order cap (v1.0 design)** | `ORDER_SIZE_MAX_USD` = **$100,000** | Post-`SETTLED` only; in-flight excluded from NAV |
 | **HL depth prerequisite** | `MIN_DEPTH_USD` = **$100,000** | Identical hedge-leg requirement after settlement |
 | **Gap-window tightening** | HL gap guard: depth **2×** ($200k) · leverage **3× → 1×** | Bridge **fail-closed** — no naked GM/HL during in-flight |
@@ -660,7 +660,7 @@ Deprecated fixed **$50 SL** is **forbidden** by workspace protocol rules and enf
 ### 6.3 Non-Custodial Semantics
 
 - User principal is held in **ZeroDev Kernel Smart Accounts** — not protocol treasury.
-- GMX `uiFeeReceiver` (+10 bps native builder fee) and GMX referral rebate (up to **25%** of trading fees) accrue protocol yield — never conflated with user principal. Builder fee injection uses GMX v2 ExchangeRouter parameters only; no change to v0.9 pre-execution safety path.
+- GMX `uiFeeReceiver` (+10 bps native builder fee) and GMX referral rebate (up to **25%** of trading fees) accrue protocol yield — never conflated with user principal. Builder fee injection uses GMX v2 ExchangeRouter parameters only; no change to v1.0 pre-execution safety path.
 - In-flight bridge capital is **labeled, not lent** — no rehypothecation claim in code paths.
 
 ### 6.4 Cross-Reference

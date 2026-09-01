@@ -53,7 +53,7 @@ Every unsigned increase / decrease / deposit payload injects **+10 bps `uiFeeRec
 
 | Milestone | Scope | Status |
 |-----------|-------|--------|
-| **M1** | **v0.9 Production-Ready (Arbitrum Sepolia Testnet & Dry-Run Verified)** · pre-exec gateway · Live HUD · +10 bps routing · `/api/grant-audit` · **175 test files \| 773 tests PASS (100% Clean · Exit Code 0)** | ✅ Delivered (Sepolia & dry-run; mainnet ties to M6) |
+| **M1** | **v1.0 Delivered (Sepolia verified)** · pre-exec gateway · Live HUD · +10 bps routing · `/api/grant-audit` · **175 test files \| 773 tests PASS (100% Clean · Exit Code 0)** | ✅ Delivered (Sepolia & dry-run; mainnet ties to M6) |
 | **M2** | Institutional gateway · sidecar daemon · `claimUiFees` | ✅ Core Built (Sidecar Daemon Ready / Awaiting Treasury Claim Hook) |
 | **M3** | Multi-tenant B2B · cross-venue compensation SLA | Roadmap (Multi-tenant B2B & Cross-venue SLA) |
 
