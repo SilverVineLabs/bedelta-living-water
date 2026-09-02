@@ -1,4 +1,4 @@
-# SilverVine Protocol — 賽制全域對齊審計與 10 位評審員模擬評估報告
+# SliverVine Protocol — 賽制全域對齊審計與 10 位評審員模擬評估報告
 
 | 欄位 | 值 |
 |------|-----|
@@ -15,7 +15,7 @@
 
 ## 執行摘要（評審視角）
 
-SilverVine / BDLW 在 **Arbitrum Sepolia Gate 棧 + Edge fail-closed + GMX v2 未簽名 payload 注入** 上具備可驗證工程深度，符合「至少部署於 Arbitrum 鏈」的硬性賽制。產品敘事（亞毫秒小腦、`lostUsd ≡ 0`、10 bps builder）對 **Arbitrum / GMX / Robinhood** 評審具高切合度。
+SliverVine / BDLW 在 **Arbitrum Sepolia Gate 棧 + Edge fail-closed + GMX v2 未簽名 payload 注入** 上具備可驗證工程深度，符合「至少部署於 Arbitrum 鏈」的硬性賽制。產品敘事（亞毫秒小腦、`lostUsd ≡ 0`、10 bps builder）對 **Arbitrum / GMX / Robinhood** 評審具高切合度。
 
 **不可對外假裝已完成的缺口：**
 

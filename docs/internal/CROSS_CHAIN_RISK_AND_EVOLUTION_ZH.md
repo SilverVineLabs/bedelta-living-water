@@ -161,7 +161,7 @@ GMX 偏離溢價 (+5~10 bps uiFeeReceiver) + funding cushion
 
 > **代幣經濟學第一性原理：** 並非所有 APY 同等有效。**真實收益（Real Yield）** 來自外生現金流 — 交易手續費、資金費率、借貸利差、對手方支付的 skew rebate。**毒性通膨（Toxic Inflation）** 來自內生 token emissions — 新鑄治理代幣循環支撐標榜 APY，交易對側無結構性支付者。
 
-BDLW **不**採空轉 emission 模型：無 native BDLW 獎勵代幣、無僱傭資本挖礦、無虛榮 TVL 補貼。收益錨定於 **結構性 Delta-Neutral 現金流**，獨立於 SilverVine 代幣發行。
+BDLW **不**採空轉 emission 模型：無 native BDLW 獎勵代幣、無僱傭資本挖礦、無虛榮 TVL 補貼。收益錨定於 **結構性 Delta-Neutral 現金流**，獨立於 SliverVine 代幣發行。
 
 | 現金流支柱 | 來源 | 支付者 | 階段 |
 |-----------|------|--------|------|

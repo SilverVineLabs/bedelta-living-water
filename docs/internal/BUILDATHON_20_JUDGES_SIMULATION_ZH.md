@@ -1,4 +1,4 @@
-# SilverVine Protocol — 賽制全域對齊審計與 20 位評審員終極模擬評估報告
+# SliverVine Protocol — 賽制全域對齊審計與 20 位評審員終極模擬評估報告
 
 | 欄位 | 值 |
 |------|-----|
@@ -15,7 +15,7 @@
 
 ## 執行摘要（評審主席視角）
 
-SilverVine / BeΔ Living Water 在本輪（相對 Kimi 10 評審複核）補齊了 **形式驗證契約、博弈蒙地卡羅、Pendle PT 到期 guard + 1,000 次 fuzz、跨鏈 `deployable` 不變量、生產 hedge 活 L2 fail-closed**。這把「工程誠實度」從「文檔超前代碼」拉到「安全敘事可被紅隊追蹤」。
+SliverVine / BeΔ Living Water 在本輪（相對 Kimi 10 評審複核）補齊了 **形式驗證契約、博弈蒙地卡羅、Pendle PT 到期 guard + 1,000 次 fuzz、跨鏈 `deployable` 不變量、生產 hedge 活 L2 fail-closed**。這把「工程誠實度」從「文檔超前代碼」拉到「安全敘事可被紅隊追蹤」。
 
 **雙保留獎資格：成立。** Sepolia 三件套已部署；Robinhood `46630`/`4663` → `42161` 單向護航 + inbound AML 封鎖在測試與適配層可驗證。Hyperliquid 是對沖場，**不得被口播成 Arbitrum 部署**。
 
@@ -430,7 +430,7 @@ SilverVine / BeΔ Living Water 在本輪（相對 Kimi 10 評審複核）補齊�
 
 ### 5.4 一句對外 SSOT（評審可複誦）
 
-> SilverVine 是部署在 **Arbitrum** 的 **預執行 Citadel**：Sepolia Gate **consume-once**（Halmos 不變量契約）、Robinhood **單向 AML 護航且僅 SETTLED 可部署**、GMX **10 bps** 未簽名注入、生產對沖 **活 L2 fail-closed**。回歸 **174 files \| 768 PASS**。Pendle 是 **到期防護閘**，Dune 是 **三查詢規格**。蒙地卡羅：**87.39%** 有毒腿攔截、**$9.88M 模擬名義** LP 保護（非實盤 TVL）。
+> SliverVine 是部署在 **Arbitrum** 的 **預執行 Citadel**：Sepolia Gate **consume-once**（Halmos 不變量契約）、Robinhood **單向 AML 護航且僅 SETTLED 可部署**、GMX **10 bps** 未簽名注入、生產對沖 **活 L2 fail-closed**。回歸 **174 files \| 768 PASS**。Pendle 是 **到期防護閘**，Dune 是 **三查詢規格**。蒙地卡羅：**87.39%** 有毒腿攔截、**$9.88M 模擬名義** LP 保護（非實盤 TVL）。
 
 ### 5.5 最終裁決
 

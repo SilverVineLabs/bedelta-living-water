@@ -100,7 +100,7 @@
 
 ### 2.2 四維評分框架（各 25%）
 
-| 維度 | 評分錨點 | SilverVine v1.0 錨點 |
+| 維度 | 評分錨點 | SliverVine v1.0 錨點 |
 |------|----------|----------------------|
 | **技術深度** | 合約不變量 · 測試 · 形式化 · 延遲實測 | 773 PASS · Halmos · p50 ~106µs · Gate 事件 |
 | **Sponsor 契合** | 五 Sponsor 可驗證交付物 | RH 護航 · GMX 10bps · **Dune 公開 URL** · **Pendle registry** |

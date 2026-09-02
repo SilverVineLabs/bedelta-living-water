@@ -17,9 +17,9 @@ SliverVine Protocol (BeDelta-Living-Water) is a pre-execution risk gateway for G
 | **Pillar 2 — Robinhood Yield** | r-chain-yield-stub | RWA/Idle yield router stub (chain 46630) |
 | **Pillar 3 — Agent Gate** | agent-citadel-guard | EIP-712 intent shield + Deadman Switch |
 
-## SilverVine vs. Arbitrum Cohort 1 Winners
+## SliverVine vs. Arbitrum Cohort 1 Winners
 
-| Dimension | Carbon | LayerV | T3tris | SilverVine |
+| Dimension | Carbon | LayerV | T3tris | SliverVine |
 | --- | --- | --- | --- | --- |
 | Pre-execution Fail-Closed Gate | Partial | Partial | Partial | Full (soil + oracle + sequencer) |
 | GMX v2 GM Pool Native | — | — | — | Yes (uiFee + referral SSOT) |

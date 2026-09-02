@@ -1,4 +1,4 @@
-# SilverVine Protocol (v0.8 Santenmoku) — 內部 13 維度 Web3/HFT 架構對照與技術優勢白皮書
+# SliverVine Protocol (v0.8 Santenmoku) — 內部 13 維度 Web3/HFT 架構對照與技術優勢白皮書
 
 > **⚠️ 已由 Master SSOT 取代：** 請優先使用 [`INTERNAL_16_DIMENSION_ARCHITECTURAL_BENCHMARK_ZH.md`](./INTERNAL_16_DIMENSION_ARCHITECTURAL_BENCHMARK_ZH.md)（16 維度 · 含 Gem 14–16 程式碼審計錨點）。本文件保留供物理邊界附錄與歷史對照。
 
@@ -11,7 +11,7 @@
 
 ## 執行摘要
 
-SilverVine Citadel 協議在 **Arbitrum One** 上刻意偏離傳統 ERC/EIP「鏈上治理 + 事後分析」範式，改以 **Edge 亞毫秒反射層（p50 ~106 µs）** 作為產品重心。本白皮書將 **10 項公開基準維度** 與 **3 項內部隱藏寶石（Hidden Gems）** 合併為 **13 維度** 完整對照，供內部決策、專利佈局與專家問答使用。
+SliverVine Citadel 協議在 **Arbitrum One** 上刻意偏離傳統 ERC/EIP「鏈上治理 + 事後分析」範式，改以 **Edge 亞毫秒反射層（p50 ~106 µs）** 作為產品重心。本白皮書將 **10 項公開基準維度** 與 **3 項內部隱藏寶石（Hidden Gems）** 合併為 **13 維度** 完整對照，供內部決策、專利佈局與專家問答使用。
 
 **核心命題：** LLM / AI Agent 是「大腦（秒級）」；Citadel 是「小腦（微秒級）」—— 在 MEV、LVR、跨場滑點造成不可逆損失 **之前** 完成 fail-closed 拒絕。
 
@@ -19,7 +19,7 @@ SilverVine Citadel 協議在 **Arbitrum One** 上刻意偏離傳統 ERC/EIP「�
 
 ## 13 維度總覽矩陣
 
-| # | 維度 | 傳統 Web3 標準 | SilverVine 工程標準 | 延遲 / Gas 優勢 |
+| # | 維度 | 傳統 Web3 標準 | SliverVine 工程標準 | 延遲 / Gas 優勢 |
 |---|------|----------------|---------------------|-----------------|
 | 1 | AI Agent 拒絕證明 | EIP-712 ECDSA | HMAC-SHA256 Session Proof | **~200×**（<12µs vs 1.2–3.5ms） |
 | 2 | Session Key 授權閘門 | ERC-4337 Bundler | SystemState Single-flight | **<1ms** vs 50–500ms+ |
@@ -42,7 +42,7 @@ SilverVine Citadel 協議在 **Arbitrum One** 上刻意偏離傳統 ERC/EIP「�
 ### 傳統標準
 [EIP-712](https://eips.ethereum.org/EIPS/eip-712) 結構化資料 + secp256k1 ECDSA。每筆拒絕需錢包 / HSM 簽章，典型延遲 **1.2 ms – 3.5 ms**（含 IPC、硬體錢包、瀏覽器擴充）。
 
-### SilverVine 標準
+### SliverVine 標準
 **Sub-ms M2M Rejection Standard** — `agent-citadel-guard`（`src/core/agent-citadel-guard.ts`）以確定性 **HMAC-SHA256 Session Proof** 產生拒絕審計軌跡，Edge 預算 **< 12 µs**。
 
 | 項目 | 說明 |
@@ -62,7 +62,7 @@ SilverVine Citadel 協議在 **Arbitrum One** 上刻意偏離傳統 ERC/EIP「�
 ### 傳統標準
 [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) UserOp → Bundler → EntryPoint `validateUserOp`。網路 RTT + mempool 佇列典型 **50 – 500 ms+**。
 
-### SilverVine 標準
+### SliverVine 標準
 **SystemState Single-flight** — 在 HL / GMX 簽名離開 Edge **之前** 完成授權裁決。
 
 | 模組 | 職責 |
@@ -81,7 +81,7 @@ Bundler 負責 **投遞** 已通過 Shield 的 intent，而非作為第一道風
 ### 傳統標準
 OpenZeppelin `Pausable` — `pause()` 需上鏈交易，主網 **≥ 1 block（~12 s）**，Arbitrum **~250 ms** 仍遠慢於 HFT 反射需求。
 
-### SilverVine 標準
+### SliverVine 標準
 **Edge 物理 sever** — R17 日限額 / R20 CRI=0 觸發 `severCircuitBreakerPipeline()`（`circuit-breaker-sever.ts`）：
 
 ```text
@@ -105,7 +105,7 @@ R17/R20 trip → severSigningChannel() → enterReadOnlyObserver()
 ### 傳統標準
 `Ownable` / `Pausable` — 管理員可 `unpause()`，存在治理延遲與權限濫用面。
 
-### SilverVine 標準
+### SliverVine 標準
 `SliverVineRiskOracle.applySignedReport(STATUS_SHUTDOWN)` → **`isSystemFlushed = true`（永久、不可逆）**。
 
 | 元件 | 行為 |
@@ -124,7 +124,7 @@ R17/R20 trip → severSigningChannel() → enterReadOnlyObserver()
 ### 傳統標準
 Solidity 內嵌 oracle `SLOAD`、storage 迴圈 — gas 密集、區塊綁定、不適合 HFT 熱路徑。
 
-### SilverVine 標準
+### SliverVine 標準
 雙平面算子 parity：
 
 | 平面 | 實作 | 延遲 / 特性 |
@@ -143,7 +143,7 @@ Solidity 內嵌 oracle `SLOAD`、storage 迴圈 — gas 密集、區塊綁定、
 ### 傳統標準
 可重放簽章、可升級 Proxy — 一張 ALLOW 可被重定向至惡意 calldata。
 
-### SilverVine 標準
+### SliverVine 標準
 **Consume-once EIP-712** — `SliverVineGate` + `GatedExecutor`：
 
 | 不變量 | 實作 |
@@ -164,7 +164,7 @@ Solidity 內嵌 oracle `SLOAD`、storage 迴圈 — gas 密集、區塊綁定、
 ### 傳統標準
 Bundler 拒絕後盲目重試 — 浪費 RTT、可能觸發 EIP-7562 storage 違規。
 
-### SilverVine 標準
+### SliverVine 標準
 **EIP-7562 Zero-Bundler-Rejection Invariant** — `evaluateStaticBreakerMatrix()`（`zerodev-aa-static-breaker.ts`）：
 
 ```text
@@ -188,7 +188,7 @@ gas cap exceeded? → ZERODEV_GAS_LIMIT_EXCEEDED_TRIP
 ### 傳統標準
 公開 RPC endpoint 列表 — fork 前端可直接複製端點取得真實狀態。
 
-### SilverVine 標準
+### SliverVine 標準
 **RPC Trap Hosts** — `evaluateRpcDefenseGate()`（`rpc-fetch-gate-eval.ts`）：
 
 | 項目 | 值 |
@@ -207,7 +207,7 @@ Anti-copycat：未授權爬蟲取得 **假遙測** 而非生產狀態，提高 f
 ### 傳統標準
 前端硬編碼 `verifyingContract` — 劫持 UI 可指向偽造 Gate。
 
-### SilverVine 標準
+### SliverVine 標準
 **G11 Domain Fingerprint** — `verifyGateDomainSeparator()`（`gate-domain-fingerprint.ts`）：
 
 ```text
@@ -227,7 +227,7 @@ on-chain domainSeparator()  ←compare→  本地 EIP-712 重算（SliverVineCit
 ### 傳統標準
 Gauntlet / Chaos Labs — 事後參數調整（分鐘至數天）。
 
-### SilverVine 標準
+### SliverVine 標準
 **`checkSoilResistance()`** 內聯於每條廣播路徑，**p50 ~106 µs**：
 
 | 感測器 | 觸發 |
@@ -250,7 +250,7 @@ MEV / LVR 損害應 **預防**，而非成交後再平衡。
 ### 傳統標準
 對稱治理 — `pause` / `unpause` 同等權限、同等延遲；被盜 admin key 可立即放寬風控。
 
-### SilverVine 標準
+### SliverVine 標準
 `SliverVineGate.sol` **非對稱權威模型**：
 
 | 動作 | 延遲 | 角色 |
@@ -272,7 +272,7 @@ MEV / LVR 損害應 **預防**，而非成交後再平衡。
 ### 傳統標準
 EIP-7562 約束在 Bundler **Validation Phase** 才暴露違規 — 已消耗網路與排程成本。
 
-### SilverVine 標準
+### SliverVine 標準
 Edge **無狀態** 預篩矩陣（`evaluateStaticBreakerMatrix` + `evaluateSponsoredGasLimits`）：
 
 | 檢查 | 行為 |
@@ -295,7 +295,7 @@ Edge **無狀態** 預篩矩陣（`evaluateStaticBreakerMatrix` + `evaluateSpons
 ### 傳統標準
 雙向 bridge 會計 — in-flight 資本常被誤記為 `lostUsd`，觸發連鎖清算或錯誤風控決策。
 
-### SilverVine 標準
+### SliverVine 標準
 **Pending-Capital Recognition Invariant** — `across-ingress-bridge.ts` · SDK `assertUnidirectionalBridge()`：
 
 | 不變量 | 定義 |
@@ -329,7 +329,7 @@ Edge **無狀態** 預篩矩陣（`evaluateStaticBreakerMatrix` + `evaluateSpons
 
 ---
 
-## 附錄：SilverVine v0.8 內部已知物理邊界與 V1.0 主網修補 Roadmap
+## 附錄：SliverVine v0.8 內部已知物理邊界與 V1.0 主網修補 Roadmap
 
 > **Truth-Mode 聲明：** 本附錄僅供內部工程 / 法務 / Grant 盡職審查使用。下列三項為 v0.8 Santenmoku **已知情且已文件化** 的物理邊界，**不影響** Sepolia 乾跑與 768/768 Vitest 回歸通過，但必須在 **V1.0 主網（M6）** 前完成修補或接受 residual risk 簽核。
 

@@ -1,4 +1,4 @@
-# SilverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — 內部 16 維度 Web3/HFT 架構主基準（Master SSOT）
+# SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — 內部 16 維度 Web3/HFT 架構主基準（Master SSOT）
 
 > **文件分類：** 內部 OpSec · 限 SilverVine Labs 工程 / 法務 / 專利審查  
 > **實體：** SilverVine Labs · **協議品牌：** SliverVine · **引擎代號：** Santenmoku v0.8 · **產品版本：** BeΔ Living Water v1.0  
@@ -27,7 +27,7 @@
 
 ## 16 維度總覽矩陣
 
-| # | 維度 | 傳統 Web3 標準 | SilverVine 工程標準 | 延遲 / Gas 優勢 |
+| # | 維度 | 傳統 Web3 標準 | SliverVine 工程標準 | 延遲 / Gas 優勢 |
 |---|------|----------------|---------------------|-----------------|
 | 1 | AI Agent 拒絕證明 | EIP-712 ECDSA | HMAC-SHA256 Session Proof | **~200×**（<12µs vs 1.2–3.5ms） |
 | 2 | Session Key 授權閘門 | ERC-4337 Bundler | SystemState Single-flight | **<1ms** vs 50–500ms+ |
@@ -172,7 +172,7 @@
 
 AI Agent 錢包依賴 LLM 自然語言推理 + 事後鏈上審計；Prompt Injection 可誘導未授權簽章，且無亞毫秒執行層 Policy 硬斷言。
 
-### SilverVine 標準
+### SliverVine 標準
 
 **「大腦 / 小腦」分離架構** — Citadel 不解析 NL prompt，而是在廣播前以確定性 Policy 複合閘裁決：
 
@@ -202,7 +202,7 @@ DeadmanOk     = evaluateAgentCitadelGuard()  (50 bps 預設 · 小腦反射層)
 
 ### 架構理由
 
-ERC-8196 Draft 要求 Agent Wallet **可審計 Policy 邊界**；SilverVine 以 **亞毫秒複合閘** 在 LLM 輸出 digest 層攔截注入，並以 **Deadman 小腦** 在簽名管道層 fail-closed——即使「大腦」被攻破，R20 sever 仍可在 106µs 內熔斷 EIP-712 管道。
+ERC-8196 Draft 要求 Agent Wallet **可審計 Policy 邊界**；SliverVine 以 **亞毫秒複合閘** 在 LLM 輸出 digest 層攔截注入，並以 **Deadman 小腦** 在簽名管道層 fail-closed——即使「大腦」被攻破，R20 sever 仍可在 106µs 內熔斷 EIP-712 管道。
 
 ---
 
@@ -212,7 +212,7 @@ ERC-8196 Draft 要求 Agent Wallet **可審計 Policy 邊界**；SilverVine 以 
 
 鏈下 dashboard 與鏈上事件孤立存在；評審無法在單一 curl 中驗證「儀表板數字 = 鏈上事實」。
 
-### SilverVine 標準
+### SliverVine 標準
 
 **Deterministic Dual-Source Reconciliation** — `grant-audit` API 產出 `duneTelemetry.responseRef`（SHA-256），其 `gateActionCode` 與 `SliverVineGate.IntentAttested` 的 `uint8 action` 語意對齊。
 
@@ -255,7 +255,7 @@ Grant 評審可在 **60 秒內** 完成：`curl grant-audit | jq .duneTelemetry.
 
 Naive tx blocker 在高波動時 **同時阻擋減倉與加倉**，導致 AI Agent 被困高風險倉位（Observatory Paradox）→ 加速 GMX 強制清算。
 
-### SilverVine 標準
+### SliverVine 標準
 
 **Intent-Aware Shadow Margin Engine** — 對 `close`/`reduce` 意圖施加 **−40 風險分 Haircut**，強制 `EMERGENCY_DELEVERAGE_ALLOWED`；對 `open`/`increase` 維持 `FAIL_CLOSED_BLOCK`（score > 75 或 shadowMargin < 0）。
 
@@ -292,7 +292,7 @@ Naive tx blocker 在高波動時 **同時阻擋減倉與加倉**，導致 AI Age
 
 ### 架構理由
 
-Pendle PT 動態費用曲線 + GMX Maintenance Margin 的交叉風險，需要 **意圖感知** 而非二元封鎖。−40 Haircut 是 SilverVine 對「Observatory Paradox」的數學化解 — 已在 `grant-audit` Dune 遙測與 Sepolia Gate `IntentAttested` 雙源可驗證。
+Pendle PT 動態費用曲線 + GMX Maintenance Margin 的交叉風險，需要 **意圖感知** 而非二元封鎖。−40 Haircut 是 SliverVine 對「Observatory Paradox」的數學化解 — 已在 `grant-audit` Dune 遙測與 Sepolia Gate `IntentAttested` 雙源可驗證。
 
 ---
 

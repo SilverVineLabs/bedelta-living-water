@@ -1,7 +1,7 @@
-# SilverVine Citadel Protocol — 黑帽極限攻擊與 MEV 清算套利對抗審計報告
+# SliverVine Citadel Protocol — 黑帽極限攻擊與 MEV 清算套利對抗審計報告
 
 > **分類：** 內部 Red-Team / OpSec · 禁止直接公開  
-> **協議：** SilverVine Citadel v0.8 Santenmoku  
+> **協議：** SliverVine Citadel v0.8 Santenmoku  
 > **審計範圍：** `src/` · `contracts/` · `SliverVineGate/` · `docs/`  
 > **安全基線：** Vitest **174 files | 768 PASS (100% Clean · Exit Code 0)**；本輪依指示未重跑測試  
 > **方法：** 攻擊路徑靜態追蹤、信任邊界反演、TOCTOU 分析、會計狀態機與鏈上執行語意交叉驗證

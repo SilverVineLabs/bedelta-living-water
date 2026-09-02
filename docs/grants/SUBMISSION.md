@@ -32,7 +32,7 @@
 | ERC-8196 agent policy | [Technical Specification §0.1](../architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
 | Institutional DD / Basel mapping | [Due Diligence Memorandum](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 
-Built on the Santenmoku internal engine (p50 ~106µs), [`@slivervine/citadel-sdk`](../../src/sdk/README.md), and consume-once EIP-712 Gate attestation — SilverVine intercepts AI trade intents **before** mempool or bundler ingress. Deep narrative: [Problem / Solution](#the-problem) · [Sponsor Integration Matrix](#sponsor-integration-matrix).
+Built on the Santenmoku internal engine (p50 ~106µs), [`@slivervine/citadel-sdk`](../../src/sdk/README.md), and consume-once EIP-712 Gate attestation — SliverVine intercepts AI trade intents **before** mempool or bundler ingress. Deep narrative: [Problem / Solution](#the-problem) · [Sponsor Integration Matrix](#sponsor-integration-matrix).
 
 ### The Problem
 
@@ -40,7 +40,7 @@ AI Trading Agents combine dynamic yield tokens (e.g., Pendle PTs), high-leverage
 
 ### The Solution: Intent-Aware Risk Navigation
 
-SilverVine shifts risk management from "naive blocking" to **Intent-Aware Navigation**:
+SliverVine shifts risk management from "naive blocking" to **Intent-Aware Navigation**:
 
 1. **Observability**: Real-time monitoring of Pendle PT yield jitter/expiry dynamic fees, GMX maintenance margin buffers, and liquidity depth — [Pendle registry SSOT](../../src/adapters/pendle/pendle-pt-registry.ts) · [Technical Specification §1](../architecture/TECHNICAL_SPECIFICATION.md#1-core-product-identity).
 2. **Intent Taxonomy**: Directional division separating `RISK_INCREASE` (`open`/`increase` → strict Fail-Closed evaluation) from `RISK_DECREASE` (`close`/`reduce` → greenlighted with safety routing) — [§ Core Risk Decision Matrix](#core-risk-decision-matrix-evaluatependlegmxcrossguard).
@@ -48,7 +48,7 @@ SilverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 
 ### Legal & Regulatory Positioning
 
-> **DISCLAIMER**: SilverVine Protocol provides software-based risk analytics, monitoring, policy enforcement, and execution-safety tooling only. It does NOT provide asset custody, underwriting, indemnity, reimbursement, profit guarantees, or any form of insurance-like coverage. All risk decisions are algorithmic and based on user-defined policy parameters and protocol-aware market signals. SLA commitments apply strictly to system availability, sub-millisecond latency, logging integrity, and observability uptime. Fees charged are software access, API, and computational SLA routing fees, creating no obligation to compensate financial losses.
+> **DISCLAIMER**: SliverVine Protocol provides software-based risk analytics, monitoring, policy enforcement, and execution-safety tooling only. It does NOT provide asset custody, underwriting, indemnity, reimbursement, profit guarantees, or any form of insurance-like coverage. All risk decisions are algorithmic and based on user-defined policy parameters and protocol-aware market signals. SLA commitments apply strictly to system availability, sub-millisecond latency, logging integrity, and observability uptime. Fees charged are software access, API, and computational SLA routing fees, creating no obligation to compensate financial losses.
 
 ---
 
@@ -143,15 +143,15 @@ Hyperliquid Session Key Adapter and TCA provenance (`src/data/verified-5tx-lib/v
 
 ## Business Model & GTM Strategy
 
-SilverVine rejects unrealistic B2B sales models (e.g. charging DAOs $8k/mo upfront) and adopts an **Infra-First, Multi-Tiered Monetization Engine**:
+SliverVine rejects unrealistic B2B sales models (e.g. charging DAOs $8k/mo upfront) and adopts an **Infra-First, Multi-Tiered Monetization Engine**:
 
 1. **Pay-per-Intent Micro-Attestation Fee (Primary Engine)**:
- * AI Agents and Vault Operators connect via SilverVine's Secure RPC Gateway (`@slivervine/citadel-sdk`).
+ * AI Agents and Vault Operators connect via SliverVine's Secure RPC Gateway (`@slivervine/citadel-sdk`).
  * Charged $0.01 – $0.05 per signed attestation, deducting micro-fees automatically without requiring credit card friction.
 2. **Telemetry & Risk Data API (Data Engine)**:
  * Access to real-time Yield Convexity and Liquidity Void feeds via WebSocket/REST for hedge funds and quant vaults ($199–$1,999/month).
 3. **Edge Execution Alliance (Partnership Model)**:
- * Acts as the **Sub-ms Intent Execution Edge** for macro risk engines (e.g., Chaos Labs, Gauntlet). Chaos Labs provides macro parameter tuning; SilverVine enforces microsecond off-chain intent protection.
+ * Acts as the **Sub-ms Intent Execution Edge** for macro risk engines (e.g., Chaos Labs, Gauntlet). Chaos Labs provides macro parameter tuning; SliverVine enforces microsecond off-chain intent protection.
 
 **GMX builder lane (adjacent):** +10 bps `uiFeeReceiver` on unsigned GMX v2 payloads — see [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md).
 
@@ -159,14 +159,14 @@ SilverVine rejects unrealistic B2B sales models (e.g. charging DAOs $8k/mo upfro
 
 ## 🛣️ Post-Buildathon B2B Commercialization & PMF Roadmap (Post-9/14)
 
-SilverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction Hackathon Verification with Long-Term Commercial Sustainability:
+SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction Hackathon Verification with Long-Term Commercial Sustainability:
 
 - **Stage 1: Buildathon Verification Phase (Active Now — Pre-9/14)**
   - **100% Free Public Telemetry**: Open-access Dune Live Telemetry Dashboard ([https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)) for zero-friction judge and developer auditing.
   - **Sepolia Safety Gate**: Full EIP-712 session key validation and 0-Gas Fail-Closed protection verified on Arbitrum Sepolia (`0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`).
 
 - **Stage 2: B2B Monetization & Risk API Launch (Post-9/14)**
-  - **SilverVine Citadel Risk API & Bad Debt Calculator (powered by on-chain telemetry & Dune Analytics visualization)**: Monetize SilverVine's proprietary sub-ms risk calculation algorithms and shadow margin telemetry via a B2B API — **not** Dune platform data resale. [Dune](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) remains the **free public visualization dashboard**; paid tiers ($199/mo Pro to $1,999/mo Enterprise) gate programmatic access to Citadel-computed liquidation risk, margin health, and bad-debt savings metrics for vault managers and AI Agent swarms (Wayfinder, Virtuals, M2M Treasury Funds).
+  - **SliverVine Citadel Risk API & Bad Debt Calculator (powered by on-chain telemetry & Dune Analytics visualization)**: Monetize SliverVine's proprietary sub-ms risk calculation algorithms and shadow margin telemetry via a B2B API — **not** Dune platform data resale. [Dune](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) remains the **free public visualization dashboard**; paid tiers ($199/mo Pro to $1,999/mo Enterprise) gate programmatic access to Citadel-computed liquidation risk, margin health, and bad-debt savings metrics for vault managers and AI Agent swarms (Wayfinder, Virtuals, M2M Treasury Funds).
   - **Citadel-as-a-Service (CaaS) 10 bps Rail**: Automatically inject venue-native 10 bps UI fees on protected live transactions across Arbitrum One GMX v2 & Pendle markets.
 
 ---
@@ -250,32 +250,32 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualL
 
 ## Appendix: Industry References & Real-World Threat Anchors
 
-SilverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is engineered directly in response to emerging Web3 AI Agent execution vulnerabilities, real-world exploit vectors, and market loss events:
+SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is engineered directly in response to emerging Web3 AI Agent execution vulnerabilities, real-world exploit vectors, and market loss events:
 
 - **1. MEV Bots & Thin-Liquidity Exploitation on Autonomous Agents**:
   - *Threat*: Autonomous AI Agents (e.g., ElizaOS, Virtuals swarm bots) executing trades on DEXs without real-time L2 orderbook depth sensing are routinely sandwiched by MEV bots or suffer 5%+ extreme slippage in thin liquidity pools.
-  - *SilverVine Alignment*: Directly addressed by `checkSoilResistance()` depth & slippage sensing and `evaluateHlOrderbookGapGuard()`.
+  - *SliverVine Alignment*: Directly addressed by `checkSoilResistance()` depth & slippage sensing and `evaluateHlOrderbookGapGuard()`.
 
 - **2. Prompt Injection Attacks Leading to Unauthorized Key Hijacking**:
   - *Threat*: Malicious prompts injected via Discord/Twitter trick the Agent's reasoning model (LLM) into generating unauthorized signatures or transferring vault assets to attacker addresses.
-  - *SilverVine Alignment*: Prevented at the "Cerebellum" execution layer via R20 Physical Deadlock (`severSigningChannel()`) and EIP-712 Consume-Once Gate. Even if the LLM "Brain" is compromised, the pre-broadcast signature pipe is severed within 106µs.
+  - *SliverVine Alignment*: Prevented at the "Cerebellum" execution layer via R20 Physical Deadlock (`severSigningChannel()`) and EIP-712 Consume-Once Gate. Even if the LLM "Brain" is compromised, the pre-broadcast signature pipe is severed within 106µs.
 
 - **3. Flash-Liquidity Crises & Cascading Liquidations in Derivatives Markets**:
   - *Threat*: Sudden liquidity drawdowns on GMX v2 and Hyperliquid trigger flash slippage, forcing unhedged AI agents into toxic liquidations.
-  - *SilverVine Alignment*: Solved by our core invariant $\Delta_{\text{net}} \equiv 0$ and the Observatory Paradox (-40 score markdown) dynamic risk controller.
+  - *SliverVine Alignment*: Solved by our core invariant $\Delta_{\text{net}} \equiv 0$ and the Observatory Paradox (-40 score markdown) dynamic risk controller.
 
 - **4. Verified Real-World Loss Case ($441k+ Bot Execution Error)**:
   - *Reference*: [PumpParade / Medium: AI Trading Bots Lost $441k in One Error](https://pumpparade.medium.com/ai-trading-bots-lost-441k-in-one-error-heres-what-actually-works-and-what-doesn-t-4f04f890c189)
-  - *SilverVine Alignment*: Proves the urgent necessity for sub-ms pre-broadcast safety checking before orders hit the public mempool.
+  - *SliverVine Alignment*: Proves the urgent necessity for sub-ms pre-broadcast safety checking before orders hit the public mempool.
 
 - **5. Industry Consensus on AI Antivirus Primitives**:
   - *Reference*: [CertiK: AI Skill Scanner & Antivirus Software for the AI Age](https://www.tradingview.com/news/chainwire:d064d7d1f094b:0-certik-launches-ai-skill-scanner-an-antivirus-software-for-the-ai-age/)
-  - *SilverVine Alignment*: Validates the market demand for AI security, where SilverVine provides the execution-layer safety citadel.
+  - *SliverVine Alignment*: Validates the market demand for AI security, where SliverVine provides the execution-layer safety citadel.
 
 - **6. Institutional Focus on AI Agent Vulnerabilities**:
   - *Reference*: [CryptoRank: AI Agents & Web3 Hacking Symposium](https://cryptorank.io/news/feed/fae5e-ai-agents-web3-hacking-wyoming-symposium)
-  - *SilverVine Alignment*: Directly maps to institutional standards for agent wallet protection and pre-execution threat mitigation.
+  - *SliverVine Alignment*: Directly maps to institutional standards for agent wallet protection and pre-execution threat mitigation.
 
 ---
 
-**SilverVine Protocol** — *The Risk Operating System for AI-Driven DeFi.*
+**SliverVine Protocol** — *The Risk Operating System for AI-Driven DeFi.*

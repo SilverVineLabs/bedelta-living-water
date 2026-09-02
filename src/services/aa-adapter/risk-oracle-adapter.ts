@@ -1,4 +1,4 @@
-/** Stateless public adapter — SilverVine v0.9 on-chain risk oracle surface (no Worker state). */
+/** Stateless public adapter — SliverVine v0.9 on-chain risk oracle surface (no Worker state). */
 import type { Address } from "viem";
 import {
   RISK_ORACLE_FAIL_CLOSED_STATUS_CODE,

@@ -9,7 +9,7 @@
 
 ## 變更摘要
 
-正式將 SilverVine Citadel 綁定的五項核心 ERC/EIP 標準寫入技術規格 §4，並新增 **§4.0 ERC/EIP Standards Reference Wiki** 子章節。
+正式將 SliverVine Citadel 綁定的五項核心 ERC/EIP 標準寫入技術規格 §4，並新增 **§4.0 ERC/EIP Standards Reference Wiki** 子章節。
 
 | 標準 | 文件化內容 |
 |------|-----------|

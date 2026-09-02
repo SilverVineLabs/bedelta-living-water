@@ -1,4 +1,4 @@
-# SilverVine Citadel Protocol — Advanced HFT Architectural Innovations & Trade Secrets (3 Hidden Gems)
+# SliverVine Citadel Protocol — Advanced HFT Architectural Innovations & Trade Secrets (3 Hidden Gems)
 
 > **Classification:** Internal IP / patent diligence · expert Q&A reference  
 > **Entity:** SilverVine Labs · **Protocol:** SliverVine · **Engine:** Santenmoku v0.8  
@@ -27,7 +27,7 @@ Standard EIP-712 gate or multisig designs typically apply **symmetric authority*
 
 OpenZeppelin `Pausable` and Ownable pause patterns share this flaw: recovery paths are as fast as emergency stops.
 
-### SilverVine Innovation
+### SliverVine Innovation
 
 `SliverVineGate` embeds **asymmetric authority** directly into the EIP-712 attestation anchor:
 
@@ -68,7 +68,7 @@ OpenZeppelin `Pausable` and Ownable pause patterns share this flaw: recovery pat
 
 Standard AA stacks often **blind-retry** on bundler failure, treating rejection as a transport error rather than a protocol fault.
 
-### SilverVine Innovation
+### SliverVine Innovation
 
 **Zero-Bundler-Rejection Invariant:** Citadel evaluates a **stateless static breaker matrix** on the Edge **before** paymaster sign and bundler dispatch:
 
@@ -117,7 +117,7 @@ Conventional cross-chain bridge accounting treats in-flight liquidity ambiguousl
 
 Standard ERC-20 / vault share models do not define a **pending-capital recognition invariant** for institutional escort flows.
 
-### SilverVine Innovation
+### SliverVine Innovation
 
 **Pending-Capital Recognition Invariant:**
 

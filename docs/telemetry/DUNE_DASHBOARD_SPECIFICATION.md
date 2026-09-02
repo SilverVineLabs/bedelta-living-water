@@ -40,7 +40,7 @@
 Live dashboard query — verifies Arbitrum indexer liveness and pins the Sepolia Gate contract under active monitoring.
 
 ```sql
--- SilverVine Citadel: Telemetry Heartbeat & Active Risk Monitor
+-- SliverVine Citadel: Telemetry Heartbeat & Active Risk Monitor
 -- Contract: 0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1 (Arbitrum Sepolia)
 
 SELECT

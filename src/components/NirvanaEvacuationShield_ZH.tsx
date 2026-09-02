@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SilverVine Protocol (v0.9) - SanmHUD Premium Visual Component
+// SliverVine Protocol (v0.9) - SanmHUD Premium Visual Component
 // Core: Level 5 Emergency UI Adaptation (De-noised, 0 Formula Leak)
 
 import React, { useEffect, useState } from 'react';

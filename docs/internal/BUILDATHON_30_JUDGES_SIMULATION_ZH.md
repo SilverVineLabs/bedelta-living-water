@@ -1,4 +1,4 @@
-# SilverVine Protocol (BeΔ Living Water v0.8 Santenmoku) — 30 位評審團全域模擬審計報告
+# SliverVine Protocol (BeΔ Living Water v0.8 Santenmoku) — 30 位評審團全域模擬審計報告
 
 | 欄位 | 值 |
 |------|-----|
@@ -48,7 +48,7 @@
 
 ### 1.2 四維評分框架（各 25%）
 
-| 維度 | 權重 | 評分錨點 | SilverVine 本輪錨點 |
+| 維度 | 權重 | 評分錨點 | SliverVine 本輪錨點 |
 |------|------|----------|---------------------|
 | **技術深度** | 25% | 合約不變量、測試覆蓋、形式化、延遲實測 | 773 PASS · Halmos I6 · p50 ~106µs · Gate 事件 |
 | **Sponsor 契合** | 25% | 四贊助商可驗證交付物與賽制合規 | RH 護航 · GMX 10bps · Pendle cross-guard · **Dune live telemetry** |
@@ -284,7 +284,7 @@
 
 ### 6.5 一句對外 SSOT（30 評審可複誦版）
 
-> SilverVine 是 **Arbitrum 預執行 Citadel**：Sepolia Gate **consume-once** 並發射 **`IntentAttested` / `RiskTripBlocked`**；`/api/grant-audit` 返回 **`duneTelemetry`**（sha256 溯源 + Shadow Margin）；**`evaluatePendleGmxCrossGuard`** 對減倉意圖 **-40 分**修復 Observatory Paradox；回歸 **175 files \| 773 PASS** · Forge 60/60 · Stylus 5/5。Dune：**Live Log-Engine Verified** · 公開 dashboard 為 M-Dune 解鎖項。
+> SliverVine 是 **Arbitrum 預執行 Citadel**：Sepolia Gate **consume-once** 並發射 **`IntentAttested` / `RiskTripBlocked`**；`/api/grant-audit` 返回 **`duneTelemetry`**（sha256 溯源 + Shadow Margin）；**`evaluatePendleGmxCrossGuard`** 對減倉意圖 **-40 分**修復 Observatory Paradox；回歸 **175 files \| 773 PASS** · Forge 60/60 · Stylus 5/5。Dune：**Live Log-Engine Verified** · 公開 dashboard 為 M-Dune 解鎖項。
 
 ---
 

@@ -145,7 +145,7 @@ Root protocol / Worker remains **BUSL-1.1** (see repo `LICENSE`); SDK harness is
 
 ## Appendix C — 3-Party CTO Integration Roadmap
 
-SilverVine is the **infrastructure-layer armored pipeline**. Application-layer storefronts integrate as CTO / product surfaces without owning the pre-execution moat:
+SliverVine is the **infrastructure-layer armored pipeline**. Application-layer storefronts integrate as CTO / product surfaces without owning the pre-execution moat:
 
 | Party | Layer | Integration posture |
 |-------|-------|---------------------|
@@ -161,7 +161,7 @@ SilverVine is the **infrastructure-layer armored pipeline**. Application-layer s
 4. Preserve `uiFeeReceiver` **+10 bps** on every GMX v2 unsigned payload.
 5. Expand markets only via V1.0 config maps (BTC/USDC · USDG Robinhood Chain) — no fork of Wasm soil core.
 
-Cohort contrast matrix (infra vs app): see grant audit matrix generator narrative (`scripts/generate-grant-audit-matrix.ts` — Carbon / LayerV / T3tris / SilverVine).
+Cohort contrast matrix (infra vs app): see grant audit matrix generator narrative (`scripts/generate-grant-audit-matrix.ts` — Carbon / LayerV / T3tris / SliverVine).
 
 ---
 

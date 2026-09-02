@@ -1,4 +1,4 @@
-# SilverVine Protocol — 賽制全域對齊審計與 10 位評審員模擬評估報告 (Kimi K3 獨立複核版)
+# SliverVine Protocol — 賽制全域對齊審計與 10 位評審員模擬評估報告 (Kimi K3 獨立複核版)
 
 | 欄位 | 值 |
 |------|-----|
@@ -16,7 +16,7 @@
 
 ## 執行摘要（評審視角）
 
-SilverVine / BDLW 在 **Arbitrum Sepolia Gate 三件套 + Edge fail-closed + GMX v2 未簽名 payload 注入 + 單向合規護航** 上具備可驗證工程深度，滿足「必須部署於 Arbitrum 鏈」硬性賽制，且同時具備 Robinhood Chain 適配代碼，**雙保留獎（Arbitrum ×1、Robinhood ×1）資格均成立**。
+SliverVine / BDLW 在 **Arbitrum Sepolia Gate 三件套 + Edge fail-closed + GMX v2 未簽名 payload 注入 + 單向合規護航** 上具備可驗證工程深度，滿足「必須部署於 Arbitrum 鏈」硬性賽制，且同時具備 Robinhood Chain 適配代碼，**雙保留獎（Arbitrum ×1、Robinhood ×1）資格均成立**。
 
 **修復後複核結論（相對前版）：**
 

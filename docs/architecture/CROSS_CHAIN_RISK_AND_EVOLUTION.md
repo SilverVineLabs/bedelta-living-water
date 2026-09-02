@@ -171,7 +171,7 @@ GMX skew premium (+5~10 bps uiFeeReceiver) + funding cushion
 
 > **Tokenomics first principle:** Not all APY is created equal. **Real yield** flows from exogenous cash flows — trading fees, funding payments, lending spreads, and skew rebates paid by counterparties. **Toxic inflation** flows from endogenous token emissions — newly minted governance tokens recycled into headline APY with no structural payer on the other side of the trade.
 
-BDLW **does not** operate an empty emission token model. There is **no** native BDLW reward token, **no** mercenary liquidity mining program, and **no** vanity TVL subsidy designed to inflate HUD numbers. Yield is anchored to **structural delta-neutral cash flows** that exist independently of SilverVine token issuance.
+BDLW **does not** operate an empty emission token model. There is **no** native BDLW reward token, **no** mercenary liquidity mining program, and **no** vanity TVL subsidy designed to inflate HUD numbers. Yield is anchored to **structural delta-neutral cash flows** that exist independently of SliverVine token issuance.
 
 #### 2.6.1 Toxic Inflation — The Empty Emission Pattern
 
@@ -193,7 +193,7 @@ This pattern is **explicitly rejected** by BDLW architecture. Allocator-facing d
 
 #### 2.6.2 Real Yield — BDLW's Structural Delta-Neutral Cash-Flow Stack
 
-BDLW composes yield from **three exogenous legs**, each with an identifiable economic payer outside SilverVine token minting:
+BDLW composes yield from **three exogenous legs**, each with an identifiable economic payer outside SliverVine token minting:
 
 | Cash-flow leg | Source | Economic payer | Stage | Code / spec anchor |
 |---------------|--------|----------------|-------|-------------------|

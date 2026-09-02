@@ -56,7 +56,7 @@ export function assertNoPrivateKeysInJson(payload: unknown): void {
 
 export function formatSanitizedLogMd(entries: SanitizedLogEntry[]): string {
   const lines = [
-    "# SilverVine Grant Audit — Sanitized Log",
+    "# SliverVine Grant Audit — Sanitized Log",
     "",
     "> OpSec: internal BME vectors redacted. Public status codes only.",
     "",

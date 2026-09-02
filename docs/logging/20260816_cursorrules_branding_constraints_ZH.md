@@ -2,7 +2,7 @@
 
 ## Summary of Changes
 - 修復 `.cursorrules` 內誤植的 `cat << 'EOF'` / `EOF` shell 殘留。
-- 角色與標題統一為 **SliverVine Protocol**（取代 SilverVine）。
+- 角色與標題統一為 **SliverVine Protocol**（取代 SliverVine）。
 - 新增 **Branding & UI Integrity Constraints** 四條核心品牌規則（SSOT、禁止 Silver、BeΔLivingWater 標題、Δ 符號一致性）。
 
 ## Test Results

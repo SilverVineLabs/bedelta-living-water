@@ -1,4 +1,4 @@
-// SilverVine Protocol v0.9 — Level 5 Emergency evacuation shield (public demo UI)
+// SliverVine Protocol v0.9 — Level 5 Emergency evacuation shield (public demo UI)
 import { useEffect, useState, type ReactNode } from "react";
 import {
   isEvacuationTriggered,
@@ -22,11 +22,11 @@ export interface NirvanaEvacuationShieldProps {
 }
 
 function emitEvacuationLogs(frame: SanmHudFrame): void {
-  console.warn("[SilverVine] StatusRefreshed — FAIL_CLOSED latch engaged.");
+  console.warn("[SliverVine] StatusRefreshed — FAIL_CLOSED latch engaged.");
   console.error(
-    `[SilverVine] EmergencyJumped — statusCode=0x03 shutdown | minute=${frame.minute}`,
+    `[SliverVine] EmergencyJumped — statusCode=0x03 shutdown | minute=${frame.minute}`,
   );
-  console.warn("[SilverVine] Atomic 0-entropy RWA evacuation sequence complete.");
+  console.warn("[SliverVine] Atomic 0-entropy RWA evacuation sequence complete.");
 }
 
 export function NirvanaEvacuationShield({
@@ -68,7 +68,7 @@ export function NirvanaEvacuationShield({
           Circuit Breaker Tripped · Fail-Closed Engaged
         </h2>
         <p className="mb-6 text-xs leading-relaxed text-zinc-400">
-          Off-chain sentinel reported non-linear market stress. SilverVineRiskOracle latched
+          Off-chain sentinel reported non-linear market stress. SliverVineRiskOracle latched
           SHUTDOWN (statusCode 3). Ingress Safety Switch blocked institutional ingress.
           Wallet exposure was atomically rotated into 0-entropy RWA vault custody.
         </p>
