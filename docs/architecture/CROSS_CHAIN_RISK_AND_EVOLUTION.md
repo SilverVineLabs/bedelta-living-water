@@ -7,7 +7,8 @@
 > **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md)
 
 **Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
-**Entity:** SilverVine Labs · **Protocol:** SliverVine / BeΔ Living Water (BDLW)
+**Entity:** SilverVine Labs · **Protocol:** SliverVine Protocol / SliverVine Citadel
+**Positioning:** Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum
 **Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 
 ---
@@ -16,58 +17,63 @@
 
 BeDeltaLivingWater (BDLW) acknowledges a fundamental law of distributed systems: **Cross-chain risk, bridge latency, and basis drift cannot be magically erased by software; they must be quantified, isolated, and economically absorbed.**
 
-This document outlines BDLW's 3-Stage Evolutionary Roadmap, its Tiered Liquidity Stacking mechanism (Aave v3 / Morpho Blue), and **60 Reflective Architectural Invariants** — each status-badged as **✅ Code-Verified** (v1.0 baseline) or **⏳ Roadmap Spec** (V1.5/V2.0).
+This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — from the **code-verified V1.0 AI Agent Citadel on Arbitrum**, through **V1.5 sub-ms agentic security / ERC-8196 swarms**, to **V2.0 institutional Citadel-as-a-Service (CaaS) & Orbit Shield** — plus Tiered Liquidity Stacking (Aave v3 / Morpho Blue) and **60 Reflective Architectural Invariants**, each status-badged as **✅ Code-Verified** (v1.0 baseline) or **⏳ Roadmap Spec** (V1.5/V2.0).
 
 ---
 
 ## 1. The 3-Stage Evolutionary Architecture
 
+**Product positioning:** Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum (SliverVine Protocol · SilverVine Labs).
+
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│ Stage A (Current V1.0): Arbitrum Primary + Hyperliquid 1× Short │
-│ · Primary Vault: Arbitrum One GMX v2 GM Pools (ETH/USDC, BTC/USDC) │
-│ · Hedge Leg: Hyperliquid 1× Short (EIP-712 Session Key, 30s TTL) │
-│ · Ingress Escort: Robinhood Chain 46630 (USDG) via Across Bridge (1h timeout) │
-│ · Protection: p50 106µs Wasm Soil Engine + ZeroDev Kernel v3 AA │
+│ Stage A (V1.0 — ✅ Code-Verified Live Baseline)                                 │
+│ · Arbitrum One Primary + GMX v2 / HL Delta-Neutral Engine                       │
+│ · Wasm Hot-Path Shield: p50 ~106µs · <28KiB pkg/soil_core.wasm                  │
+│ · ERC-8196 Sub-ms Policy Pre-Validation (Emerging Draft)                        │
+│ · EIP-712 Consume-Once Gate 0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1           │
+│ · Vitest SSOT: Proposal Baseline 175|773 PASS · Live 176|775 PASS Clean         │
 └────────────────────────────────────────┬────────────────────────────────────────┘
- │
- ▼
+                                         │
+                                         ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│ Stage B (V1.5): Tiered Liquidity Stacking (Aave v3 / Morpho Blue + Variational) │
-│ · Risk-Free Base: Automatic fallback to Aave v3 / Morpho Blue (4%~5% Base Yield)│
-│ · Native Arbitrum Hedge: Shadow trading on Variational Perp DEX │
-│ · Citadel Yield Buffer: Excess yield above Aave benchmark absorbs bridge costs │
-│ · UX Infrastructure: ZeroDev Kernel v4 EIP-7702 Intent Composer │
+│ Stage B (V1.5 — ⏳ Roadmap: Sub-ms Agentic Security & ERC-8196 Swarms)           │
+│ · ERC-8196 Fleet Enforcement — multi-agent policy gates vs rogue LLM execution  │
+│ · EIP-7702 Zero-Friction Onboarding — EOA → Agent Smart Account, no token move  │
+│ · Prompt Injection Defense Circuit — sub-100µs severSigningChannel()            │
+│ · Variational Perp Native Hedge PoC — Arbitrum shadow hedge, less cross-L1 RPC  │
 └────────────────────────────────────────┬────────────────────────────────────────┘
- │
- ▼
+                                         │
+                                         ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│ Stage C (V2.0): 100% Native Arbitrum Ultra-Vault (Zero Cross-Chain Friction) │
-│ · 100% Volume & TVL Retention on Arbitrum One (GMX v2 + Variational) │
-│ · Atomic Intent Composition: Single-click Aave withdraw → GMX deposit → Short │
-│ · Bridge Latency: Completely eliminated; Robinhood retained as opt-in escort │
-│ · Citadel CaaS: Monetized B2B Wasm Firewall for external protocols │
+│ Stage C (V2.0 — ⏳ Design Spec: Institutional CaaS & Orbit Shield)               │
+│ · Modular B2B CaaS — @slivervine/citadel-sdk Wasm core for AI DEX / Orbit L3    │
+│ · Protocol Monetization — 10 bps authorization fee on pre-execution risk checks │
+│ · Multi-Chain Edge Reflector Mesh — cross-L2 telemetry + instant kill-switch    │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 | Stage | Status | Center of Gravity |
 |-------|--------|-------------------|
-| **A — V1.0** | ✅ Code-Verified (Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)) | Arbitrum GMX v2 + HL 1× short · Robinhood outbound escort |
-| **B — V1.5** | ⏳ Roadmap | Aave/Morpho base + Variational native hedge PoC |
-| **C — V2.0** | ⏳ Design Spec | 100% Arbitrum atomic intent stack · CaaS monetization |
+| **A — V1.0** | ✅ Code-Verified (Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)) | Arbitrum One GMX v2 / HL Δ-neutral · Wasm Shield · ERC-8196 Draft policy gate · Sepolia consume-once Gate |
+| **B — V1.5** | ⏳ Roadmap | ERC-8196 fleet enforcement · EIP-7702 agent onboarding · prompt-injection pipe sever · Variational native hedge PoC |
+| **C — V2.0** | ⏳ Design Spec | Institutional CaaS (`@slivervine/citadel-sdk`) · 10 bps pre-exec fee · Orbit / Edge reflector mesh |
 
 ### 1.1 Three-Stage Risk Comparison Matrix
 
 | Risk Dimension | Stage A (V1.0 — ✅ Code-Verified) | Stage B (V1.5 — ⏳ Roadmap) | Stage C (V2.0 — ⏳ Design Spec) |
 |----------------|-----------------------------------|-----------------------------|--------------------------------|
-| **Bridge Latency** | N/A (Arbitrum-native ingress) or 1h timeout escort (Robinhood) | Medium — bridge friction absorbed by yield buffer | **Eliminated** — optional Robinhood escort only |
-| **AML / Compliance** | Standard DeFi + outbound-only Robinhood escort | Strong — segregated RWA tranche | Standard DeFi (Robinhood opt-in) |
-| **Hedge Signing Path** | HL L1 EIP-712 + 30s WS heartbeat | Medium — HL retained; Variational shadow PoC | **Same-chain** UserOp (Variational) |
-| **Funding Basis Risk** | Medium — DEX GM vs CEX perp | Medium | Lower — DEX GM vs DEX perp |
-| **Oracle / Sequencer** | <30s oracle lag fail-closed · 600s sequencer grace | Same sensors + storm fallback (planned) | Same-chain oracle alignment (easier) |
-| **Liquidity Depth** | HL deep book (production) | HL + Variational PoC depth TBD | Variational depth — venue DD required |
-| **ZeroDev Complexity** | Kernel v3 · Paymaster · Smart Routing | Dual-stack + Kernel v4 adapter (planned) | Single-chain Intent Compose |
-| **106 µs Shield** | ✅ Venue-agnostic · production | ✅ No Wasm rewrite | ✅ No Wasm rewrite |
+| **Product posture** | Sub-ms 0-Gas pre-broadcast Citadel for AI Agents on Arbitrum | Multi-agent ERC-8196 swarm security | Institutional CaaS + Orbit Shield mesh |
+| **Shield latency** | Wasm hot-path p50 ~106µs · `<28KiB` `soil_core.wasm` | Same Shield · **sub-100µs** `severSigningChannel()` on LLM invariant breach | Same Shield · mesh-propagated kill-switch |
+| **Agent policy** | ERC-8196 Emerging Draft pre-validation · EIP-712 consume-once Gate `0xb174…` | **Fleet enforcement** — multi-agent policy delegation vs rogue LLM | Plug-and-play policy SDK for third-party agent wallets |
+| **AA / onboarding** | ZeroDev Kernel v3 · Paymaster · Smart Routing | **EIP-7702** EOA → Agent Smart Account (no token migration) · Kernel v4 adapter | Single-chain Intent Compose across Orbit L3s |
+| **Prompt injection** | R20 physical deadlock on signed-intent violation | Dedicated **Prompt Injection Defense Circuit** (pipe sever before broadcast) | Mesh-wide channel lock + CaaS tenant isolation |
+| **Hedge / venue** | GMX v2 GM + HL 1× short (Δnet ≡ 0) | HL retained · **Variational Perp native hedge PoC** (less cross-L1 RPC) | Same-chain GM + native perp · optional escort |
+| **Bridge / ingress** | Robinhood 46630 outbound escort · `lostUsd ≡ 0` | Yield buffer absorbs residual bridge friction (Aave/Morpho stacking — §2.2) | **Eliminated** as default path · Robinhood opt-in |
+| **Monetization** | GMX +10 bps `uiFeeReceiver` (builder lane) | Design-partner PoV · no new fee surface required | **10 bps protocol authorization fee** on pre-exec risk checks |
+| **AML / compliance** | Outbound-only Robinhood escort · reverse path blocked | Stronger fleet policy + segregated RWA tranche (planned) | Tenant CaaS policy packs · Robinhood opt-in |
+| **Oracle / sequencer** | <30s oracle lag fail-closed · 600s sequencer grace | Same sensors + storm fallback (planned) | Cross-L2 synchronized telemetry |
+| **Regression bar** | Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean) | No Wasm rewrite · additive swarm tests | No Wasm rewrite · CaaS SDK contract tests |
 
 ---
 
