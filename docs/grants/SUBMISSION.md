@@ -23,7 +23,7 @@
 
 | Criterion | Evidence (CLI / code) |
 |-----------|------------------------|
-| **Smart Contract Quality** | [`SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) consume-once EIP-712 attestation · zero proxy / no admin loosen path · Halmos `check_*` lemmas [`HalmosGateInvariant.t.sol`](../../contracts/test/formal/HalmosGateInvariant.t.sol) · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
+| **Smart Contract Quality** | **Lean On-Chain Gate by Design** — dual-contract core [`SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) (consume-once EIP-712) + [`SliverVineAgentPolicyGuard.sol`](../../contracts/src/SliverVineAgentPolicyGuard.sol) ([ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft policy pre-screen) · immutable · non-custodial · no proxy — keeps Edge `checkSoilResistance()` at **p50 ~106µs** · Halmos `check_*` lemmas [`HalmosGateInvariant.t.sol`](../../contracts/test/formal/HalmosGateInvariant.t.sol) · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
 | **Real Problem Solving** | AI Agent pre-broadcast death window — 0-Gas fail-closed sub-ms severance via `checkSoilResistance()` before Bundler / mempool · `lostUsd ≡ 0` in-flight invariant |
 | **Innovation and Creativity** | World's first AI Agent Cerebellum Citadel — Rust `#![no_std]` Wasm Edge hot-path (`pkg/soil_core.wasm`) · p50 ~106µs soil fuse · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft Sub-ms Policy Gate) |
 | **Product-Market Fit** | GMX v2 +10 bps `uiFeeReceiver` builder lane ([`gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts)) · ZeroDev EIP-7702 EOA-to-Agent AA onboarding · Virtuals / ElizaOS SDK hook ([`@slivervine/citadel-sdk`](../../src/sdk/README.md)) |
@@ -104,9 +104,8 @@ Optional bridges (Robinhood / Across) are **Pillar 2 Reference Escort Adapters**
 
 ### 1. Arbitrum One / Sepolia (Core Base)
 
-* **Integration**: Citadel Gate Verifier contract (`SliverVineGate.sol`) deployed and verified at `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`.
-* **Mechanism**: Intercepts AI Trade Intents in sub-millisecond off-chain pipeline (`src/core/agent-citadel-guard.ts`), validating soil fuse + deadman switch before settlement-layer EIP-712 attestation (`SliverVineGate.sol`) (0-Gas Fail-Closed).
-* **Agent policy alignment**: Aligned with the emerging **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol). **Not a finalized standard.**
+* **Lean On-Chain Gate by Design**: On-chain logic is strictly **immutable and non-custodial** (no proxy, no ETH custody) so the hot path stays on Cloudflare Edge — `checkSoilResistance()` **p50 ~106µs**. Dual-contract core: `SliverVineGate.sol` (consume-once attestation, Sepolia `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`) + [`SliverVineAgentPolicyGuard.sol`](../../contracts/src/SliverVineAgentPolicyGuard.sol) ([ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft agent-policy validation — **not a finalized standard**).
+* **Mechanism**: Intercepts AI Trade Intents in the sub-millisecond off-chain pipeline (`src/core/agent-citadel-guard.ts`), validating soil fuse + deadman switch before settlement-layer EIP-712 (`SliverVineCitadel` domain) (0-Gas Fail-Closed).
 
 ### 2. Robinhood Chain (Chain ID: 46630 / 4663) — Pillar 2 Reference Escort Adapter
 
