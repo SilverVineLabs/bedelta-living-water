@@ -11,7 +11,7 @@
 | **贊助商** | Robinhood Chain（保留）· Arbitrum（保留）· Dune · GMX · Pendle |
 | **審計日期** | 2026-09-01 |
 | **前序文件** | [`BUILDATHON_30_JUDGES_SIMULATION_ZH.md`](./BUILDATHON_30_JUDGES_SIMULATION_ZH.md)（v0.8 基線 **8.1/10**） |
-| **本輪決定性增量** | **① v1.0 標題 SSOT 全庫鎖定** · **② Dune 公開儀表板已上線** · **③ Pendle Arbitrum One 真實 PT 市場註冊表硬化** · **④ ERC-8196 嚴格 Draft 引用合規** |
+| **本輪決定性增量** | **① v1.0 標題 SSOT 全庫鎖定** · **② Dune 公開儀表板已上線** · **③ Pendle Arbitrum One 真實 PT 市場註冊表硬化** · **④ [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) 嚴格 Draft 引用合規** |
 
 ---
 
@@ -22,7 +22,7 @@
 1. **Dune 公開儀表板**：[https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) 已發布，V2 Trino Heartbeat Query 活躍，鏈上 `IntentAttested` / `RiskTripBlocked` 與 `/api/grant-audit` `duneTelemetry` 形成雙源對帳閉環。
 2. **Pendle 真實市場註冊表**：`pendle-pt-registry.ts` 綁定 Arbitrum One 實盤 PT 地址（PT-eETH `0x8B330d…`、PT-USDC `0x156291…`），`evaluatePendleGmxCrossGuardFromRegistry` 可從 SSOT 解析市場參數，Observatory Paradox 修復具備可審計市場錨點。
 
-此外，v1.0 BeDelta Living Water 標題在 README、SUBMISSION、TECHNICAL_SPECIFICATION、公開審計包與 `index.html` OG 標籤上**100% 一致**，顯著提升「呈現清晰度」維度；ERC-8196 全文統一為 *emerging Draft co-authored by Virtuals Protocol*，消除「假裝已標準化」的合規風險。
+此外，v1.0 BeDelta Living Water 標題在 README、SUBMISSION、TECHNICAL_SPECIFICATION、公開審計包與 `index.html` OG 標籤上**100% 一致**，顯著提升「呈現清晰度」維度；[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) 全文統一為 *emerging Draft co-authored by Virtuals Protocol*，消除「假裝已標準化」的合規風險。
 
 ### 加權總評與獲獎機率矩陣
 
@@ -67,7 +67,7 @@
 | **Sepolia Gate** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` | Arbiscan Sepolia 421614 |
 | **Dune 公開儀表板** | [silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) | V2 Trino Heartbeat · Query 0 活躍 |
 | **Pendle PT 註冊表** | PT-eETH `0x8B330d3A50a624f1fE1744d037048BdBc9664E5D` · PT-USDC `0x156291C6e10E8a1B9f95475A9C0c5E3eCe1d1e44` | `src/adapters/pendle/pendle-pt-registry.ts` |
-| **ERC-8196** | Aligned with emerging **ERC-8196 AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol). **Not a finalized standard.** | `SUBMISSION.md` · `TECHNICAL_SPECIFICATION.md` §0.1 |
+| **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196)** | Aligned with emerging **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol). **Not a finalized standard.** | `SUBMISSION.md` · `TECHNICAL_SPECIFICATION.md` §0.1 |
 | **延遲 SSOT** | p50 ~106 µs `checkSoilResistance()` · Wasm warm &lt;60 µs · M2M &lt;12 µs | `grant-advanced-resilience-benchmark.ts` |
 | **內部引擎代號** | Santenmoku（僅內部 / 技術附錄，不作對外版本號） | `TECHNICAL_SPECIFICATION.md` |
 
@@ -96,7 +96,7 @@
 | **C — 機構量化 / DeFi 風控** | 5 | Shadow Margin · Halmos · 活 L2 probe | **8.2** | GMX · Pendle |
 | **D — Dune Analytics** | 5 | 公開 dashboard · Trino SQL · 鏈上/鏈下對帳 | **8.4** ⭐ | **Dune** |
 | **E — Pendle & GMX Protocol** | 5 | PT 到期 · Dynamic Fee · GMX Maintenance | **8.1** | GMX · Pendle |
-| **F — AI Agent 框架** | 4 | Virtuals · ElizaOS · ERC-8196 Draft · 0-Gas | **7.9** | Promising · Arbitrum |
+| **F — AI Agent 框架** | 4 | Virtuals · ElizaOS · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft · 0-Gas | **7.9** | Promising · Arbitrum |
 
 ### 2.2 四維評分框架（各 25%）
 
@@ -207,7 +207,7 @@
 | # | 評審 | 四維均分 | 強推 | 核心反饋 |
 |---|------|----------|------|----------|
 | F1 | Chloe Dubois | 7.8 | Promising | `guardAgentUserOp` 適合 Eliza pre-bundler |
-| F2 | Alex Rivera | 8.1 | Arbitrum | **ERC-8196 Draft 引用合規** — 無 finalized 誇大 |
+| F2 | Alex Rivera | 8.1 | Arbitrum | **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft 引用合規** — 無 finalized 誇大 |
 | F3 | Priya Sharma | 7.7 | — | M2M swarm 批量 attestation 為 V1.5 故事 |
 | F4 | Tomás García | 7.9 | Promising · Dune | Agent 意圖 → `IntentAttested.intentHash` 可索引 |
 
@@ -243,7 +243,7 @@
 | **95–112** | GMX payload **10 bps** + Shadow Margin 數值 HUD | `shadowMarginUsd` / `dynamicLtv` | E1 · C1 |
 | **112–128** | Robinhood：outbound OK · inbound BLOCK | `deployable: false` · `46630→42161` | A3 · B2 |
 | **128–145** | **Pendle Registry**：PT-eETH / PT-USDC 地址 + cross-guard | open 紅燈 → close 綠燈 · -40 分 | **E2 · C5 · E3** |
-| **145–158** | ERC-8196 Draft 合規字幕卡 | *Draft co-authored by Virtuals · Not finalized* | F2 |
+| **145–158** | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft 合規字幕卡 | *Draft co-authored by Virtuals · Not finalized* | F2 |
 | **158–170** | 里程碑：M-CLI **773 PASS** · M-Dune ✅ · M-Pendle-Registry ✅ | Forge 60/60 · Stylus 5/5 | B · A |
 | **170–180** | CTA：QR live HUD + Dune URL · 「v1.0 Sepolia Verified」 | — | 全場 |
 
@@ -267,7 +267,7 @@
 | 6 | Dune 公開儀表板 | ✅ | [dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) | **本輪解鎖** |
 | 7 | Pendle PT-eETH 真實地址 | ✅ | `pendle-pt-registry.ts` L37 | **本輪解鎖** |
 | 8 | Pendle PT-USDC 真實地址 | ✅ | `pendle-pt-registry.ts` L50 | **本輪解鎖** |
-| 9 | ERC-8196 = Draft only | ✅ | `SUBMISSION.md` L61 | 合規 |
+| 9 | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) = Draft only | ✅ | `SUBMISSION.md` L61 | 合規 |
 | 10 | p50 ~106µs 延遲 | ✅ | `npx tsx scripts/grant-advanced-resilience-benchmark.ts` | 需現場跑 |
 | 11 | 10 bps GMX builder fee | ✅ | `GMX_UI_FEE_BPS` = 10 | 代碼 SSOT |
 | 12 | Robinhood inbound BLOCK | ✅ | `across-ingress-bridge.test.ts` 5/5 | PASS |
@@ -286,7 +286,7 @@
 
 | # | 禁止語句 | 正確 SSOT 替代 |
 |---|----------|----------------|
-| F1 | 「ERC-8196 已標準化 / 已 finalize」 | *aligned with emerging ERC-8196 Draft (Virtuals Protocol) · Not a finalized standard* |
+| F1 | 「[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) 已標準化 / 已 finalize」 | *aligned with emerging [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft (Virtuals Protocol) · Not a finalized standard* |
 | F2 | 「Pendle 已完整集成 / 已接入 SY 路由」 | *真實 PT 市場註冊表 + cross-guard 防護閘；非 SY mint/redeem* |
 | F3 | 「$9.88M 真實 LP 資本已保護」 | *10,000 次 Monte Carlo 模擬名義資本 · 87.39% toxic flow blocked* |
 | F4 | 「99.82% 阻斷率」（舊產物） | *87.39%（`game_theory_simulation_results.json`）* |
@@ -332,7 +332,7 @@
 | Dune 遙測 | `src/routes/grant-audit-lib/grant-audit-dune-telemetry.ts` |
 | Pendle Registry | `src/adapters/pendle/pendle-pt-registry.ts` |
 | Cross-Guard | `src/guards/pendle-gmx-cross-guard.ts` |
-| ERC-8196 引用 | `docs/grants/SUBMISSION.md` L61 · `TECHNICAL_SPECIFICATION.md` §0.1 |
+| [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) 引用 | `docs/grants/SUBMISSION.md` L61 · `TECHNICAL_SPECIFICATION.md` §0.1 |
 | 驗證入口 | `docs/VERIFICATION_MATRIX.md` |
 | Commit | `f11159a` |
 

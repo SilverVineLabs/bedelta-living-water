@@ -40,7 +40,7 @@
 | **C — 機構量化 / DeFi 風控** | RISK | 5 | Shadow Margin · Basel · 對沖基金 | **8.25** |
 | **D — 數據分析 / 可觀測性** | DATA | 5 | Dune · TCA · 鏈上遙測 | **8.40** |
 | **E — 協議方（GMX / Pendle / Robinhood）** | PROTO | 5 | Sponsor 交付物驗證 | **8.15** |
-| **F — AI Agent 框架** | AGENT | 5 | Virtuals · ElizaOS · ERC-8196 | **7.85** |
+| **F — AI Agent 框架** | AGENT | 5 | Virtuals · ElizaOS · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) | **7.85** |
 
 ---
 
@@ -207,7 +207,7 @@
 | F4 | 許嘉文 | 8.0 | 8.0 | 7.5 | 7.5 | 7.75 | Promising · GMX |
 | F5 | Lisa Müller | 8.0 | 7.5 | 7.5 | 8.0 | 7.75 | Promising |
 
-**陣營共識：** ERC-8196 Draft 引用合規是加分項。但 AI Agent 評審會問：「有無 Virtuals / ElizaOS 實際集成 PR 或 plugin？」——公開文件僅有設計對齊，無 live integration。
+**陣營共識：** [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft 引用合規是加分項。但 AI Agent 評審會問：「有無 Virtuals / ElizaOS 實際集成 PR 或 plugin？」——公開文件僅有設計對齊，無 live integration。
 
 ---
 
@@ -250,7 +250,7 @@
 | **P0** | Robinhood | 180s 影片 Step 2 全屏終端 + `lostUsd ≡ 0` 特寫 | 85% |
 | **P0** | GMX | Shadow Margin 30 秒白板 + 10 bps payload hex 展示 | 82% |
 | **P1** | Dune | dashboard 截圖 + grant-audit curl 並排 | 77% |
-| **P1** | Promising | AI Agent × 106µs 敘事 + ERC-8196 Draft 合規 | 78% |
+| **P1** | Promising | AI Agent × 106µs 敘事 + [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft 合規 | 78% |
 | **P2** | Arbitrum | Sepolia Arbiscan 事件 live scroll | 74% |
 | **P3** | Pendle | 補充 PT guard 單元測試終端錄屏 | 55% |
 

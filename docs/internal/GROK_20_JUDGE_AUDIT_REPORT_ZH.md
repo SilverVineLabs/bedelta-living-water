@@ -26,7 +26,7 @@
 |------|------|----------|
 | Security & Invariants | 30% | 不變量、fail-closed、形式化/模糊測試 |
 | HFT / Execution Performance | 25% | 亞毫秒路徑、交叉場所滑點、gas 預算 |
-| Infrastructure & Compatibility | 20% | AA / EIP-7562 / ERC-8196 / Worker 邊界 |
+| Infrastructure & Compatibility | 20% | AA / EIP-7562 / [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) / Worker 邊界 |
 | Institutional / Grant Readiness | 25% | 可復現證明、主網缺口、敘事誠實度 |
 
 評委個人總分 = 四類加權。全團加權均分 = 20 人算術平均。
@@ -61,18 +61,18 @@
 
 **陣營要點：** `checkSoilResistance()` 廣播前攔截與 Pendle −40 / GMX 5% maintenance（Gem 16）是真正的執行層差異。B3 扣分：p50 ~106µs 是 **Edge Wasm 熱路徑**，不可與 Dune 刷新或 Bundler RTT 混為一談。
 
-### 陣營 C — AI Agent 基礎設施（ERC-8196 / EIP-7562）
+### 陣營 C — AI Agent 基礎設施（[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) / EIP-7562）
 
 | 評委 | 角色 | Sec | HFT | Infra | Grant | 加權總分 |
 |------|------|-----|-----|-------|-------|----------|
-| C1 | ERC-8196 Policy 閘 | 7.5 | 7.4 | 8.4 | 6.8 | **7.50** |
+| C1 | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Policy 閘 | 7.5 | 7.4 | 8.4 | 6.8 | **7.50** |
 | C2 | EIP-7562 Static Breaker | 8.3 | 8.2 | 8.8 | 7.5 | **8.19** |
 | C3 | HMAC vs EIP-712 DoS | 8.0 | 8.5 | 8.1 | 7.2 | **7.95** |
 | C4 | Session Single-flight | 8.1 | 8.4 | 8.6 | 7.3 | **8.09** |
 | C5 | Draft 標準合規 | 7.2 | 7.0 | 7.6 | 6.2 | **7.00** |
 | **陣營均分** | | | | | | **7.75** |
 
-**陣營要點：** Zero-bundler-rejection（Gem 7/12）與 HMAC 拒絕證明（維 1）架構正確。C5 否決項風險：Verification Matrix 已寫明 **ERC-8196 為 Emerging Draft、非 finalized**——對外稱「8196 合規生產」會被一票打回。
+**陣營要點：** Zero-bundler-rejection（Gem 7/12）與 HMAC 拒絕證明（維 1）架構正確。C5 否決項風險：Verification Matrix 已寫明 **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) 為 Emerging Draft、非 finalized**——對外稱「8196 合規生產」會被一票打回。
 
 ### 陣營 D — Tier-1 Grant 委員會 / VC
 
@@ -100,7 +100,7 @@
 | **全團加權均分** | **20** | **7.65 / 10.0** |
 
 四類全團平均（供對照）：Security **7.95** · HFT **7.64** · Infra **7.64** · Grant **7.27**。  
-**短板明確在 Institutional/Grant Readiness**（主網、Dune 合成標籤、ERC-8196 Draft）。
+**短板明確在 Institutional/Grant Readiness**（主網、Dune 合成標籤、[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft）。
 
 ---
 
@@ -149,7 +149,7 @@ HMAC-SHA256 M2M 拒絕、`SystemState` single-flight、Edge R17/R20 sever、EIP-
 
 ### 裁決：**CONDITIONAL PASS（有條件通過）**
 
-**不得升級為無條件 PASS 的原因：** (i) 執行面仍為 **Arbitrum Sepolia + dry-run**，非主網托管資金；(ii) 公開 Dune 主查詢為 **合成狀態標籤**；(iii) ERC-8196 / Stylus 鏈上能力被正確標為 Draft / pending，但營銷稍有越界即轉為 FAIL。
+**不得升級為無條件 PASS 的原因：** (i) 執行面仍為 **Arbitrum Sepolia + dry-run**，非主網托管資金；(ii) 公開 Dune 主查詢為 **合成狀態標籤**；(iii) [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) / Stylus 鏈上能力被正確標為 Draft / pending，但營銷稍有越界即轉為 FAIL。
 
 **執行摘要：**
 
@@ -160,7 +160,7 @@ HMAC-SHA256 M2M 拒絕、`SystemState` single-flight、Edge R17/R20 sever、EIP-
 
 1. **Dune：** Query 0/0b 明確標註為 indexer liveness / 合成分類；至少一塊面板綁定真實 `IntentAttested` / `RiskTripBlocked` 解碼事件。  
 2. **主網路徑：** 公布 M6 前 Oracle + Gate 地址、halt 演練 runbook、以及 Edge–鏈上斷路的最大不同步 SLA。  
-3. **標準誠實：** 對外材料繼續鎖定「ERC-8196 Emerging Draft」；禁止「8196 生產合規」表述。  
+3. **標準誠實：** 對外材料繼續鎖定「[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft」；禁止「8196 生產合規」表述。  
 4. **Soil parity：** 在 Stylus 未上鏈前，所有 p50 數字僅可引用 Edge Wasm / TS Gateway，不得暗示鏈上 coprocessor 已保護實盤。  
 5. **回歸欄維持：** `pnpm test` 不得跌破 Current Branch Live **176 | 775**；提案歷史基線 **175 | 773** 僅作鎖定下限。
 

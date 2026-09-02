@@ -55,8 +55,8 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v1.0 Delivered (Sepolia verified)** | ✅ Live | Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum · GMX v2 ETH/USDC GM + HL 1× short · Wasm Shield p50 ~106µs · ERC-8196 Draft · EIP-712 Gate `0xb174…` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** · Sepolia / dry-run verified; mainnet ties to M6 |
-| **V1.5 Roadmap Spec** | ⏳ Planned | ERC-8196 fleet enforcement · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) |
+| **v1.0 Delivered (Sepolia verified)** | ✅ Live | Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum · GMX v2 ETH/USDC GM + HL 1× short · Wasm Shield p50 ~106µs · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft · EIP-712 Gate `0xb174…` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** · Sepolia / dry-run verified; mainnet ties to M6 |
+| **V1.5 Roadmap Spec** | ⏳ Planned | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) fleet enforcement · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) |
 | **V2.0 Design Spec** | ⏳ Planned | Institutional CaaS (`@slivervine/citadel-sdk`) for AI DEXs & Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
 
 | Phase | Scope | Status |
@@ -74,7 +74,7 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 | **Vitest baseline** | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
 | **Sepolia Gate** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
 | **Dune dashboard** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
-| **ERC-8196** | Aligned with emerging Draft (Virtuals Protocol) — **not a finalized standard** |
+| **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196)** | Aligned with emerging Draft (Virtuals Protocol) — **not a finalized standard** |
 
 **Core invariants:** $\Delta_{\text{net}} \equiv 0$ · $\text{lostUsd} \equiv 0$ on in-flight bridge capital · $t_{\text{reflector\_p50}} \sim 106\,\mu\text{s}$ — [Technical Specification §3.1](../../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats).
 

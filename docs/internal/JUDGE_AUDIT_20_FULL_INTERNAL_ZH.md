@@ -185,7 +185,7 @@
 |-----------|----------|----------|------------|
 | 預執行 vs 事後風控 | ✅ 充分 | ✅ | 9/10 |
 | Sepolia vs Mainnet 差距 | ✅ M6 post-grant | ✅ | 8/10 |
-| ERC-8196 Draft 非 finalized | ✅ 充分 | ✅ | 10/10 |
+| [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft 非 finalized | ✅ 充分 | ✅ | 10/10 |
 | Simulation vs Live savings | ✅ game_theory 標註 | ✅ | 8/10 |
 | IN_FLIGHT 會計語意 | ❌ 未披露 | ✅ BLACK_HAT | **3/10** |
 | GMX↔HL 生產假深度 | ❌ 未披露 | ✅ BLACK_HAT | **2/10** |

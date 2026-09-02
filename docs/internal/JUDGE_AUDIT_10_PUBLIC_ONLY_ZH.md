@@ -32,7 +32,7 @@
 | **Sepolia Gate** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`                                                                                                | SUBMISSION 表格 · README 頂部 · VERIFICATION_MATRIX SSOT 表 | ✅ 通過                               |
 | **Dune 儀表板**     | [silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)                                                | SUBMISSION Sponsor Matrix · README Live 連結             | ✅ 通過（可點擊）                          |
 | **核心不變量**        | $\Delta_{\text{net}} \equiv 0$ · $\text{lostUsd} \equiv 0$ · $t_{\text{reflectorp50}} \sim 106\mu\text{s}$                                  | LaTeX 出現在 README · SUBMISSION · VERIFICATION_MATRIX    | ✅ 數學符號專業                           |
-| **ERC-8196**     | Emerging Draft (Virtuals) · **not finalized**                                                                                               | 明確免責                                                   | ✅ 合規                               |
+| **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196)**     | Emerging Draft (Virtuals) · **not finalized**                                                                                               | 明確免責                                                   | ✅ 合規                               |
 | **demo:e2e**     | 5-step · `RESULT: E2E OK (5/5)`                                                                                                             | `diff` 語法區塊三處同步                                        | ✅ 視覺升級有效                           |
 
 

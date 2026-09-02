@@ -1,237 +1,164 @@
-# SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — Grant Pitch & 35-Second Demo Video Storyboard
+# SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — HackQuest Dual-Video Storyboard
 
 | Field | Value |
 |-------|-------|
-| **Document** | Grant Pitch & Video Storyboard |
-| **Version** | **v1.0.0** |
-| **Classification** | Grant / Institutional Pitch · Live Demo Script |
-| **Branch baseline** | `v1.0_push_BDLW` |
-| **Entity** | SilverVine Labs · BeDelta Living Water v1.0 / BeΔ |
-| **Baseline** | Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** on `pnpm test -- --run` · Wasm **p50 ~106 µs** · chaos **255/255** |
+| **Document** | Grant Pitch & Dual-Video Storyboard (HackQuest / Arbitrum Open House Singapore) |
+| **Version** | **v1.1.0** |
+| **Classification** | Public Grant Pitch · Submission-form video scripts |
+| **Branch baseline** | `V1.0_b4_Buildaton_Submisson` |
+| **Entity** | SilverVine Labs |
+| **Protocol** | SliverVine Protocol / SliverVine Citadel |
+| **Identity** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum. |
+| **Baseline** | Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm **p50 ~106 µs** · chaos **255/255** |
 | **Live proof** | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
+| **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196)** | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft Sub-ms Policy Gate) — **not a finalized standard** |
 | **Related SSOT** | [`VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) · [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 
-> **Pitch posture:** BDLW is **institutional pre-execution infrastructure** — not a retail yield app. Every claim below maps to CLI-verifiable code anchors.
+> **HackQuest form mapping:** **SECTION A** = Pitch Video (180s). **SECTION B** = Demo Video (120s). Do not merge the two files. Do not guarantee APY. Do not claim Stylus is mainnet-deployed. Monte Carlo `$9.88M` is **10,000-run nominal simulated LP protection**, not live TVL.
 
 ---
 
-## 1. Executive Pitch Summary
+## Core Narrative — The Rainstorm at the DEX Transport Station
 
-**One sentence:** SliverVine Protocol (BeDelta Living Water v1.0) is a **Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator** on Arbitrum — combining ZeroDev Kernel v3 smart accounts, a venue-agnostic **Compliance Ingress Firewall**, and the Santenmoku internal engine (Rust `#![no_std]` soil core) that **fail-closes before mempool broadcast** in **106 µs**.
+AI Agents arrive at an Arbitrum DEX **transport station** (GMX v2 GM + session-key hedge). A **rainstorm** hits: 3σ crash, MEV sandwich, or prompt-injection that tries to force a signed UserOp into the mempool.
 
-**Value proposition for Grant committees:**
+| Option | Metaphor | Outcome | Accounting |
+|--------|----------|---------|------------|
+| **A — Fail-Open** | Run into the storm with **no umbrella** | Soaked and sick — liquidation, sandwich fill | `lostUsd > 0` · `capitalLossUsd > 0` |
+| **B — Fail-Slow** | Hide under a **static shelter** (timelock / committee) | Misses every transport; capital stuck in the rain | Governance delay · paralyzed NAV |
+| **C — BDLW Citadel** | **Sub-ms automated shield** + pre-broadcast severance | Stays **100% dry** at the station | **`lostUsd ≡ 0`** · soil fuse **p50 ~106µs** `checkSoilResistance()` |
 
-| Dimension | BDLW delivers |
-|-----------|---------------|
-| **Speed** | `checkSoilResistance()` at **p50 ~106 µs** on Cloudflare Edge — inline, not post-hoc dashboards |
-| **Safety** | **Fail-Closed** by construction: oracle lag, sequencer desync, soil depth breach → `signingChannelOpen: false` |
-| **Onboarding** | **1-click** ZeroDev Smart Routing deposit (Pillar 2 surface) + Kernel v3 session keys — no hot-wallet custody |
-| **Yield architecture** | Delta-neutral **GMX v2 GM + Hyperliquid 1× short** with **0.5% Hurdle Gate** (`FRICTION_BUFFER_APY`) — dynamic target band **8.2% ~ 11.8%** (non-guaranteed display) |
-| **Honest accounting** | Bridge in-flight capital labeled **`IN_FLIGHT_BRIDGE_CAPITAL`** — **`lostUsd ≡ 0`** until settled |
-| **Proof** | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** Vitest · **255/255** chaos matrix · **4/4** ZeroDev gate · **5/5** bridge tests |
-
-**Three Pillars (evaluator mental model):**
+**VO lock (metaphor honesty):** "`lostUsd ≡ 0`" is the **in-flight / honest-label invariant** (pending capital is never written off as loss and never treated as deployable). It is **not** a promise of zero market PnL.
 
 ```text
-Pillar 1 GATEHOUSE → ZeroDev Kernel v3 · 30s TTL session keys · $5k notional cap
-Pillar 2 COMPLIANCE INGRESS → Venue-agnostic AML escort & accounting
- FIREWALL → Robinhood Chain = inaugural reference adapter
-Pillar 3 SHIELD (CORE MOAT) → pkg/soil_core.wasm · checkSoilResistance() · R01–R20
-```
-
-**Center of gravity:** Arbitrum One GMX v2 + HL hedge. Permissioned ingress (Robinhood) is a **supported example**, not the product identity.
-
----
-
-## 2. Three 4D / Multi-Dimensional Positioning Models
-
-### Model 1 — Market Positioning Matrix (4D)
-
-**Axes:** Speed · Fail-Closed Security · 1-Click Onboarding · Dynamic Yield Efficiency
-
-```text
- HIGH Fail-Closed
- ▲
- │ ★ BDLW
- │ (106µs Wasm Gate)
- │
- LOW Speed ◄───────────────┼───────────────► HIGH Speed
- │
- Traditional Vaults │ Consumer AA Apps
- (DAO governance) │ (post-hoc policy)
- │
- ▼
- LOW Fail-Closed (Fail-Open window)
-```
-
-| Player archetype | Speed (decision latency) | Fail-Closed security | 1-click onboarding | Dynamic yield efficiency | BDLW gap |
-|------------------|--------------------------|----------------------|--------------------|--------------------------|----------|
-| **BDLW Citadel** | **p50 ~106 µs** pre-broadcast | **Inline severance** · chaos 255/255 | ZeroDev Kernel v3 + Smart Routing | Hurdle-gated rebalance · delta-neutral loop | — |
-| Gauntlet / Chaos Labs | Minutes–days (governance) | Advisory parameter tuning | N/A (B2B analytics) | Protocol-level, not tx-level | No inline gate |
-| Consumer AA wallets | Fast bundler dispatch | Post-broadcast simulation | **Strong** EIP-7702 UX | Not delta-neutral vault infra | Fail-open window |
-| CeFi basket / structured products | Human ops hours | Manual risk committee | App UX, custodial | Opaque basket rebalancing | Custody + latency |
-| Traditional on-chain vaults | Block-time + multisig | Timelock pause | Wallet connect only | Static strategy | No sub-ms soil fuse |
-
-**BDLW quadrant claim:** Only stack that occupies **high speed + high fail-closed** while retaining **1-click AA onboarding** and **institutional yield mechanics**.
-
----
-
-### Model 2 — Competitive Matrix (Risk Architecture)
-
-| Architecture dimension | **BDLW Citadel** | Consumer AA apps | CeFi basket swaps | Traditional vaults |
-|------------------------|------------------|------------------|-------------------|---------------------|
-| **Risk gate placement** | **Pre-broadcast Edge SSOT** | Post-bundler / backend policy | Pre-trade desk approval | On-chain timelock / guardian |
-| **Session key TTL** | **30s** (`WS_HEARTBEAT_INTERVAL_MS`) | Hours–days typical | N/A (custodial) | N/A or long-lived admin keys |
-| **Notional severance** | **$5,000** cap (`SESSION_KEY_NOTIONAL_CAP_USD`) | Often uncapped | Desk limits (opaque) | Vault share limits |
-| **Bridge / escort accounting** | **`IN_FLIGHT_BRIDGE_CAPITAL`** · timeout → `BRIDGE_TIMEOUT_FAIL_CLOSED` | Often shown as "available" | Off-chain ledger | N/A or wrapped tokens |
-| **`lostUsd` invariant** | **≡ 0** (honest pending labels) | Not guaranteed | Opaque | Strategy-dependent |
-| **AML isolation** | Pillar 2 **Compliance Ingress Firewall** — outbound-only escort; inbound blocked | Generic contract scopes | KYC at onboarding only | None on-chain |
-| **Wasm soil fuse** | **`pkg/soil_core.wasm`** · `<28kb` budget | None | None | None |
-| **ZeroDev integration** | Kernel v3 production · gate **before** paymaster sign | Kernel / 7702 UX-first | None | None |
-| **Regression proof** | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · `zerodev-aa-gate` **4/4** · bridge **5/5** | Vendor QA snapshots | Audit letters | Partial |
-
----
-
-### Model 3 — Real-World Problem / Solution Matrix
-
-| Stress event | Fail-Open (Option A) | Human delay / stuck capital (Option B) | **BDLW Option C** |
-|--------------|------------------------|----------------------------------------|-------------------|
-| **3σ market shock** | UserOp broadcasts into thin book → slippage liquidation | Risk committee convenes → hours of naked delta | **`SYSTEM_FAIL_CLOSED_TRIP`** · soil depth fuse · no broadcast |
-| **Oracle lag > 30s** | Stale price fills at wrong mark | Trading halted manually · ops backlog | **`ORACLE_LAG_DEADLOCK`** · `signingChannelOpen: false` |
-| **Bridge latency / timeout** | In-flight funds counted as deployable NAV → naked GM open | Treasury stuck · manual reconciliation | **`IN_FLIGHT_BRIDGE_CAPITAL`** · **`BRIDGE_TIMEOUT_FAIL_CLOSED`** · **`lostUsd ≡ 0`** |
-| **Liquidity drain (HL book gap)** | Hedge leg fills at adverse price | Manual hedge unwind · gap risk | Session scope + soil matrix · **`evaluateHlOrderbookGapGuard()`** partial (v1.0) |
-| **Paymaster exhaustion** | Silent fallback to unguarded self-pay path | User blocked · poor UX | **`ZERODEV_DAILY_SPONSORSHIP_EXHAUSTED`** · fail-closed self-pay only after soil PASS |
-| **Stolen session key** | Hours of delegated authority | Key revoke lag | **~30s blast radius** · **$5k notional cap** |
-
-```text
- STORM EVENT
+ RAINSTORM (3σ / MEV / prompt injection)
  │
  ┌─────────┼─────────┐
- ▼ ▼ ▼
- Option A Option B Option C (BDLW)
- Fail-Open Manual 106µs Wasm Gate
- LIQUIDATED STUCK SEVERED · lostUsd≡0
+ ▼         ▼         ▼
+ Option A  Option B  Option C — SliverVine Citadel
+ Fail-Open Fail-Slow 0-Gas pre-broadcast shield
+ SOAKED    STUCK     DRY · lostUsd≡0 · 106µs Wasm
 ```
 
 ---
 
-## 3. Complete Video Storyboard — "The Storm & The 3 Options"
+## SECTION A — Pitch Video Script (180s / 3-Min Business & Architecture)
 
-**Format:** 35-second institutional demo · 1920×1080 · dark HUD ([bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz))
-**Narration tone:** Calm, precise, no yield guarantees · emphasize **pre-execution severance**
+**File for form field:** Pitch Video · 1920×1080 · HUD + architecture cards · calm institutional VO.
 
-### Production timeline overview
+### A.1 `0s–30s` — Rainstorm Metaphor & AI Agent Pre-Broadcast Death Window
 
-| Segment | Time | Scene | Emotional beat |
-|---------|------|-------|----------------|
-| **1** | 0:00–0:08 | Storm arrives | Tension · anomaly detected |
-| **2** | 0:08–0:22 | Options A & B fail | Contrast · loss vs paralysis |
-| **3** | 0:22–0:35 | Option C · BDLW gate | Resolution · fail-closed confidence |
+| Time | Visual | VO / on-screen | Anchor |
+|------|--------|----------------|--------|
+| **0:00–0:08** | Wide: DEX transport station · Agent icons queued · sky goes 3σ red | *"AI Agents do not wait for committees. They arrive at the DEX station — and the rainstorm is already here."* | HUD volatility banner |
+| **0:08–0:16** | Storm labels: **3σ crash** · **MEV sandwich** · **prompt injection** | *"The death window is **pre-broadcast**. Once the UserOp hits the mempool, the Agent is already soaked."* | `checkSoilResistance()` · R01–R20 |
+| **0:16–0:24** | Split: A sprints unsheltered · B sits under a locked shelter | **OPTION A FAIL-OPEN** `lostUsd > 0` · **OPTION B FAIL-SLOW** stuck capital | Contrast card |
+| **0:24–0:30** | Option C umbrella deploys as a **Wasm hex shield** before the train doors | *"Option C: SliverVine Citadel — sub-ms shield, then the train. Never the other way around."* | Identity sentence on-screen |
+
+### A.2 `30s–75s` — Option C Technical Core
+
+| Time | Visual | VO / on-screen | Anchor |
+|------|--------|----------------|--------|
+| **0:30–0:40** | Three Pillars schematic | *"0-Gas Citadel: soil trips **before** Bundler gas. No broadcast, no fee, no sandwich surface."* | Pillar 3 Shield |
+| **0:40–0:52** | Rust `#![no_std]` · `pkg/soil_core.wasm` size badge | *"Rust `#![no_std]` Wasm on Cloudflare Edge. `checkSoilResistance()` — p50 ~106 microseconds."* | `<28kb` · warm `&lt;60µs` |
+| **0:52–1:04** | Arbiscan Sepolia · Gate address | *"EIP-712 consume-once Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`. Replay is `Replayed()`."* | `SliverVineGate.sol` |
+| **1:04–1:15** | Halmos `check_*` file · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) badge | *"Formal consume-once lemmas in-repo. Policy alignment: [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft Sub-ms Policy Gate) — not a finalized standard."* | `HalmosGateInvariant.t.sol` |
+
+### A.3 `75s–120s` — 14-Dimension Score Boost & Sponsor Synergies
+
+| Time | Visual | VO / on-screen | Anchor |
+|------|--------|----------------|--------|
+| **1:15–1:30** | Score strip: V0.9 **5.2** → V1.0 **7.7** (internal 20-judge panel) | *"Same 14 audit dimensions. Leaving the yield-vault rain for an Agent Citadel is the score jump — not a louder APY."* | Internal 14-dim comparison (do not flash OpSec filenames) |
+| **1:30–1:45** | GMX payload JSON · `uiFeeReceiver` · **+10 bps** | *"GMX v2 builder lane: `uiFeeReceiver` plus ten basis points on every qualified GM payload."* | `gmx-v2-order-payload.ts` · `GMX_UI_FEE_BPS` |
+| **1:45–2:00** | Robinhood `46630`/`4663` → `42161` · inbound red stamp | *"Robinhood Chain is a **Pillar 2 Reference Escort Adapter**. Outbound escort only. Inbound AML **BLOCK**."* | `across-ingress-bridge.ts` · `IngressSafetySwitch.sol` |
+
+### A.4 `120s–150s` — Quant Monte Carlo + Pendle PT Expiry Guard
+
+| Time | Visual | VO / on-screen | Anchor |
+|------|--------|----------------|--------|
+| **2:00–2:16** | 10,000-run histogram · **87.39%** trip rate | *"Monte Carlo: 10,000 shock-plus-sandwich runs. Citadel intercepts **87.39%** of toxic legs. **$9.88 million is nominal simulated LP protection** — not live TVL."* | `docs/telemetry/game_theory_simulation_results.json` |
+| **2:16–2:30** | Pendle clock · 7d / 200 bps | *"Pendle PT expiry guard: maturity under seven days **and** yield jitter over 200 bps → fail-closed. A refusal gate — not a PT market."* | `pendle-pt-expiry-guard.ts` |
+
+### A.5 `150s–180s` — Milestone Roadmap & Proof Bar
+
+| Time | Visual | VO / on-screen | Anchor |
+|------|--------|----------------|--------|
+| **2:30–2:45** | M1–M6 checklist: Sepolia ✅ · CLI ✅ · RH demo ✅ · GMX fee ✅ · Dune spec ✅ · Mainnet ⏳ | *"Milestones are CLI-verifiable. Mainnet is M6 — we do not pretend it is done."* | [`SUBMISSION.md`](../grants/SUBMISSION.md) |
+| **2:45–2:55** | Dune 3-query spec card · `GET /api/grant-audit` | *"Dune: three-query production spec plus grant-audit KV reconciliation."* | [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
+| **2:55–3:00** | End card · URL · SSOT string | **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** | `pnpm test -- --run` |
+
+**SECTION A forbidden lines:** APY guarantee · 99.82% · “already saved LPs $9.88M” · Stylus mainnet · Hyperliquid as the Arbitrum deployment proof · inbound Robinhood as a product.
 
 ---
 
-### Scene 1 — Market Anomaly & Storm (0:00 – 0:08)
+## SECTION B — Demo Video Script (120s / 2-Min Live On-Chain & Technical Verification)
 
-| Time | Visual | On-screen text / VO | Code anchor |
-|------|--------|---------------------|-------------|
-| **0:00–0:02** | Wide shot: Arbitrum GM pool chart · funding rate spike · red volatility banner | VO: *"When markets move faster than committees…"* | Live HUD · `GET /api/grant-audit` telemetry |
-| **0:02–0:04** | Zoom: oracle timestamp stale · sequencer latency indicator amber | **`ORACLE_LAG_DEADLOCK`** badge pulses | `compliance-trip-alerts.ts` · `LivingWaterShieldCard.tsx` |
-| **0:04–0:06** | Split overlay: GM depth thinning · HL spread widening | **`3σ STORM VARIANT`** · depth below `$100k` fuse | `checkSoilResistance()` · R01 depth matrix |
-| **0:06–0:08** | Full-screen storm metaphor · HUD switches to **TRIP ARMED** state | VO: *"Three paths. Only one preserves honest accounting."* | `tests/risk-control/soil-circuit-breaker.test.ts` |
+**File for form field:** Demo Video · **live screen + terminal only** · no metaphor VO except one-line titles. Cursor/mouse visible.
 
-**B-roll CLI (post-production card, 2s):**
+### B.1 `0s–20s` — Live HUD & Arbiscan Gate
+
+| Time | Action (operator) | On-screen proof |
+|------|-------------------|-----------------|
+| **0:00–0:10** | Open [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz). Scroll Shield + routing cards. | Live HUD title · no staging mock |
+| **0:10–0:20** | New tab: Arbiscan Sepolia contract `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`. | Address match · consume-once bytecode page |
+
+### B.2 `20s–50s` — Live Soil Trip (green → red fail-closed)
+
+| Time | Action | On-screen proof |
+|------|--------|-----------------|
+| **0:20–0:32** | HUD / CLI: show soil **PASS** (green) on a dry fixture. | `checkSoilResistance()` allow path |
+| **0:32–0:50** | Trigger trip (depth / slippage fuse / circuit-breaker test or HUD trip banner). Channel severs. | Green → red · `signingChannelOpen: false` · terminal snippet from `pnpm exec vitest run tests/risk-control/soil-circuit-breaker.test.ts` |
+
+### B.3 `50s–80s` — Robinhood inbound AML BLOCK + IN_FLIGHT
+
+| Time | Action | On-screen proof |
+|------|--------|-----------------|
+| **0:50–0:65** | Run / show bridge test or adapter snapshot: inbound `4663` / reverse path. | **AML inbound BLOCK** |
+| **0:65–0:80** | Highlight `capitalLabel: IN_FLIGHT_BRIDGE_CAPITAL` · `deployable: false` · `lostUsd === 0`. | Pillar 2 Reference Escort Adapter — not product identity |
 
 ```bash
-pnpm exec vitest run tests/risk-control/soil-circuit-breaker.test.ts
+pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 ```
 
----
+### B.4 `80s–108s` — GMX `uiFeeReceiver` + grant-audit JSON
 
-### Scene 2 — Option A vs Option B (0:08 – 0:22)
-
-#### Option A — Fail-Open / Liquidated (0:08 – 0:14)
-
-| Time | Visual | On-screen text / VO | Code contrast |
-|------|--------|---------------------|---------------|
-| **0:08–0:10** | Generic AA wallet · UserOp submitted · green "Success" toast | Label: **OPTION A — FAIL-OPEN** | Consumer AA: post-broadcast policy |
-| **0:10–0:12** | Transaction confirms · GM fill at **>0.5% slippage** · PnL red | VO: *"Broadcast first. Ask questions later."* | No inline `soil_core.wasm` gate |
-| **0:12–0:14** | Liquidation cascade animation · **`capitalLossUsd > 0`** counter | **`lostUsd ≠ 0`** · honest accounting violated | Anti-pattern vs BDLW chaos matrix |
-
-#### Option B — Manual Delay / Stuck (0:14 – 0:22)
-
-| Time | Visual | On-screen text / VO | Code contrast |
-|------|--------|---------------------|---------------|
-| **0:14–0:16** | CeFi desk · calendar invite · "Risk committee Thursday" | Label: **OPTION B — HUMAN DELAY** | Minutes–days governance latency |
-| **0:16–0:18** | Bridge funds mid-flight · strategist wants to deploy · **BLOCKED** spinner | **`IN_FLIGHT`** shown as available (wrong) OR desk freeze (stuck) | Without `IN_FLIGHT_BRIDGE_CAPITAL` label |
-| **0:18–0:20** | Delta exposure meter climbs · hedge leg unsettled | VO: *"Capital paralyzed—or exposed. Both are failure modes."* | Naked delta during ops lag |
-| **0:20–0:22** | Split screen: A bleeding · B frozen | Text: **"Fail-Open vs Fail-Slow"** | — |
-
----
-
-### Scene 3 — Option C · BDLW 106 µs Fail-Closed Gate (0:22 – 0:35)
-
-| Time | Visual | On-screen text / VO | Code anchor |
-|------|--------|---------------------|-------------|
-| **0:22–0:24** | BDLW HUD · Three Pillars diagram highlights **Pillar 3 SHIELD** | Label: **OPTION C — BDLW CITADEL** | [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §0 |
-| **0:24–0:26** | Micro-timer: **`106 µs`** · Wasm shield animation | VO: *"Pre-execution. Sub-millisecond. Fail-Closed."* | `pkg/soil_core.wasm` · `src/sdk/soil-wasm.ts` |
-| **0:26–0:28** | UserOp draft hits gate · **`assertCitadelRiskGate`** · channel severed | **`signingChannelOpen: false`** · trip code flash | `src/adapters/arbitrum/zerodev-aa/zerodev-aa-gate.ts` |
-| **0:28–0:30** | Pillar 2 overlay: bridge state **`IN_FLIGHT_BRIDGE_CAPITAL`** · no GM open | **`lostUsd ≡ 0`** green lock | `src/adapters/robinhood/robinhood-across-bridge.ts` |
-| **0:30–0:32** | Pillar 1: session key **30s TTL** countdown · `$5k cap` badge | VO: *"Scoped keys. Honest labels. Zero naked broadcast."* | `session-key-gates.ts` · `nonce-auto-healing.ts` |
-| **0:32–0:34** | Storm passes · HUD green **READY** · no loss counter | **`capitalLossUsd: 0`** · chaos 255/255 | `docs/audit/chaos-blackswan-metrics.json` |
-| **0:34–0:35** | Logo · URL · QR to `/api/grant-audit` | **BeΔ Living Water · SilverVine Labs** | `pnpm test -- --run` · **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
-
-**End card verification strip (on-screen, 0:34–0:35):**
-
-```text
-Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean) · 255/255 chaos · 4/4 ZeroDev gate · 5/5 bridge · p50 106µs Wasm
-```
-
----
-
-### Video ↔ Codebase verification map
-
-| Storyboard beat | Timestamp | Primary SSOT file | Vitest verifier |
-|-----------------|-----------|-------------------|-----------------|
-| Soil trip / storm severance | 0:06, 0:26 | `pkg/soil_core.wasm` · `src/services/risk-control-lib/soil-resistance.ts` | `tests/risk-control/soil-circuit-breaker.test.ts` |
-| ZeroDev gate fail-closed | 0:26–0:28 | `src/adapters/arbitrum/zerodev-aa/zerodev-aa-gate.ts` | `tests/adapters/zerodev-aa-gate.test.ts` (**4/4**) |
-| Bridge honest accounting | 0:28–0:30 | `src/adapters/robinhood/robinhood-across-bridge.ts` | `tests/adapters/robinhood-across-bridge.test.ts` (**5/5**) |
-| UI trip banners | 0:02–0:04 | `src/components/compliance-trip-alerts.ts` | `tests/components/compliance-trip-alerts.test.ts` |
-| Session TTL / cap | 0:30–0:32 | `src/services/session-key-adapter-lib/session-key-gates.ts` | `tests/services/session-key-gates.test.ts` |
-| Chaos / zero loss | 0:32–0:34 | `docs/audit/chaos-blackswan-metrics.json` | `tests/scripts/chaos-blackswan-stress.test.ts` |
-| Full regression | End card | — | `pnpm test -- --run` → **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
-
-**Grant evaluator one-liner (post-video):**
+| Time | Action | On-screen proof |
+|------|--------|-----------------|
+| **1:20–1:34** | Open GMX v2 payload fixture / HUD debug: `uiFeeReceiver` · **+10 bps**. | Field-level verification |
+| **1:34–1:48** | Browser: `https://bedeltawater.slivervine.xyz/api/grant-audit` · expand JSON. | `provenanceVerified` · SHA-256 · duneTelemetry keys |
 
 ```bash
-pnpm test -- --run && pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts tests/adapters/robinhood-across-bridge.test.ts
-```
-
----
-
-## 4. Verification & Regression
-
-### Locked documentation baseline
-
-| Metric | Doc lock | Live CLI (`pnpm test -- --run`) |
-|--------|----------|----------------------------------|
-| Vitest | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
-| ZeroDev gate | **4/4** | `tests/adapters/zerodev-aa-gate.test.ts` |
-| Robinhood bridge | **5/5** | `tests/adapters/robinhood-across-bridge.test.ts` |
-| Chaos matrix | **255/255 · capitalLossUsd: 0** | `docs/audit/chaos-blackswan-metrics.json` |
-| Wasm shield | **p50 ~106 µs** · `<28kb` artifact budget | `tests/services/wasm-feasibility-lib/soil-core-sim.test.ts` |
-
-> **Note for evaluators:** Documentation SSOT: **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** — re-run `pnpm test -- --run` to confirm on your machine.
-
-### Tier 0–5 entry point
-
-Start at [`docs/VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md):
-
-```bash
-docker build -t slivervine-citadel . && docker run --rm slivervine-citadel # Tier 0
-pnpm test -- --run # Tier 1
-pnpm test:zerodev # Tier 4 — ZeroDev dry-run
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .provenanceVerified
 ```
+
+### B.5 `108s–120s` — Vitest SSOT bar
+
+| Time | Action | On-screen proof |
+|------|--------|-----------------|
+| **1:48–2:00** | Terminal: `pnpm test -- --run` (pre-recorded full run acceptable if timestamped; freeze on summary). | Exact string: **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** superimposed if the CLI summary is `Test Files 176 passed` / `Tests 775 passed` |
+
+**SECTION B forbidden cuts:** stock APY charts, unrun Halmos CLI claiming “proved,” synthetic Dune Query 0 labels presented as decoded Gate events without caption.
+
+---
+
+## Verification & Regression (evaluator copy-paste)
+
+| Metric | Lock |
+|--------|------|
+| Vitest | **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
+| ZeroDev gate | **4/4** · `tests/adapters/zerodev-aa-gate.test.ts` |
+| Across / Robinhood escort | **5/5** · `tests/adapters/across-ingress-bridge.test.ts` |
+| Chaos | **255/255** · `capitalLossUsd: 0` |
+| Wasm | p50 ~106 µs · `<28kb` budget |
+| Gate | Sepolia `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
+
+```bash
+pnpm test -- --run
+pnpm exec vitest run tests/risk-control/soil-circuit-breaker.test.ts tests/adapters/across-ingress-bridge.test.ts
+curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .provenanceVerified
+```
+
+Start CLI map: [`docs/VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md).
 
 ---
 
@@ -239,12 +166,10 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .provenanceVe
 
 | Document | Use |
 |----------|-----|
-| [`docs/README.md`](../README.md) | Grant reviewer navigation · Top 5 Core Docs |
-| [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Allocator diligence · Risk & Disclaimer |
-| [`ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md`](../audit/ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md) | Consumer AA vs BDLW substrate |
-| [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) | 60 invariants · Option C stress framing |
+| [`docs/README.md`](../README.md) | Grant reviewer navigation |
+| [`SUBMISSION.md`](../grants/SUBMISSION.md) | Buildathon pack |
+| [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Allocator diligence |
+| [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) | Option C stress + 60 invariants |
 
----
-
-**Prepared by:** SilverVine Labs · Grant & Institutional Pitch
-**Last updated:** 2026-08-27 · Branch: `v1.0_push_BDLW`
+**Prepared by:** SilverVine Labs · HackQuest dual-video SSOT  
+**Last updated:** 2026-09-02 · Branch: `V1.0_b4_Buildaton_Submisson`

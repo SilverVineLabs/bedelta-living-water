@@ -73,7 +73,7 @@ $$
 | A2 陳詩涵 | 8.0 | Stylus `SliverVineSoilCoprocessor` Code-Verified 但鏈上 deploy pending——Buildathon 可接受 |
 | A3 Raj Mehta | 8.0 | `88085bc` diff 範例 `106µs` vs live 590µs——**Q&A 必備回答** |
 | A4 Dmitri | 8.5 | Hot/Cold Worker 解耦（內部文件）是 Arbitrum Edge 最佳實踐 |
-| A5 黃子軒 | 8.5 | ERC-8196 Draft 對齊 Virtuals——AI Agent 賽道加分 |
+| A5 黃子軒 | 8.5 | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft 對齊 Virtuals——AI Agent 賽道加分 |
 
 **陣營盲點：** 無人質疑 `bedelta-living-water` vs `bedelta-citadel-core` repo 名稱——主席團補充為 P1 修復。
 
@@ -133,7 +133,7 @@ $$
 
 | 評審 | Master 分 | 深度發現 |
 |------|-----------|----------|
-| F1 David (Virtuals) | 8.0 | ERC-8196 Draft 共同作者敘事有吸引力 |
+| F1 David (Virtuals) | 8.0 | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft 共同作者敘事有吸引力 |
 | F2 蔡宜庭 (ElizaOS) | 7.5 | 無 ElizaOS plugin PR——integration 停留在設計 |
 | F3 Ryan | 7.5 | `agent-citadel-guard.ts` M2M <12µs 是真 AI Agent 護欄 |
 | F4 許嘉文 | 8.0 | Promising Track 敘事：AI 大腦 + Citadel 小腦 |
@@ -209,7 +209,7 @@ $$
 - [ ] 紅色告警停留 ≥ 3 秒（`PHYSICAL_DEADLOCK_TRIGGERED`）
 - [ ] Dune URL 在畫面停留 ≥ 5 秒且可點擊
 - [ ] 不展示 `IN_FLIGHT ok: true` 或內部紅隊內容
-- [ ] 旁白提及 ERC-8196 時加「Draft · 非 finalized」
+- [ ] 旁白提及 [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) 時加「Draft · 非 finalized」
 - [ ] 結尾字幕：`pnpm run demo:e2e` + Docker Tier 0 命令
 
 ---
@@ -225,7 +225,7 @@ $$
 | Q5 | GMX 有收到 fee 嗎？ | payload 注入 10 bps 已驗證；claimUiFees 綁定 M6 mainnet | 「已在賺取 builder fee」 |
 | Q6 | Robinhood 主網有流動性嗎？ | 46630→42161 參考 adapter；代碼 + 測試 5/5；主網 Across 流動性 post-grant | 「已在 RH 主網運行」 |
 | Q7 | 和 Gauntlet/Chaos 差異？ | 他們事後參數調優；我們廣播前 106µs 攔截；互補非競爭 | 「我們比他們好」 |
-| Q8 | ERC-8196 是標準嗎？ | Emerging Draft co-authored by Virtuals；**not finalized** | 「已符合 ERC-8196」 |
+| Q8 | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) 是標準嗎？ | Emerging Draft co-authored by Virtuals；**not finalized** | 「已符合 [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196)」 |
 | Q9 | 收費多少？ | Buildathon 免費；Post-9/14 API $199–$1,999 + CaaS 10 bps | 引用 $499–$2,499 舊價 |
 | Q10 | 開源嗎？ | SDK Apache-2.0；Gate BUSL-1.1；Enterprise 授權可談 | 「完全開源」 |
 | Q11 | 紅隊審計過嗎？ | 3-Tier audit 5/0/0；Slither/Aderyn/Echidna/Halmos；持續硬化中 | 聲稱「無已知漏洞」 |

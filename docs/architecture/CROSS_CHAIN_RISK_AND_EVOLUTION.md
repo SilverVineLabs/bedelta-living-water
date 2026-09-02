@@ -18,7 +18,7 @@
 
 BeDeltaLivingWater (BDLW) acknowledges a fundamental law of distributed systems: **Cross-chain risk, bridge latency, and basis drift cannot be magically erased by software; they must be quantified, isolated, and economically absorbed.**
 
-This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — from the **code-verified V1.0 AI Agent Citadel on Arbitrum**, through **V1.5 sub-ms agentic security / ERC-8196 swarms**, to **V2.0 institutional Citadel-as-a-Service (CaaS) & Orbit Shield** — plus **60 Reflective Architectural Invariants**, each status-badged as **✅ Code-Verified** (v1.0 baseline) or **⏳ Roadmap Spec** (V1.5/V2.0). Aave/Morpho APY figures, where mentioned, are *(Hurdle-rate probe only — not a yield-stacking product track)*. Optional bridges are **Pillar 2 Reference Escort Adapters**.
+This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — from the **code-verified V1.0 AI Agent Citadel on Arbitrum**, through **V1.5 sub-ms agentic security / [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) swarms**, to **V2.0 institutional Citadel-as-a-Service (CaaS) & Orbit Shield** — plus **60 Reflective Architectural Invariants**, each status-badged as **✅ Code-Verified** (v1.0 baseline) or **⏳ Roadmap Spec** (V1.5/V2.0). Aave/Morpho APY figures, where mentioned, are *(Hurdle-rate probe only — not a yield-stacking product track)*. Optional bridges are **Pillar 2 Reference Escort Adapters**.
 
 ---
 
@@ -31,15 +31,15 @@ This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — fr
 │ Stage A (V1.0 — ✅ Code-Verified Live Baseline)                                 │
 │ · Arbitrum One Primary + GMX v2 / HL Delta-Neutral Engine                       │
 │ · Wasm Hot-Path Shield: p50 ~106µs · <28KiB pkg/soil_core.wasm                  │
-│ · ERC-8196 Sub-ms Policy Pre-Validation (Emerging Draft)                        │
+│ · ERC-8196 (Emerging Draft Sub-ms Policy Gate) — policy pre-validation                          │
 │ · EIP-712 Consume-Once Gate 0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1           │
 │ · Vitest SSOT: Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)         │
 └────────────────────────────────────────┬────────────────────────────────────────┘
                                          │
                                          ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│ Stage B (V1.5 — ⏳ Roadmap: Sub-ms Agentic Security & ERC-8196 Swarms)           │
-│ · ERC-8196 Fleet Enforcement — multi-agent policy gates vs rogue LLM execution  │
+│ Stage B (V1.5 — ⏳ Roadmap: Sub-ms Agentic Security & ERC-8196 (Emerging Draft Sub-ms Policy Gate) swarms)           │
+│ · ERC-8196 (Emerging Draft Sub-ms Policy Gate) Fleet Enforcement — multi-agent policy gates vs rogue LLM execution  │
 │ · EIP-7702 Zero-Friction Onboarding — EOA → Agent Smart Account, no token move  │
 │ · Prompt Injection Defense Circuit — sub-100µs severSigningChannel()            │
 │ · Variational Perp Native Hedge PoC — Arbitrum shadow hedge, less cross-L1 RPC  │
@@ -56,17 +56,17 @@ This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — fr
 
 | Stage | Status | Center of Gravity |
 |-------|--------|-------------------|
-| **A — V1.0** | ✅ Code-Verified (Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)) | Arbitrum One GMX v2 / HL Δ-neutral · Wasm Shield · ERC-8196 Draft policy gate · Sepolia consume-once Gate |
-| **B — V1.5** | ⏳ Roadmap | ERC-8196 fleet enforcement · EIP-7702 agent onboarding · prompt-injection pipe sever · Variational native hedge PoC |
+| **A — V1.0** | ✅ Code-Verified (Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)) | Arbitrum One GMX v2 / HL Δ-neutral · Wasm Shield · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft policy gate · Sepolia consume-once Gate |
+| **B — V1.5** | ⏳ Roadmap | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) fleet enforcement · EIP-7702 agent onboarding · prompt-injection pipe sever · Variational native hedge PoC |
 | **C — V2.0** | ⏳ Design Spec | Institutional CaaS (`@slivervine/citadel-sdk`) · 10 bps pre-exec fee · Orbit / Edge reflector mesh |
 
 ### 1.1 Three-Stage Risk Comparison Matrix
 
 | Risk Dimension | Stage A (V1.0 — ✅ Code-Verified) | Stage B (V1.5 — ⏳ Roadmap) | Stage C (V2.0 — ⏳ Design Spec) |
 |----------------|-----------------------------------|-----------------------------|--------------------------------|
-| **Product posture** | Sub-ms 0-Gas pre-broadcast Citadel for AI Agents on Arbitrum | Multi-agent ERC-8196 swarm security | Institutional CaaS + Orbit Shield mesh |
+| **Product posture** | Sub-ms 0-Gas pre-broadcast Citadel for AI Agents on Arbitrum | Multi-agent [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) swarm security | Institutional CaaS + Orbit Shield mesh |
 | **Shield latency** | Wasm hot-path p50 ~106µs · `<28KiB` `soil_core.wasm` | Same Shield · **sub-100µs** `severSigningChannel()` on LLM invariant breach | Same Shield · mesh-propagated kill-switch |
-| **Agent policy** | ERC-8196 Emerging Draft pre-validation · EIP-712 consume-once Gate `0xb174…` | **Fleet enforcement** — multi-agent policy delegation vs rogue LLM | Plug-and-play policy SDK for third-party agent wallets |
+| **Agent policy** | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft pre-validation · EIP-712 consume-once Gate `0xb174…` | **Fleet enforcement** — multi-agent policy delegation vs rogue LLM | Plug-and-play policy SDK for third-party agent wallets |
 | **AA / onboarding** | ZeroDev Kernel v3 · Paymaster · Smart Routing | **EIP-7702** EOA → Agent Smart Account (no token migration) · Kernel v4 adapter | Single-chain Intent Compose across Orbit L3s |
 | **Prompt injection** | R20 physical deadlock on signed-intent violation | Dedicated **Prompt Injection Defense Circuit** (pipe sever before broadcast) | Mesh-wide channel lock + CaaS tenant isolation |
 | **Hedge / venue** | GMX v2 GM + HL 1× short (Δnet ≡ 0) | HL retained · **Variational Perp native hedge PoC** (less cross-L1 RPC) | Same-chain GM + native perp · optional escort |
@@ -88,7 +88,7 @@ When funds cross via Across Bridge, BDLW labels capital as `IN_FLIGHT_BRIDGE_CAP
 
 ### 2.2 Hurdle-Rate Probe (Aave v3 / Morpho — Not Product Identity)
 
-> **v1.0 today:** Aave APY is used as a hurdle-rate probe when GMX markets wire is unavailable *(Hurdle-rate probe only — not a yield-stacking product track)* — **not** automatic capital redeployment and **not** the V1.5 Citadel roadmap (V1.5 = ERC-8196 swarms / EIP-7702 / prompt-injection circuit).
+> **v1.0 today:** Aave APY is used as a hurdle-rate probe when GMX markets wire is unavailable *(Hurdle-rate probe only — not a yield-stacking product track)* — **not** automatic capital redeployment and **not** the V1.5 Citadel roadmap (V1.5 = [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) swarms / EIP-7702 / prompt-injection circuit).
 
 During market storms, an **optional** accounting fallback to Aave v3 / Morpho Blue USDC on Arbitrum One may be used as a risk-free **probe floor** *(Hurdle-rate probe only — not a yield-stacking product track)*. This does **not** redefine SliverVine Protocol as a yield-stacking vault.
 

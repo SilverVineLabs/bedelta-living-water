@@ -19,7 +19,7 @@
 
 | Gem | 維度 | 核心能力 |
 |-----|------|----------|
-| **Gem 14** | ERC-8196 亞毫秒 Policy 預驗證 | `verifyAgentIntent()` 複合布林閘 + Deadman「小腦」層 |
+| **Gem 14** | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) 亞毫秒 Policy 預驗證 | `verifyAgentIntent()` 複合布林閘 + Deadman「小腦」層 |
 | **Gem 15** | SHA-256 雙源遙測對帳 | Dune `responseRef` ↔ 鏈上 `IntentAttested` action code |
 | **Gem 16** | Observatory Paradox 動態抵押品 Haircut | PT 到期風險 −40 分 + GMX 5% Maintenance Shadow Margin |
 
@@ -46,7 +46,7 @@
 | 11 | **[Gem]** 非對稱 Timelock | 對稱治理投票 | 收緊 0 延遲 / 放寬 1h–24h | 被盜 key 只能 halt |
 | 12 | **[Gem]** 動態 Gas-Cap 預篩 | Validation 階段才拒絕 | Edge 0-Gas 丟棄 UserOp | 零 Bundler RTT 浪費 |
 | 13 | **[Gem]** 單向護送 | 雙向 bridge 會計 | `lostUsd ≡ 0` 不變量 | 避免連鎖清算誤報 |
-| 14 | **[Gem]** ERC-8196 Policy 預驗證 | NL prompt 事後審計 | 亞毫秒複合布林閘 + Prompt 拒絕 | <106µs · 0-Gas |
+| 14 | **[Gem]** [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Policy 預驗證 | NL prompt 事後審計 | 亞毫秒複合布林閘 + Prompt 拒絕 | <106µs · 0-Gas |
 | 15 | **[Gem]** SHA-256 雙源遙測對帳 | 孤立 dashboard | `responseRef` ↔ `IntentAttested` | 鏈上/鏈下可審計 |
 | 16 | **[Gem]** Observatory Paradox Haircut |  naive tx blocker | −40 分減倉綠燈 + Shadow Margin | 動態 GMX 保證金保護 |
 
@@ -168,9 +168,9 @@
 
 ---
 
-## 維度 14：[Gem 4] ERC-8196 亞毫秒 Policy 預驗證
+## 維度 14：[Gem 4] [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) 亞毫秒 Policy 預驗證
 
-> **對齊聲明：** Aligned with emerging **ERC-8196 AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol). **Not a finalized standard.** — 見 [`TECHNICAL_SPECIFICATION.md` §0.1](../architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec)
+> **對齊聲明：** Aligned with emerging **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol). **Not a finalized standard.** — 見 [`TECHNICAL_SPECIFICATION.md` §0.1](../architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec)
 
 ### 傳統標準
 
@@ -206,7 +206,7 @@ DeadmanOk     = evaluateAgentCitadelGuard()  (50 bps 預設 · 小腦反射層)
 
 ### 架構理由
 
-ERC-8196 Draft 要求 Agent Wallet **可審計 Policy 邊界**；SliverVine 以 **亞毫秒複合閘** 在 LLM 輸出 digest 層攔截注入，並以 **Deadman 小腦** 在簽名管道層 fail-closed——即使「大腦」被攻破，R20 sever 仍可在 106µs 內熔斷 EIP-712 管道。
+[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft 要求 Agent Wallet **可審計 Policy 邊界**；SliverVine 以 **亞毫秒複合閘** 在 LLM 輸出 digest 層攔截注入，並以 **Deadman 小腦** 在簽名管道層 fail-closed——即使「大腦」被攻破，R20 sever 仍可在 106µs 內熔斷 EIP-712 管道。
 
 ---
 

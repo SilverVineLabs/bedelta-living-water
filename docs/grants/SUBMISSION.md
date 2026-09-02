@@ -29,7 +29,7 @@
 | CLI Tier 0–5 verification | [Verification Matrix](../VERIFICATION_MATRIX.md) |
 | Dune telemetry · SQL panels | [Dune Dashboard Specification](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
 | Pendle × GMX cross-guard | [§ Core Risk Decision Matrix](#core-risk-decision-matrix-evaluatependlegmxcrossguard) · [`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts) |
-| ERC-8196 agent policy | [Technical Specification §0.1](../architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
+| [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) agent policy | [Technical Specification §0.1](../architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
 | Institutional DD / Basel mapping | [Due Diligence Memorandum](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 
 Built on the Santenmoku internal engine (p50 ~106µs), [`@slivervine/citadel-sdk`](../../src/sdk/README.md), and consume-once EIP-712 Gate attestation — SliverVine intercepts AI trade intents **before** mempool or bundler ingress. Deep narrative: [Problem / Solution](#the-problem) · [Sponsor Integration Matrix](#sponsor-integration-matrix).
@@ -81,8 +81,8 @@ Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPEC
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **V1.0** | ✅ Code-Verified Live Baseline | Arbitrum One GMX v2 ETH/USDC GM + HL 1× short · Wasm `checkSoilResistance()` p50 ~106µs · ERC-8196 Draft policy pre-validation · EIP-712 consume-once Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` · Dune + SHA-256 dual-source `GET /api/grant-audit` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
-| **V1.5** | ⏳ Roadmap Spec | ERC-8196 fleet enforcement for multi-agent swarms · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) |
+| **V1.0** | ✅ Code-Verified Live Baseline | Arbitrum One GMX v2 ETH/USDC GM + HL 1× short · Wasm `checkSoilResistance()` p50 ~106µs · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft policy pre-validation · EIP-712 consume-once Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` · Dune + SHA-256 dual-source `GET /api/grant-audit` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
+| **V1.5** | ⏳ Roadmap Spec | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) fleet enforcement for multi-agent swarms · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) |
 | **V2.0** | ⏳ Design Spec | Institutional CaaS (`@slivervine/citadel-sdk`) for AI DEXs and Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
 
 Optional bridges (Robinhood / Across) are **Pillar 2 Reference Escort Adapters** — they do not define product identity. Aave/Morpho APY figures are *(Hurdle-rate probe only — not a yield-stacking product track)*.
@@ -95,7 +95,7 @@ Optional bridges (Robinhood / Across) are **Pillar 2 Reference Escort Adapters**
 
 * **Integration**: Citadel Gate Verifier contract (`SliverVineGate.sol`) deployed and verified at `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`.
 * **Mechanism**: Intercepts AI Trade Intents in sub-millisecond off-chain pipeline (`src/core/agent-citadel-guard.ts`), validating soil fuse + deadman switch before settlement-layer EIP-712 attestation (`SliverVineGate.sol`) (0-Gas Fail-Closed).
-* **Agent policy alignment**: Aligned with the emerging **ERC-8196 AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol). **Not a finalized standard.**
+* **Agent policy alignment**: Aligned with the emerging **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol). **Not a finalized standard.**
 
 ### 2. Robinhood Chain (Chain ID: 46630 / 4663) — Pillar 2 Reference Escort Adapter
 
@@ -153,7 +153,7 @@ Hyperliquid Session Key Adapter and TCA provenance (`src/data/verified-5tx-lib/v
 ### Competitive Positioning — Four-Dimensional ASCII Matrices (SliverVine Protocol)
 
 **Entity:** SilverVine Labs · **Protocol:** SliverVine Protocol / SliverVine Citadel (BeΔ)  
-**ERC-8196:** Emerging Draft — not finalized.
+**[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196):** Emerging Draft — not finalized.
 
 **Matrix 1 — Execution & Pre-Broadcast Severance Profile**
 
@@ -174,10 +174,10 @@ Hyperliquid Session Key Adapter and TCA provenance (`src/data/verified-5tx-lib/v
 ┌───────────────────────────┬─────────────────────────────┬────────────────────────────┬────────────────────────────┐
 │ Dimension                 │ SliverVine Citadel (BeΔ)   │ Multisig / Timelock        │ Web2 LLM Guardrails        │
 ├───────────────────────────┼─────────────────────────────┼────────────────────────────┼────────────────────────────┤
-│ 1. Policy Gate Layer      │ Sub-ms Cerebellum (ERC-8196)│ On-chain Voting / Delay    │ API Proxy (Centralized)    │
+│ 1. Policy Gate Layer      │ ERC-8196 (Emerging Draft Sub-ms Policy Gate)│ On-chain Voting / Delay    │ API Proxy (Centralized)    │
 │ 2. Prompt Injection Guard │ R20 Physical Deadlock       │ Vulnerable to Signed Intent│ Bypassable via Jailbreak   │
 │ 3. Key Pipe Severing      │ <1ms `severSigningChannel`  │ N/A (Requires On-chain Tx) │ N/A (No On-chain Hook)     │
-│ 4. Standard Alignment     │ ERC-8196 Draft & EIP-7562   │ Standard ERC-20 / ERC-721  │ Proprietary REST APIs      │
+│ 4. Standard Alignment     │ ERC-8196 (Emerging Draft Sub-ms Policy Gate) · EIP-7562 │ Standard ERC-20 / ERC-721  │ Proprietary REST APIs      │
 └───────────────────────────┴─────────────────────────────┴────────────────────────────┴────────────────────────────┘
 ```
 
