@@ -92,7 +92,7 @@
 | Chaos Black-Swan | **255** scenarios · **255** blocked · **0** isolate crashes · **$0** capital loss | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) |
 | Forge property fuzz | **327,675** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`) · standard `forge test` = **5,120** (5×1,024) | Gate suite |
 | Forge unit | **60 Passed / 0 Failed** | `static-analysis-report.json` → forge |
-| Advanced resilience | TOCTOU compensate · RPC failover · soil SLO harness `allPass: true` | [`grant-resilience-benchmark-metrics.json`](./grant-resilience-benchmark-metrics.json) |
+| Advanced resilience | TOCTOU compensate · RPC failover · soil SLO harness `allPass: false` (failover branch incorporates latency jitter fallback) | [`grant-resilience-benchmark-metrics.json`](./grant-resilience-benchmark-metrics.json) |
 | Security tier | **5/0/0 PASS** (Vitest, Forge, Slither, Aderyn, pnpm-audit) | [`static-analysis-report.json`](./static-analysis-report.json) |
 | Defense Matrix | **17 Active \| 2 Refactored \| 1 Deprecated** (R05 SpoofBuster deprecated) | Tech Spec §3 |
 
