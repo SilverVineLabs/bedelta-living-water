@@ -1,6 +1,6 @@
 # SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
 
-> **Document:** Technical Specification & Risk Topology · **Internal engine codename:** Santenmoku · **Locked Minimum Proposal Baseline:** Vitest **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · **Current Live Suite:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
+> **Document:** Technical Specification & Risk Topology · **Internal engine codename:** Santenmoku · **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
 > **This file SSOT:** R01–R20 invariants · dual-engine topology · KV / MDD · settlement & fee bounds.
 > **Docs index:** [`docs/README.md`](../README.md) · **Grants:** [`docs/grants/`](../grants/)
 
@@ -78,7 +78,7 @@ SliverVine does not interpret natural-language LLM prompts. The Shield enforces 
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v1.0 Delivered (Sepolia verified)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee · **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** |
+| **v1.0 Delivered (Sepolia verified)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee · **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
 | **v1.0 Active Target** | ✅ Code-Verified (Sepolia & Dry-Run) | Single blue-chip anchor: **GMX v2 ETH/USDC GM Pool** + Hyperliquid **1× short** hedge · Mainnet deployment ties to **M6 Grant distribution** |
 | **v1.0 Partial — HL Orderbook Gap Guard** | ✅ Code-Verified | `evaluateHlOrderbookGapGuard()` in [`hl-orderbook-gap-guard.ts`](../../src/services/risk-control-lib/hl-orderbook-gap-guard.ts) · wired via [`soil-resistance.ts`](../../src/services/risk-control-lib/soil-resistance.ts) — gap-window leverage scale-down + 2× depth floor |
 | **V1.5 Isomorphic Extension** | ⏳ Planned | **BTC/USDC GM Pool** — zero bytecode / Wasm changes; config-driven market address mapping |

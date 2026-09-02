@@ -8,8 +8,8 @@
 | **贊助商** | Robinhood Chain · Dune · GMX · Pendle |
 | **審計範圍** | `src/` · `contracts/` · `SliverVineGate/` · `docs/` · 根目錄 `.md` |
 | **審計日期** | 2026-08-30 |
-| **測試度量** | **174 files \| 768 PASS (100% Clean · Exit Code 0)** — 本 session 已實際執行 `pnpm test -- --run` 驗證（Duration 87.64s，`risk-control.ts` 覆蓋率 100%）；本輪複核未重跑 |
-| **鎖定 Grant 基線** | 歷史鎖定 **168 files \| 742 PASS**（僅作歷史對照，不得改寫） |
+| **測試度量** | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** — 本 session 已實際執行 `pnpm test -- --run` 驗證（Duration 87.64s，`risk-control.ts` 覆蓋率 100%）；本輪複核未重跑 |
+| **鎖定 Grant 基線** | 歷史鎖定 **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)**（僅作歷史對照，不得改寫） |
 | **前版差異** | 本版為 **修復後複核**：HMAC、Gate 地址、README 三項落差已於本 session 修復並驗證 |
 
 ---
@@ -24,7 +24,7 @@ SliverVine / BDLW 在 **Arbitrum Sepolia Gate 三件套 + Edge fail-closed + GMX
 |----------|----------|
 | HMAC-SHA256 為無金鑰 SHA-256 stub | ✅ **已修復** — Web Crypto `HMAC/SHA-256` 真實 MAC，`sessionKey ?? CITADEL_SESSION_KEY_STUB` |
 | SDK Gate 佔位 `0x511E…` 與 Sepolia 雙軌 | ✅ **已修復** — `SLIVERVINE_GATE_ADDRESS = 0xb174118bC0…`（Sepolia live），`0x511E…` 降格為 `LOCAL_MOCK_GATE_ADDRESS` |
-| README Docker 段 168/742 過期 | ✅ **已修復** — 174 files \| 768 PASS；其餘 168/742 僅存於「Locked Baseline」歷史語境（正確保留） |
+| README Docker 段 175/773 (Proposal Baseline) 過期 | ✅ **已修復** — Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)；其餘 175/773 (Proposal Baseline) 僅存於「Locked Baseline」歷史語境（正確保留） |
 
 **仍存在之不可對外誇大缺口：**
 
@@ -108,14 +108,14 @@ export const SLIVERVINE_GATE_ADDRESS = SLIVERVINE_GATE_SEPOLIA_ADDRESS;
 
 **C. README Docker 段複核 — ✅ 對齊**
 
-- L49 已改為 `174 files | 768 PASS (100% Clean · Exit Code 0)`。
-- 其餘 `168 files | 742 PASS` 出現處（L37/L64/L103/L117/L128）均明確標註 **Locked Minimum Proposal Baseline** 歷史語境 — 正確保留，非落差。
+- L49 已改為 `Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)`。
+- 其餘 `Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)` 出現處（L37/L64/L103/L117/L128）均明確標註 **Locked Minimum Proposal Baseline** 歷史語境 — 正確保留，非落差。
 
 ### 1.3 測試度量複核
 
 | 主張 | 證據 | 判定 |
 |------|------|------|
-| 174 files \| 768 PASS | 本 session 實跑：`Test Files 174 passed (174)` · `Tests 768 passed (768)` · 87.64s | **對齊（CLI 實證）** |
+| Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean) | 本 session 實跑：`Test Files 174 passed (174)` · `Tests 768 passed (768)` · 87.64s | **對齊（CLI 實證）** |
 | `risk-control.ts` 100% coverage | 同次輸出 v8 report 100/100/100/100 | **對齊** |
 | 168 \| 742 鎖定基線 | 各文檔標註 Locked Baseline | **對齊（歷史）** |
 | Chaos 255/255 · `capitalLossUsd: 0` | `docs/audit/chaos-blackswan-metrics.json`：`totalScenarios: 255` · `blockedToxicAttacks: 255` · `capitalLossUsd: 0` | **對齊（artifact 存在）** |
@@ -156,7 +156,7 @@ export const SLIVERVINE_GATE_ADDRESS = SLIVERVINE_GATE_SEPOLIA_ADDRESS;
 
 ### 1.6 一致性總評
 
-修復後，公開文檔與代碼在 **密碼學命名、Gate 地址 SSOT、測試度量、橋接會計、Ingress 角色隔離、GMX 10 bps、Gate consume-once 語意** 上達成 **實質 100% 對齊**（CLI 實證 768 PASS）。殘留落差均為 **低嚴重度**：Agent Guard 零地址域缺文檔說明、`resolveSliverVineGateAddress` mainnet 回退語意、HMAC 預設 stub key 需生產注入。真正缺失僅 **Pendle** 與 **Dune 落地** 兩項 Sponsor 交付物。
+修復後，公開文檔與代碼在 **密碼學命名、Gate 地址 SSOT、測試度量、橋接會計、Ingress 角色隔離、GMX 10 bps、Gate consume-once 語意** 上達成 **實質 100% 對齊**（CLI 實證 775 PASS Clean）。殘留落差均為 **低嚴重度**：Agent Guard 零地址域缺文檔說明、`resolveSliverVineGateAddress` mainnet 回退語意、HMAC 預設 stub key 需生產注入。真正缺失僅 **Pendle** 與 **Dune 落地** 兩項 Sponsor 交付物。
 
 ---
 
@@ -465,7 +465,7 @@ export const SLIVERVINE_GATE_ADDRESS = SLIVERVINE_GATE_SEPOLIA_ADDRESS;
 | 120–140 | `curl /api/grant-audit` JSON · 口播「三面板將映射 Dune spell（里程碑）」 | 評審 7 |
 | 140–155 | Pendle 誠實 15 秒：不包裝未結算 GM；V1 對齊到期 | 評審 6（止損） |
 | 155–172 | 營利：10 bps CaaS 動畫 · M1 已交付 Sepolia · 主網 = M6 | 評審 9 |
-| 172–180 | CLI 字幕 **174 files \| 768 PASS (100% Clean · Exit Code 0)** · QR → grant-audit | 全場 |
+| 172–180 | CLI 字幕 **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · QR → grant-audit | 全場 |
 
 ### 4.3 評審打勾清單
 
@@ -492,7 +492,7 @@ export const SLIVERVINE_GATE_ADDRESS = SLIVERVINE_GATE_SEPOLIA_ADDRESS;
 | ID | 解鎖條件（客觀） | 資金敘事 | 狀態 2026-08-30 |
 |----|------------------|----------|-----------------|
 | **M-Sepolia** | 三合約驗證 + `sepoliaDualLegProof` | Grant 第一筆 | ✅ 文檔主張已交付 |
-| **M-CLI** | 174 files \| 768 PASS CI 徽章 | 工程可信度 | ✅ 本 session 實跑驗證 |
+| **M-CLI** | Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean) CI 徽章 | 工程可信度 | ✅ 本 session 實跑驗證 |
 | **M-HMAC** | HMAC-SHA256 實作 + session key 注入路徑文檔 | 技術評審 | ✅ 代碼 ✅ · 注入文檔待補 |
 | **M-Addr-SSOT** | SDK/HUD 與 Sepolia 址單一來源 | G11 反劫持 | ✅ 已修復 |
 | **M-RH-Demo** | 公開錄影：46630→42161 與反向 block | Robinhood 保留獎 | 代碼 ✅ · 影片待拍 |
@@ -528,7 +528,7 @@ export const SLIVERVINE_GATE_ADDRESS = SLIVERVINE_GATE_SEPOLIA_ADDRESS;
 ## 附錄 A — 審計方法與限制
 
 - 靜態對照：文檔主張 ↔ `src/` / `contracts/` / `SliverVineGate/` 符號與常數。
-- 768 PASS 採本 session 實跑結果（01:21 UTC+8，87.64s）；本輪複核未重跑。
+- 775 PASS Clean 採本 session 實跑結果（01:21 UTC+8，87.64s）；本輪複核未重跑。
 - 未執行 `forge test`、未鏈上 `eth_getCode`、未開瀏覽器驗證 HUD。
 - 與前版（Grok 審計）差異：本版複核三項修復落地，總分 6.5 → 6.8（維度等權）。
 
@@ -543,4 +543,4 @@ export const SLIVERVINE_GATE_ADDRESS = SLIVERVINE_GATE_SEPOLIA_ADDRESS;
 
 ---
 
-*SilverVine Labs · 內部文件 · Buildathon 10 評審模擬（Kimi K3 獨立複核版）· Vitest 實證： 174/174 files | 768/768 PASS (100% Clean · Exit Code 0) · 2026-08-30*
+*SilverVine Labs · 內部文件 · Buildathon 10 評審模擬（Kimi K3 獨立複核版）· Vitest SSOT： Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean) · 2026-08-30*

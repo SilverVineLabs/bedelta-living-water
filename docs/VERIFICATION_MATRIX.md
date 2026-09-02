@@ -37,7 +37,7 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 | Command | Proves | Expected |
 |---------|--------|----------|
 | Default `docker run` | 5-step Citadel **`demo:e2e`** dry-run inside container | `[tier0] demo:e2e PASS` |
-| `docker run --rm slivervine-citadel pnpm test` | Full Vitest regression bar (host-free) | **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** |
+| `docker run --rm slivervine-citadel pnpm test` | Full Vitest regression bar (host-free) | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
 | Sidecar (Tier 5) | Telemetry relay · fail-closed `/v1/intent` | [`docker/README.md`](../docker/README.md) |
 
 **`demo:e2e` expected terminal highlights** (`pnpm run demo:e2e` — GitHub `diff` syntax):
@@ -63,7 +63,7 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 ```bash
 docker build -t slivervine-citadel . && docker run --rm slivervine-citadel # Tier 0 — zero host deps
 pnpm install
-pnpm test # Tier 1 — Current Branch Live Expected Output: 175 test files | 773 tests PASS (100% Clean · Exit Code 0)
+pnpm test # Tier 1 — Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
 pnpm audit:fast # Tier 2 — fast security scorecard
 pnpm test:zerodev # Tier 4 — ZeroDev AA dry-run harness
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .provenanceVerified
@@ -86,7 +86,7 @@ pnpm audit:nightly # Tier 2/3 deep — Echidna · Halmos · deep fuzz gate
 | Tier | Command | What it proves | Expected |
 |------|---------|----------------|----------|
 | **0** | `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` | Isolated **`demo:e2e`** · zero host Node/pnpm | `[tier0] demo:e2e PASS` |
-| **1** | `pnpm test` | Core engine · Soil · Wasm · Sequencer · Margin Buffer · adapters | **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** |
+| **1** | `pnpm test` | Core engine · Soil · Wasm · Sequencer · Margin Buffer · adapters | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
 | **2** | `pnpm audit:fast` / `pnpm audit:security` | TSC · Vitest security · Solhint · Gitleaks · Slither · Aderyn | Fast PASS · Security **5/0/0** |
 | **3** | `cd SliverVineGate && forge test` | On-chain Gate · default property fuzz (5×1,024) · gas bounds | **60 Passed** · **5,120 fuzz** (default profile) |
 | **4** | `pnpm test:zerodev` | Kernel v3 UserOp draft · session scope · oracle gate (offline) | Dry-run harness **PASS** |

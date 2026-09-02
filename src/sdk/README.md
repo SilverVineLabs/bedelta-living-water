@@ -4,7 +4,7 @@
 **License:** Apache-2.0 · see [`LICENSE`](./LICENSE) · **Entity:** SilverVine Labs · **Protocol brand:** SliverVine
 **EIP-712 domain:** `SliverVineCitadel` · **Gate anchor:** `SLIVERVINE_GATE_ADDRESS`
 
-> **Locked Minimum Proposal Baseline:** Vitest **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · **Current Live Suite:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Security-tier `5/0/0 PASS` · Wasm `<28kb` / `<60µs`.
+> **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Security-tier `5/0/0 PASS` · Wasm `<28kb` / `<60µs`.
 
 > **"Behavioral pass does not imply Web3 security."**
 > `@slivervine/citadel-sdk` currently performs **stateless attestation envelope validation** (EIP-712 structural checks: digest match, expiry, `verifyingContract`, domain `SliverVineCitadel`, sig hex shape) plus `&lt;28kb` Wasm soil evaluation **BEFORE** any UserOp hits the mempool.

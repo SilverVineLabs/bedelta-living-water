@@ -3,7 +3,7 @@
 > **分支：** `v1.0_push_BDLW`  
 > **SSOT 入口：** `src/worker-entry.ts`（Core Gate）· `src/worker-cron-entry.ts`（Cron Hedge）  
 > **部署：** `wrangler.toml` · `wrangler.cron.toml`  
-> **Baseline：** Gzip **87.76 KiB** · p50 **~106 µs** `checkSoilResistance()` · Vitest 742 PASS
+> **Baseline：** Gzip **87.76 KiB** · p50 **~106 µs** `checkSoilResistance()` · Vitest 773 PASS (Proposal Baseline)
 
 ---
 

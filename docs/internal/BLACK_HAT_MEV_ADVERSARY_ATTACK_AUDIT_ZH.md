@@ -3,7 +3,7 @@
 > **分類：** 內部 Red-Team / OpSec · 禁止直接公開  
 > **協議：** SliverVine Citadel v0.8 Santenmoku  
 > **審計範圍：** `src/` · `contracts/` · `SliverVineGate/` · `docs/`  
-> **安全基線：** Vitest **174 files | 768 PASS (100% Clean · Exit Code 0)**；本輪依指示未重跑測試  
+> **安全基線：** Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)**；本輪依指示未重跑測試  
 > **方法：** 攻擊路徑靜態追蹤、信任邊界反演、TOCTOU 分析、會計狀態機與鏈上執行語意交叉驗證
 
 ---
@@ -31,7 +31,7 @@
 3. 真正危險面位於鏈下執行與跨鏈狀態：
    - 生產 GMX↔HL hedge 使用 **相同價格與固定 $500k 深度**，使 Soil 對真實跨場崩塌失明。
    - Ingress 把 **IN_FLIGHT 視為 escort OK**，且 `settledAtMs` 可由呼叫方提供；這會把「`lostUsd ≡ 0` 會計標籤」誤當作「資金已安全到帳」。
-4. **174/768 PASS 不等於上述路徑安全。** 至少一項測試目前把 IN_FLIGHT `bridgeEscortOk === true` 當作正確結果，屬「測試固化錯誤語意」。
+4. **176/775 PASS Clean (Current Branch Live; Proposal Baseline 175/773) 不等於上述路徑安全。** 至少一項測試目前把 IN_FLIGHT `bridgeEscortOk === true` 當作正確結果，屬「測試固化錯誤語意」。
 
 ---
 
@@ -659,4 +659,4 @@ function isCompliant(address target) external view returns (bool) {
 
 ---
 
-*SilverVine Labs · Internal Red-Team · Security Baseline: 174 files | 768 PASS · 2026-08-30*
+*SilverVine Labs · Internal Red-Team · Security Baseline: Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean) · 2026-08-30*

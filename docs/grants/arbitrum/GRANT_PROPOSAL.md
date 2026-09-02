@@ -6,7 +6,7 @@
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
 **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 
-> **Locked Minimum Proposal Baseline:** Vitest **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · **Current Live Suite:** **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
+> **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
 
 **Audience:** Arbitrum ecosystem / Open House / future Security Grant.
 **Not this pack:** GMX `uiFeeReceiver` economics → [`../gmx/`](../gmx/).
@@ -55,12 +55,12 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v1.0 Delivered (Sepolia verified)** | ✅ Live | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee (monetization, not moat) · **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** · Sepolia / dry-run verified; mainnet ties to M6 |
+| **v1.0 Delivered (Sepolia verified)** | ✅ Live | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee (monetization, not moat) · **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Sepolia / dry-run verified; mainnet ties to M6 |
 | **V1.5 Roadmap (Planned Post-Grant)** | ⏳ Planned | **Citadel-as-a-Service (CaaS)** — productize `@slivervine/citadel-sdk` as an open sub-ms pre-execution risk layer for all Arbitrum dApps & AI Agent frameworks · **Hedge Leg Depth Guard** — dedicated Hyperliquid L2 orderbook depth sensing prior to hedge execution (zero-market-impact 1× short even during flash-liquidity drawdowns) · On-chain ECDSA Signer Recovery · Production GM Vault deployment · BTC/USDC isomorphic pools |
 
 | Phase | Scope | Status |
 |-------|-------|--------|
-| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **175/773** bar *(Locked: 175/773)* · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
+| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **Proposal Baseline: 175/773 PASS · Current Branch Live: 176/775 PASS Clean** · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
 | Security Grant pack | Cold audit pack · R01–R20 + Slither/Echidna narrative | ⏳ Planned |
 | Institutional AA | Kernel v3 Session Key — [ZeroDev Comparative Analysis](../../audit/ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md) · [Technical Specification §2.4](../../architecture/TECHNICAL_SPECIFICATION.md#24-pillar-1--zerodev-account-abstraction-deep-specification) | ✅ Delivered in v1.0 |
 
@@ -70,7 +70,7 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 | Field | Locked value |
 |-------|--------------|
-| **Vitest baseline** | **175 test files \| 773 tests PASS** |
+| **Vitest baseline** | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
 | **Sepolia Gate** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
 | **Dune dashboard** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 | **ERC-8196** | Aligned with emerging Draft (Virtuals Protocol) — **not a finalized standard** |
@@ -97,7 +97,7 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 
 ```bash
 pnpm install
-pnpm test # 175 test files | 773 tests PASS (100% Clean · Exit Code 0)
+pnpm test # Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
 pnpm run audit:security # 5/0/0 PASS
 pnpm run demo:e2e # 5-step Citadel E2E (dry-run)
 cd SliverVineGate && forge test && cd ..

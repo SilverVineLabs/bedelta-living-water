@@ -1,6 +1,6 @@
 # SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
 
-[![Vitest](https://img.shields.io/badge/Vitest-773%20PASS%20%28175%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![Vitest](https://img.shields.io/badge/Vitest-775%20PASS%20%28176%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
 [![Stylus Coprocessor](https://img.shields.io/badge/Stylus-5%2F5%20PASS-blue?logo=rust)](./contracts/stylus-probe/)
 [![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts)
 [![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-255%2F255%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water)
@@ -42,7 +42,7 @@
 docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 ```
 
-Isolated container execution of 5-step `demo:e2e` dry-run; full regression **175 test files | 773 tests PASS (100% Clean · Exit Code 0)** → `docker run --rm slivervine-citadel pnpm test`. Sidecar → [`docker/README.md`](./docker/README.md).
+Isolated container execution of 5-step `demo:e2e` dry-run; full regression **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** → `docker run --rm slivervine-citadel pnpm test`. Sidecar → [`docker/README.md`](./docker/README.md).
 
 **Tier 1+ — Monorepo CLI:**
 
@@ -159,7 +159,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 |-----------|--------|-----------------------------|
 | **M0: Operational Foundation** | ✅ Delivered | WSL / PNPM Monorepo, Cloudflare Edge Worker pipeline, and CI/CD strict typecheck. |
 | **M1: On-Chain Citadel Gate** | ✅ Delivered | `SliverVineGate.sol` core invariant locks · **327,675 deep fuzz** (`FOUNDRY_PROFILE=deep`) · 25k gas bounds. |
-| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, **175 test files | 773 tests PASS (100% Clean · Exit Code 0)**, 162.49 KiB gzip bundle, sub-ms latency. |
+| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)**, 162.49 KiB gzip bundle, sub-ms latency. |
 | **M3: Dual-Chain & ZeroDev AA** | ✅ Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7) | ZeroDev Kernel v3 AA Adapter · optional Robinhood Chain (`46630`/`4663`) permissioned ingress escort into Arbitrum. |
 | **M4: WASM Engine & IP Moat** | ✅ Delivered | Rust `#![no_std]` Wasm core (`pkg/soil_core.wasm`) — Cloudflare budget `<28kb`, hot-path exec `<60µs` — & `@slivervine/citadel-sdk` shipped. |
 | **M5: TCA Data & Hyperliquid** | ✅ Delivered (evolving) | TCA / grant-audit surfaces & HL Testnet 5-trade provenance — **Live TCA Analytics HUD actively evolving**. |
@@ -170,7 +170,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 ## 🛡️ Auditor — 30-Second CLI & API Verification
 
 ```bash
-# 1. Full Vitest suite (175 test files | 773 tests PASS (100% Clean · Exit Code 0))
+# 1. Full Vitest suite (Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean))
 pnpm test -- --run
 
 # 2. 3-Tier Security Matrix (Fast / Security / Nightly)

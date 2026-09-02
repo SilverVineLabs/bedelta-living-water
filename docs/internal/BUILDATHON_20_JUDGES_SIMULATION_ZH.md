@@ -9,7 +9,7 @@
 | **贊助商** | Robinhood Chain · Dune · GMX · Pendle |
 | **審計日期** | 2026-08-30 |
 | **前序文件** | [`BUILDATHON_10_JUDGES_SIMULATION_AND_CODE_AUDIT_ZH.md`](./BUILDATHON_10_JUDGES_SIMULATION_AND_CODE_AUDIT_ZH.md) · [`BUILDATHON_10_JUDGES_SIMULATION_KIMI_AUDIT_ZH.md`](./BUILDATHON_10_JUDGES_SIMULATION_KIMI_AUDIT_ZH.md) · [`BLACK_HAT_MEV_ADVERSARY_ATTACK_AUDIT_ZH.md`](./BLACK_HAT_MEV_ADVERSARY_ATTACK_AUDIT_ZH.md) |
-| **本輪測試** | **未重跑** `pnpm test`（依任務禁令）。SSOT 採倉庫已鎖定之 **174 files \| 768 PASS (100% Clean · Exit Code 0)** |
+| **本輪測試** | **未重跑** `pnpm test`（依任務禁令）。SSOT 採倉庫已鎖定之 **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
 
 ---
 
@@ -34,14 +34,14 @@ SliverVine / BeΔ Living Water 在本輪（相對 Kimi 10 評審複核）補齊�
 
 ---
 
-## 第一部分：當前工程與安全 SSOT (174 Files | 768 PASS + 形式驗證 + 蒙地卡羅)
+## 第一部分：當前工程與安全 SSOT (174 Files | 775 PASS Clean + 形式驗證 + 蒙地卡羅)
 
 ### 1.1 鎖定度量
 
 | 項目 | SSOT |
 |------|------|
-| **Live 回歸** | **174 files \| 768 PASS (100% Clean · Exit Code 0)** |
-| **Grant 歷史鎖定基線** | **168 files \| 742 PASS**（提案歷史，不得改寫） |
+| **Live 回歸** | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
+| **Grant 歷史鎖定基線** | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)**（提案歷史，不得改寫） |
 | **`risk-control.ts` 覆蓋率** | 100%（前序 session 報告） |
 | **Chaos** | 255/255 fail-closed（`chaos-blackswan-metrics.json`） |
 | **Sepolia Gate** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
@@ -278,7 +278,7 @@ SliverVine / BeΔ Living Water 在本輪（相對 Kimi 10 評審複核）補齊�
 
 **焦點：** M1–M6 里程碑真實性。
 
-**反饋：** 拆成 M-Sepolia / M-CLI / M-RH-Demo / M-GMX-Fee / M-Dune / M6-Mainnet **符合綁里程碑發放**。M-CLI 768 PASS、M-Sepolia 三地址可驗。M6 主網未假裝完成。風險：影片與 Dune 仍標 ⏳，勿在申請表勾「已交付」。
+**反饋：** 拆成 M-Sepolia / M-CLI / M-RH-Demo / M-GMX-Fee / M-Dune / M6-Mainnet **符合綁里程碑發放**。M-CLI 775 PASS Clean、M-Sepolia 三地址可驗。M6 主網未假裝完成。風險：影片與 Dune 仍標 ⏳，勿在申請表勾「已交付」。
 
 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | **均** |
 |---|---|---|---|---|---|---|---|---|----|----|----|----|----|------|
@@ -377,7 +377,7 @@ SliverVine / BeΔ Living Water 在本輪（相對 Kimi 10 評審複核）補齊�
 | 125–140 | Pendle **15 秒誠實：** &lt;7d 且 jitter&gt;200bps fail-closed · 不包裝未結算 GM | 6 |
 | 140–158 | 蒙地卡羅 JSON：`87.39%` · `$9.88M 模擬名義` · 種子 42 | 8, 12 |
 | 158–172 | 里程碑：M-Sepolia/M-CLI 已交 · M6 主網綁 Grant · 10 bps CaaS | 9, 17, 20 |
-| 172–180 | CLI 字幕 **174 files \| 768 PASS** · QR 到 live HUD | 10, 全場 |
+| 172–180 | CLI 字幕 **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · QR 到 live HUD | 10, 全場 |
 
 ### 4.3 評審「具體要看到」的核對表
 
@@ -404,7 +404,7 @@ SliverVine / BeΔ Living Water 在本輪（相對 Kimi 10 評審複核）補齊�
 
 1. **Robinhood 保留獎** — 最高確定性。演示 A3-1。  
 2. **GMX 相關 Grants / Sponsor** — 10 bps 可證偽。  
-3. **Arbitrum 保留獎** — Sepolia 三件套 + 768 PASS + Halmos 契約。  
+3. **Arbitrum 保留獎** — Sepolia 三件套 + 775 PASS Clean + Halmos 契約。  
 4. **Promising Track 15k** — 主席評審路徑；強調創新與誠實缺口。  
 5. **Overall 70k** — 需 180s 影片達標 + 至少 Dune 草稿公開或明確 14 天發布 SLA。  
 6. **Pendle / Dune 獎** — 當「下一里程碑」而非本週已贏。
@@ -414,7 +414,7 @@ SliverVine / BeΔ Living Water 在本輪（相對 Kimi 10 評審複核）補齊�
 | ID | 解鎖條件 | 狀態 | 建議綁定獎金比例（內部） |
 |----|----------|------|--------------------------|
 | **M-Sepolia** | 三合約 Arbiscan | ✅ | 15% |
-| **M-CLI** | 174/768 PASS | ✅ | 10% |
+| **M-CLI** | 176/775 PASS Clean (Current Branch Live; Proposal Baseline 175/773) | ✅ | 10% |
 | **M-RH-Demo** | 180s 含 inbound + deployable | ⏳ 影片 | 20%（Robinhood 軌） |
 | **M-GMX-Fee** | 10 bps 注入 · 主網 claim 另列 | ✅ 注入 / ⏳ claim | 20%（GMX 軌） |
 | **M-Dune** | 三面板公開 dashboard | ⏳ 規格 | 15%（Dune 軌） |
@@ -430,7 +430,7 @@ SliverVine / BeΔ Living Water 在本輪（相對 Kimi 10 評審複核）補齊�
 
 ### 5.4 一句對外 SSOT（評審可複誦）
 
-> SliverVine 是部署在 **Arbitrum** 的 **預執行 Citadel**：Sepolia Gate **consume-once**（Halmos 不變量契約）、Robinhood **單向 AML 護航且僅 SETTLED 可部署**、GMX **10 bps** 未簽名注入、生產對沖 **活 L2 fail-closed**。回歸 **174 files \| 768 PASS**。Pendle 是 **到期防護閘**，Dune 是 **三查詢規格**。蒙地卡羅：**87.39%** 有毒腿攔截、**$9.88M 模擬名義** LP 保護（非實盤 TVL）。
+> SliverVine 是部署在 **Arbitrum** 的 **預執行 Citadel**：Sepolia Gate **consume-once**（Halmos 不變量契約）、Robinhood **單向 AML 護航且僅 SETTLED 可部署**、GMX **10 bps** 未簽名注入、生產對沖 **活 L2 fail-closed**。回歸 **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)**。Pendle 是 **到期防護閘**，Dune 是 **三查詢規格**。蒙地卡羅：**87.39%** 有毒腿攔截、**$9.88M 模擬名義** LP 保護（非實盤 TVL）。
 
 ### 5.5 最終裁決
 
@@ -444,4 +444,4 @@ SliverVine / BeΔ Living Water 在本輪（相對 Kimi 10 評審複核）補齊�
 
 ---
 
-*SilverVine Labs · 內部文件 · Buildathon 20 評審終極模擬（Grok 4.6）· Vitest SSOT: 174 files \| 768 PASS (100% Clean · Exit Code 0) · 本輪未重跑測試 · 2026-08-30*
+*SilverVine Labs · 內部文件 · Buildathon 20 評審終極模擬（Grok 4.6）· Vitest SSOT: Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean) · 本輪未重跑測試 · 2026-08-30*

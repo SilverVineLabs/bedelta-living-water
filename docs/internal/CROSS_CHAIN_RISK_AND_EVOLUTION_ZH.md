@@ -2,7 +2,7 @@
 
 > **文檔屬性**：內部量化風控與系統架構最高指引 (SSOT)  
 > **版本**：V1.0 → V2.0 路線圖對齊  
-> **基線**：Vitest **168 檔 | 742 PASS (100% Clean)** · Wasm 熱路徑 **87.76 KiB gzip** · Shield **p50 ~106 µs**  
+> **基線**：Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm 熱路徑 **87.76 KiB gzip** · Shield **p50 ~106 µs**  
 > **第一性原理**：誠實會計、物理不變量 (`lostUsd ≡ 0`) 與跨場所微秒級預執行 Citadel 防護。  
 > **英文 SSOT：** [`../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md)
 
@@ -19,7 +19,7 @@
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│ 階段 A (現狀 V1.0 — 綠燈 742 PASS)                                              │
+│ 階段 A (現狀 V1.0 — 綠燈 775 PASS)                                              │
 │ · 主戰場：Arbitrum One GMX v2 GM Pools + Hyperliquid 1× Short                   │
 │ · 入口護航：Robinhood Chain 46630 (USDG) 經 Across Bridge (1 小時逾時熔斷)       │
 │ · 風控：106µs Wasm Soil 引擎 + ZeroDev Kernel v3 帳戶抽象                        │
@@ -46,7 +46,7 @@
 
 | 階段 | 狀態 | 重心 |
 |------|------|------|
-| **A — V1.0** | ✅ 程式碼驗證 (168 檔 \| 742 PASS) | Arbitrum GMX v2 + HL 1× 對沖 · Robinhood 單向護航 |
+| **A — V1.0** | ✅ 程式碼驗證 (Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)) | Arbitrum GMX v2 + HL 1× 對沖 · Robinhood 單向護航 |
 | **B — V1.5** | ⏳ 路線圖 | Aave/Morpho 底座 + Variational 原生對沖 PoC |
 | **C — V2.0** | ⏳ 設計規格 | 100% Arbitrum 原子意圖堆疊 · CaaS 商業化 |
 
@@ -155,7 +155,7 @@ GMX 偏離溢價 (+5~10 bps uiFeeReceiver) + funding cushion
 
 **設計規則：** Citadel Safety Buffer 與 builder UI fee 用於 **捕獲 GMX v2 偏離路由的真實經濟剩餘** — 而非用 emissions 掩蓋滑點。0.5% Hurdle Gate 確保 **淨增益始終跑贏摩擦**，才允許 Delta-Neutral 資本部署或再平衡。
 
-**程式錨點：** `src/services/yield/rebalance-rules.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `src/services/risk-control-lib/soil-resistance.ts` · Vitest **742 PASS** 回歸。
+**程式錨點：** `src/services/yield/rebalance-rules.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `src/services/risk-control-lib/soil-resistance.ts` · Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** 回歸。
 
 ### 2.6 真實收益 vs. 毒性通膨（Real Yield vs. Toxic Inflation）
 
@@ -418,7 +418,7 @@ Basel 營運風險框架要求**待結算/在途敞口不得誤記為已實現�
 | **歷史模擬** | Survival Benchmark 30D HL 資金費率 + L2 訂單簿 | 按需（`generate-survival-report.ts`） |
 | **壓力情境** | $100k 標準 + **$1M** 壓力名義 | 同報告 |
 | **反向壓力** | 負向證明——深度不足、Soil 熔斷、橋接逾時 | `pnpm verify:negative` |
-| **模型驗證** | Vitest **742 PASS** 全量回歸 | CI / 發布前 |
+| **模型驗證** | Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** 全量回歸 | CI / 發布前 |
 
 ### 6.4 三道防線映射
 
@@ -459,7 +459,7 @@ gmx-smart-route-payload-binding.ts → buildGmxSmartRoutePayloadBinding()
 
 | 檢查項 | 命令 / 介面 | 預期 |
 |--------|-------------|------|
-| 全量回歸 | `pnpm test -- --run` | **168 檔 \| 742 PASS** |
+| 全量回歸 | `pnpm test -- --run` | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
 | 橋接不變量 | `pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts` | **5/5 PASS** |
 | 即時審計 | `GET /api/grant-audit` | `lostUsd: 0` |
 

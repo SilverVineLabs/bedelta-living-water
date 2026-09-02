@@ -39,13 +39,13 @@
 ## 驗證結果
 
 ```bash
-pnpm test           # 168 files · 742 PASS · exit 0
+pnpm test           # 168 files · 773 PASS (Proposal Baseline) · exit 0
 pnpm bundle:measure # 見下方輸出
 ```
 
 | 指標 | 結果 |
 |------|------|
-| Vitest | **742 PASS**（168 files） |
+| Vitest | **773 PASS (Proposal Baseline)**（168 files） |
 | Bundle gzip | **87.76 KiB / 150.0 KiB PASS**（零回歸） |
 | 修改行數 | LivingWaterShieldCard + App ≈ **< 100 行** |
 

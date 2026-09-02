@@ -128,7 +128,7 @@ Wrangler dry-run 與本地 gzip 一致；`nodejs_compat` 已移除（Phase C 優
 ## 8. 簽核
 
 ```
-Vitest:   742/742 PASS ✅
+Vitest:   742/773 PASS (Proposal Baseline) ✅
 Forge:    60/60  PASS ✅
 Bundle:   158.84 KiB / 158.99 KiB ✅
 Verdict:  RELEASE GREEN

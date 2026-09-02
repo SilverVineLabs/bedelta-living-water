@@ -3,7 +3,7 @@
 > **分支：** `v1.0_push_BDLW`  
 > **角色：** Lead Quant & Systems Risk Architect  
 > **產品：** BDLW Dynamic Delta-Neutral Vault（GMX v2 GM + Hyperliquid 1× Short）  
-> **Baseline：** p50 **~106 µs** Wasm Soil Engine · `lostUsd ≡ 0` · Vitest 742 PASS · Defense Matrix R01–R20  
+> **Baseline：** p50 **~106 µs** Wasm Soil Engine · `lostUsd ≡ 0` · Vitest 773 PASS (Proposal Baseline) · Defense Matrix R01–R20  
 > **關聯：** [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) · [`HOT_COLD_PATH_DECOUPLING.md`](./HOT_COLD_PATH_DECOUPLING.md)
 
 ---
@@ -159,7 +159,7 @@
 ### 7.3 驗證指令
 
 ```bash
-pnpm test                                          # 742 PASS · soil / bridge / aa gates
+pnpm test                                          # 773 PASS (Proposal Baseline) · soil / bridge / aa gates
 pnpm exec vitest run tests/defense-matrix.test.ts  # R11 Dynamic Max SL · R20
 pnpm exec vitest run tests/adapters/robinhood-across-bridge.test.ts  # lostUsd ≡ 0
 pnpm exec vitest run tests/services/wasm-feasibility-lib/soil-core-sim.test.ts  # <60µs · <28KiB

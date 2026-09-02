@@ -58,7 +58,7 @@
 | 輸入項 | 鎖定值 | 驗證命令 / 錨點 |
 |--------|--------|-----------------|
 | **官方標題** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum | `README.md` H1 · `docs/grants/SUBMISSION.md` |
-| **Vitest SSOT** | **175 test files \| 773 tests PASS**（提案鎖定基線） | `pnpm test -- --run` |
+| **Vitest SSOT** | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)**（提案鎖定基線） | `pnpm test -- --run` |
 | **活測漂移（審計當日）** | 176 files \| 775 PASS（+2/+2，非回歸） | 2026-09-01 CLI 實跑 |
 | **Forge Gate** | **60/60 PASS**（提案基線）· 活測 **62/62** | `cd SliverVineGate && forge test` |
 | **Stylus Wasm** | **5/5 PASS** | `contracts/stylus-probe` · `cargo test` |

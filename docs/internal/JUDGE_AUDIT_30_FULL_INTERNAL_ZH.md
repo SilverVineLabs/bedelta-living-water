@@ -157,7 +157,7 @@ $$
 
 | # | 盲點 | 來源 | 影響 |
 |---|------|------|------|
-| H6 | `HOT_COLD_PATH_DECOUPLING_ZH.md` 寫 Vitest **742 PASS** | 內部文件過期 | 內部 SSOT 紀律質疑 |
+| H6 | `HOT_COLD_PATH_DECOUPLING_ZH.md` 寫 Vitest **773 PASS (Proposal Baseline)** | 內部文件過期 | 內部 SSOT 紀律質疑 |
 | H7 | `BLACK_HAT` 基線 **174/768** vs 當前 **176/775** | 紅隊報告過期 | 需更新紅隊基線 |
 | H8 | Santenmoku v0.8 代號 vs 公開 v1.0 BeΔ | 品牌雙軌 | 工程師困惑；對外已隔離 |
 
