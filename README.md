@@ -19,7 +19,7 @@
 **Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
 
 **Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`  
-**Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`  
+**Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune Telemetry (Sepolia Live Verification & Production SQL Spec)](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`  
 **Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (Apache-2.0) · **Judge entry:** [Verification Matrix](./docs/VERIFICATION_MATRIX.md) · [Technical Specification](./docs/architecture/TECHNICAL_SPECIFICATION.md)
 
 **Core product:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum — [§1 Product Identity](./docs/architecture/TECHNICAL_SPECIFICATION.md#1-core-product-identity) · [Three Pillars pipeline](./docs/architecture/TECHNICAL_SPECIFICATION.md#0-unified-institutional-pre-execution-pipeline).
@@ -192,7 +192,8 @@ pnpm exec vitest run tests/services/hl-5-trade-provenance.test.ts
 # 6. Robinhood Chain (46630) → Arbitrum unidirectional Across bridge edge cases
 pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 
-# 7. Dune production telemetry (live feed + activity chart — see DUNE_DASHBOARD_SPECIFICATION.md)
+# 7. Dune Telemetry (Sepolia Live Verification & Production SQL Spec)
+# npx tsx scripts/emit-sepolia-telemetry-events.ts
 # https://dune.com/silvervinelabs/silvervine-citadel-telemetry
 ```
 
