@@ -29,6 +29,7 @@
 
 | Document | Role |
 |----------|------|
+| [`V0.9_VS_V1.0_ZH.md`](./V0.9_VS_V1.0_ZH.md) | **V0.9 yield-vault vs V1.0 AI Agent Citadel · 14-dim · 20-judge 5.2 → 7.7** |
 | [`GROK_20_JUDGE_AUDIT_REPORT_ZH.md`](./GROK_20_JUDGE_AUDIT_REPORT_ZH.md) | **Grok 20-judge institutional audit panel (2026-09-02) · 7.65/10 · CONDITIONAL PASS** |
 | [`JUDGE_AUDIT_20_FULL_INTERNAL_ZH.md`](./JUDGE_AUDIT_20_FULL_INTERNAL_ZH.md) | 20-member full internal technical DD (2026-09-01) |
 | [`BUILDATHON_20_JUDGES_SIMULATION_ZH.md`](./BUILDATHON_20_JUDGES_SIMULATION_ZH.md) | Buildathon 20-judge simulation |
