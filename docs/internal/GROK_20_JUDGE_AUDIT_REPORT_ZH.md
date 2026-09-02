@@ -1,5 +1,7 @@
 # SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — Grok 20 人機構審計團終審報告
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 | 欄位 | 值 |
 |------|-----|
 | **分類** | 內部 OpSec · 限 SilverVine Labs 工程 / 法務 / Grant 盡職審查 · 禁止對外原文發布 |

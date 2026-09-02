@@ -1,5 +1,7 @@
 # Performance & On-Chain Gate Audit — Arbitrum Buildathon V1.0
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 **Audit Date:** 2026-08-17 (UTC+8)
 **Auditor Role:** Cursor Senior Systems Engineer
 **Repo:** `bedelta-citadel-core` (`feat/v1.0-expansion` @ `56cfe58`)

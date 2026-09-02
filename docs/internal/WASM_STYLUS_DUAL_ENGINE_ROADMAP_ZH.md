@@ -1,5 +1,7 @@
 # BeDelta Living Water — Wasm / Stylus 雙引擎重構路線圖
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 > **分支：** `v1.0_push_BDLW`  
 > **狀態：** ⏳ V1.0 Design Spec（M6 敘事錨點）  
 > **Baseline：** M4 已交付 `pkg/soil_core.wasm` · p50 **~106 µs** · Pure Math **200 ns** · `verifyAndConsume` **28,043 gas median**  

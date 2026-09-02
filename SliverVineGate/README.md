@@ -1,5 +1,7 @@
 # SliverVine Citadel Gate — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 On-chain enforcement layer for the BeDelta Living Water / SliverVine pre-execution risk engine (Santenmoku internal engine).
 
 The off-chain engine already decides whether an order is safe. This repo makes that decision

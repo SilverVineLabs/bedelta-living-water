@@ -1,7 +1,7 @@
 # SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — Verification Matrix (Buildathon / Grant Evaluators)
 
 **Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
-**Pitch:** Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
+> **Pitch SSOT:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum.
 **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com`
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit`
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)

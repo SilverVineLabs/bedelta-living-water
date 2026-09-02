@@ -1,5 +1,7 @@
 # Phase B — Payload Binding & Smart Routing Adapter
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 **日期：** 2026-08-25  
 **分支：** `v1.0_push_BDLW`  
 **範圍：** Off-chain payload binding · 零 EIP-712 / Gate struct 變更

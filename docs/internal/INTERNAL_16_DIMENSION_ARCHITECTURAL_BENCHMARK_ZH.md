@@ -1,5 +1,7 @@
 # SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — 內部 16 維度 Web3/HFT 架構主基準（Master SSOT）
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 > **文件分類：** 內部 OpSec · 限 SilverVine Labs 工程 / 法務 / 專利審查  
 > **實體：** SilverVine Labs · **協議品牌：** SliverVine · **引擎代號：** Santenmoku v0.8 · **產品版本：** BeΔ Living Water v1.0  
 > **審計基線 Commit：** `e1e5355`+ · 分支 `v1.0_push_BDLW`  

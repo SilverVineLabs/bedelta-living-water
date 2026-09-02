@@ -1,5 +1,7 @@
 # SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — 30 位評審大師委員會 360° 全量深度審計報告
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 | 欄位 | 值 |
 |------|-----|
 | **分類** | 內部 OpSec · **Master Deep-Dive** · 公開 + 全量 `docs/internal/*` + 紅隊 + 專利 + 影片劇本 |

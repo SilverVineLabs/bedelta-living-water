@@ -32,9 +32,9 @@
 
 | Horizon | Status | Asset / clearing bound |
 |---------|--------|------------------------|
-| **v1.0 Delivered (Sepolia verified)** | ✅ Code-Verified | Strictly **ETH/USDC GM Pool** — eliminates oracle de-peg and FX slippage when escorting treasuries Robinhood Chain (`46630`) → Arbitrum One (`42161`) · Mainnet deployment ties to **M6 Grant distribution** |
+| **v1.0 Delivered (Sepolia verified)** | ✅ Code-Verified | Strictly **ETH/USDC GM Pool** — eliminates oracle de-peg and FX slippage when escorting treasuries via **Pillar 2 Reference Escort Adapters** (Robinhood Chain `46630` → Arbitrum One `42161`) · Mainnet deployment ties to **M6 Grant distribution** |
 | **V1.0 Isomorphic Extension** | ⏳ Planned | **BTC/USDC GM Pool** — config-driven market address mapping; **zero** bytecode / Wasm rewrite |
-| **V1.0 Treasury Routing** | ⏳ Planned | Native **USDG Robinhood Chain Treasury routing** — USDG clearing remains on Robinhood Chain (`46630`) via unidirectional bridge |
+| **V1.0 Treasury Routing** | ⏳ Planned | Native **USDG Robinhood Chain Treasury routing** (**Pillar 2 Reference Escort Adapters**) — USDG clearing remains on Robinhood Chain (`46630`) via unidirectional bridge |
 
 **Off-ramp finality (v1.0 / unwind path):** Arbitrum One supports native **ETH, BTC, and USDC** upon GMX v2 async unwind. Native USDG redemption is **not** an Arbitrum off-ramp — convert from Arbitrum USDC on return to Robinhood Chain to preserve compliance bounds. Inbound AML contamination (reverse path / `4663` inbound block) is fail-closed at the Firewall.
 

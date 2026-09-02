@@ -544,12 +544,12 @@ Gates must not assume instant atomicity across the triangle; inventory accountin
 
 ### 5.3 Hurdle-Rate Probe (Not Product Identity)
 
-> Aave v3 USDC APY on Arbitrum is a **hurdle-rate probe** used when GMX markets wire is unavailable. It is **not** a V1.5 yield-stacking product and does **not** redefine the AI Agent Citadel roadmap (V1.5 = agentic security / ERC-8196 swarms).
+> Aave v3 USDC APY on Arbitrum is a **hurdle-rate probe** used when GMX markets wire is unavailable. *(Hurdle-rate probe only — not a yield-stacking product track)*. It does **not** redefine the AI Agent Citadel roadmap (V1.5 = agentic security / ERC-8196 swarms).
 
 | Item | Definition |
 |------|------------|
-| **Benchmark** | **Aave v3 USDC (Arbitrum) — APY Benchmark / Default Yield Source** (not a live execution adapter); same fallback used by Arbitrum yield ingress |
-| **Performance Fee** | **10% of Excess Yield Above Aave Benchmark Rate** |
+| **Benchmark** | **Aave v3 USDC (Arbitrum) — APY Benchmark** *(Hurdle-rate probe only — not a yield-stacking product track)*; not a live execution adapter |
+| **Performance Fee** | **10% of Excess Yield Above Aave Benchmark Rate** *(Hurdle-rate probe only — not a yield-stacking product track)* |
 | **Excess Yield** | `max(0, Net Strategy APY − Aave Benchmark APY)` after friction buffer |
 | **Status** | **Optional accounting probe** — not accrued on current v1.0 builder UI-fee path (+10 bps `uiFeeReceiver` + 25% referral rebate); **not** the V1.5 Citadel swarm roadmap |
 

@@ -1,5 +1,6 @@
 # SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — Architecture Evolution & Risk Mitigation Framework
 
+> **Identity:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum.
 > **Document Status:** Official SSOT for Arbitrum Foundation & ZeroDev Grant Committees
 > **Version:** v1.0 → v2.0 Roadmap Alignment
 > **Baseline:** Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs**
@@ -17,7 +18,7 @@
 
 BeDeltaLivingWater (BDLW) acknowledges a fundamental law of distributed systems: **Cross-chain risk, bridge latency, and basis drift cannot be magically erased by software; they must be quantified, isolated, and economically absorbed.**
 
-This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — from the **code-verified V1.0 AI Agent Citadel on Arbitrum**, through **V1.5 sub-ms agentic security / ERC-8196 swarms**, to **V2.0 institutional Citadel-as-a-Service (CaaS) & Orbit Shield** — plus **60 Reflective Architectural Invariants**, each status-badged as **✅ Code-Verified** (v1.0 baseline) or **⏳ Roadmap Spec** (V1.5/V2.0). Aave/Morpho APY figures, where mentioned, are **hurdle-rate probes only** — not a yield-stacking product track. Optional bridges are **Pillar 2 Reference Escort Adapters**.
+This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — from the **code-verified V1.0 AI Agent Citadel on Arbitrum**, through **V1.5 sub-ms agentic security / ERC-8196 swarms**, to **V2.0 institutional Citadel-as-a-Service (CaaS) & Orbit Shield** — plus **60 Reflective Architectural Invariants**, each status-badged as **✅ Code-Verified** (v1.0 baseline) or **⏳ Roadmap Spec** (V1.5/V2.0). Aave/Morpho APY figures, where mentioned, are *(Hurdle-rate probe only — not a yield-stacking product track)*. Optional bridges are **Pillar 2 Reference Escort Adapters**.
 
 ---
 
@@ -32,7 +33,7 @@ This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — fr
 │ · Wasm Hot-Path Shield: p50 ~106µs · <28KiB pkg/soil_core.wasm                  │
 │ · ERC-8196 Sub-ms Policy Pre-Validation (Emerging Draft)                        │
 │ · EIP-712 Consume-Once Gate 0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1           │
-│ · Vitest SSOT: Proposal Baseline 175|773 PASS · Live 176|775 PASS Clean         │
+│ · Vitest SSOT: Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)         │
 └────────────────────────────────────────┬────────────────────────────────────────┘
                                          │
                                          ▼
@@ -87,9 +88,9 @@ When funds cross via Across Bridge, BDLW labels capital as `IN_FLIGHT_BRIDGE_CAP
 
 ### 2.2 Hurdle-Rate Probe (Aave v3 / Morpho — Not Product Identity)
 
-> **v1.0 today:** Aave APY is used as a **hurdle-rate probe** when GMX markets wire is unavailable — **not** automatic capital redeployment and **not** the V1.5 Citadel roadmap (V1.5 = ERC-8196 swarms / EIP-7702 / prompt-injection circuit).
+> **v1.0 today:** Aave APY is used as a hurdle-rate probe when GMX markets wire is unavailable *(Hurdle-rate probe only — not a yield-stacking product track)* — **not** automatic capital redeployment and **not** the V1.5 Citadel roadmap (V1.5 = ERC-8196 swarms / EIP-7702 / prompt-injection circuit).
 
-During market storms, an **optional** accounting fallback to Aave v3 / Morpho Blue USDC on Arbitrum One may be used as a risk-free **probe floor**. This does **not** redefine SliverVine Protocol as a yield-stacking vault.
+During market storms, an **optional** accounting fallback to Aave v3 / Morpho Blue USDC on Arbitrum One may be used as a risk-free **probe floor** *(Hurdle-rate probe only — not a yield-stacking product track)*. This does **not** redefine SliverVine Protocol as a yield-stacking vault.
 
 **Code SSOT (v1.0 probe only):** `src/adapters/arbitrum/arbitrum-yield-ingress.ts` · `src/services/yield/rebalance-rules.ts` (`FRICTION_BUFFER_APY`)
 
@@ -203,7 +204,7 @@ BDLW composes yield from **three exogenous legs**, each with an identifiable eco
 
 | Cash-flow leg | Source | Economic payer | Stage | Code / spec anchor |
 |---------------|--------|----------------|-------|-------------------|
-| **Risk-free base (probe only)** | Aave v3 / Morpho Blue USDC earn on Arbitrum One | Borrowers pay lending spread | Probe · optional storm floor | `arbitrum-yield-ingress.ts` · `rebalance-rules.ts` |
+| **Risk-free base (probe only)** | Aave v3 / Morpho Blue USDC earn on Arbitrum One *(Hurdle-rate probe only — not a yield-stacking product track)* | Borrowers pay lending spread | Probe · optional storm floor | `arbitrum-yield-ingress.ts` · `rebalance-rules.ts` |
 | **GMX skew rebate + builder fee** | Underweight-side GM LP · `uiFeeReceiver` **+10 bps** · positive skew price-impact rebate (+5~10 bps band) | Traders / skew rebalancers on GMX v2 | A ✅ | `gmx-v2-order-payload.ts` · `GMX_UI_FEE_BPS` · Invariant #25–#27 |
 | **HL funding cushion** | 1× short leg on Hyperliquid — hourly funding when perp > spot | Counterparty funding flow on HL book | A ✅ | HL session pipeline · Survival Benchmark funding replay |
 
@@ -211,7 +212,7 @@ BDLW composes yield from **three exogenous legs**, each with an identifiable eco
 
 ```text
 Real yield stack (conceptual):
- Base floor ← Aave / Morpho USDC earn (~4–5% **hurdle probe only** — not V1.5 identity)
+ Base floor ← Aave / Morpho USDC earn (~4–5% *(Hurdle-rate probe only — not a yield-stacking product track)*)
  + GMX surplus ← skew rebate + uiFeeReceiver (+10 bps builder · +5~10 bps skew band)
  + HL funding ← 1× short funding cushion (hourly · regime-dependent)
  − friction ← bridge · basis · MEV · slippage (Citadel Safety Buffer absorbs)
@@ -225,17 +226,17 @@ Real yield stack (conceptual):
 | **No emission token as yield source** | Prevents reflexive APY divorced from venue cash flows |
 | **Hurdle Gate before DN deployment** | `resolveCapitalAllocation()` parks capital in Native Earn when `targetNetApy ≤ hurdle + 0.5%` |
 | **Citadel Safety Buffer absorbs friction** | Real surplus must cover bridge/basis/MEV — not be masked by mint-and-dump |
-| **Storm fallback to Aave/Morpho (optional probe)** | When GMX skew + HL funding compress, capital **may park at risk-free probe** — not a yield-stacking product |
+| **Storm fallback to Aave/Morpho (optional probe)** | When GMX skew + HL funding compress, capital **may park at risk-free probe** *(Hurdle-rate probe only — not a yield-stacking product track)* |
 | **Honest HUD band** | 8.2–11.8% is a **target range**, not a guaranteed emission-backed APY |
 
 **Contrast summary:**
 
 | | Toxic inflation model | BDLW real-yield model |
 |---|----------------------|----------------------|
-| **Primary yield driver** | Native token emissions | GMX fees/rebates + HL funding + Aave/Morpho base |
+| **Primary yield driver** | Native token emissions | GMX fees/rebates + HL funding + Aave/Morpho base *(Hurdle-rate probe only — not a yield-stacking product track)* |
 | **Payer identity** | Future token holders / dilution | Traders, borrowers, funding counterparties |
 | **TVL retention** | Mercenary — exits when emissions drop | Hurdle-gated — deploys only when net > friction |
-| **Downside in storm** | Raise emissions (spiral) | Fail-closed + optional Aave/Morpho probe floor |
+| **Downside in storm** | Raise emissions (spiral) | Fail-closed + optional Aave/Morpho probe floor *(Hurdle-rate probe only — not a yield-stacking product track)* |
 | **Protocol revenue** | Often token-dilutive | **+10 bps `uiFeeReceiver`** + up to **25%** referral rebate — venue-native builder stack |
 
 > **Allocator note:** Real yield **does not mean risk-free**. Funding can flip negative, skew rebates compress, and Aave rates move. BDLW quantifies and buffers these residuals (§2.5 · §6) — it simply refuses to **substitute** them with empty token inflation.
@@ -283,15 +284,15 @@ Real yield stack (conceptual):
 
 | # | Status | Invariant | Mechanism |
 |---|--------|-----------|-----------|
-| 21 | ⏳ | **Two-Tiered Yield** | Robinhood capped at +2% boost; excess yield → Safety Buffer |
-| 22 | ⏳ | **Hurdle-rate probe (optional)** | Aave/Morpho APY as probe floor — **not** V1.5 Citadel identity |
-| 23 | ⏳ | **Aave Cap Isolation** | Aave USDC 100% supply cap → Morpho Blue probe fallback |
-| 24 | ⏳ | **Dynamic Hurdle Rate** | Optional performance fee only on yield exceeding Aave probe + 1.5% |
+| 21 | ⏳ | **Two-Tiered Yield** | Robinhood (**Pillar 2 Reference Escort Adapter**) capped at +2% boost; excess yield → Safety Buffer |
+| 22 | ⏳ | **Hurdle-rate probe (optional)** | Aave/Morpho APY as probe floor *(Hurdle-rate probe only — not a yield-stacking product track)* |
+| 23 | ⏳ | **Aave Cap Isolation** | Aave USDC 100% supply cap → Morpho Blue probe fallback *(Hurdle-rate probe only — not a yield-stacking product track)* |
+| 24 | ⏳ | **Dynamic Hurdle Rate** | Optional performance fee only on yield exceeding Aave probe + 1.5% *(Hurdle-rate probe only — not a yield-stacking product track)* |
 | 25 | ✅ | **Builder UI Fee** | +10 bps `uiFeeReceiver` on every GMX v2 payload (v1.0 active) |
 | 26 | ✅ | **Skew Neutralizer Premium** | Positive skew / price-impact rebate — never conflated with UI fee |
 | 27 | ✅ | **Citadel Safety Buffer** | Excess GMX yield absorbs bridge fees, basis drift, MEV slippage |
-| 28 | ⏳ | **Risk-Free Storm Probe** | Optional 4%~5% Aave/Morpho probe during 3σ / oracle-lag / sequencer grace |
-| 29 | ⏳ | **Performance Fee (optional accounting)** | 10% of excess yield above Aave probe — not on v1.0 UI fee path · **not** V1.5 swarm roadmap |
+| 28 | ⏳ | **Risk-Free Storm Probe** | Optional 4%~5% Aave/Morpho probe during 3σ / oracle-lag / sequencer grace *(Hurdle-rate probe only — not a yield-stacking product track)* |
+| 29 | ⏳ | **Performance Fee (optional accounting)** | 10% of excess yield above Aave probe — not on v1.0 UI fee path *(Hurdle-rate probe only — not a yield-stacking product track)* |
 | 30 | ⏳ | **CaaS Monetization** | B2B Wasm Firewall license · 10 bps protocol authorization fee |
 
 ### IV. Wasm Shield & Pre-Execution Moat (31–40)
@@ -333,10 +334,10 @@ Real yield stack (conceptual):
 |---|--------|-----------|-----------|
 | 54 | ⏳ | **AI Agent Shield** | 30s TTL Session Keys protecting unattended bots from MEV & sequencer halts |
 | 55 | ⏳ | **OI Inversion Lock** | GMX Open Interest 99% cap → opposite-leg lock; PnL & delta frozen |
-| 56 | ⏳ | **Aave Cap Isolation** | Aave USDC supply cap 100% → automatic Morpho Blue degradation |
+| 56 | ⏳ | **Aave Cap Isolation** | Aave USDC supply cap 100% → automatic Morpho Blue degradation *(Hurdle-rate probe only — not a yield-stacking product track)* |
 | 57 | ⏳ | **PoR De-peg Defense** | Chainlink Proof-of-Reserve >0.5% RWA de-peg → execution hard-lock |
 | 58 | ⏳ | **EIP-7702 Zero-Friction Onboarding** | EOA wallet → Smart Account without asset migration |
-| 59 | ⏳ | **Dynamic Hurdle Rate** | Performance fee charged only above Aave benchmark + 1.5% |
+| 59 | ⏳ | **Dynamic Hurdle Rate** | Performance fee charged only above Aave benchmark + 1.5% *(Hurdle-rate probe only — not a yield-stacking product track)* |
 | 60 | ⏳ | **Immutable B2B License** | Static 87.76 KiB Wasm core powering CaaS ecosystem subscriptions |
 
 ---
@@ -530,7 +531,7 @@ lostUsd: number; // Always 0 — pending bridge liquidity is never booked as los
 |-----------|--------------|------|
 | **Dynamic Target Range** | **8.2% ~ 11.8% APY** (display band · not a guarantee) | `App.tsx` · DDIP §5.6 |
 | **Hurdle Gate (friction buffer)** | **+0.5%** (`FRICTION_BUFFER_APY = 0.005`) — rebalance / performance fee only above friction-adjusted excess | `rebalance-rules.ts` |
-| **Performance hurdle (planned)** | Aave benchmark + 1.5% before fee crystallization | Invariant #24 · #59 (⏳) |
+| **Performance hurdle (planned)** | Aave benchmark + 1.5% before fee crystallization *(Hurdle-rate probe only — not a yield-stacking product track)* | Invariant #24 · #59 (⏳) |
 
 ```text
 Net deployable excess = observed_yield − (Aave_base + FRICTION_BUFFER_APY)

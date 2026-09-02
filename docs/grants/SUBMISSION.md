@@ -85,7 +85,7 @@ Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPEC
 | **V1.5** | ⏳ Roadmap Spec | ERC-8196 fleet enforcement for multi-agent swarms · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) |
 | **V2.0** | ⏳ Design Spec | Institutional CaaS (`@slivervine/citadel-sdk`) for AI DEXs and Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
 
-Optional bridges (Robinhood / Across) are **Pillar 2 Reference Escort Adapters** — they do not define product identity. Aave/Morpho APY figures are **hurdle-rate probes only**, not a yield-stacking product track.
+Optional bridges (Robinhood / Across) are **Pillar 2 Reference Escort Adapters** — they do not define product identity. Aave/Morpho APY figures are *(Hurdle-rate probe only — not a yield-stacking product track)*.
 
 ---
 
@@ -147,7 +147,7 @@ Hyperliquid Session Key Adapter and TCA provenance (`src/data/verified-5tx-lib/v
 | Pillar | Role | SSOT |
 |--------|------|------|
 | **Gatehouse (Auth)** | ZeroDev scoped session keys · Kernel v3 · R06 / R07 | `zerodev-aa-*` · Gate attestation |
-| **Pillar 2: Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort · Robinhood (`46630`/`4663` → `42161`) as reference adapter | `src/adapters/across-ingress-bridge.ts` · `contracts/IngressSafetySwitch.sol` |
+| **Pillar 2: Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort · Robinhood / Across (`46630`/`4663` → `42161`) as **Pillar 2 Reference Escort Adapters** | `src/adapters/across-ingress-bridge.ts` · `contracts/IngressSafetySwitch.sol` |
 | **Shield (CORE MOAT)** | Sub-ms Wasm pre-execution armor · p50 ~106 μs · fail-closed before mempool | `checkSoilResistance()` · `soil_core.wasm` · Stylus `SliverVineSoilCoprocessor` |
 
 ### Competitive Positioning — Four-Dimensional ASCII Matrices (SliverVine Protocol)
@@ -242,7 +242,7 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 | ID | Unlock condition (objective) | Sponsor / track | Status |
 |----|------------------------------|-----------------|--------|
 | **M-Sepolia** | Sepolia Gate + RiskOracle + IngressSafetySwitch verified · `sepoliaDualLegProof` in `/api/grant-audit` | Arbitrum | ✅ Delivered |
-| **M-CLI** | Vitest **Proposal Baseline: 175/773 PASS · Current Branch Live: 176/775 PASS Clean** | All | ✅ Delivered |
+| **M-CLI** | Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** | All | ✅ Delivered |
 | **M-RH-Demo** | `46630`/`4663` → `42161` outbound escort OK · inbound AML blocked · `lostUsd ≡ 0` | Robinhood Chain | ✅ Code-verified · ⏳ video |
 | **M-GMX-Fee** | Unsigned GMX v2 payload injects **10 bps** `uiFeeReceiver` | GMX | ✅ Injected · ⏳ `claimUiFees` |
 | **M-Dune** | Publish Dune dashboard per [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Dune | ✅ [Live dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
@@ -266,7 +266,7 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 
 ```bash
 pnpm install
-pnpm test -- --run # Proposal Baseline: 175/773 PASS · Current Branch Live: 176/775 PASS Clean
+pnpm test -- --run # Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
 pnpm run audit:security # 5/0/0 PASS
 cd SliverVineGate && forge test --gas-report && cd ..
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualLegProof

@@ -1,5 +1,7 @@
 # cleanup_v10_execution_stubs
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 ## Summary of Changes
 - `twap-engine-v2.ts`：`TwapExecutionStatus`（`EXECUTED` | `SKIPPED` | `PENDING`）取代靜態 `STUB` / `STAGED`
 - `r-chain-vault-adapter.ts`：新增 `fetchRobinhoodVaultBalanceWithRpcFallback()`；`FALLBACK_VAULT_POSITIONS` 取代 `STUB_POSITIONS`

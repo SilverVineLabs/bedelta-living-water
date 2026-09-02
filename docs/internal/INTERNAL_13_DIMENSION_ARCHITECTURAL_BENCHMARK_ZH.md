@@ -1,5 +1,7 @@
 # SliverVine Protocol (v0.8 Santenmoku) — 內部 13 維度 Web3/HFT 架構對照與技術優勢白皮書
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 > **⚠️ 已由 Master SSOT 取代：** 請優先使用 [`INTERNAL_16_DIMENSION_ARCHITECTURAL_BENCHMARK_ZH.md`](./INTERNAL_16_DIMENSION_ARCHITECTURAL_BENCHMARK_ZH.md)（16 維度 · 含 Gem 14–16 程式碼審計錨點）。本文件保留供物理邊界附錄與歷史對照。
 
 > **文件分類：** 內部 SSOT · 限 SilverVine Labs 工程 / 法務 / 專利審查  

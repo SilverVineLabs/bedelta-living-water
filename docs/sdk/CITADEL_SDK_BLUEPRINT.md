@@ -16,7 +16,7 @@
 | Pillar | Scope | SDK surface |
 |--------|-------|-------------|
 | **Pillar 1 — Gatehouse (Account Abstraction & Intent Gateway)** | **Arbitrum One (`42161`)** is the **primary execution anchor / center of gravity** — GMX v2 GM pools, EIP-712 Gate domain, Agent-Citadel-Guard chainId | `ARBITRUM_ONE_CHAIN_ID`, `SLIVERVINE_GATE_ADDRESS`, `verifyAgentIntent()` |
-| **Pillar 2 — Compliance Ingress Firewall (Robinhood Ingress as Reference Adapter)** | Venue-agnostic route policy + capital escort · **`IN_FLIGHT_BRIDGE_CAPITAL`** · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)**. **Robinhood Chain (`46630`/`4663` → `42161`) is the inaugural Code-Verified / Dry-Run Verified reference adapter** — not the core anchor. Also governs Arbitrum-native routes and Arb ↔ Hyperliquid hedge channels | `assertUnidirectionalBridge()`, `exportRobinhoodAuditSnapshot()`, `quoteRChainYieldToArbitrumGm()` |
+| **Pillar 2 — Compliance Ingress Firewall (Pillar 2 Reference Escort Adapters)** | Venue-agnostic route policy + capital escort · **`IN_FLIGHT_BRIDGE_CAPITAL`** · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)**. **Robinhood Chain / Across (`46630`/`4663` → `42161`) are Pillar 2 Reference Escort Adapters** — not the core anchor. Also governs Arbitrum-native routes and Arb ↔ Hyperliquid hedge channels | `assertUnidirectionalBridge()`, `exportRobinhoodAuditSnapshot()`, `quoteRChainYieldToArbitrumGm()` |
 | **Pillar 3 — The Shield** | Sub-ms `checkSoilResistance()` semantics (p50 ~106 μs; Wasm warm &lt;60 μs) protect **Arbitrum One (GMX v2) native execution**, **Arb ↔ Hyperliquid cross-venue routing**, and **Arbitrum Edge Worker AI Agents** | `verifyAgentIntent()`, `evaluateSoilCore()`, `guardAgentUserOp()`, legacy-risk re-exports |
 
 ```text

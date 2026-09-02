@@ -1,7 +1,7 @@
 # Grants — Public Submission Index
 
 **Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
-**Pitch:** Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
+**Pitch:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum.
 **Entity:** SilverVine Labs · `grants@silvervinelabs.com`
 **OpSec:** External-facing grant packs only.
 

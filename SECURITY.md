@@ -1,5 +1,7 @@
 # Security Policy — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 **Entity:** SilverVine Labs · **Contact:** `security@silvervinelabs.com`
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal
 **Grant / audit:** `grants@silvervinelabs.com`

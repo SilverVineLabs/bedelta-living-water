@@ -1,5 +1,7 @@
 # BeDelta Living Water — 動態 Delta-Neutral Vault 三十條黃金不變量
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 > **分支：** `v1.0_push_BDLW`  
 > **角色：** Lead Quant & Systems Risk Architect  
 > **產品：** BDLW Dynamic Delta-Neutral Vault（GMX v2 GM + Hyperliquid 1× Short）  

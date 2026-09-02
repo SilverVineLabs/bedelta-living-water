@@ -1,5 +1,7 @@
 # EIP/ERC 標準 Wiki 更新日誌
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 **日期：** 2026-08-25  
 **分支：** `v1.0_push_BDLW`  
 **範圍：** `docs/architecture/TECHNICAL_SPECIFICATION.md` §4  

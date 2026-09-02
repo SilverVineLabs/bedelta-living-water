@@ -15,7 +15,7 @@
 
 ## 1. Executive Summary
 
-SliverVine deploys a **Zero-Trust Pre-Execution Citadel** on **Arbitrum One**, with **Sepolia** dual-leg provenance and an L1 **`SliverVineGate.sol`** consume-once attestation lock. Before any Arbitrum broadcast, Edge sensors (sequencer, oracle lag, soil) fail-closed; production attestations bind to Gate `verifyingContract`.
+SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum. SliverVine deploys a **Zero-Trust Pre-Execution Citadel** on **Arbitrum One**, with **Sepolia** dual-leg provenance and an L1 **`SliverVineGate.sol`** consume-once attestation lock. Before any Arbitrum broadcast, Edge sensors (sequencer, oracle lag, soil) fail-closed; production attestations bind to Gate `verifyingContract`.
 
 **Interceptor Moat:** Deciding transaction execution safety at **p50 ~106 μs** BEFORE MEV bots or Sequencer mempools ever see it. Builder **+10 bps `uiFeeReceiver`** + up to **25% referral rebate** is standard GMX Builders monetization — secondary to the sub-ms risk gateway.
 
@@ -61,7 +61,7 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 | Phase | Scope | Status |
 |-------|-------|--------|
-| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **Proposal Baseline: 175/773 PASS · Current Branch Live: 176/775 PASS Clean** · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
+| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
 | Security Grant pack | Cold audit pack · R01–R20 + Slither/Echidna narrative | ⏳ Planned |
 | Institutional AA | Kernel v3 Session Key — [ZeroDev Comparative Analysis](../../audit/ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md) · [Technical Specification §2.4](../../architecture/TECHNICAL_SPECIFICATION.md#24-pillar-1--zerodev-account-abstraction-deep-specification) | ✅ Delivered in v1.0 |
 

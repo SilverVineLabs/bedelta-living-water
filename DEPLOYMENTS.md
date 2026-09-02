@@ -1,5 +1,7 @@
 # SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) — Multi-Chain CREATE2 Deployments
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 All deployment addresses are deterministic and secured via CREATE2 salts.
 No cross-chain replay risk exists due to immutable EIP-712 `domainSeparator` bindings.
 

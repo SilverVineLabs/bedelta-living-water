@@ -1,5 +1,7 @@
 # SliverVine Citadel Gate — 雙層 Milestone 承諾表
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 > **文件用途**：呈交 Arbitrum Open House Buildathon 評審 / coach，以及 Arbitrum Foundation
 > milestone-based grant 審核。
 >

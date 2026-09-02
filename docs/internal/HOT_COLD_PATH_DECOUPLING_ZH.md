@@ -1,5 +1,7 @@
 # BeDelta Living Water — Hot/Cold Path 解耦架構
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 > **分支：** `v1.0_push_BDLW`  
 > **SSOT 入口：** `src/worker-entry.ts`（Core Gate）· `src/worker-cron-entry.ts`（Cron Hedge）  
 > **部署：** `wrangler.toml` · `wrangler.cron.toml`  

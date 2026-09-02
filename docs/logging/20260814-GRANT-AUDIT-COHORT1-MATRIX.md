@@ -1,5 +1,7 @@
 # Grant Audit Cohort 1 Matrix
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 - **Generated**: 2026-08-22T03:53:58.796Z
 - **Git**: 30be5e7d671b6a1b5b2e1410b3ba82cf87728d5b
 - **Mode**: LIVE

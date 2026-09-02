@@ -5,6 +5,7 @@
 > **基線**：Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm 熱路徑 **87.76 KiB gzip** · Shield **p50 ~106 µs**  
 > **第一性原理**：誠實會計、物理不變量 (`lostUsd ≡ 0`) 與跨場所微秒級預執行 Citadel 防護。  
 > **英文 SSOT：** [`../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md)
+> Aave/Morpho：*(Hurdle-rate probe only — not a yield-stacking product track)* · Robinhood/Across：**Pillar 2 Reference Escort Adapters**
 
 **實體：** SilverVine Labs · **協議：** SliverVine / BeΔ Living Water (BDLW)  
 **即時驗證：** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
@@ -21,7 +22,7 @@
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │ 階段 A (現狀 V1.0 — 綠燈 775 PASS)                                              │
 │ · 主戰場：Arbitrum One GMX v2 GM Pools + Hyperliquid 1× Short                   │
-│ · 入口護航：Robinhood Chain 46630 (USDG) 經 Across Bridge (1 小時逾時熔斷)       │
+│ · 入口護航：Robinhood / Across — Pillar 2 Reference Escort Adapters (USDG · 1 小時逾時熔斷)       │
 │ · 風控：106µs Wasm Soil 引擎 + ZeroDev Kernel v3 帳戶抽象                        │
 └────────────────────────────────────────┬────────────────────────────────────────┘
                                          │

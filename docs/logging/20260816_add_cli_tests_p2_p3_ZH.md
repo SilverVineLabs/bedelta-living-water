@@ -1,5 +1,7 @@
 # add_cli_tests_p2_p3
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 ## Summary of Changes
 - 新增 `scripts/test-rwa-refraction-cli.ts`：Pillar 2 端到端 Vault → Across → GMX 路由診斷輸出
 - 新增 `scripts/test-agent-armor-cli.ts`：Pillar 3 正常簽名與 >500ms / soil 失敗 R20 sever 診斷

@@ -1,5 +1,7 @@
 # BeDelta Living Water — ZeroDev Smart Routing 深度解析
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 > **分支：** `v1.0_push_BDLW`  
 > **Pillar：** Pillar 2 — Firewall (Compliance) · Institutional Ingress  
 > **SSOT：** `ZERODEV_SMART_ROUTE_TARGETS` · `buildGmxSmartRoutePayloadBinding()` · `GatedExecutor.payloadHash()`  

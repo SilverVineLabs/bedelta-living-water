@@ -1,5 +1,7 @@
 # SliverVine Protocol — Internal OpSec Document Index
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 **Entity:** SilverVine Labs · **Protocol:** SliverVine Protocol / SliverVine Citadel  
 **Classification:** Internal only — not linked from public grant packs  
 **Branch:** `v1.0_push_BDLW`

@@ -3,6 +3,7 @@
 **Document:** Arbitrum Technical One-Pager
 **Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 **GMX v2 Pre-Execution Security Gateway & Underweight Router on Arbitrum One.**
+**Identity:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum.
 
 
 | | |
@@ -24,7 +25,7 @@
 
 Before any GMX DataStore broadcast, the Citadel edge evaluates sequencer health, oracle lag, soil resistance, and pool skew — then routes qualified flow to GM pool **underweight sides**, reducing imbalance. Hyperliquid session-key hedging is the Emergency Liquidity Sponge fallback.
 
-**Triangle Liquidity Loop:** `Robinhood Chain (Permissioned Institutional Ingress)` ↔ `Arbitrum One (GMX GM Yield Base)` ↔ `Hyperliquid (1× Short Hedge)`.
+**Triangle Liquidity Loop:** `Robinhood Chain (Pillar 2 Reference Escort Adapter)` ↔ `Arbitrum One (GMX GM Yield Base)` ↔ `Hyperliquid (1× Short Hedge)`.
 
 **Arbitrum Native Execution Premium:** Direct Arbitrum One liquidity providers earn an estimated **+15 ~ 30 bps** execution premium vs bridged / multi-hop routes (Stylus-aligned ingress · lower cross-venue friction · underweight rebate capture).
 

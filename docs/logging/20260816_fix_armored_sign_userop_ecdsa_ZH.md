@@ -1,5 +1,7 @@
 # fix_armored_sign_userop_ecdsa
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 ## Summary of Changes
 - `armoredSignUserOp()` 改為透過 `kernel-v3-engine` + `zerodev-aa-adapter` 產生真實 secp256k1 ECDSA 簽名（含 Kernel v3 `0x00` validator mode 前綴）
 - 政策 / soil 失敗改為 `ArmoredSignRejectedError` fail-closed 拋錯，簽名前即阻斷

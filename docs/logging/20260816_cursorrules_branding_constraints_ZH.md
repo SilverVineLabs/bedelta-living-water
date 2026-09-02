@@ -1,5 +1,7 @@
 # .cursorrules 品牌約束更新
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 ## Summary of Changes
 - 修復 `.cursorrules` 內誤植的 `cat << 'EOF'` / `EOF` shell 殘留。
 - 角色與標題統一為 **SliverVine Protocol**（取代 SliverVine）。

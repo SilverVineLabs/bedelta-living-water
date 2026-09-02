@@ -1,5 +1,7 @@
 # Implement V1.0 Agent-Gate Fail-Closed Demo Scenario (08:00 Trip)
 
+> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+
 ## Summary of Changes
 - 新增 `src/services/telemetry-controller.ts`，定義 `SCENARIO_BUILDATHON_CRASH_HOUR_8` 預設；08:00 觸發 `checkSoilResistance()` → `statusCode: 3`、`severCircuitBreakerPipeline("R20")` 與 `ArmoredSignRejectedError` 阻擋簽章。
 - `KernelSessionHUD` 頂部徽章於 trip 時切換為 `[ ⚡ CITADEL_GATE_TRIPPED (FAIL-CLOSED) ]`；`DemoControllerBar` 新增第 4 觸發器並串接 `Phase01Audit`。

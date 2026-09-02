@@ -11,6 +11,8 @@
 | **Spec SSOT** | [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 
+> **Role:** Robinhood Chain / Across are **Pillar 2 Reference Escort Adapters** — not SliverVine Protocol product identity.
+
 > **Authority statement:** This report verifies the Robinhood Chain safety gate under the Citadel **Three Pillars Architecture**. All quantitative claims are CLI-verifiable via `pnpm test` and targeted bridge tests.
 
 ---

@@ -7,6 +7,7 @@
 | **Classification** | Public Grant / Institutional Allocator Diligence |
 | **Entity** | SilverVine Labs |
 | **Protocol** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) · Santenmoku internal engine |
+| **Identity** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum |
 | **Audience** | Arbitrum Foundation · ZeroDev Grant Committee · Institutional allocators · Fund-of-funds diligence |
 | **Baseline** | **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway) · Wasm warm **&lt;60 µs** |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
@@ -36,7 +37,7 @@ BeDelta Living Water (BDLW) is a **sophisticated, non-custodial DeFi execution p
 | **Pillar 3 — Pre-Execution Shield** | **Fail-Closed** Citadel gate **before** broadcast | `checkSoilResistance()` · `pkg/soil_core.wasm` |
 | **Wasm Soil Engine** | **p50 ~106 µs** hot-path fuse on Edge | R01–R20 matrix · Vitest regression |
 | **Pillar 1 — Gatehouse** | Scoped Session Keys · EIP-712 · ZeroDev Kernel v3 AA | `session-key-gates.ts` |
-| **Pillar 2 — Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort & Pending-Capital Recognition Invariant (`IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0`); inbound AML blocked. **Robinhood Chain is the inaugural Code-Verified / Dry-Run Verified reference adapter** — not the product identity | `src/adapters/across-ingress-bridge.ts` · `IngressSafetySwitch.sol` |
+| **Pillar 2 — Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort & Pending-Capital Recognition Invariant (`IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0`); inbound AML blocked. **Robinhood Chain / Across are Pillar 2 Reference Escort Adapters** — not the product identity | `src/adapters/across-ingress-bridge.ts` · `IngressSafetySwitch.sol` |
 | **Venue legs** | GMX v2 GM pools (Arbitrum One) + Hyperliquid 1× short hedge | Tech Spec §2 |
 
 **Fail-Closed posture:** When soil, oracle, sequencer, bridge, or session sensors trip, BDLW **prefers no action over wrong action** — `signingChannelOpen: false`, UserOp rejected pre-bundler, bridge state `BRIDGE_TIMEOUT_FAIL_CLOSED`. This is a **pre-execution safety layer**, not a guarantee of profit, principal protection, or elimination of market risk.
@@ -67,7 +68,7 @@ BDLW **does not** market "zero risk," "guaranteed yield," or "capital-protected 
 | **Basis drift (GM vs HL)** | Dual-leg delta tracking · Citadel Safety Buffer · Survival Benchmark 3σ replay | Persistent funding/basis divergence · venue-specific insolvency |
 | **Oracle staleness** | `ORACLE_LAG_DEADLOCK` (>30s) · fail-closed severance | Oracle manipulation · feed outage beyond modeled thresholds |
 | **Sequencer / ArbOS desync** | 600s recovery grace · no naked opens during desync | Extended L2 outage · reordering/MEV beyond PGATE budget |
-| **Smart-contract risk** | Immutable Wasm · L1 consume-once gate · 775 PASS (Current Branch Live) + chaos matrix | Unknown vulnerabilities · upgrade/key compromise · third-party venue bugs |
+| **Smart-contract risk** | Immutable Wasm · L1 consume-once gate · Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean) + chaos matrix | Unknown vulnerabilities · upgrade/key compromise · third-party venue bugs |
 | **Market / liquidity** | `MIN_DEPTH_USD` · 0.5% slippage fuse · TWAP path slicing | Gap windows · depth evaporation · black-swan tail beyond stress replay |
 | **Yield variability** | Dynamic Target Range **8.2% ~ 11.8%** (non-guaranteed HUD band) · **0.5% Hurdle Gate** | Negative funding · fee compression · emission-independent return shortfall |
 
@@ -182,7 +183,7 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 
 ### 2.3 Three Pillars Architecture (Evaluator Mental Model)
 
-**Pillar 2 — Compliance Ingress Firewall (with Robinhood Ingress as Reference Adapter):** A **venue-agnostic**, unidirectional AML firewall and escort accounting layer. Capital from permissioned ingress sources is escorted outbound-only into Arbitrum; inbound AML paths are fail-closed at the **Edge ingress adapter** (`src/adapters/across-ingress-bridge.ts`); in-flight bridge capital is honestly labeled via the **Pending-Capital Recognition Invariant** (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`) until settled. **Robinhood Chain (`46630`/`4663`) is the inaugural Code-Verified / Dry-Run Verified reference adapter** — adapter SSOT is venue-agnostic (`src/adapters/across-ingress-bridge.ts`); Robinhood Chain remains the inaugural reference route; on-chain SSOT is **`IngressSafetySwitch.sol`** (Phase A rename); the architectural pillar is not Robinhood-bound.
+**Pillar 2 — Compliance Ingress Firewall (Pillar 2 Reference Escort Adapters):** A **venue-agnostic**, unidirectional AML firewall and escort accounting layer. Capital from permissioned ingress sources is escorted outbound-only into Arbitrum; inbound AML paths are fail-closed at the **Edge ingress adapter** (`src/adapters/across-ingress-bridge.ts`); in-flight bridge capital is honestly labeled via the **Pending-Capital Recognition Invariant** (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`) until settled. **Robinhood Chain / Across (`46630`/`4663`) are Pillar 2 Reference Escort Adapters** — adapter SSOT is venue-agnostic (`src/adapters/across-ingress-bridge.ts`); on-chain SSOT is **`IngressSafetySwitch.sol`** (Phase A rename); the architectural pillar is not Robinhood-bound.
 
 ```text
 [ Allocator Capital ]
@@ -194,7 +195,7 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
  ▼
 ┌─────────────────────────────────────┐
 │ Pillar 2: COMPLIANCE INGRESS │ Venue-agnostic AML escort & accounting
-│ FIREWALL │ Robinhood Chain = inaugural ref adapter
+│ FIREWALL │ Pillar 2 Reference Escort Adapters (Robinhood / Across)
 │ │ · outbound-only · AML inbound block
 └──────────────────┬──────────────────┘
  ▼
@@ -584,7 +585,7 @@ pnpm test -- --run # Proposal Baseline: 175 test files | 773 PASS (Current Branc
 | Compliance plane | Function | UI / code anchor |
 |------------------|----------|------------------|
 | **Edge SSOT (pre-broadcast)** | Soil matrix · signing channel severance · UserOp gate | `checkSoilResistance()` · `zerodev-aa-gate.ts` |
-| **Pillar 2 Compliance Ingress Firewall + ArbOS Elara** | Venue-agnostic outbound escort · inbound AML block · Robinhood Chain as inaugural reference adapter · Elara drops non-compliant / blacklisted senders before GM payload construction | Tech Spec §4.2 · `IngressSafetySwitch.sol` · `src/adapters/across-ingress-bridge.ts` |
+| **Pillar 2 Compliance Ingress Firewall + ArbOS Elara** | Venue-agnostic outbound escort · inbound AML block · Robinhood / Across as **Pillar 2 Reference Escort Adapters** · Elara drops non-compliant / blacklisted senders before GM payload construction | Tech Spec §4.2 · `IngressSafetySwitch.sol` · `src/adapters/across-ingress-bridge.ts` |
 | **Sequencer / ordering sensor** | ArbOS base-fee velocity · sequencer grace — no naked opens during desync | `arbitrum-gas-guard.ts` · `sequencer-guard.ts` |
 | **Multi-tranche demo HUD** | Tranche A native vault vs Tranche B bridge state machine | `SmartRoutingDepositCard` · `deposit-tranche-config.ts` |
 | **Reactive HUD alerts** | Institutional trip copy for allocators | `compliance-trip-alerts.ts` · `LivingWaterShieldCard` · `AMLShieldCard` |
@@ -605,7 +606,7 @@ pnpm test -- --run # Proposal Baseline: 175 test files | 773 PASS (Current Branc
 | **Hurdle Gate friction buffer** | **+0.5%** (`FRICTION_BUFFER_APY = 0.005`) | `rebalance-rules.ts` |
 | **Rebalance predicate** | Deploy only when excess yield exceeds friction buffer | `resolveCapitalAllocation()` · `passesDeltaNeutralHurdle()` |
 
-> **Allocator note:** The 8.2–11.8% band is a **dynamic target range for HUD disclosure**, not a guaranteed return. Performance crystallization remains gated by the Hurdle Gate friction buffer and planned Aave + 1.5% performance hurdle (Invariant #24).
+> **Allocator note:** The 8.2–11.8% band is a **dynamic target range for HUD disclosure**, not a guaranteed return. Performance crystallization remains gated by the Hurdle Gate friction buffer and planned Aave + 1.5% performance hurdle (Invariant #24) *(Hurdle-rate probe only — not a yield-stacking product track)*.
 
 ### 5.7 Three Lines of Defense & Allocator FAQ
 
