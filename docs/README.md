@@ -57,6 +57,7 @@ docs/
  audit/ DDIP · ZeroDev analysis · Robinhood gate · principal audit
  sdk/ Citadel SDK integration blueprint
  grants/ SUBMISSION + arbitrum/ + gmx/
+ internal/ OpSec-only (not linked from public grant packs) — index `internal/README.md`
 ```
 
 Live proof: `GET /api/grant-audit`.
