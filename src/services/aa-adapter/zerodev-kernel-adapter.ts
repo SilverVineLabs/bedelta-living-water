@@ -8,7 +8,7 @@ import {
 } from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-userop";
 import {
   assertRiskOracleUserOpGateOnChain,
-  resolveSilverVineRiskOracleAddress,
+  resolveSliverVineRiskOracleAddress,
   shouldEnforceRiskOracleGate,
 } from "./risk-oracle-gate";
 
@@ -59,7 +59,7 @@ export async function buildKernelUserOpDraft(input: KernelUserOpBuildInput): Pro
     chainId,
     rpcUrl: input.kernel.rpcUrl,
     env: input.env,
-    oracleAddress: input.oracleAddress ?? resolveSilverVineRiskOracleAddress(input.env),
+    oracleAddress: input.oracleAddress ?? resolveSliverVineRiskOracleAddress(input.env),
   });
   return buildUserOpDraft(kernel, { ...input.userOp, chainId });
 }

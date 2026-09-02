@@ -8,7 +8,7 @@ import {
 } from "../../../routes/grant-audit-lib/grant-audit-swr-telemetry";
 import { GAS_CAP_PCT } from "../use-arbitrum-citadel-audit";
 import {
-  SILVERVINE_HUD_DAPP_NODE_URL,
+  SLIVERVINE_HUD_DAPP_NODE_URL,
   SILVERVINE_PROTOCOL_SHIELD_URL,
 } from "../grant-ui-ssot";
 import type { GrantAuditVenueView } from "../citadel-grant-audit-metrics";
@@ -106,7 +106,7 @@ export function resolveFullGrantAuditView(audit: GrantAuditViewInput): FullGrant
     gatewayName: "GMX Dark Citadel · Venue View",
     links: [
       { label: "silvervinelabs.com", href: SILVERVINE_PROTOCOL_SHIELD_URL },
-      { label: "bedeltawater.slivervine.xyz", href: SILVERVINE_HUD_DAPP_NODE_URL },
+      { label: "bedeltawater.slivervine.xyz", href: SLIVERVINE_HUD_DAPP_NODE_URL },
       { label: "x.com/SilverVineLabs", href: "https://x.com/SilverVineLabs" },
     ],
     arbitrumRpcMs,

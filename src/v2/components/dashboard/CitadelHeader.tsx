@@ -6,7 +6,7 @@ import {
 } from "../../../components/hud/hl-protocol-radar";
 
 import {
-  SILVERVINE_HUD_DAPP_NODE_URL,
+  SLIVERVINE_HUD_DAPP_NODE_URL,
   SILVERVINE_PROTOCOL_SHIELD_URL,
 } from "../../../components/hud/grant-ui-ssot";
 import { GMX_ACCENT_TEXT_CLASS } from "../../../components/hud/gmx-citadel-theme";
@@ -107,7 +107,7 @@ export function CitadelHeader({
             [ 🛡️ Official Site · silvervinelabs.com (Defense Matrix) ↗ ]
           </a>
           <a
-            href={SILVERVINE_HUD_DAPP_NODE_URL}
+            href={SLIVERVINE_HUD_DAPP_NODE_URL}
             target="_blank"
             rel="noopener noreferrer"
             data-testid="citadel-hud-dapp-node-link"

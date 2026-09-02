@@ -14,10 +14,10 @@ export const GMX_UI_FEE_RECEIVER =
 /** GMX v2 ExchangeRouter native builder fee — 5–10 bps spec ceiling (SSOT default: 10 bps). */
 export const GMX_UI_FEE_BPS = 10 as const;
 
-/** Registered GMX Builders referral code label. */
+/** Registered GMX Builders referral code label — frozen on-chain bytes32 (Sil- spelling; do not rename). */
 export const GMX_REFERRAL_CODE_LABEL = "SILVERVINE" as const;
 
-/** bytes32 referral code for GMX v2 CreateOrderParams.referralCode. */
+/** bytes32 referral code for GMX v2 CreateOrderParams.referralCode — on-chain registration frozen. */
 export const GMX_REFERRAL_CODE_BYTES32 =
   "0x53494c56455256494e4500000000000000000000000000000000000000000000" as const;
 

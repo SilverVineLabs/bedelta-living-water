@@ -1,7 +1,7 @@
 let bufferedTelemetryLogged = false;
 
 export const HUD_BUFFER_LOG =
-  "[SILVERVINE CITADEL HUD] Engine: Santenmoku v0.8 (Buffered Telemetry Active)";
+  "[SLIVERVINE CITADEL HUD] Engine: Santenmoku v0.8 (Buffered Telemetry Active)";
 
 export function logBufferedTelemetryOnce(): void {
   if (bufferedTelemetryLogged || typeof console === "undefined") return;

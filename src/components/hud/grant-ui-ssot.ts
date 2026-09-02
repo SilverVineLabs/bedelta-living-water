@@ -38,16 +38,20 @@ export function buildGrantAuditArbitrumExplorerUrl(hash: string): string {
   return `${GRANT_AUDIT_ARBITRUM_EXPLORER_TX_BASE}${hash}`;
 }
 
+/** SilverVine Labs corporate site — entity URL (Sil-). */
 export const SILVERVINE_PROTOCOL_SHIELD_URL = "https://silvervinelabs.com" as const;
 
-export const SILVERVINE_HUD_DAPP_NODE_URL =
+export const SLIVERVINE_HUD_DAPP_NODE_URL =
   "https://bedeltawater.slivervine.xyz" as const;
 
+/** @deprecated Use SLIVERVINE_HUD_DAPP_NODE_URL — protocol brand SSOT is SliverVine. */
+export const SILVERVINE_HUD_DAPP_NODE_URL = SLIVERVINE_HUD_DAPP_NODE_URL;
+
 export const TELEMETRY_HEALTH_API_URL =
-  `${SILVERVINE_HUD_DAPP_NODE_URL}/api/telemetry/health` as const;
+  `${SLIVERVINE_HUD_DAPP_NODE_URL}/api/telemetry/health` as const;
 
 export const TELEMETRY_ANALYTICS_API_URL =
-  `${SILVERVINE_HUD_DAPP_NODE_URL}/api/telemetry/analytics` as const;
+  `${SLIVERVINE_HUD_DAPP_NODE_URL}/api/telemetry/analytics` as const;
 
 export const TELEMETRY_HEALTH_CURL =
   `curl -s "${TELEMETRY_HEALTH_API_URL}"` as const;

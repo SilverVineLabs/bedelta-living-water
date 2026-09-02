@@ -47,7 +47,7 @@ function enforceGeoCompliance(request: Request): Response | null {
   }
   severSigningChannel();
   return new Response(
-    "[SILVERVINE DEFENSE] Access Denied by Geo-Compliance Circuit Breaker\n\nHyperliquid Foundation Evaluators: Contact grants@silvervinelabs.com for evaluator whitelist onboarding.",
+    "[SLIVERVINE DEFENSE] Access Denied by Geo-Compliance Circuit Breaker\n\nHyperliquid Foundation Evaluators: Contact grants@silvervinelabs.com for evaluator whitelist onboarding.",
     {
       status: 403,
       headers: { "Content-Type": "text/plain; charset=UTF-8" },

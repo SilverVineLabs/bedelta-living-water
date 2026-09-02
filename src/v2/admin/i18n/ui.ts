@@ -51,7 +51,7 @@ const EN_UI = {
   wikiLocked: "Locked in this version (grayed)",
   rowUpper: "Physics · Dispatch · Liquidity · Armor",
   rowLower: "State · Counter · Spread · Roadmap",
-  brandTitle: "SILVERVINE · SANTENMOKU SAFETY HUD",
+  brandTitle: "SLIVERVINE · SANTENMOKU SAFETY HUD",
   moreVersions: "Unlock All",
   optimizeDisabledTip:
     "v0.8 supports static deadlock only — switch to v1.5 to enable VE zero-point optimize",
