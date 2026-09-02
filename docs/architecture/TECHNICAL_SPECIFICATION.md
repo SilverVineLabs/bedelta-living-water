@@ -635,7 +635,7 @@ allowedToSign =
 |----------|-------------|-------------|
 | **Third-party dApps** | `@slivervine/citadel-sdk` · `verifyAgentIntent()` | Apache-2.0 · sub-ms soil gate |
 | **Institutional vaults** | ZeroDev Kernel + Citadel Worker BUSL payload path | ERC-7579 session + 106µs Shield |
-| **Grant audit / Dune** | `GET /api/grant-audit` · [Dune dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · V2 Trino heartbeat + §SUBMISSION SQL spec | Pillar 2 ingress · Pillar 3 intercepts · 10 bps builder revenue |
+| **Grant audit / Dune** | `GET /api/grant-audit` · [Dune dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · production DuneSQL feed + chart ([`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md)) | Pillar 2 ingress · Pillar 3 intercepts · 10 bps builder revenue |
 
 **Migration safety:** Kernel v3 → v4 adapter swap (Gatehouse only) — **Shield, Wasm, Stylus coprocessor, and EIP-712 Gate require zero rewrite** (§2.4.2 migration rule).
 

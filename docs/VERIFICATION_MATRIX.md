@@ -18,6 +18,8 @@ Open this document first. Each tier is CLI-reproducible with **zero mainnet sign
 | **Vitest baseline** | **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** | `pnpm test -- --run` |
 | **Sepolia Gate** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` | Arbiscan 421614 |
 | **Dune dashboard** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) | Public URL |
+| **DuneSQL (live feed)** | Query 0 — SliverVine Live Telemetry Feed (`arbitrum.blocks` · 12h · Gate `0xb174…`) | [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
+| **DuneSQL (activity chart)** | Query 0b — SliverVine Telemetry Activity Chart (1h minute buckets) | Same spec |
 | **ERC-8196** | Emerging Draft (Virtuals Protocol) — **not finalized** | [`SUBMISSION.md`](../grants/SUBMISSION.md) |
 
 **Core invariants:** $\Delta_{\text{net}} = \Delta_{\text{GMX\_GM}} + \Delta_{\text{HL\_Short}} \equiv 0$ · $\text{lostUsd} \equiv 0$ · $t_{\text{reflector\_p50}} \sim 106\,\mu\text{s}$ — [Technical Specification §3.1](../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats).

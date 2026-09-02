@@ -191,7 +191,7 @@ pnpm exec vitest run tests/services/hl-5-trade-provenance.test.ts
 # 6. Robinhood Chain (46630) → Arbitrum unidirectional Across bridge edge cases
 pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 
-# 7. Dune V2 heartbeat dashboard (live Trino query)
+# 7. Dune production telemetry (live feed + activity chart — see DUNE_DASHBOARD_SPECIFICATION.md)
 # https://dune.com/silvervinelabs/silvervine-citadel-telemetry
 ```
 

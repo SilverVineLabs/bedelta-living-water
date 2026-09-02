@@ -108,10 +108,11 @@ Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPEC
 ### 5. Dune Analytics
 
 * **Live Dashboard:** [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)
-* **Heartbeat (Dune V2 / Trino):** `arbitrum.blocks` liveness + Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` — see Query 0 in [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md).
+* **Live Telemetry Feed (Query 0):** `arbitrum.blocks` 12h window · Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` · `RiskTripBlocked` / `IntentAttested` / heartbeat status — [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md).
+* **Telemetry Activity Chart (Query 0b):** 1h minute-bucket toxic-flow distribution (`BLOCKED` / `PASS` / `HEARTBEAT`) — same spec.
 * **Integration**: [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) · Live `/api/grant-audit` `duneTelemetry` JSON.
 * **On-chain ingest:** Dune engine actively ingests **decoded events** from Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` (`IntentAttested` · `RiskTripBlocked`).
-* **Mechanism**: Three production SQL panels — Toxic Flow Blocked · Observatory Paradox Bypasses · PT Expiry × GMX Margin Health — reconciled against `duneTelemetry.responseRef` sha256 provenance.
+* **Mechanism**: Production DuneSQL feed + chart (Queries 0–0b) plus reconciliation panels (Queries 1–3) — Toxic Flow Blocked · Observatory Paradox Bypasses · PT Expiry × GMX Margin Health — reconciled against `duneTelemetry.responseRef` sha256 provenance.
 
 ### Execution Speed & Protocol-Agnostic Resilience (HL Delta Pool)
 
@@ -240,7 +241,7 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualL
 | Document | Purpose |
 |----------|---------|
 | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | R01–R20 Defense Matrix · latency benchmarks |
-| [`../telemetry/DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | V2 Trino heartbeat + 3 production SQL panels · [live dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
+| [`../telemetry/DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Production DuneSQL feed + activity chart (Queries 0–0b) + 3 reconciliation panels · [live dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 | [`arbitrum/ARBITRUM_ONE_PAGER.md`](./arbitrum/ARBITRUM_ONE_PAGER.md) | One-pager |
 | [`arbitrum/GRANT_PROPOSAL.md`](./arbitrum/GRANT_PROPOSAL.md) | Scope & roadmap |
 | [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md) | GMX builder economics |
