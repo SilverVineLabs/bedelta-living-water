@@ -4,7 +4,7 @@
 
 **Audit Date:** 2026-08-17 (UTC+8)
 **Auditor Role:** Cursor Senior Systems Engineer
-**Repo:** `bedelta-citadel-core` (`feat/v1.0-expansion` @ `56cfe58`)
+**Repo:** `bedelta-living-water` (`feat/v1.0-expansion` @ `56cfe58`)
 **Domain:** `bedeltawater.slivervine.xyz` (SliverVine Protocol)
 
 ---
@@ -285,7 +285,7 @@ Ran 4 test suites in 11.79s: 60 tests passed, 0 failed, 0 skipped (60 total test
 
 ```bash
 # 1. Soil resistance latency (10,000 iterations)
-cd bedelta-citadel-core
+cd bedelta-living-water
 pnpm exec tsx -e "
 import { performance } from 'node:perf_hooks';
 import { MIN_DEPTH_USD, checkSoilResistance } from './src/services/risk-control.ts';

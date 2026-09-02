@@ -19,6 +19,17 @@
 
 ---
 
+## Official HackQuest Judging Criteria Mapping
+
+| Criterion | Evidence (CLI / code) |
+|-----------|------------------------|
+| **Smart Contract Quality** | [`SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) consume-once EIP-712 attestation · zero proxy / no admin loosen path · Halmos `check_*` lemmas [`HalmosGateInvariant.t.sol`](../../contracts/test/formal/HalmosGateInvariant.t.sol) · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
+| **Real Problem Solving** | AI Agent pre-broadcast death window — 0-Gas fail-closed sub-ms severance via `checkSoilResistance()` before Bundler / mempool · `lostUsd ≡ 0` in-flight invariant |
+| **Innovation and Creativity** | World's first AI Agent Cerebellum Citadel — Rust `#![no_std]` Wasm Edge hot-path (`pkg/soil_core.wasm`) · p50 ~106µs soil fuse · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft Sub-ms Policy Gate) |
+| **Product-Market Fit** | GMX v2 +10 bps `uiFeeReceiver` builder lane ([`gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts)) · ZeroDev EIP-7702 EOA-to-Agent AA onboarding · Virtuals / ElizaOS SDK hook ([`@slivervine/citadel-sdk`](../../src/sdk/README.md)) |
+
+---
+
 ## Executive Summary & One-Page Strategic Memo
 
 **Official pitch:** Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum — see metadata table above.
@@ -299,7 +310,7 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualL
 | [`arbitrum/ARBITRUM_ONE_PAGER.md`](./arbitrum/ARBITRUM_ONE_PAGER.md) | One-pager |
 | [`arbitrum/GRANT_PROPOSAL.md`](./arbitrum/GRANT_PROPOSAL.md) | Scope & roadmap |
 | [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md) | GMX builder economics |
-| [`../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | 180s demo storyboard |
+| [`../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | 180s Pitch + 120s Demo dual-video scripts |
 
 ---
 

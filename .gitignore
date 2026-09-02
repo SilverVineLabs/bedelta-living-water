@@ -75,6 +75,7 @@ san
 !src/sdk/README.md
 
 # Internal scorecards / self-audits (local-only; do not publish)
+docs/internal/
 docs/audit/PROGRESS_TRUTH_CHECK.md
 docs/audit/BUILDATHON_JUDGE_REVIEW.md
 
