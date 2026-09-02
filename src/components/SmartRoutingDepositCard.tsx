@@ -9,16 +9,14 @@ import {
   GMX_MUTED_TEXT_CLASS,
   GMX_OFFWHITE_TEXT_CLASS,
 } from "./hud/gmx-citadel-theme";
+import { DepositSel, INP, type DepositSelectOption } from "./sub/DepositSel";
+import { DepositStatusRow, DepositTrancheSwitch } from "./sub/DepositStatusRow";
 
-export interface DepositSelectOption {
-  value: string;
-  label: string;
-}
+export type { DepositSelectOption };
 
 export interface SmartRoutingDepositCardProps {
   className?: string;
   cardTitle?: string;
-  /** Segregated tranche selector — Tranche A native vs Tranche B Robinhood escort. */
   depositTranche?: DepositTrancheId;
   onDepositTrancheChange?: (tranche: DepositTrancheId) => void;
   trancheSubtitle?: string;
@@ -49,31 +47,7 @@ export interface SmartRoutingDepositCardProps {
   onDeposit?: () => void;
 }
 
-const INP =
-  "w-full rounded border border-[#1d2842] bg-[#090d16]/80 px-2.5 py-2 font-mono text-xs text-[#e2e8f0] outline-none focus:border-[#2d42fc]/55";
 const LBL = `font-mono text-[10px] uppercase tracking-widest ${GMX_MUTED_TEXT_CLASS}`;
-const BADGE = "rounded border border-[#1d2842] bg-[#090d16]/60 px-2 py-2 font-mono text-[11px] text-[#e2e8f0]";
-
-function DepositSel({
-  value,
-  options,
-  onChange,
-}: {
-  value: string;
-  options?: readonly DepositSelectOption[];
-  onChange?: (value: string) => void;
-}): ReactNode {
-  if (!options?.length || !onChange) return <span className={BADGE}>{value}</span>;
-  return (
-    <select className={`${INP} cursor-pointer`} value={value} onChange={(e) => onChange(e.target.value)}>
-      {options.map((o) => (
-        <option key={o.value} value={o.value}>
-          {o.label}
-        </option>
-      ))}
-    </select>
-  );
-}
 
 export function SmartRoutingDepositCard({
   className = "",
@@ -108,91 +82,24 @@ export function SmartRoutingDepositCard({
   onDeposit,
 }: SmartRoutingDepositCardProps): ReactNode {
   const [copied, setCopied] = useState(false);
-  const routeLabel = formatConnectedWalletLabel(smartRouteAddress);
   const blocked = depositDisabled || isDepositing || !smartRouteAddress;
-
   const copyAddress = async (): Promise<void> => {
     if (!smartRouteAddress) return;
     try {
       await navigator.clipboard.writeText(smartRouteAddress);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1_500);
-    } catch {
-      /* parent may handle fallback */
-    }
+    } catch { /* parent fallback */ }
     onCopySmartRouteAddress?.();
   };
-
   return (
     <section className={`${GMX_CITADEL_PANEL_CLASS} flex flex-col gap-4 ${className}`} data-testid="smart-routing-deposit-card">
       <header className="border-b border-[#1d2842] pb-3">
         <h2 className={`font-mono text-sm font-semibold ${GMX_ACCENT_TEXT_CLASS}`}>{cardTitle}</h2>
-        {trancheSubtitle ? (
-          <p className={`mt-1 font-mono text-[10px] leading-relaxed ${GMX_MUTED_TEXT_CLASS}`}>
-            {trancheSubtitle}
-          </p>
-        ) : null}
+        {trancheSubtitle ? <p className={`mt-1 font-mono text-[10px] leading-relaxed ${GMX_MUTED_TEXT_CLASS}`}>{trancheSubtitle}</p> : null}
       </header>
-
-      <div className="space-y-2" data-testid="smart-routing-tranche-switcher" role="group" aria-label="Deposit tranche">
-        <span className={LBL}>Vault Tranche</span>
-        <div className="grid gap-2 sm:grid-cols-2">
-          <button
-            type="button"
-            data-testid="smart-routing-tranche-a"
-            aria-pressed={depositTranche === "tranche-a-native"}
-            onClick={() => onDepositTrancheChange?.("tranche-a-native")}
-            className={[
-              "rounded border px-2.5 py-2 text-left font-mono text-[10px] transition",
-              depositTranche === "tranche-a-native"
-                ? "border-cyan-500/55 bg-cyan-950/35 text-cyan-100"
-                : "border-[#1d2842] bg-[#090d16]/60 text-zinc-400 hover:border-cyan-500/30",
-            ].join(" ")}
-          >
-            <span className="block font-bold uppercase tracking-wider">Tranche A</span>
-            <span className="mt-0.5 block opacity-80">Arbitrum Native Vault</span>
-          </button>
-          <button
-            type="button"
-            data-testid="smart-routing-tranche-b"
-            aria-pressed={depositTranche === "tranche-b-robinhood"}
-            onClick={() => onDepositTrancheChange?.("tranche-b-robinhood")}
-            className={[
-              "rounded border px-2.5 py-2 text-left font-mono text-[10px] transition",
-              depositTranche === "tranche-b-robinhood"
-                ? "border-cyan-500/55 bg-cyan-950/35 text-cyan-100"
-                : "border-[#1d2842] bg-[#090d16]/60 text-zinc-400 hover:border-cyan-500/30",
-            ].join(" ")}
-          >
-            <span className="block font-bold uppercase tracking-wider">Tranche B</span>
-            <span className="mt-0.5 block opacity-80">Robinhood Ingress Escort</span>
-          </button>
-        </div>
-      </div>
-
-      {bridgeStateLines.length > 0 ? (
-        <div
-          className="rounded border border-[#1d2842] bg-[#090d16]/50 px-3 py-2"
-          data-testid="smart-routing-bridge-state"
-        >
-          <p className={`font-mono text-[10px] uppercase tracking-widest ${GMX_MUTED_TEXT_CLASS}`}>
-            Bridge State Machine
-          </p>
-          {bridgeStateActive ? (
-            <p className="mt-1 font-mono text-[11px] font-semibold text-amber-200" data-testid="smart-routing-bridge-active">
-              Active: {bridgeStateActive}
-            </p>
-          ) : null}
-          <ul className="mt-1 space-y-0.5">
-            {bridgeStateLines.map((line) => (
-              <li key={line} className={`font-mono text-[10px] ${GMX_OFFWHITE_TEXT_CLASS}`}>
-                {line}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-
+      <DepositTrancheSwitch depositTranche={depositTranche} onDepositTrancheChange={onDepositTrancheChange} />
+      <DepositStatusRow bridgeStateLines={bridgeStateLines} bridgeStateActive={bridgeStateActive} />
       <div className="space-y-2" data-testid="smart-routing-send-row">
         <span className={LBL}>You Send</span>
         <div className="grid gap-2 sm:grid-cols-[1.4fr_0.8fr_1fr]">
@@ -201,17 +108,13 @@ export function SmartRoutingDepositCard({
           <DepositSel value={sendChain} options={sendChainOptions} onChange={onSendChainChange} />
         </div>
       </div>
-
       <div className="space-y-2" data-testid="smart-routing-address-row">
         <span className={LBL}>Smart Route Address</span>
         <div className="flex gap-2">
-          <input type="text" readOnly className={`${INP} flex-1 text-[#94a3b8]`} value={routeLabel} title={smartRouteAddress} data-testid="smart-routing-address-display" aria-label="Smart route address" />
-          <button type="button" onClick={() => void copyAddress()} className="shrink-0 rounded border border-[#2d42fc]/45 px-3 py-2 font-mono text-[10px] font-semibold text-[#2d42fc] hover:bg-[#2d42fc]/10" data-testid="smart-routing-address-copy">
-            {copied ? "Copied" : "Copy"}
-          </button>
+          <input type="text" readOnly className={`${INP} flex-1 text-[#94a3b8]`} value={formatConnectedWalletLabel(smartRouteAddress)} title={smartRouteAddress} data-testid="smart-routing-address-display" aria-label="Smart route address" />
+          <button type="button" onClick={() => void copyAddress()} className="shrink-0 rounded border border-[#2d42fc]/45 px-3 py-2 font-mono text-[10px] font-semibold text-[#2d42fc] hover:bg-[#2d42fc]/10" data-testid="smart-routing-address-copy">{copied ? "Copied" : "Copy"}</button>
         </div>
       </div>
-
       <div className="space-y-2" data-testid="smart-routing-receive-row">
         <span className={LBL}>You Receive</span>
         <div className="grid gap-2 sm:grid-cols-[1.4fr_0.8fr_1fr]">
@@ -220,14 +123,8 @@ export function SmartRoutingDepositCard({
           <DepositSel value={receiveChain} options={receiveChainOptions} onChange={onReceiveChainChange} />
         </div>
       </div>
-
-      <p className={`rounded border px-3 py-2 text-center font-mono text-[10px] ${GMX_CITADEL_ACCENT_BORDER_CLASS} ${GMX_OFFWHITE_TEXT_CLASS}`} data-testid="smart-routing-safety-badge">
-        {safetyBadgeLabel}
-      </p>
-
-      <button type="button" disabled={blocked} onClick={onDeposit} aria-busy={isDepositing} data-testid="smart-routing-deposit-button" className={["w-full rounded border border-cyan-500/50 bg-cyan-950/30 px-3 py-2.5 font-mono text-xs font-bold text-cyan-100 shadow-[0_0_16px_rgba(34,211,238,0.2)] hover:bg-cyan-950/45", blocked ? "cursor-not-allowed opacity-50" : "", isDepositing ? "cursor-wait animate-pulse" : ""].join(" ")}>
-        {isDepositing ? depositingLabel : actionLabel}
-      </button>
+      <p className={`rounded border px-3 py-2 text-center font-mono text-[10px] ${GMX_CITADEL_ACCENT_BORDER_CLASS} ${GMX_OFFWHITE_TEXT_CLASS}`} data-testid="smart-routing-safety-badge">{safetyBadgeLabel}</p>
+      <button type="button" disabled={blocked} onClick={onDeposit} aria-busy={isDepositing} data-testid="smart-routing-deposit-button" className={["w-full rounded border border-cyan-500/50 bg-cyan-950/30 px-3 py-2.5 font-mono text-xs font-bold text-cyan-100 shadow-[0_0_16px_rgba(34,211,238,0.2)] hover:bg-cyan-950/45", blocked ? "cursor-not-allowed opacity-50" : "", isDepositing ? "cursor-wait animate-pulse" : ""].join(" ")}>{isDepositing ? depositingLabel : actionLabel}</button>
     </section>
   );
 }

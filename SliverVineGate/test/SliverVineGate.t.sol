@@ -3,6 +3,7 @@ pragma solidity 0.8.28;
 
 import {GateFixture} from "./helpers/GateFixture.sol";
 import {SliverVineGate} from "../src/SliverVineGate.sol";
+import {SliverVineGateAuth} from "../src/SliverVineGateAuth.sol";
 import {ISliverVineGate} from "../src/interfaces/ISliverVineGate.sol";
 
 /// @notice Invariant-by-invariant unit coverage. Each test maps to one row of the spec table
@@ -426,7 +427,7 @@ contract SliverVineGateTest is GateFixture {
 
     function test_Authority_StrangerCannotHalt() public {
         vm.prank(stranger);
-        vm.expectRevert(SliverVineGate.NotGuardian.selector);
+        vm.expectRevert(SliverVineGateAuth.NotGuardian.selector);
         gate.halt();
     }
 
@@ -435,14 +436,14 @@ contract SliverVineGateTest is GateFixture {
         gate.halt();
 
         vm.prank(admin);
-        vm.expectRevert(SliverVineGate.UnhaltNotScheduled.selector);
+        vm.expectRevert(SliverVineGateAuth.UnhaltNotScheduled.selector);
         gate.executeUnhalt();
 
         vm.prank(admin);
         gate.scheduleUnhalt();
 
         vm.prank(admin);
-        vm.expectRevert(SliverVineGate.TimelockNotElapsed.selector);
+        vm.expectRevert(SliverVineGateAuth.TimelockNotElapsed.selector);
         gate.executeUnhalt();
 
         vm.warp(block.timestamp + gate.UNHALT_DELAY());
@@ -467,7 +468,7 @@ contract SliverVineGateTest is GateFixture {
         assertEq(gate.unhaltEta(), 0, "schedule must be cleared on halt");
 
         vm.prank(admin);
-        vm.expectRevert(SliverVineGate.UnhaltNotScheduled.selector);
+        vm.expectRevert(SliverVineGateAuth.UnhaltNotScheduled.selector);
         gate.executeUnhalt();
     }
 
@@ -478,7 +479,7 @@ contract SliverVineGateTest is GateFixture {
         gate.proposeSignerChange(newSigner, true, 3);
 
         vm.prank(admin);
-        vm.expectRevert(SliverVineGate.TimelockNotElapsed.selector);
+        vm.expectRevert(SliverVineGateAuth.TimelockNotElapsed.selector);
         gate.executeSignerChange();
 
         vm.warp(block.timestamp + gate.SIGNER_TIMELOCK());
@@ -499,19 +500,19 @@ contract SliverVineGateTest is GateFixture {
 
         vm.warp(block.timestamp + gate.SIGNER_TIMELOCK());
         vm.prank(admin);
-        vm.expectRevert(SliverVineGate.NoPendingChange.selector);
+        vm.expectRevert(SliverVineGateAuth.NoPendingChange.selector);
         gate.executeSignerChange();
     }
 
     function test_Authority_ThresholdCannotExceedSignerCount() public {
         vm.prank(admin);
-        vm.expectRevert(SliverVineGate.ThresholdOutOfRange.selector);
+        vm.expectRevert(SliverVineGateAuth.ThresholdOutOfRange.selector);
         gate.proposeSignerChange(vm.addr(outsiderKey), true, 5); // 5 > 4 resulting signers
     }
 
     function test_Authority_ThresholdCannotBeZero() public {
         vm.prank(admin);
-        vm.expectRevert(SliverVineGate.ThresholdOutOfRange.selector);
+        vm.expectRevert(SliverVineGateAuth.ThresholdOutOfRange.selector);
         gate.proposeSignerChange(signers[0], false, 0);
     }
 
@@ -519,7 +520,7 @@ contract SliverVineGateTest is GateFixture {
         vm.prank(admin);
         gate.proposeSignerChange(vm.addr(outsiderKey), true, 3);
         vm.prank(admin);
-        vm.expectRevert(SliverVineGate.ChangeAlreadyPending.selector);
+        vm.expectRevert(SliverVineGateAuth.ChangeAlreadyPending.selector);
         gate.proposeSignerChange(signers[0], false, 1);
     }
 
@@ -537,7 +538,7 @@ contract SliverVineGateTest is GateFixture {
         vm.prank(admin);
         gate.proposeAdmin(subject);
         vm.prank(stranger);
-        vm.expectRevert(SliverVineGate.NotPendingAdmin.selector);
+        vm.expectRevert(SliverVineGateAuth.NotPendingAdmin.selector);
         gate.acceptAdmin();
     }
 
@@ -549,7 +550,7 @@ contract SliverVineGateTest is GateFixture {
         address[] memory bad = new address[](2);
         bad[0] = address(uint160(2));
         bad[1] = address(uint160(1));
-        vm.expectRevert(SliverVineGate.InitialSignersNotSorted.selector);
+        vm.expectRevert(SliverVineGateAuth.InitialSignersNotSorted.selector);
         new SliverVineGate(bad, 1, guardian, admin);
     }
 
@@ -557,21 +558,21 @@ contract SliverVineGateTest is GateFixture {
         address[] memory bad = new address[](2);
         bad[0] = address(uint160(7));
         bad[1] = address(uint160(7));
-        vm.expectRevert(SliverVineGate.InitialSignersNotSorted.selector);
+        vm.expectRevert(SliverVineGateAuth.InitialSignersNotSorted.selector);
         new SliverVineGate(bad, 1, guardian, admin);
     }
 
     function test_Constructor_RejectsThresholdAboveSignerCount() public {
         address[] memory ok = new address[](1);
         ok[0] = address(uint160(9));
-        vm.expectRevert(SliverVineGate.ThresholdOutOfRange.selector);
+        vm.expectRevert(SliverVineGateAuth.ThresholdOutOfRange.selector);
         new SliverVineGate(ok, 2, guardian, admin);
     }
 
     function test_Constructor_RejectsZeroGuardian() public {
         address[] memory ok = new address[](1);
         ok[0] = address(uint160(9));
-        vm.expectRevert(SliverVineGate.ZeroAddress.selector);
+        vm.expectRevert(SliverVineGateAuth.ZeroAddress.selector);
         new SliverVineGate(ok, 1, address(0), admin);
     }
 }
