@@ -22,11 +22,11 @@
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`  
 **Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (Apache-2.0) · **Judge entry:** [Verification Matrix](./docs/VERIFICATION_MATRIX.md) · [Technical Specification](./docs/architecture/TECHNICAL_SPECIFICATION.md)
 
-**Core product:** Sub-ms Pre-Execution Risk Gateway · Delta-Neutral GM Yield Engine on Arbitrum One (GMX v2 ETH/USDC GM + Hyperliquid 1× short) — [§1 Product Identity](./docs/architecture/TECHNICAL_SPECIFICATION.md#1-core-product-identity) · [Three Pillars pipeline](./docs/architecture/TECHNICAL_SPECIFICATION.md#0-unified-institutional-pre-execution-pipeline).
+**Core product:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum — [§1 Product Identity](./docs/architecture/TECHNICAL_SPECIFICATION.md#1-core-product-identity) · [Three Pillars pipeline](./docs/architecture/TECHNICAL_SPECIFICATION.md#0-unified-institutional-pre-execution-pipeline).
 
 **Primary venue:** Arbitrum One (`42161`) · **Hedge:** Hyperliquid · **Moat:** Pillar 3 Wasm Shield `checkSoilResistance()` p50 ~106 μs — [§3 Defense Matrix](./docs/architecture/TECHNICAL_SPECIFICATION.md#3-cross-venue-risk-engine--defense-matrix-r01r20).
 
-**Ingress (optional):** Robinhood Chain `46630`/`4663` → Arbitrum — reference adapter only; [Pillar 2 audit](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md).
+**Ingress (optional):** Robinhood Chain `46630`/`4663` → Arbitrum — **Pillar 2 Reference Escort Adapter** only; [Pillar 2 audit](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md).
 
 **Triangle loop:** [Technical Specification §2](./docs/architecture/TECHNICAL_SPECIFICATION.md#2-triangle-liquidity-loop--segregated-tranches) · **Arbitrum execution premium:** +15–30 bps vs bridged routes *(design estimate)*.
 
@@ -90,7 +90,8 @@ For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API 
 |---------|--------|
 | **v1.0 Delivered (Sepolia verified)** | **Arbitrum One** GMX v2 **ETH/USDC GM Pool** (primary) + Hyperliquid **1× short** — eliminates oracle de-peg / FX slippage on the core yield leg. Mainnet deployment ties to **M6 Grant distribution**. |
 | **Zero Protocol-Level Lock-Up** | Zero protocol-level lock-up (100% non-custodial); redemption speed is subject only to GMX v2's native 3–5 min async Keeper settlement. Optional ingress AML firewall (e.g. Robinhood **`4663` inbound block**). |
-| **V1.0 Roadmap** | **Citadel-as-a-Service (CaaS)** — [`@slivervine/citadel-sdk`](./src/sdk/README.md) · **Hedge Leg Depth Guard** — [Technical Specification §0.2](./docs/architecture/TECHNICAL_SPECIFICATION.md#02-v10-delivered-scope-vs-post-grant-roadmap) · **✅ Config-Driven GM Markets** · optional **USDG Robinhood Treasury routing** |
+| **V1.5 Roadmap Spec** | ⏳ Planned | **Sub-ms Agentic Security & Swarms** — ERC-8196 fleet enforcement · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) · BTC/USDC isomorphic GM (config-only) |
+| **V2.0 Design Spec** | ⏳ Planned | **Institutional CaaS & Orbit Shield** — productize `@slivervine/citadel-sdk` for AI DEXs / Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
 
 **Standards & Infrastructure:** [EIP-712](https://eips.ethereum.org/EIPS/eip-712) · [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) / [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579) · ERC-8196 Draft (Virtuals Protocol) · [§4 ERC/EIP Wiki](./docs/architecture/TECHNICAL_SPECIFICATION.md#4-standard-compliance--erceip-wiki).
 
@@ -120,7 +121,7 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 
 - **Stage 2: B2B Monetization & Risk API Launch (Post-9/14)**
   - **SliverVine Citadel Risk API & Bad Debt Calculator (powered by on-chain telemetry & Dune Analytics visualization)**: Monetize SliverVine's proprietary sub-ms risk calculation algorithms and shadow margin telemetry via a B2B API — **not** Dune platform data resale. [Dune](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) remains the **free public visualization dashboard**; paid tiers ($199/mo Pro to $1,999/mo Enterprise) gate programmatic access to Citadel-computed liquidation risk, margin health, and bad-debt savings metrics for vault managers and AI Agent swarms (Wayfinder, Virtuals, M2M Treasury Funds).
-  - **Citadel-as-a-Service (CaaS) 10 bps Rail**: Automatically inject venue-native 10 bps UI fees on protected live transactions across Arbitrum One GMX v2 & Pendle markets.
+  - **V2.0 CaaS rail (Design Spec):** `@slivervine/citadel-sdk` + **10 bps protocol authorization fee** on pre-execution risk checks. Live v1.0 builder lane remains GMX **+10 bps `uiFeeReceiver`**.
 
 ---
 

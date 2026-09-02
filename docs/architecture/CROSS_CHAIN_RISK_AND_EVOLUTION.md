@@ -17,7 +17,7 @@
 
 BeDeltaLivingWater (BDLW) acknowledges a fundamental law of distributed systems: **Cross-chain risk, bridge latency, and basis drift cannot be magically erased by software; they must be quantified, isolated, and economically absorbed.**
 
-This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — from the **code-verified V1.0 AI Agent Citadel on Arbitrum**, through **V1.5 sub-ms agentic security / ERC-8196 swarms**, to **V2.0 institutional Citadel-as-a-Service (CaaS) & Orbit Shield** — plus Tiered Liquidity Stacking (Aave v3 / Morpho Blue) and **60 Reflective Architectural Invariants**, each status-badged as **✅ Code-Verified** (v1.0 baseline) or **⏳ Roadmap Spec** (V1.5/V2.0).
+This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — from the **code-verified V1.0 AI Agent Citadel on Arbitrum**, through **V1.5 sub-ms agentic security / ERC-8196 swarms**, to **V2.0 institutional Citadel-as-a-Service (CaaS) & Orbit Shield** — plus **60 Reflective Architectural Invariants**, each status-badged as **✅ Code-Verified** (v1.0 baseline) or **⏳ Roadmap Spec** (V1.5/V2.0). Aave/Morpho APY figures, where mentioned, are **hurdle-rate probes only** — not a yield-stacking product track. Optional bridges are **Pillar 2 Reference Escort Adapters**.
 
 ---
 
@@ -69,7 +69,7 @@ This document outlines SliverVine Protocol's 3-Stage Evolutionary Roadmap — fr
 | **AA / onboarding** | ZeroDev Kernel v3 · Paymaster · Smart Routing | **EIP-7702** EOA → Agent Smart Account (no token migration) · Kernel v4 adapter | Single-chain Intent Compose across Orbit L3s |
 | **Prompt injection** | R20 physical deadlock on signed-intent violation | Dedicated **Prompt Injection Defense Circuit** (pipe sever before broadcast) | Mesh-wide channel lock + CaaS tenant isolation |
 | **Hedge / venue** | GMX v2 GM + HL 1× short (Δnet ≡ 0) | HL retained · **Variational Perp native hedge PoC** (less cross-L1 RPC) | Same-chain GM + native perp · optional escort |
-| **Bridge / ingress** | Robinhood 46630 outbound escort · `lostUsd ≡ 0` | Yield buffer absorbs residual bridge friction (Aave/Morpho stacking — §2.2) | **Eliminated** as default path · Robinhood opt-in |
+| **Bridge / ingress** | Pillar 2 Reference Escort Adapter (Robinhood 46630 outbound) · `lostUsd ≡ 0` | Same escort semantics · no yield-stacking identity | **Eliminated** as default path · Robinhood opt-in escort |
 | **Monetization** | GMX +10 bps `uiFeeReceiver` (builder lane) | Design-partner PoV · no new fee surface required | **10 bps protocol authorization fee** on pre-exec risk checks |
 | **AML / compliance** | Outbound-only Robinhood escort · reverse path blocked | Stronger fleet policy + segregated RWA tranche (planned) | Tenant CaaS policy packs · Robinhood opt-in |
 | **Oracle / sequencer** | <30s oracle lag fail-closed · 600s sequencer grace | Same sensors + storm fallback (planned) | Cross-L2 synchronized telemetry |
@@ -85,11 +85,11 @@ When funds cross via Across Bridge, BDLW labels capital as `IN_FLIGHT_BRIDGE_CAP
 
 **Code SSOT:** `src/adapters/across-ingress-bridge.ts` · Vitest 5/5 PASS (`tests/adapters/across-ingress-bridge.test.ts`)
 
-### 2.2 Tiered Liquidity Stacking (Aave v3 / Morpho Blue Fallback) — ⏳ Roadmap Spec (V1.5)
+### 2.2 Hurdle-Rate Probe (Aave v3 / Morpho — Not Product Identity)
 
-> **v1.0 today:** Aave APY is used as a **hurdle-rate probe** when GMX markets wire is unavailable — not automatic capital redeployment.
+> **v1.0 today:** Aave APY is used as a **hurdle-rate probe** when GMX markets wire is unavailable — **not** automatic capital redeployment and **not** the V1.5 Citadel roadmap (V1.5 = ERC-8196 swarms / EIP-7702 / prompt-injection circuit).
 
-During market storms (3σ volatility spikes, oracle lag >30s, or Sequencer recovery grace periods), the **V1.5 target** is capital fallback to Aave v3 / Morpho Blue on Arbitrum One (~4%~5% base yield), then redeployment into Delta-Neutral GMX v2 skew rebalancing when Soil normalizes.
+During market storms, an **optional** accounting fallback to Aave v3 / Morpho Blue USDC on Arbitrum One may be used as a risk-free **probe floor**. This does **not** redefine SliverVine Protocol as a yield-stacking vault.
 
 **Code SSOT (v1.0 probe only):** `src/adapters/arbitrum/arbitrum-yield-ingress.ts` · `src/services/yield/rebalance-rules.ts` (`FRICTION_BUFFER_APY`)
 
@@ -99,19 +99,19 @@ During market storms (3σ volatility spikes, oracle lag >30s, or Sequencer recov
 
 | Tier | Mechanism | Cap / Rule |
 |------|-----------|------------|
-| **Robinhood Ingress Escort** | Base RWA Earn + institutional compliance channel (Tranche B) | Component boost capped at **+2.0%** · rolls into Dynamic Target Range band |
+| **Robinhood (Pillar 2 Reference Escort Adapter)** | Optional outbound compliance channel (`46630`/`4663` → `42161`) · `lostUsd ≡ 0` | Not a yield product · does not raise TVL cap |
 | **Citadel Safety Buffer** | GMX v2 Skew Arbitrage excess (+5~10 bps `uiFeeReceiver`) | Absorbs bridge fees, basis risk, and MEV slippage |
 | **Hurdle Gate** | Rebalance / performance fee crystallization | `FRICTION_BUFFER_APY = 0.005` — deploy only above friction-adjusted excess |
 
 ### 2.4 Evolution of ZeroDev: From Bridge Router to Intent Composer
 
-Even in a 100% Native Arbitrum setup (Stage C), ZeroDev remains the indispensable engine:
+Even in a V2.0 CaaS / Orbit Shield setup, ZeroDev remains the Gatehouse engine:
 
-| Capability | Stage A (v3) | Stage C (v4 + EIP-7702) |
+| Capability | V1.0 (Kernel v3) | V1.5 / V2.0 (v4 + EIP-7702) |
 |------------|--------------|-------------------------|
 | **Gas-Free Sponsorship** | Paymaster + daily caps | Same, extended to AI agent fleets |
 | **Scoped Security** | 30s TTL Session Keys · `ORDER_EXECUTE` only | Zero withdrawal scope preserved |
-| **Atomic Composition** | 1-click crosschain deposit/swap | Aave → GMX → Variational in one UserOp |
+| **Atomic Composition** | 1-click GM + HL hedge under Citadel gates | EOA → Agent Smart Account · CaaS tenant UserOps |
 
 **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md` §2.4](./TECHNICAL_SPECIFICATION.md)
 
@@ -203,7 +203,7 @@ BDLW composes yield from **three exogenous legs**, each with an identifiable eco
 
 | Cash-flow leg | Source | Economic payer | Stage | Code / spec anchor |
 |---------------|--------|----------------|-------|-------------------|
-| **Risk-free base** | Aave v3 / Morpho Blue USDC earn on Arbitrum One | Borrowers pay lending spread | A (probe) · B (fallback) | `arbitrum-yield-ingress.ts` · `rebalance-rules.ts` |
+| **Risk-free base (probe only)** | Aave v3 / Morpho Blue USDC earn on Arbitrum One | Borrowers pay lending spread | Probe · optional storm floor | `arbitrum-yield-ingress.ts` · `rebalance-rules.ts` |
 | **GMX skew rebate + builder fee** | Underweight-side GM LP · `uiFeeReceiver` **+10 bps** · positive skew price-impact rebate (+5~10 bps band) | Traders / skew rebalancers on GMX v2 | A ✅ | `gmx-v2-order-payload.ts` · `GMX_UI_FEE_BPS` · Invariant #25–#27 |
 | **HL funding cushion** | 1× short leg on Hyperliquid — hourly funding when perp > spot | Counterparty funding flow on HL book | A ✅ | HL session pipeline · Survival Benchmark funding replay |
 
@@ -211,7 +211,7 @@ BDLW composes yield from **three exogenous legs**, each with an identifiable eco
 
 ```text
 Real yield stack (conceptual):
- Base floor ← Aave / Morpho USDC earn (~4–5% probe · V1.5 storm fallback)
+ Base floor ← Aave / Morpho USDC earn (~4–5% **hurdle probe only** — not V1.5 identity)
  + GMX surplus ← skew rebate + uiFeeReceiver (+10 bps builder · +5~10 bps skew band)
  + HL funding ← 1× short funding cushion (hourly · regime-dependent)
  − friction ← bridge · basis · MEV · slippage (Citadel Safety Buffer absorbs)
@@ -225,7 +225,7 @@ Real yield stack (conceptual):
 | **No emission token as yield source** | Prevents reflexive APY divorced from venue cash flows |
 | **Hurdle Gate before DN deployment** | `resolveCapitalAllocation()` parks capital in Native Earn when `targetNetApy ≤ hurdle + 0.5%` |
 | **Citadel Safety Buffer absorbs friction** | Real surplus must cover bridge/basis/MEV — not be masked by mint-and-dump |
-| **Storm fallback to Aave/Morpho (V1.5)** | When GMX skew + HL funding compress, capital **degrades to risk-free base** — not to higher emissions |
+| **Storm fallback to Aave/Morpho (optional probe)** | When GMX skew + HL funding compress, capital **may park at risk-free probe** — not a yield-stacking product |
 | **Honest HUD band** | 8.2–11.8% is a **target range**, not a guaranteed emission-backed APY |
 
 **Contrast summary:**
@@ -235,7 +235,7 @@ Real yield stack (conceptual):
 | **Primary yield driver** | Native token emissions | GMX fees/rebates + HL funding + Aave/Morpho base |
 | **Payer identity** | Future token holders / dilution | Traders, borrowers, funding counterparties |
 | **TVL retention** | Mercenary — exits when emissions drop | Hurdle-gated — deploys only when net > friction |
-| **Downside in storm** | Raise emissions (spiral) | Fail-closed + Aave/Morpho fallback (V1.5) |
+| **Downside in storm** | Raise emissions (spiral) | Fail-closed + optional Aave/Morpho probe floor |
 | **Protocol revenue** | Often token-dilutive | **+10 bps `uiFeeReceiver`** + up to **25%** referral rebate — venue-native builder stack |
 
 > **Allocator note:** Real yield **does not mean risk-free**. Funding can flip negative, skew rebates compress, and Aave rates move. BDLW quantifies and buffers these residuals (§2.5 · §6) — it simply refuses to **substitute** them with empty token inflation.
@@ -284,14 +284,14 @@ Real yield stack (conceptual):
 | # | Status | Invariant | Mechanism |
 |---|--------|-----------|-----------|
 | 21 | ⏳ | **Two-Tiered Yield** | Robinhood capped at +2% boost; excess yield → Safety Buffer |
-| 22 | ⏳ | **Tiered Liquidity Stacking** | Aave/Morpho risk-free base + dynamic GMX skew arbitrage |
-| 23 | ⏳ | **Aave Cap Isolation** | Aave USDC 100% supply cap → automatic Morpho Blue fallback |
-| 24 | ⏳ | **Dynamic Hurdle Rate** | Performance fee only on yield exceeding Aave base + 1.5% |
+| 22 | ⏳ | **Hurdle-rate probe (optional)** | Aave/Morpho APY as probe floor — **not** V1.5 Citadel identity |
+| 23 | ⏳ | **Aave Cap Isolation** | Aave USDC 100% supply cap → Morpho Blue probe fallback |
+| 24 | ⏳ | **Dynamic Hurdle Rate** | Optional performance fee only on yield exceeding Aave probe + 1.5% |
 | 25 | ✅ | **Builder UI Fee** | +10 bps `uiFeeReceiver` on every GMX v2 payload (v1.0 active) |
 | 26 | ✅ | **Skew Neutralizer Premium** | Positive skew / price-impact rebate — never conflated with UI fee |
 | 27 | ✅ | **Citadel Safety Buffer** | Excess GMX yield absorbs bridge fees, basis drift, MEV slippage |
-| 28 | ⏳ | **Risk-Free Storm Fallback** | 4%~5% Aave/Morpho yield during 3σ / oracle-lag / sequencer grace |
-| 29 | ⏳ | **Performance Fee (V1.5)** | 10% of excess yield above Aave benchmark — not on v1.0 UI fee path |
+| 28 | ⏳ | **Risk-Free Storm Probe** | Optional 4%~5% Aave/Morpho probe during 3σ / oracle-lag / sequencer grace |
+| 29 | ⏳ | **Performance Fee (optional accounting)** | 10% of excess yield above Aave probe — not on v1.0 UI fee path · **not** V1.5 swarm roadmap |
 | 30 | ⏳ | **CaaS Monetization** | B2B Wasm Firewall license · 10 bps protocol authorization fee |
 
 ### IV. Wasm Shield & Pre-Execution Moat (31–40)
@@ -413,13 +413,13 @@ zerodev-aa-gate.ts → evaluateStaticBreakerMatrix() + Citadel risk gate
 
 ---
 
-## 5. Comparative Analysis: Arbitrum Native vs. Robinhood Ingress Escort
+## 5. Comparative Analysis: Arbitrum Native vs. Pillar 2 Reference Escort Adapter
 
-Stage A (V1.0) operates two **distinct capital ingress modes**. They share the same Citadel pre-execution envelope but differ in capacity, timing, and accounting semantics.
+V1.0 operates two **distinct capital ingress modes**. They share the same Citadel pre-execution envelope. Robinhood / Across is a **Pillar 2 Reference Escort Adapter** — not product identity.
 
 ### 5.1 Capacity Limits
 
-| Dimension | **Arbitrum Native Ingress** | **Robinhood Ingress Escort** |
+| Dimension | **Arbitrum Native Ingress** | **Pillar 2 Reference Escort Adapter (Robinhood)** |
 |-----------|----------------------------|------------------------------|
 | **V1.0 Alpha Vault TVL cap** | **$100,000** hard ceiling (roadmap spec) | Same envelope — escort does not raise TVL cap |
 | **Single-order notional (v1.0 live)** | `SESSION_KEY_NOTIONAL_CAP_USD` = **$5,000** | N/A until bridge settles on `42161` |

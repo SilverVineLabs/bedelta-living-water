@@ -162,7 +162,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 |--------------------|-----------|------------------------|
 | **Paymaster sponsorship** | Onboarding + agent gas | Daily cap **`DAILY_SPONSORSHIP_LIMIT_USD`** · exhaustion → fail-closed |
 | **Smart Routing deposit** | Robinhood → Arbitrum GM route | `IN_FLIGHT_BRIDGE_CAPITAL` until settled |
-| **Kernel v4 / EIP-7702 composer** | ⏳ Stage B atomic Aave → GMX → HL | Same Wasm Shield · same 30s TTL · same `payloadHash()` |
+| **Kernel v4 / EIP-7702 composer** | ⏳ V1.5 EOA → Agent Smart Account (no token migration) | Same Wasm Shield · same 30s TTL · same `payloadHash()` |
 | **Session modules (ERC-7579)** | `ORDER_EXECUTE` scoped keys | R06 · R07 · heartbeat auto-healing |
 
 **Design rule (Tech Spec §2.4):** Adapter swap (v3 → v4) must **not** rewrite Shield or Wasm semantics. EIP-7702 is an **execution-plane upgrade**, not a relaxation of Fail-Closed gates.

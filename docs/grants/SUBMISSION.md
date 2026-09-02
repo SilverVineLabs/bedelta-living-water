@@ -8,7 +8,7 @@
 | **Live Gate (Sepolia)** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
 | **Dune Telemetry** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 
-> **Core Pitch:** SliverVine Protocol (BeDelta Living Water v1.0) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator on Arbitrum. It acts as the 0-Gas off-chain risk brain and on-chain execution gate for AI Agents trading across Pendle and GMX, stopping prompt injections and toxic liquidation cascades in 106µs to achieve true Delta-Neutral execution safety.
+> **Core Pitch:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum. It acts as the 0-Gas off-chain risk brain and on-chain execution gate for AI Agents trading across Pendle and GMX, stopping prompt injections and toxic liquidation cascades in 106µs to achieve true Delta-Neutral execution safety.
 
 **Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
 
@@ -77,6 +77,16 @@ Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPEC
 
 **Latency SSOT:** p50 ~106 µs Edge `checkSoilResistance()` · Wasm warm &lt;60 µs · M2M reflex `src/core/agent-citadel-guard.ts` &lt;12 µs. Full spec: [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md).
 
+### Version Roadmap SSOT (V1.0 / V1.5 / V2.0)
+
+| Horizon | Status | Scope |
+|---------|--------|-------|
+| **V1.0** | ✅ Code-Verified Live Baseline | Arbitrum One GMX v2 ETH/USDC GM + HL 1× short · Wasm `checkSoilResistance()` p50 ~106µs · ERC-8196 Draft policy pre-validation · EIP-712 consume-once Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` · Dune + SHA-256 dual-source `GET /api/grant-audit` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
+| **V1.5** | ⏳ Roadmap Spec | ERC-8196 fleet enforcement for multi-agent swarms · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) |
+| **V2.0** | ⏳ Design Spec | Institutional CaaS (`@slivervine/citadel-sdk`) for AI DEXs and Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
+
+Optional bridges (Robinhood / Across) are **Pillar 2 Reference Escort Adapters** — they do not define product identity. Aave/Morpho APY figures are **hurdle-rate probes only**, not a yield-stacking product track.
+
 ---
 
 ## Sponsor Integration Matrix
@@ -87,10 +97,10 @@ Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPEC
 * **Mechanism**: Intercepts AI Trade Intents in sub-millisecond off-chain pipeline (`src/core/agent-citadel-guard.ts`), validating soil fuse + deadman switch before settlement-layer EIP-712 attestation (`SliverVineGate.sol`) (0-Gas Fail-Closed).
 * **Agent policy alignment**: Aligned with the emerging **ERC-8196 AI Agent Wallet Policy Specification** (Draft co-authored by Virtuals Protocol). **Not a finalized standard.**
 
-### 2. Robinhood Chain (Chain ID: 46630 / 4663)
+### 2. Robinhood Chain (Chain ID: 46630 / 4663) — Pillar 2 Reference Escort Adapter
 
 * **Integration**: Pillar 2 Ingress Bridge Adapter (`src/adapters/across-ingress-bridge.ts`) & R20 Circuit Breaker Sever Pipeline (`src/services/root-protection-lib/circuit-breaker-sever.ts`).
-* **Mechanism**: Serves as a **reference ingress adapter** (not the protocol anchor) for stock tokens and low-latency L2 assets (`46630 → 42161`). When deadlock condition R20 is triggered, `severSigningChannel()` immediately severs hot-key signature pipelines, locking the engine into read-only observer mode to isolate on-chain capital. **Pending-Capital Recognition Invariant:** `lostUsd ≡ 0` on `IN_FLIGHT_BRIDGE_CAPITAL` until explicit timeout.
+* **Mechanism**: **Optional Pillar 2 Reference Escort Adapter** (not the protocol identity). Outbound `46630`/`4663` → `42161` only. When deadlock condition R20 is triggered, `severSigningChannel()` immediately severs hot-key signature pipelines, locking the engine into read-only observer mode. **Pending-Capital Recognition Invariant:** `lostUsd ≡ 0` on `IN_FLIGHT_BRIDGE_CAPITAL` until explicit timeout.
 
 ### 3. Pendle Finance
 
@@ -212,7 +222,7 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 
 - **Stage 2: B2B Monetization & Risk API Launch (Post-9/14)**
   - **SliverVine Citadel Risk API & Bad Debt Calculator (powered by on-chain telemetry & Dune Analytics visualization)**: Monetize SliverVine's proprietary sub-ms risk calculation algorithms and shadow margin telemetry via a B2B API — **not** Dune platform data resale. [Dune](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) remains the **free public visualization dashboard**; paid tiers ($199/mo Pro to $1,999/mo Enterprise) gate programmatic access to Citadel-computed liquidation risk, margin health, and bad-debt savings metrics for vault managers and AI Agent swarms (Wayfinder, Virtuals, M2M Treasury Funds).
-  - **Citadel-as-a-Service (CaaS) 10 bps Rail**: Automatically inject venue-native 10 bps UI fees on protected live transactions across Arbitrum One GMX v2 & Pendle markets.
+  - **V2.0 CaaS rail (Design Spec):** `@slivervine/citadel-sdk` modular Wasm SDK + **10 bps protocol authorization fee** on pre-execution risk checks. v1.0 GMX **+10 bps `uiFeeReceiver`** remains the live builder lane (not the V2.0 CaaS fee).
 
 ---
 

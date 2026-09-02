@@ -78,11 +78,11 @@ SliverVine does not interpret natural-language LLM prompts. The Shield enforces 
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v1.0 Delivered (Sepolia verified)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms Wasm Soil Engine · ZeroDev Kernel v3 Session Key Adapter · Restored Deadman Switch (`agent-citadel-guard`) · Unidirectional Robinhood AML Bridge Escort · GMX **+10 bps** UI Fee · **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
+| **v1.0 Delivered (Sepolia verified)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum · GMX v2 ETH/USDC GM + HL 1× short · Wasm `checkSoilResistance()` p50 ~106µs · ERC-8196 Draft policy pre-validation · EIP-712 consume-once Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` · Dune + SHA-256 `GET /api/grant-audit` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
 | **v1.0 Active Target** | ✅ Code-Verified (Sepolia & Dry-Run) | Single blue-chip anchor: **GMX v2 ETH/USDC GM Pool** + Hyperliquid **1× short** hedge · Mainnet deployment ties to **M6 Grant distribution** |
 | **v1.0 Partial — HL Orderbook Gap Guard** | ✅ Code-Verified | `evaluateHlOrderbookGapGuard()` in [`hl-orderbook-gap-guard.ts`](../../src/services/risk-control-lib/hl-orderbook-gap-guard.ts) · wired via [`soil-resistance.ts`](../../src/services/risk-control-lib/soil-resistance.ts) — gap-window leverage scale-down + 2× depth floor |
-| **V1.5 Isomorphic Extension** | ⏳ Planned | **BTC/USDC GM Pool** — zero bytecode / Wasm changes; config-driven market address mapping |
-| **V1.5 Roadmap (Planned Post-Grant)** | ⏳ Planned | **Citadel-as-a-Service (CaaS)** — productize `@slivervine/citadel-sdk` as an open sub-ms risk layer for the Arbitrum ecosystem · **Hedge Leg Depth Guard (full product)** — extends v1.0 `evaluateHlOrderbookGapGuard()` into dedicated Hyperliquid L2 orderbook depth sensing prior to hedge execution (zero-market-impact 1× short even during flash-liquidity drawdowns) · On-chain ECDSA Signer Recovery Verification · Production Smart Contract Deployment for GM Vaults · Native **USDG Robinhood Chain Treasury routing** |
+| **V1.5 Roadmap Spec** | ⏳ Planned | **Sub-ms Agentic Security & Swarms** — ERC-8196 fleet enforcement · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) · BTC/USDC isomorphic GM (config-only) |
+| **V2.0 Design Spec** | ⏳ Planned | **Institutional CaaS & Orbit Shield** — `@slivervine/citadel-sdk` for AI DEXs / Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
 
 **Demo:** `pnpm run demo:e2e` — 5-step grant E2E (Intent+Deadman → Robinhood escort → GMX underweight → HL Session hedge → R20 Panic Flash).
 
@@ -90,15 +90,17 @@ SliverVine does not interpret natural-language LLM prompts. The Shield enforces 
 
 ## 1. Core Product Identity
 
-**Primary product (center of gravity):** **Delta-Neutral GM Yield Engine on Arbitrum One** — GMX v2 **ETH/USDC** GM pool + Hyperliquid **1× short hedge**, guarded by Pillar 3 sub-ms Wasm Shield (`checkSoilResistance()`).
+**SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum.**
+
+**Primary execution envelope:** **Delta-Neutral GM** on Arbitrum One — GMX v2 **ETH/USDC** GM pool + Hyperliquid **1× short hedge**, guarded by Pillar 3 sub-ms Wasm Shield (`checkSoilResistance()`).
 
 | Component | Venue | Role |
 |-----------|-------|------|
 | **Yield base (PRIMARY)** | Arbitrum One · GMX v2 ETH/USDC GM | Underweight-side GM LP · builder `uiFeeReceiver` (**+10 bps**) · Citadel pre-execution gate |
 | **Hedge** | Hyperliquid | Session-key **1× short** Emergency Liquidity Sponge · nonce-healed signing |
-| **Ingress (optional example)** | Robinhood Chain | Supported permissioned institutional ingress source — **not** the product identity |
+| **Ingress (optional)** | Robinhood Chain | **Pillar 2 Reference Escort Adapter** — not product identity |
 
-**Robinhood Chain role:** Supported permissioned ingress example only — regulated treasuries may escort outbound (`46630`/`4663` → `42161`). Inbound AML is blocked by default. Product identity remains **Arbitrum One Delta Pool**.
+**Robinhood Chain role:** **Pillar 2 Reference Escort Adapter** only — regulated treasuries may escort outbound (`46630`/`4663` → `42161`). Inbound AML is blocked by default. Product identity remains **SliverVine Citadel on Arbitrum**.
 
 ### 1.1 Engineering Restraint (Blue-Chip Scope)
 
@@ -540,16 +542,18 @@ Gates must not assume instant atomicity across the triangle; inventory accountin
 | **Builder UI Fee** | **+10 bps** `uiFeeReceiver` on every unsigned GMX v2 increase / decrease / deposit payload (`GMX_UI_FEE_BPS`) | ✅ Code-Verified |
 | **Referral Rebate** | Up to **25%** of GMX trading fees via registered `referralCode` (`GMX_REFERRAL_CODE_BYTES32`) | ✅ Code-Verified |
 
-### 5.3 Performance Fee Tokenomics (V1.5 Roadmap)
+### 5.3 Hurdle-Rate Probe (Not Product Identity)
+
+> Aave v3 USDC APY on Arbitrum is a **hurdle-rate probe** used when GMX markets wire is unavailable. It is **not** a V1.5 yield-stacking product and does **not** redefine the AI Agent Citadel roadmap (V1.5 = agentic security / ERC-8196 swarms).
 
 | Item | Definition |
 |------|------------|
 | **Benchmark** | **Aave v3 USDC (Arbitrum) — APY Benchmark / Default Yield Source** (not a live execution adapter); same fallback used by Arbitrum yield ingress |
 | **Performance Fee** | **10% of Excess Yield Above Aave Benchmark Rate** |
 | **Excess Yield** | `max(0, Net Strategy APY − Aave Benchmark APY)` after friction buffer |
-| **Status** | **V1.5 roadmap** — not accrued on current v1.0 builder UI-fee path (+10 bps `uiFeeReceiver` + 25% referral rebate) |
+| **Status** | **Optional accounting probe** — not accrued on current v1.0 builder UI-fee path (+10 bps `uiFeeReceiver` + 25% referral rebate); **not** the V1.5 Citadel swarm roadmap |
 
-B2B Option B (slippage-savings fee) remains a separate commercial SKU and is not the V1.5 vault performance fee above.
+B2B Option B (slippage-savings fee) remains a separate commercial SKU and is not the optional hurdle-rate probe above. V2.0 CaaS monetization is the **10 bps protocol authorization fee** on pre-execution risk checks.
 
 ### 5.4 Public Audit Surface
 

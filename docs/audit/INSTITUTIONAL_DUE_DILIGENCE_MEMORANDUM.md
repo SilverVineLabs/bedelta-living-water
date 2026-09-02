@@ -370,13 +370,13 @@ When heartbeat expires, `auditSessionKeyHeartbeat()` sets `revocationLocked: tru
 
 ---
 
-## 4. Capital Capacity & Execution Timing: Arbitrum Native vs. Robinhood Escort
+## 4. Capital Capacity & Execution Timing: Arbitrum Native vs. Pillar 2 Reference Escort Adapter
 
-Stage A (V1.0) exposes two **capital ingress modes** that converge on the same Citadel pre-execution envelope (`checkSoilResistance()` · R01–R20) but diverge sharply on **capacity deployability**, **time-to-hedge**, and **compliance posture**. Neither path raises the shared **$100,000 Alpha Vault TVL cap**.
+V1.0 exposes two **capital ingress modes** that converge on the same Citadel pre-execution envelope (`checkSoilResistance()` · R01–R20). Robinhood / Across is a **Pillar 2 Reference Escort Adapter** — not a yield-stacking product. Neither path raises the shared **$100,000 Alpha Vault TVL cap**.
 
 ### 4.1 Structured Comparison Table
 
-| Dimension | **Arbitrum Native Vault** | **Robinhood Ingress Escort** |
+| Dimension | **Arbitrum Native Vault** | **Pillar 2 Reference Escort Adapter (Robinhood)** |
 |-----------|---------------------------|------------------------------|
 | **Primary asset** | USDC on Arbitrum One (`42161`) | USDG on Robinhood Chain (`46630` / `4663`) |
 | **V1.0 Alpha Vault TVL cap** | **$100,000** hard ceiling (roadmap spec) | **$100,000** — escort does not expand capacity |
