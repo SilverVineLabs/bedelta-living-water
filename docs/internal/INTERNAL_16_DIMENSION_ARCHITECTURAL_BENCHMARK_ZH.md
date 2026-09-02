@@ -5,7 +5,9 @@
 > **審計基線 Commit：** `e1e5355`+ · 分支 `v1.0_push_BDLW`  
 > **前序文件：** [`INTERNAL_13_DIMENSION_ARCHITECTURAL_BENCHMARK_ZH.md`](./INTERNAL_13_DIMENSION_ARCHITECTURAL_BENCHMARK_ZH.md)（已由本文件取代）  
 > **公開對照矩陣：** [`TECHNICAL_SPECIFICATION.md` §6.7](../architecture/TECHNICAL_SPECIFICATION.md#67-architectural-benchmark-silvervine-high-performance-innovations-vs-legacy-web3-standards)  
-> **隱藏寶石詳述：** [`ADVANCED_HFT_PATENTS_AND_HIDDEN_GEMS.md`](./ADVANCED_HFT_PATENTS_AND_HIDDEN_GEMS.md)（Gem 11–13 英文專利備忘錄）
+> **隱藏寶石詳述：** [`ADVANCED_HFT_PATENTS_AND_HIDDEN_GEMS.md`](./ADVANCED_HFT_PATENTS_AND_HIDDEN_GEMS.md)（Gem 11–13 英文專利備忘錄）  
+> **Grok 20 評委機構審計：** [`GROK_20_JUDGE_AUDIT_REPORT_ZH.md`](./GROK_20_JUDGE_AUDIT_REPORT_ZH.md)（2026-09-02 · 7.65/10 · CONDITIONAL PASS）  
+> **內部索引：** [`README.md`](./README.md)
 
 ---
 

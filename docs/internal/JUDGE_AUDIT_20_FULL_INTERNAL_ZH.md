@@ -6,7 +6,8 @@
 | **審計基線 Commit** | `88085bc` · 分支 `v1.0_push_BDLW` |
 | **審計日期** | 2026-09-01 |
 | **評審團** | 20 位機構技術審計員 & Grant 委員會主席 |
-| **審計範圍** | 全庫公開文件 · `docs/internal/**`（14 份）· `docs/audit/**` · `src/**` · `contracts/` · `SliverVineGate/` · 財務模型 · OpSec 備忘錄 |
+| **審計範圍** | 全庫公開文件 · `docs/internal/**` · `docs/audit/**` · `src/**` · `contracts/` · `SliverVineGate/` · 財務模型 · OpSec 備忘錄 |
+| **後續 Grok 20 評委團** | [`GROK_20_JUDGE_AUDIT_REPORT_ZH.md`](./GROK_20_JUDGE_AUDIT_REPORT_ZH.md)（2026-09-02 · 16 維度架構終審） |
 
 ---
 
