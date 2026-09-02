@@ -140,6 +140,50 @@ Hyperliquid Session Key Adapter and TCA provenance (`src/data/verified-5tx-lib/v
 | **Pillar 2: Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort · Robinhood (`46630`/`4663` → `42161`) as reference adapter | `src/adapters/across-ingress-bridge.ts` · `contracts/IngressSafetySwitch.sol` |
 | **Shield (CORE MOAT)** | Sub-ms Wasm pre-execution armor · p50 ~106 μs · fail-closed before mempool | `checkSoilResistance()` · `soil_core.wasm` · Stylus `SliverVineSoilCoprocessor` |
 
+### Competitive Positioning — Four-Dimensional ASCII Matrices (SliverVine Protocol)
+
+**Entity:** SilverVine Labs · **Protocol:** SliverVine Protocol / SliverVine Citadel (BeΔ)  
+**ERC-8196:** Emerging Draft — not finalized.
+
+**Matrix 1 — Execution & Pre-Broadcast Severance Profile**
+
+```text
+┌───────────────────────────┬─────────────────────────────┬────────────────────────────┬────────────────────────────┐
+│ Dimension                 │ SliverVine Citadel (BeΔ)   │ Legacy ERC-4337 / OZ       │ Gauntlet / Chaos Labs      │
+├───────────────────────────┼─────────────────────────────┼────────────────────────────┼────────────────────────────┤
+│ 1. Latency Profile        │ p50 ~106µs (Sub-ms Edge)   │ 50ms – 500ms+ (Bundler RTT)│ Hours to Days (Parameter) │
+│ 2. Pre-Broadcast Severance│ YES (0-Gas Fail-Closed)     │ NO (Post-validation/mempool│ NO (Post-execution audit) │
+│ 3. Gas Overhead           │ 0 Gas (Edge Rejection)      │ Wasted Bundler Gas         │ On-chain Governance Gas    │
+│ 4. Invariant Enforcement  │ Δnet ≡ 0 & lostUsd ≡ 0      │ Basic Balance Checks       │ Dynamic Risk Parameters    │
+└───────────────────────────┴─────────────────────────────┴────────────────────────────┴────────────────────────────┘
+```
+
+**Matrix 2 — AI Agent Wallet Policy & Execution Citadel**
+
+```text
+┌───────────────────────────┬─────────────────────────────┬────────────────────────────┬────────────────────────────┐
+│ Dimension                 │ SliverVine Citadel (BeΔ)   │ Multisig / Timelock        │ Web2 LLM Guardrails        │
+├───────────────────────────┼─────────────────────────────┼────────────────────────────┼────────────────────────────┤
+│ 1. Policy Gate Layer      │ Sub-ms Cerebellum (ERC-8196)│ On-chain Voting / Delay    │ API Proxy (Centralized)    │
+│ 2. Prompt Injection Guard │ R20 Physical Deadlock       │ Vulnerable to Signed Intent│ Bypassable via Jailbreak   │
+│ 3. Key Pipe Severing      │ <1ms `severSigningChannel`  │ N/A (Requires On-chain Tx) │ N/A (No On-chain Hook)     │
+│ 4. Standard Alignment     │ ERC-8196 Draft & EIP-7562   │ Standard ERC-20 / ERC-721  │ Proprietary REST APIs      │
+└───────────────────────────┴─────────────────────────────┴────────────────────────────┴────────────────────────────┘
+```
+
+**Matrix 3 — Cross-Venue Liquidation & Ingress Escort Paradigm**
+
+```text
+┌───────────────────────────┬─────────────────────────────┬────────────────────────────┬────────────────────────────┐
+│ Dimension                 │ SliverVine Citadel (BeΔ)   │ Native DEX Limit Orders    │ Raw Cross-Chain Bridges    │
+├───────────────────────────┼─────────────────────────────┼────────────────────────────┼────────────────────────────┤
+│ 1. Cross-Spread Sensing   │ Live GMX/HL Soil Resistance │ Static Slippage Tolerance  │ Blind Asset Relaying       │
+│ 2. Liquidation Defense    │ -40 Haircut (Observatory)   │ Cascading Liquidation Risk │ No Execution Awareness     │
+│ 3. Ingress Accounting     │ `lostUsd ≡ 0` Escort Label  │ Immediate Capital Loss     │ Phantom In-flight Balances│
+│ 4. AML Shielding          │ Blocked Reverse Path (46630)│ Open Protocol Ingress      │ Unfiltered Contamination   │
+└───────────────────────────┴─────────────────────────────┴────────────────────────────┴────────────────────────────┘
+```
+
 ---
 
 ## Business Model & GTM Strategy
