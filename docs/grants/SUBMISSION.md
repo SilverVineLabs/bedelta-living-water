@@ -1,8 +1,8 @@
-# SUBMISSION.md: SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
+# SUBMISSION.md: SliverVine Citadel Shield — Pre-Consensus Intent Firewall & Execution Safety Primitive for AI Agents on Arbitrum
 
 | Field | Value |
 |-------|-------|
-| **Official Name** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
+| **Official Name** | SliverVine Citadel Shield · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
 | **Category** | Promising Products Track — AI Agents & Financial Primitives |
 | **Buildathon** | Arbitrum Open House Singapore Online Buildathon |
 | **Live Gate (Sepolia)** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` |
@@ -11,14 +11,14 @@
 
 > **Note:** Initial mainnet deployment utilizes Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) for public verification without exposing production HSM keys. Key rotation to production multisig is executed via native governance functions.
 
-> **Core Pitch:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum. It acts as the 0-Gas off-chain risk brain and on-chain execution gate for AI Agents trading across Pendle and GMX, stopping prompt injections and toxic liquidation cascades in 106µs to achieve true Delta-Neutral execution safety.
+> **Core Pitch:** **SliverVine Citadel Shield** is a **Pre-Consensus Intent Firewall & Execution Safety Primitive** for AI Agents on Arbitrum. It intercepts toxic payloads at sub-ms (p50 ~106µs) **before** Arbitrum Sequencer queues — 0-Gas fail-closed severance via `checkSoilResistance()` plus immutable **EIP-712 consume-once `SliverVineGate`** on Arbitrum One (`0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`).
 
 **Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
 
 **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com`
 **Official Site:** [silvervinelabs.com](https://silvervinelabs.com)
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit`
-**Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
+**Repo:** [SilverVineLabs/bedelta-citadel-core](https://github.com/SilverVineLabs/bedelta-citadel-core) · **Judge quick brief:** [`JUDGE_BRIEF.md`](../../JUDGE_BRIEF.md)
 
 ---
 
@@ -28,13 +28,16 @@
 |-----------|------------------------|
 | **Smart Contract Quality** | **Lean On-Chain Gate by Design** — dual-contract core [`SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) (consume-once EIP-712) + [`SliverVineAgentPolicyGuard.sol`](../../contracts/src/SliverVineAgentPolicyGuard.sol) ([ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft policy pre-screen) · immutable · non-custodial · no proxy — keeps Edge `checkSoilResistance()` at **p50 ~106µs** · **Arbitrum One Mainnet Ignition Gate: Verified Non-Custodial Gate on ChainID 42161** — Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Arbiscan Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Consume-once and replay-denial invariant lemmas 100% code-verified via native Foundry test suite ([`SliverVineGate.t.sol`](../../SliverVineGate/test/SliverVineGate.t.sol) & [`SliverVineGate.invariant.t.sol`](../../SliverVineGate/test/SliverVineGate.invariant.t.sol)) · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
 | **Real Problem Solving** | AI Agent pre-broadcast death window — 0-Gas fail-closed sub-ms severance via `checkSoilResistance()` before Bundler / mempool · `lostUsd ≡ 0` in-flight invariant |
-| **Innovation and Creativity** | Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum — **Zero-Gas Pre-Broadcast Circuit Breaker** · **Autonomous Reflex Arc (Agentic Safety Substrate)** · **Zero-Touch AI Agent Plugin Standard**: Express/decorator `withCitadelShield` ([`src/sdk/decorator.ts`](../../src/sdk/decorator.ts)) for Virtuals, ElizaOS, and LangChain agent frameworks · Rust `#![no_std]` Wasm Edge hot-path (`pkg/soil_core.wasm`) · p50 ~106µs soil fuse · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft Sub-ms Policy Gate) |
+| **Innovation and Creativity** | **Pre-Consensus Intent Firewall** for AI Agents on Arbitrum — **Pre-Consensus Intent Clearing** (p50 ~106µs, before Sequencer queues · 0-Gas) · **PEV (Prevented Exploit Volume)** telemetry primitive for Dune/indexers · **Yield Safety Sentinel** for Pendle PT/YT (expiry blackhole / oracle decoupling guard — not a yield competitor) · **Zero-Touch Plugin Standard**: `withCitadelShield` ([`src/sdk/decorator.ts`](../../src/sdk/decorator.ts)) · Wasm Edge (`pkg/soil_core.wasm`) · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft |
 | **Product-Market Fit** | GMX v2 +10 bps `uiFeeReceiver` builder lane ([`gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts)) · ZeroDev EIP-7702 EOA-to-Agent AA onboarding · **Reference Pre-Broadcast Interceptor Adapter** + **`withCitadelShield` zero-touch decorator** for Virtuals Protocol & ElizaOS agent frameworks ([`examples/agent-interceptor-demo.ts`](../../examples/agent-interceptor-demo.ts) · [`src/sdk/decorator.ts`](../../src/sdk/decorator.ts)) · **Pendle Safety Sentinel Alignment** — institutional pre-execution safety layer guarding Pendle PT/YT pools against expiry blackholes and oracle decoupling before mempool broadcast ([`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts)) |
 
 #### Innovation and Creativity — Conceptual Framing
 
-- **Zero-Gas Pre-Broadcast Circuit Breaker**: Unlike traditional smart contract pause functions that incur gas fees and require on-chain block confirmation, Citadel severs the EIP-712 signing channel at p50 ~106µs *before* transactions hit the Sequencer or MEV mempools.
-- **Autonomous Reflex Arc (Agentic Safety Substrate)**: Functions as an off-chain "spinal reflex arc" for AI Agents—intercepting toxic intents at the sub-ms Edge level without burning LLM inference tokens or incurring cloud latency.
+- **Pre-Consensus Intent Clearing**: Intercepts toxic AI Agent payloads at **p50 ~106µs** on Cloudflare Edge **before** they reach Arbitrum Sequencer queues, Bundler ingress, or public mempools — **0-Gas loss prevention** (fail-closed severance; no wasted Bundler gas on doomed UserOps).
+- **PEV (Prevented Exploit Volume) — Dune Analytics Primitive**: Introduces **PEV** as a structured telemetry metric — nominal USD volume of toxic intents blocked pre-broadcast — indexable via `RiskTripBlocked` / soil-trip events and grant-audit JSON (`duneTelemetry`). See [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md).
+- **Yield Safety Sentinel for Pendle**: Off-chain circuit breaker guarding Pendle **PT/YT** pool positions against **expiry blackholes** and **oracle decoupling** — protects capital from liquidation cascades **without competing on YT yield** ([`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts)).
+- **Zero-Gas Pre-Broadcast Circuit Breaker**: Unlike on-chain pause functions that incur gas and await block confirmation, Citadel severs the EIP-712 signing channel at sub-ms latency *before* consensus ingress.
+- **Autonomous Reflex Arc (Agentic Safety Substrate)**: Off-chain "spinal reflex" for AI Agents — intercepts toxic intents without burning LLM tokens or adding cloud round-trips.
 
 #### Reference Interceptor Harness — Virtuals Protocol & ElizaOS Agent Swarms
 
@@ -120,6 +123,19 @@ Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPEC
 | **V2.0** | ⏳ Design Spec | Institutional CaaS (`@slivervine/citadel-sdk`) for AI DEXs and Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
 
 Optional bridges (Robinhood / Across) are **Pillar 2 Reference Escort Adapters** — they do not define product identity. Aave/Morpho APY figures are *(Hurdle-rate probe only — not a yield-stacking product track)*.
+
+---
+
+## Ecosystem Synergy — Judge Persona Quick Map
+
+| Ecosystem | Role for SliverVine | Why they win together | SSOT |
+|-----------|---------------------|----------------------|------|
+| **Arbitrum** | Pre-consensus execution primitive on **42161** | Live immutable Gate + Edge clearing before Sequencer ingress | Mainnet Tx · `SliverVineGate.sol` |
+| **Pendle** | **Yield Safety Sentinel** (not yield competitor) | Guards PT/YT against expiry blackholes & oracle decoupling | `pendle-gmx-cross-guard.ts` |
+| **Dune** | **PEV** + `RiskTripBlocked` telemetry | Indexes off-chain blocked attacks; Sepolia live · One SQL spec | `DUNE_DASHBOARD_SPECIFICATION.md` |
+| **GMX** | Builder lane + pre-broadcast soil fuse | +10 bps `uiFeeReceiver`; blocks toxic GM intents pre-DataStore | `gmx-v2-order-payload.ts` |
+| **Virtuals / ElizaOS** | Agent pre-consensus firewall | `withCitadelShield` 1-line SDK · Reference harness | `decorator.ts` · `agent-interceptor-demo.ts` |
+| **Robinhood** | Pillar 2 compliance escort | Outbound-only `46630/4663 → 42161` · inbound AML BLOCK | `across-ingress-bridge.ts` |
 
 ---
 
