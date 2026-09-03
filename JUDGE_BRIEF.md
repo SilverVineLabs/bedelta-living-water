@@ -6,6 +6,7 @@
 | **Entity** | SilverVine Labs |
 | **Track** | Promising Products — AI Agents & Financial Primitives |
 | **Arbitrum One Gate** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
+| **Repo** | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) |
 | **Tests** | `pnpm test -- --run` → **177 test files \| 778 PASS Clean** |
 | **Deep docs** | [`docs/grants/SUBMISSION.md`](./docs/grants/SUBMISSION.md) · [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) |
 
@@ -68,7 +69,7 @@ import { withCitadelShield } from "@slivervine/citadel-sdk";
 const execute = withCitadelShield(async (intent) => agent.swap(intent));
 ```
 
-Reference harness (not partnership attestation): [`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts)
+Reference harness (not partnership attestation): [`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts) · Executable adapters: [`examples/adapters/`](./examples/adapters/)
 
 ### GMX (Builder) Judges
 

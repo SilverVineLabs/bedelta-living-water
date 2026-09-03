@@ -22,7 +22,7 @@
 **Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
 
 **Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`  
-**Repo:** [SilverVineLabs/bedelta-citadel-core](https://github.com/SilverVineLabs/bedelta-citadel-core)  
+**Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)  
 
 > **On-chain vs off-chain SSOT:** The **live Arbitrum One gateway** (`0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`, chainId **42161**) is the immutable **Solidity EIP-712 `SliverVineGate`** — [Mainnet Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6). **Arbitrum Stylus** ([`contracts/stylus-probe/`](./contracts/stylus-probe/)) is part of the **V2.0 Rust/Wasm off-chain Edge roadmap** (local probe only; **not** deployed on mainnet). Production hot-path soil fuse runs on Cloudflare Edge via `pkg/soil_core.wasm` (`checkSoilResistance()` p50 ~106µs).
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune Telemetry (Sepolia verified · Arbitrum One SQL)](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · **Arbitrum One Gate** `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · Mainnet Ignition Tx [`0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`  
