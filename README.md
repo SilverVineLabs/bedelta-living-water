@@ -1,13 +1,14 @@
 # SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
 
-[![Vitest](https://img.shields.io/badge/Vitest-775%20PASS%20%28176%20files%29-brightgreen?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water)
-[![Stylus Coprocessor](https://img.shields.io/badge/Stylus-5%2F5%20PASS-blue?logo=rust)](./contracts/stylus-probe/)
-[![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](https://github.com/SilverVineLabs/bedelta-living-water/blob/main/src/services/risk-control.ts)
-[![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-255%2F255%20Fail--Closed-blue?logo=github)](https://github.com/SilverVineLabs/bedelta-living-water)
-[![Benchmark Latency](https://img.shields.io/badge/Benchmark-p50_106%CE%BCs_E2E_Shield_(Kernel_200ns)-blueviolet?logo=speedtest)](https://github.com/SilverVineLabs/bedelta-living-water)
-[![TypeScript](https://img.shields.io/badge/TypeScript-0%20errors-blue?logo=typescript)](https://github.com/SilverVineLabs/bedelta-living-water)
+[![Vitest](https://img.shields.io/badge/Vitest-775%2B%20PASS%20%28177%20files%29-brightgreen?logo=vitest)](./docs/VERIFICATION_MATRIX.md)
+[![V2.0 Stylus Probe](https://img.shields.io/badge/V2.0_Stylus_Probe-5%2F5_PASS_(Roadmap)-blue?logo=rust)](./contracts/stylus-probe/)
+[![risk-control.ts coverage](https://img.shields.io/badge/risk--control.ts-100%25%20coverage-success?logo=vitest)](./src/services/risk-control.ts)
+[![Chaos Matrix](https://img.shields.io/badge/Chaos%20Matrix-255%2F255%20Fail--Closed-blue?logo=github)](./docs/VERIFICATION_MATRIX.md)
+[![Benchmark Latency](https://img.shields.io/badge/Benchmark-p50_106%CE%BCs_E2E_Shield_(Kernel_200ns)-blueviolet?logo=speedtest)](./docs/architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats)
+[![TypeScript](https://img.shields.io/badge/TypeScript-0%20errors-blue?logo=typescript)](./tsconfig.json)
 [![License](https://img.shields.io/badge/License-BUSL--1.1-orange)](./LICENSE)
 [![Foundry Citadel Gate](https://img.shields.io/badge/Foundry-Forge_Test_Passed-brightgreen?logo=solidity)](./SliverVineGate)
+[![Arbitrum One Gate](https://img.shields.io/badge/Arbitrum_One_Gate-Live_42161-28A0F0?logo=arbitrum)](https://arbiscan.io/address/0xb174118bc0b84e8d6d59eef2339e29bf7fcf8bf1)
 
 
 <p align="center"><img src="public/brand/Detox_Sanctuary_wm.webp" alt="SliverVine Citadel Gate - Detox Sanctuary" width="600" style="border-radius: 8px;"></p>
@@ -19,7 +20,9 @@
 **Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
 
 **Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`  
-**Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)  
+**Repo:** [SilverVineLabs/bedelta-citadel-core](https://github.com/SilverVineLabs/bedelta-citadel-core)  
+
+> **On-chain vs off-chain SSOT:** The **live Arbitrum One gateway** (`0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`, chainId **42161**) is the immutable **Solidity EIP-712 `SliverVineGate`** — [Mainnet Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6). **Arbitrum Stylus** ([`contracts/stylus-probe/`](./contracts/stylus-probe/)) is part of the **V2.0 Rust/Wasm off-chain Edge roadmap** (local probe only; **not** deployed on mainnet). Production hot-path soil fuse runs on Cloudflare Edge via `pkg/soil_core.wasm` (`checkSoilResistance()` p50 ~106µs).
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune Telemetry (Sepolia verified · Arbitrum One SQL)](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · **Arbitrum One Gate** `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · Mainnet Ignition Tx [`0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`  
 **Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (Apache-2.0) · **Judge entry:** [Verification Matrix](./docs/VERIFICATION_MATRIX.md) · [Technical Specification](./docs/architecture/TECHNICAL_SPECIFICATION.md)
 
