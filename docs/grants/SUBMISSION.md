@@ -113,7 +113,7 @@ $$
 t_{\text{reflector\_p50}} \sim 106\,\mu\text{s} \ll t_{\text{mempool\_broadcast}}
 $$
 
-Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats) · [Cross-Chain Risk §2.1](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md#21-honest-bridge-accounting-in_flight_bridge_capital).
+Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats) · [Verification Matrix](../VERIFICATION_MATRIX.md) · [`JUDGE_BRIEF.md`](../../JUDGE_BRIEF.md).
 
 **Latency SSOT:** p50 ~106 µs Edge `checkSoilResistance()` · Wasm warm &lt;60 µs · M2M reflex `src/core/agent-citadel-guard.ts` &lt;12 µs. Full spec: [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md).
 

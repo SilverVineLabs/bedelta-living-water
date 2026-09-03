@@ -119,7 +119,7 @@ $$
 t_{\text{reflector\_p50}} \sim 106\,\mu\text{s} \ll t_{\text{mempool\_broadcast}}
 $$
 
-Derivations & R01–R20 bounds: [Technical Specification §3.1](./docs/architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats) · [Cross-Chain Risk §2.1](./docs/architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md#21-honest-bridge-accounting-in_flight_bridge_capital).
+Derivations & R01–R20 bounds: [Technical Specification §3.1](./docs/architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats) · [Verification Matrix](./docs/VERIFICATION_MATRIX.md) · [`JUDGE_BRIEF.md`](./JUDGE_BRIEF.md).
 
 ## 🛣️ Post-Buildathon B2B Commercialization & PMF Roadmap (Post-9/14)
 
@@ -288,7 +288,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 | Document | Purpose |
 |----------|---------|
 | [`docs/pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](./docs/pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | Grant pitch · 35s demo video storyboard |
-| [`docs/architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](./docs/architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) | 60 invariants · V1.0 vs V1.5/V2.0 roadmap |
+| [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) | 177 test files · 778 PASS · regression bar SSOT |
 | [`docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) | Pillar 2 reference adapter audit · 5/5 bridge tests |
 | [`docs/grants/SUBMISSION.md`](./docs/grants/SUBMISSION.md) | Buildathon main submission pack |
 | [`docs/README.md`](./docs/README.md) | Full docs index · language policy |
