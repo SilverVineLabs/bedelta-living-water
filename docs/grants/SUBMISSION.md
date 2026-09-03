@@ -26,7 +26,7 @@
 
 | Criterion | Evidence (CLI / code) |
 |-----------|------------------------|
-| **Smart Contract Quality** | **Lean On-Chain Gate by Design** — dual-contract core [`SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) (consume-once EIP-712) + [`SliverVineAgentPolicyGuard.sol`](../../contracts/src/SliverVineAgentPolicyGuard.sol) ([ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft policy pre-screen) · immutable · non-custodial · no proxy — keeps Edge `checkSoilResistance()` at **p50 ~106µs** · **Arbitrum One Mainnet Ignition Gate: Verified Non-Custodial Gate on ChainID 42161** — Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Arbiscan Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Consume-once and replay-denial invariant lemmas 100% code-verified via native Foundry test suite ([`SliverVineGate.t.sol`](../../SliverVineGate/test/SliverVineGate.t.sol) & [`SliverVineGate.invariant.t.sol`](../../SliverVineGate/test/SliverVineGate.invariant.t.sol)) · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
+| **Smart Contract Quality** | **Lean On-Chain Gate by Design** — dual-contract core [`SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) (consume-once EIP-712) + [`SliverVineAgentPolicyGuard.sol`](../../contracts/src/SliverVineAgentPolicyGuard.sol) ([ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft policy pre-screen) · immutable · non-custodial · no proxy — keeps Edge `checkSoilResistance()` at **p50 ~106µs** · **Arbitrum One Mainnet Ignition Gate: Verified Non-Custodial Gate on ChainID 42161** — Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Arbiscan Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Consume-once and replay-denial invariant lemmas 100% code-verified via native Foundry test suite ([`SliverVineGate.t.sol`](../../SliverVineGate/test/SliverVineGate.t.sol) & [`SliverVineGate.invariant.t.sol`](../../SliverVineGate/test/SliverVineGate.invariant.t.sol)) · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 177 test files \| 778 PASS Clean)** |
 | **Real Problem Solving** | AI Agent pre-broadcast death window — 0-Gas fail-closed sub-ms severance via `checkSoilResistance()` before Bundler / mempool · `lostUsd ≡ 0` in-flight invariant |
 | **Innovation and Creativity** | **Pre-Consensus Intent Firewall** for AI Agents on Arbitrum — **Pre-Consensus Intent Clearing** (p50 ~106µs, before Sequencer queues · 0-Gas) · **PEV (Prevented Exploit Volume)** telemetry primitive for Dune/indexers · **Yield Safety Sentinel** for Pendle PT/YT (expiry blackhole / oracle decoupling guard — not a yield competitor) · **Zero-Touch Plugin Standard**: `withCitadelShield` ([`src/sdk/decorator.ts`](../../src/sdk/decorator.ts)) · Wasm Edge (`pkg/soil_core.wasm`) · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft |
 | **Product-Market Fit** | GMX v2 +10 bps `uiFeeReceiver` builder lane ([`gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts)) · ZeroDev EIP-7702 EOA-to-Agent AA onboarding · **Reference Pre-Broadcast Interceptor Adapter** + **`withCitadelShield` zero-touch decorator** for Virtuals Protocol & ElizaOS agent frameworks ([`examples/agent-interceptor-demo.ts`](../../examples/agent-interceptor-demo.ts) · [`src/sdk/decorator.ts`](../../src/sdk/decorator.ts)) · **Pendle Safety Sentinel Alignment** — institutional pre-execution safety layer guarding Pendle PT/YT pools against expiry blackholes and oracle decoupling before mempool broadcast ([`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts)) |
@@ -91,7 +91,7 @@ SliverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 
 ## Architectural SSOT & Hardened Metrics
 
-* **Test Suite**: **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** — re-run `pnpm test -- --run` to confirm. Full matrix: [Verification Matrix](../VERIFICATION_MATRIX.md).
+* **Test Suite**: **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** — re-run `pnpm test -- --run` to confirm. Full matrix: [Verification Matrix](../VERIFICATION_MATRIX.md).
 * **Formal Verification**: Consume-once and replay-denial invariant lemmas 100% code-verified via native Foundry test suite ([`SliverVineGate.t.sol`](../../SliverVineGate/test/SliverVineGate.t.sol) & [`SliverVineGate.invariant.t.sol`](../../SliverVineGate/test/SliverVineGate.invariant.t.sol)) · [Technical Specification §3](../architecture/TECHNICAL_SPECIFICATION.md#3-cross-venue-risk-engine--defense-matrix-r01r20).
 * **Game-Theoretic Simulation**: 10,000 Monte Carlo runs · **87.39% toxic flow blocked** · $9.88M **nominal simulated** LP capital — [`game_theory_simulation_results.json`](../telemetry/game_theory_simulation_results.json) *(simulation only; not live savings)*.
 * **Deployments**: Arbitrum One Mainnet Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Arbitrum Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · Robinhood Chain `46630`/`4663` — [On-Chain Verification](#on-chain-verification--arbitrum-one-42161) · [Sepolia](#on-chain-verification--arbitrum-sepolia-421614).
@@ -118,7 +118,7 @@ Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPEC
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **V1.0** | ✅ Code-Verified Live Baseline | Arbitrum One GMX v2 ETH/USDC GM + HL 1× short · Wasm `checkSoilResistance()` p50 ~106µs · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft policy pre-validation · EIP-712 consume-once Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · Dune + SHA-256 dual-source `GET /api/grant-audit` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
+| **V1.0** | ✅ Code-Verified Live Baseline | Arbitrum One GMX v2 ETH/USDC GM + HL 1× short · Wasm `checkSoilResistance()` p50 ~106µs · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft policy pre-validation · EIP-712 consume-once Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · Dune + SHA-256 dual-source `GET /api/grant-audit` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 177 test files \| 778 PASS Clean)** |
 | **V1.5** | ⏳ Roadmap Spec | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) fleet enforcement for multi-agent swarms · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) |
 | **V2.0** | ⏳ Design Spec | Institutional CaaS (`@slivervine/citadel-sdk`) for AI DEXs and Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
 
@@ -293,7 +293,7 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 | ID | Unlock condition (objective) | Sponsor / track | Status |
 |----|------------------------------|-----------------|--------|
 | **M-Sepolia** | Sepolia Gate + RiskOracle + IngressSafetySwitch verified · `sepoliaDualLegProof` in `/api/grant-audit` | Arbitrum | ✅ Delivered |
-| **M-CLI** | Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** | All | ✅ Delivered |
+| **M-CLI** | Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** | All | ✅ Delivered |
 | **M-RH-Demo** | `46630`/`4663` → `42161` outbound escort OK · inbound AML blocked · `lostUsd ≡ 0` | Robinhood Chain | ✅ Code-verified · ⏳ video |
 | **M-GMX-Fee** | Unsigned GMX v2 payload injects **10 bps** `uiFeeReceiver` | GMX | ✅ Injected · ⏳ `claimUiFees` |
 | **M-Dune** | Publish Dune dashboard per [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Dune | ✅ [Live dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
@@ -327,7 +327,7 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 
 ```bash
 pnpm install
-pnpm test -- --run # Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+pnpm test -- --run # Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)
 pnpm run audit:security # 5/0/0 PASS
 cd SliverVineGate && forge test --gas-report && cd ..
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualLegProof
@@ -347,7 +347,7 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualL
 + Flash unwind: PASS · RESULT: E2E OK (5/5)
 ```
 
-**Regression bar:** Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Forge 60/60 · Cargo Stylus 5/5 · Wasm &lt;28 KiB / &lt;60 µs.
+**Regression bar:** Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** · Forge 60/60 · Cargo Stylus 5/5 · Wasm &lt;28 KiB / &lt;60 µs.
 
 ---
 

@@ -6,7 +6,7 @@
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit`
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
 
-> **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** on `pnpm test -- --run`. Forge **60/60** · Cargo Stylus **5/5** · Property Fuzz **327,675** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = **5,120** = 5×1,024) · ZeroDev AA **Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7)**.
+> **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** on `pnpm test -- --run`. Forge **60/60** · Cargo Stylus **5/5** · Property Fuzz **327,675** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = **5,120** = 5×1,024) · ZeroDev AA **Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7)**.
 
 Open this document first. Each tier is CLI-reproducible with **zero mainnet signing dependency** unless explicitly noted.
 
@@ -15,7 +15,7 @@ Open this document first. Each tier is CLI-reproducible with **zero mainnet sign
 | Field | Locked value | Verify |
 |-------|--------------|--------|
 | **Official H1** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum | [`README.md`](../README.md) · [`SUBMISSION.md`](../grants/SUBMISSION.md) |
-| **Vitest baseline** | **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** | `pnpm test -- --run` |
+| **Vitest baseline** | **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 177 test files \| 778 PASS Clean)** | `pnpm test -- --run` |
 | **Sepolia Gate** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` | [Arbiscan Sepolia](https://sepolia.arbiscan.io/address/0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1) |
 | **Arbitrum One Gate** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` | [Arbiscan One](https://arbiscan.io/address/0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1) |
 | **Mainnet Ignition Tx** | `0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6` | [Arbiscan Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
@@ -44,7 +44,7 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 | Command | Proves | Expected |
 |---------|--------|----------|
 | Default `docker run` | 5-step Citadel **`demo:e2e`** dry-run inside container | `[tier0] demo:e2e PASS` |
-| `docker run --rm slivervine-citadel pnpm test` | Full Vitest regression bar (host-free) | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
+| `docker run --rm slivervine-citadel pnpm test` | Full Vitest regression bar (host-free) | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** |
 | Sidecar (Tier 5) | Telemetry relay · fail-closed `/v1/intent` | [`docker/README.md`](../docker/README.md) |
 
 **`demo:e2e` expected terminal highlights** (`pnpm run demo:e2e` — GitHub `diff` syntax):
@@ -70,7 +70,7 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 ```bash
 docker build -t slivervine-citadel . && docker run --rm slivervine-citadel # Tier 0 — zero host deps
 pnpm install
-pnpm test # Tier 1 — Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+pnpm test # Tier 1 — Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)
 pnpm audit:fast # Tier 2 — fast security scorecard
 pnpm test:zerodev # Tier 4 — ZeroDev AA dry-run harness
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .provenanceVerified
@@ -93,7 +93,7 @@ pnpm audit:nightly # Tier 2/3 deep — Echidna · deep fuzz gate
 | Tier | Command | What it proves | Expected |
 |------|---------|----------------|----------|
 | **0** | `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` | Isolated **`demo:e2e`** · zero host Node/pnpm | `[tier0] demo:e2e PASS` |
-| **1** | `pnpm test` | Core engine · Soil · Wasm · Sequencer · Margin Buffer · adapters | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
+| **1** | `pnpm test` | Core engine · Soil · Wasm · Sequencer · Margin Buffer · adapters | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** |
 | **2** | `pnpm audit:fast` / `pnpm audit:security` | TSC · Vitest security · Solhint · Gitleaks · Slither · Aderyn | Fast PASS · Security **5/0/0** |
 | **3** | `cd SliverVineGate && forge test` | On-chain Gate · default property fuzz (5×1,024) · gas bounds | **60 Passed** · **5,120 fuzz** (default profile) |
 | **4** | `pnpm test:zerodev` | Kernel v3 UserOp draft · session scope · oracle gate (offline) | Dry-run harness **PASS** |
@@ -105,7 +105,7 @@ pnpm audit:nightly # Tier 2/3 deep — Echidna · deep fuzz gate
 
 **Command:** `pnpm test`
 **Definition:** `vitest run --dir . --coverage` (after coverage clean)
-**SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · `risk-control.ts` functions 100% (vitest threshold)
+**SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** · `risk-control.ts` functions 100% (vitest threshold)
 
 | Domain | Coverage focus | Example paths |
 |--------|----------------|---------------|
@@ -265,4 +265,4 @@ Automated dependency audit (2026-08-24): **no TS/JS runtime import** of `contrac
 
 ---
 
-*SilverVine Labs · BUSL-1.1 · Verification Matrix · Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)*
+*SilverVine Labs · BUSL-1.1 · Verification Matrix · Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)*

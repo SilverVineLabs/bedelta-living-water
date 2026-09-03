@@ -37,31 +37,46 @@ A *tool* reports risk post-hoc. A *protocol primitive* **binds execution** with 
 
 ---
 
-## Ecosystem Synergy — Why Each Judge Persona Should Care
+## Ecosystem Synergy — Arbitrum Open House Buildathon Priorities
 
-### Pendle (Yield) Judges
+### Offchain Labs Core / Arbitrum Foundation
 
-**We do not compete on YT yield.** SliverVine is a **Yield Safety Sentinel** — off-chain circuit breaker for PT/YT positions:
+**Lean execution · 0-Gas pre-broadcast severance · mainnet gate `0xb174…`:**
+
+- Sub-ms Edge `checkSoilResistance()` (p50 ~106µs) — no on-chain hot-path bloat
+- Toxic intents severed **before** Sequencer queues → **0-Gas** on blocked paths
+- Live **Arbitrum One** consume-once `SliverVineGate` at `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`
+
+### GMX Protocol
+
+**+10 bps builder lane & depth/slippage fuse:**
+
+- Qualified GM payloads route `uiFeeReceiver` builder fee
+- Pre-execution soil fuse (cross-venue slippage + depth) before DataStore broadcast
+
+### Pendle Finance
+
+**Yield Safety Sentinel & expiry/volatility circuit breaker:**
 
 - Expiry **<7d** + yield jitter **>200 bps** → fail-closed
 - Shadow margin cross-check vs GMX maintenance before risk-increasing intents
-- **Protects capital from liquidation blackholes** without building a Pendle yield product
+- Protects PT/YT capital from liquidation blackholes — not a competing yield product
 
 → [`pendle-gmx-cross-guard.ts`](./src/guards/pendle-gmx-cross-guard.ts)
 
-### Dune (Analytics) Judges
+### Dune Analytics
 
-**Structured on-chain + off-chain telemetry:**
+**Structured on-chain events & PEV (Prevented Exploit Volume) metric:**
 
 - Sepolia Gate events: `IntentAttested` · `RiskTripBlocked` (live-indexed)
-- **PEV (Prevented Exploit Volume)** — new metric: nominal USD of toxic intents blocked pre-broadcast
+- **PEV** — nominal USD of toxic intents blocked pre-broadcast
 - Production SQL spec targets Arbitrum One `42161`
 
 → [`docs/telemetry/DUNE_DASHBOARD_SPECIFICATION.md`](./docs/telemetry/DUNE_DASHBOARD_SPECIFICATION.md) · `scripts/emit-sepolia-telemetry-events.ts`
 
-### Virtuals / ElizaOS (AI Agent) Judges
+### AI Agent Ecosystem Runtimes (Virtuals / ElizaOS Integration)
 
-**Zero-touch 1-line integration:**
+**Zero-touch 1-line integration for agent swarms:**
 
 ```ts
 import { withCitadelShield } from "@slivervine/citadel-sdk";
@@ -69,15 +84,7 @@ import { withCitadelShield } from "@slivervine/citadel-sdk";
 const execute = withCitadelShield(async (intent) => agent.swap(intent));
 ```
 
-Reference harness (not partnership attestation): [`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts) · Executable adapters: [`examples/adapters/`](./examples/adapters/)
-
-### GMX (Builder) Judges
-
-+10 bps `uiFeeReceiver` on qualified GM payloads · pre-execution soil fuse before DataStore broadcast.
-
-### Arbitrum / Robinhood Judges
-
-Live **42161** Gate · CREATE2 same address as Sepolia · Robinhood `46630/4663 → 42161` outbound escort + inbound AML BLOCK.
+Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/adapters/) · Reference harness: [`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts)
 
 ---
 
@@ -95,7 +102,7 @@ Live **42161** Gate · CREATE2 same address as Sepolia · Robinhood `46630/4663 
 ## Honest Scope (Do Not Over-Claim)
 
 - Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) on mainnet deploy — public verification only
-- Reference Agent harness — not Virtuals/ElizaOS official partnership
+- Reference Agent harness — not an official Virtuals/ElizaOS partnership attestation
 - Stylus = **V2.0 roadmap probe**; live gateway = **Solidity Gate**
 - Monte Carlo **87.39%** toxic flow blocked — *nominal simulated*; not live TVL saved
 

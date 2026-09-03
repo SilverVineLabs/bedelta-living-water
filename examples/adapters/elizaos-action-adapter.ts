@@ -1,24 +1,50 @@
 #!/usr/bin/env tsx
 /**
- * ElizaOS Action adapter — pre-consensus soil guard via checkSoilResistance().
- * Usage: pnpm tsx examples/adapters/elizaos-action-adapter.ts
+ * ElizaOS Plugin / Action adapter — pre-consensus soil guard via checkSoilResistance().
+ * Usage: pnpm tsx examples/adapters/elizaos-action-adapter.ts [--trip]
  */
 import { checkSoilResistance, type SoilResistanceInput } from "../../src/services/risk-control";
-import { seedSafeArbitrumProbes } from "../../tests/helpers/arbitrum-probe-seed";
-import { __resetArbitrumGasGuardForTests } from "../../src/services/risk/arbitrum-gas-guard";
-import { __resetSequencerGuardCacheForTests } from "../../src/services/risk/sequencer-guard";
-import { __resetSoftConfirmationGuardForTests } from "../../src/services/risk/soft-confirmation-guard";
+import {
+  HEALTHY_SOIL,
+  hudBlocked,
+  hudChannelOpen,
+  hudDispatched,
+  hudSevered,
+  printBanner,
+  printMode,
+  printResult,
+  R,
+  RED,
+  runSoilCheckHud,
+  seedAdapterProbes,
+  TOXIC_SOIL,
+} from "./citadel-ansi-hud";
 
-export interface ElizaCitadelActionOptions {
-  soil?: SoilResistanceInput;
+export interface ElizaRuntime {
+  agentId: string;
+  getSetting?: (key: string) => string | null;
 }
 
-export interface ElizaActionResult {
-  success: boolean;
+export interface ElizaContent {
   text: string;
+  action?: string;
+  source?: string;
 }
 
-/** ElizaOS-compatible Action export (name / description / handler). */
+/** ElizaOS handler response tuple: [content, didRespond] */
+export type ElizaActionResponse = [ElizaContent, boolean];
+
+export interface ElizaActionOptions {
+  soil?: SoilResistanceInput;
+  intent?: string;
+  hud?: boolean;
+}
+
+export const simulatedRuntime: ElizaRuntime = {
+  agentId: "eliza-citadel-demo",
+  getSetting: () => null,
+};
+
 export const citadelSoilGuardAction = {
   name: "CITADEL_SOIL_GUARD",
   similes: ["SOIL_CHECK", "PRE_BROADCAST_GUARD", "CITADEL_SHIELD"],
@@ -26,35 +52,63 @@ export const citadelSoilGuardAction = {
     "Pre-consensus intent firewall — runs checkSoilResistance() before any trade intent is signed or broadcast.",
   validate: async (): Promise<boolean> => true,
   handler: async (
-    _runtime: unknown,
+    runtime: ElizaRuntime,
     _message: unknown,
     _state: unknown,
-    options?: ElizaCitadelActionOptions,
-  ): Promise<ElizaActionResult> => {
-    const soil: SoilResistanceInput = options?.soil ?? {
-      symbol: "ETH",
-      hlSpot: 3500,
-      hlPerp: 3500,
-      dydxPerp: 3500,
-      depthUsd: 200_000,
-    };
-    const result = checkSoilResistance(soil);
-    if (!result.ok) {
+    options?: ElizaActionOptions,
+  ): Promise<ElizaActionResponse> => {
+    const soil = options?.soil ?? HEALTHY_SOIL;
+    const intent = options?.intent ?? "TRADE_INTENT";
+    const showHud = options?.hud ?? false;
+    const { result, measuredUs, pass } = showHud
+      ? runSoilCheckHud(soil, { agentId: runtime.agentId, framework: "ElizaOS", intent })
+      : (() => {
+          const t0 = performance.now();
+          const r = checkSoilResistance(soil);
+          return { result: r, measuredUs: (performance.now() - t0) * 1000, pass: r.ok };
+        })();
+
+    if (!pass) {
+      if (showHud) {
+        hudSevered("SOIL_FUSE_TRIP");
+        hudBlocked();
+      }
       const reason = result.reasons.join("; ") || "soil fuse tripped";
-      return { success: false, text: `[Citadel Shield Trip] Execution blocked pre-broadcast: ${reason}` };
+      return [{ text: `[Citadel Shield Trip] Execution blocked pre-broadcast: ${reason}`, source: "slivervine-citadel" }, false];
     }
-    return { success: true, text: "SOIL_PASS: pre-broadcast clearance granted" };
+    if (showHud) {
+      hudChannelOpen();
+      hudDispatched("ElizaOS Action Handler → GMX v2 GM", measuredUs);
+    }
+    return [
+      { text: "SOIL_PASS: pre-broadcast clearance granted", action: "CITADEL_SOIL_GUARD", source: "slivervine-citadel" },
+      true,
+    ];
   },
 };
 
+export const citadelShieldPlugin = {
+  name: "slivervine-citadel-shield",
+  description: "Pre-consensus intent firewall plugin for ElizaOS agent swarms.",
+  actions: [citadelSoilGuardAction],
+};
+
 async function main(): Promise<void> {
-  const now = Date.now();
-  __resetArbitrumGasGuardForTests();
-  __resetSequencerGuardCacheForTests();
-  __resetSoftConfirmationGuardForTests();
-  seedSafeArbitrumProbes(now);
-  const pass = await citadelSoilGuardAction.handler(null, null, null, {});
-  console.log(JSON.stringify({ demo: "elizaos-action-adapter", ...pass }));
+  const trip = process.argv.includes("--trip");
+  seedAdapterProbes();
+  printBanner("ElizaOS Action Adapter");
+  printMode(trip);
+  const [content, ok] = await citadelSoilGuardAction.handler(simulatedRuntime, null, null, {
+    soil: trip ? TOXIC_SOIL : HEALTHY_SOIL,
+    intent: trip ? "PROMPT_INJECTION_HIGH_SLIPPAGE_OPEN" : "DELTA_NEUTRAL_GM_DEPOSIT",
+    hud: true,
+  });
+  if (!ok) {
+    printResult(false);
+    console.error(`${RED}${content.text}${R}`);
+    process.exit(1);
+  }
+  printResult(true);
 }
 
 const isMain = process.argv[1]?.includes("elizaos-action-adapter");
