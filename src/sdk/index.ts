@@ -41,6 +41,8 @@ export {
   evaluateAgentCitadelGuard,
   guardAgentUserOp,
 } from "../core/agent-citadel-guard";
+export { withCitadelShield } from "./decorator";
+export type { CitadelShieldIntent } from "./decorator";
 export {
   ARBITRUM_ONE_CHAIN_ID,
   ARBITRUM_SEPOLIA_CHAIN_ID,
