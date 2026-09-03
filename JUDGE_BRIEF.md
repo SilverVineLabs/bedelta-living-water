@@ -6,9 +6,12 @@
 | **Entity** | SilverVine Labs |
 | **Track** | Promising Products — AI Agents & Financial Primitives |
 | **Arbitrum One Gate** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
+| **Live Audit API Endpoint** | [`https://bedeltawater.slivervine.xyz/api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **Repo** | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) |
 | **Tests** | `pnpm test -- --run` → **177 test files \| 778 PASS Clean** |
 | **Deep docs** | [`docs/grants/SUBMISSION.md`](./docs/grants/SUBMISSION.md) · [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) |
+
+> **Headless Infrastructure Protocol:** Core interaction is API/SDK Native (`@slivervine/citadel-sdk`) & CLI HUD.
 
 ---
 
@@ -114,4 +117,4 @@ Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/a
 
 ---
 
-**SilverVine Labs** · `grants@silvervinelabs.com` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
+**SilverVine Labs** · `grants@silvervinelabs.com` · [Live Audit API Endpoint](https://bedeltawater.slivervine.xyz/api/grant-audit)
