@@ -1,5 +1,9 @@
 import type { Env } from "./env";
 
+/** Official public Dune telemetry dashboard — root domain redirect target. */
+export const DUNE_TELEMETRY_PORTAL_URL =
+  "https://dune.com/silvervinelabs/silvervine-citadel-telemetry" as const;
+
 /** Worker-handled JSON/API paths — all other GET routes delegate to ASSETS SPA. */
 export function isWorkerApiPath(pathname: string): boolean {
   return (

@@ -15,7 +15,7 @@ import { CORS_JSON_HEADERS } from "./services/config";
 import { severSigningChannel } from "./services/session-key-adapter-lib/session-key-gates";
 import { configureTelegramAlert } from "./services/telemetry/telegram-alert";
 import { ensureIntentPersistenceBoot } from "./worker-scheduled";
-import { fetchStaticAsset, isWorkerApiPath } from "./worker-routing";
+import { fetchStaticAsset, isWorkerApiPath, DUNE_TELEMETRY_PORTAL_URL } from "./worker-routing";
 
 const GEO_BLOCKED_COUNTRIES = new Set(["US", "CU", "IR", "KP", "SY"]);
 
@@ -74,6 +74,9 @@ export async function handleWorkerFetch(
   if (geoResponse) return geoResponse;
 
   const url = new URL(request.url);
+  if (request.method === "GET" && url.pathname === "/") {
+    return Response.redirect(DUNE_TELEMETRY_PORTAL_URL, 302);
+  }
   if (!isWorkerApiPath(url.pathname)) {
     return fetchStaticAsset(env, request);
   }
