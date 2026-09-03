@@ -20,9 +20,11 @@ Open this document first. Each tier is CLI-reproducible with **zero mainnet sign
 | **Arbitrum One Gate** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` | [Arbiscan One](https://arbiscan.io/address/0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1) |
 | **Mainnet Ignition Tx** | `0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6` | [Arbiscan Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
 | **Dune dashboard** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) | Public URL |
-| **DuneSQL (live feed)** | Query 0 — SliverVine Live Telemetry Feed (`arbitrum.blocks` · 12h · Gate `0xb174…`) | [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
-| **DuneSQL (activity chart)** | Query 0b — SliverVine Telemetry Activity Chart (1h minute buckets) | Same spec |
+| **DuneSQL (Sepolia ingest)** | Event streaming verified on Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` (`IntentAttested` · `RiskTripBlocked`) | [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
+| **DuneSQL (Arbitrum One prod)** | Queries 0–0b feed + chart; Queries 1–3 reconciliation — production SQL targets **ChainID `42161`** | Same spec |
 | **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196)** | Emerging Draft (Virtuals Protocol) — **not finalized** | [`SUBMISSION.md`](../grants/SUBMISSION.md) |
+
+> **Note:** Initial mainnet deployment utilizes Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) for public verification without exposing production HSM keys. Key rotation to production multisig is executed via native governance functions.
 
 **Core invariants:** $\Delta_{\text{net}} = \Delta_{\text{GMX\_GM}} + \Delta_{\text{HL\_Short}} \equiv 0$ · $\text{lostUsd} \equiv 0$ · $t_{\text{reflector\_p50}} \sim 106\,\mu\text{s}$ — [Technical Specification §3.1](../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats).
 

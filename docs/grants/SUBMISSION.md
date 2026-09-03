@@ -6,8 +6,10 @@
 | **Category** | Promising Products Track — AI Agents & Financial Primitives |
 | **Buildathon** | Arbitrum Open House Singapore Online Buildathon |
 | **Live Gate (Sepolia)** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` |
-| **Live Gate (Arbitrum One)** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
-| **Dune Telemetry** | [Dune Telemetry (Sepolia Live Verification & Production SQL Spec)](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
+| **Live Gate (Arbitrum One)** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · Mainnet Ignition Tx [`0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
+| **Dune Telemetry** | [Dune Telemetry (Sepolia Live Verification & Production SQL Spec)](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) — **event streaming verified on Sepolia** (`0xb174…`); production DuneSQL queries target **Arbitrum One (`42161`)** per [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
+
+> **Note:** Initial mainnet deployment utilizes Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) for public verification without exposing production HSM keys. Key rotation to production multisig is executed via native governance functions.
 
 > **Core Pitch:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum. It acts as the 0-Gas off-chain risk brain and on-chain execution gate for AI Agents trading across Pendle and GMX, stopping prompt injections and toxic liquidation cascades in 106µs to achieve true Delta-Neutral execution safety.
 
@@ -26,13 +28,14 @@
 |-----------|------------------------|
 | **Smart Contract Quality** | **Lean On-Chain Gate by Design** — dual-contract core [`SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) (consume-once EIP-712) + [`SliverVineAgentPolicyGuard.sol`](../../contracts/src/SliverVineAgentPolicyGuard.sol) ([ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft policy pre-screen) · immutable · non-custodial · no proxy — keeps Edge `checkSoilResistance()` at **p50 ~106µs** · **Arbitrum One Mainnet Ignition Gate: Verified Non-Custodial Gate on ChainID 42161** — Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Arbiscan Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Consume-once and replay-denial invariant lemmas 100% code-verified via native Foundry test suite ([`SliverVineGate.t.sol`](../../SliverVineGate/test/SliverVineGate.t.sol) & [`SliverVineGate.invariant.t.sol`](../../SliverVineGate/test/SliverVineGate.invariant.t.sol)) · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
 | **Real Problem Solving** | AI Agent pre-broadcast death window — 0-Gas fail-closed sub-ms severance via `checkSoilResistance()` before Bundler / mempool · `lostUsd ≡ 0` in-flight invariant |
-| **Innovation and Creativity** | World's first AI Agent Cerebellum Citadel — Rust `#![no_std]` Wasm Edge hot-path (`pkg/soil_core.wasm`) · p50 ~106µs soil fuse · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft Sub-ms Policy Gate) |
+| **Innovation and Creativity** | Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum — Rust `#![no_std]` Wasm Edge hot-path (`pkg/soil_core.wasm`) · p50 ~106µs soil fuse · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft Sub-ms Policy Gate) |
 | **Product-Market Fit** | GMX v2 +10 bps `uiFeeReceiver` builder lane ([`gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts)) · ZeroDev EIP-7702 EOA-to-Agent AA onboarding · **Reference Pre-Broadcast Interceptor Adapter for Virtuals Protocol & ElizaOS Agent Frameworks (Verified via [`examples/agent-interceptor-demo.ts`](../../examples/agent-interceptor-demo.ts))** |
 
-#### Design Partner Real-World Proof: Virtuals Protocol / ElizaOS Interceptor
+#### Reference Interceptor Harness — Virtuals Protocol & ElizaOS Agent Swarms
 
-- **Integration Harness**: Verified via `@slivervine/citadel-sdk` ([`examples/agent-interceptor-demo.ts`](../../examples/agent-interceptor-demo.ts)).
-- **Live Pre-Broadcast Protection**: Intercepts AI Agent UserOps in <106µs on Cloudflare Edge before Mempool/Bundler dispatch.
+- **Harness scope**: [`examples/agent-interceptor-demo.ts`](../../examples/agent-interceptor-demo.ts) is a **Reference Interceptor Harness & Adapter** for Virtuals Protocol and ElizaOS agent swarms — not a production partnership attestation.
+- **Integration path**: Demonstrates `@slivervine/citadel-sdk` pre-broadcast interception wiring for evaluator reproduction.
+- **Live Pre-Broadcast Protection**: Intercepts AI Agent UserOps on Cloudflare Edge before Mempool/Bundler dispatch *(local harness latency is uncapped; production Edge target p50 ~106µs)*.
 - **Fail-Closed Verification**: Zero-Gas pre-broadcast severance on 3σ volatility or prompt-injected rogue intents (`signingChannelOpen: false` · UserOp blocked pre-broadcast).
 
 ```bash
@@ -142,10 +145,11 @@ Optional bridges (Robinhood / Across) are **Pillar 2 Reference Escort Adapters**
 ### 5. Dune Analytics
 
 * **Live Dashboard:** [Dune Telemetry (Sepolia Live Verification & Production SQL Spec)](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)
-* **Live Telemetry Feed (Query 0):** `arbitrum.blocks` 12h window · Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` · `RiskTripBlocked` / `IntentAttested` / heartbeat status — [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md).
-* **Telemetry Activity Chart (Query 0b):** 1h minute-bucket toxic-flow distribution (`BLOCKED` / `PASS` / `HEARTBEAT`) — same spec.
+* **Sepolia event streaming (verified):** Dune engine ingests **decoded events** from Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` (`IntentAttested` · `RiskTripBlocked`) — live feed proof for judges.
+* **Arbitrum One production SQL (`42161`):** Matching production DuneSQL queries (Queries 0–0b feed + chart; Queries 1–3 reconciliation panels) target **Arbitrum One mainnet** semantics — [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md).
+* **Live Telemetry Feed (Query 0):** `arbitrum.blocks` 12h window · Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · `RiskTripBlocked` / `IntentAttested` / heartbeat status.
+* **Telemetry Activity Chart (Query 0b):** 1h minute-bucket toxic-flow distribution (`BLOCKED` / `PASS` / `HEARTBEAT`).
 * **Integration**: [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) · Live `/api/grant-audit` `duneTelemetry` JSON.
-* **On-chain ingest:** Dune engine actively ingests **decoded events** from Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` (`IntentAttested` · `RiskTripBlocked`).
 * **Mechanism**: Production DuneSQL feed + chart (Queries 0–0b) plus reconciliation panels (Queries 1–3) — Toxic Flow Blocked · Observatory Paradox Bypasses · PT Expiry × GMX Margin Health — reconciled against `duneTelemetry.responseRef` sha256 provenance.
 
 ### Execution Speed & Protocol-Agnostic Resilience (HL Delta Pool)
@@ -278,7 +282,9 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 
 | Contract | Role | Verified Address (Mainnet) | Proof |
 |----------|------|----------------------------|-------|
-| `SliverVineGate` | Consume-once EIP-712 attestation anchor | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` | [Ignition Tx `0x54c153…b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · [`DeployArbitrumOneGate.s.sol`](../../SliverVineGate/script/DeployArbitrumOneGate.s.sol) |
+| `SliverVineGate` | Consume-once EIP-712 attestation anchor | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` | Mainnet Ignition Tx [`0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · [`DeployArbitrumOneGate.s.sol`](../../SliverVineGate/script/DeployArbitrumOneGate.s.sol) |
+
+> **Note:** Initial mainnet deployment utilizes Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) for public verification without exposing production HSM keys. Key rotation to production multisig is executed via native governance functions.
 
 ---
 

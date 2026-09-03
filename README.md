@@ -20,12 +20,14 @@
 
 **Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`  
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)  
-**Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune Telemetry (Sepolia Live Verification & Production SQL Spec)](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · **Arbitrum One Gate** `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Mainnet Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`  
+**Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune Telemetry (Sepolia verified · Arbitrum One SQL)](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · **Arbitrum One Gate** `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · Mainnet Ignition Tx [`0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`  
 **Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (Apache-2.0) · **Judge entry:** [Verification Matrix](./docs/VERIFICATION_MATRIX.md) · [Technical Specification](./docs/architecture/TECHNICAL_SPECIFICATION.md)
 
 **Core product:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum — [§1 Product Identity](./docs/architecture/TECHNICAL_SPECIFICATION.md#1-core-product-identity) · [Three Pillars pipeline](./docs/architecture/TECHNICAL_SPECIFICATION.md#0-unified-institutional-pre-execution-pipeline).
 
-**Primary venue:** Arbitrum One (`42161`) · Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Mainnet Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · **Hedge:** Hyperliquid · **Moat:** Pillar 3 Wasm Shield `checkSoilResistance()` p50 ~106 μs — [§3 Defense Matrix](./docs/architecture/TECHNICAL_SPECIFICATION.md#3-cross-venue-risk-engine--defense-matrix-r01r20).
+**Primary venue:** Arbitrum One (`42161`) · Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · Mainnet Ignition Tx [`0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · **Hedge:** Hyperliquid · **Moat:** Pillar 3 Wasm Shield `checkSoilResistance()` p50 ~106 μs — [§3 Defense Matrix](./docs/architecture/TECHNICAL_SPECIFICATION.md#3-cross-venue-risk-engine--defense-matrix-r01r20).
+
+> **Note:** Initial mainnet deployment utilizes Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) for public verification without exposing production HSM keys. Key rotation to production multisig is executed via native governance functions.
 
 **Ingress (optional):** Robinhood Chain `46630`/`4663` → Arbitrum — **Pillar 2 Reference Escort Adapter** only; [Pillar 2 audit](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md).
 
@@ -118,8 +120,9 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 
 - **Stage 1: Buildathon Verification Phase (Active Now — Pre-9/14)**
   - **100% Free Public Telemetry**: Open-access Dune Live Telemetry Dashboard ([https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)) for zero-friction judge and developer auditing.
-  - **Arbitrum One Mainnet Ignition Gate**: Non-custodial `SliverVineGate` deployed on ChainID `42161` at `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` — [Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6).
+  - **Arbitrum One Mainnet Ignition Gate**: Non-custodial `SliverVineGate` on ChainID `42161` at `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` — Mainnet Ignition Tx [`0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) *(Bootstrap Ignition Keys `0x1111…`/`0x2222…`; production multisig rotation via native governance)*.
   - **Sepolia Safety Gate**: Full EIP-712 session key validation and 0-Gas Fail-Closed protection verified on Arbitrum Sepolia (`0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`).
+  - **Reference Interceptor Harness**: [`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts) — Reference Interceptor Harness & Adapter for Virtuals Protocol and ElizaOS agent swarms (evaluator-reproducible; not a production partnership attestation).
 
 - **Stage 2: B2B Monetization & Risk API Launch (Post-9/14)**
   - **SliverVine Citadel Risk API & Bad Debt Calculator (powered by on-chain telemetry & Dune Analytics visualization)**: Monetize SliverVine's proprietary sub-ms risk calculation algorithms and shadow margin telemetry via a B2B API — **not** Dune platform data resale. [Dune](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) remains the **free public visualization dashboard**; paid tiers ($199/mo Pro to $1,999/mo Enterprise) gate programmatic access to Citadel-computed liquidation risk, margin health, and bad-debt savings metrics for vault managers and AI Agent swarms (Wayfinder, Virtuals, M2M Treasury Funds).
