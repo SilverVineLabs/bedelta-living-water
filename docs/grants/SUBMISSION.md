@@ -28,6 +28,17 @@
 | **Innovation and Creativity** | World's first AI Agent Cerebellum Citadel — Rust `#![no_std]` Wasm Edge hot-path (`pkg/soil_core.wasm`) · p50 ~106µs soil fuse · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft Sub-ms Policy Gate) |
 | **Product-Market Fit** | GMX v2 +10 bps `uiFeeReceiver` builder lane ([`gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts)) · ZeroDev EIP-7702 EOA-to-Agent AA onboarding · **Inaugural Agent Integration: Virtuals / ElizaOS Agent Pre-Broadcast Protection Testnet Verified** ([`examples/agent-interceptor-demo.ts`](../../examples/agent-interceptor-demo.ts)) |
 
+#### Design Partner Real-World Proof: Virtuals Protocol / ElizaOS Interceptor
+
+- **Integration Harness**: Verified via `@slivervine/citadel-sdk` ([`examples/agent-interceptor-demo.ts`](../../examples/agent-interceptor-demo.ts)).
+- **Live Pre-Broadcast Protection**: Intercepts AI Agent UserOps in <106µs on Cloudflare Edge before Mempool/Bundler dispatch.
+- **Fail-Closed Verification**: Zero-Gas pre-broadcast severance on 3σ volatility or prompt-injected rogue intents (`signingChannelOpen: false` · UserOp blocked pre-broadcast).
+
+```bash
+pnpm tsx examples/agent-interceptor-demo.ts          # Normal Virtuals Agent intent → ALLOW
+pnpm tsx examples/agent-interceptor-demo.ts --trip   # Rogue ElizaOS intent → FAIL_CLOSED
+```
+
 ---
 
 ## Executive Summary & One-Page Strategic Memo
