@@ -1,12 +1,20 @@
-# SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum
+# SliverVine Citadel Shield: Pre-Consensus Intent Firewall & Execution Safety Primitive for AI Agents on Arbitrum
 
-> **Document:** Technical Specification & Risk Topology · **Internal engine codename:** Santenmoku · **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
+> **Document:** Technical Specification & Risk Topology · **Internal engine codename:** Santenmoku · **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
 > **This file SSOT:** R01–R20 invariants · dual-engine topology · KV / MDD · settlement & fee bounds.
 > **Docs index:** [`docs/README.md`](../README.md) · **Grants:** [`docs/grants/`](../grants/)
 
 **Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
-**Entity:** SilverVine Labs · **Protocol brand:** SliverVine
+**Entity:** SilverVine Labs · **Protocol brand:** SliverVine Citadel Shield
 **Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
+**Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
+
+| Deployment | Chain ID | Gate / Tx |
+|------------|----------|-----------|
+| **Arbitrum One Mainnet Ignition** | `42161` | Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Ignition Tx `0x54c153…`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
+| **Arbitrum Sepolia (sandbox)** | `421614` | Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` (CREATE2 same-address) |
+
+> **Note:** Initial mainnet deployment utilizes Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) for public verification without exposing production HSM keys. Key rotation to production multisig is executed via native governance functions.
 
 This document is **invariant-first** (Yellow Paper style): topology, thresholds, and fail-closed semantics. Monetization pitches live under `docs/grants/`.
 
@@ -78,19 +86,38 @@ SliverVine does not interpret natural-language LLM prompts. The Shield enforces 
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v1.0 Delivered (Sepolia verified)** | ✅ Code-Verified (Sepolia & Dry-Run) | Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum · GMX v2 ETH/USDC GM + HL 1× short · Wasm `checkSoilResistance()` p50 ~106µs · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft policy pre-validation · EIP-712 consume-once Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` · Dune + SHA-256 `GET /api/grant-audit` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
-| **v1.0 Active Target** | ✅ Code-Verified (Sepolia & Dry-Run) | Single blue-chip anchor: **GMX v2 ETH/USDC GM Pool** + Hyperliquid **1× short** hedge · Mainnet deployment ties to **M6 Grant distribution** |
+| **v1.0 Delivered (Sepolia + Arbitrum One)** | ✅ Code-Verified Live | **SliverVine Citadel Shield** — Pre-Consensus Intent Firewall · GMX v2 ETH/USDC GM + HL 1× short · Wasm `checkSoilResistance()` p50 ~106µs · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft policy pre-validation · EIP-712 consume-once Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · **Arbitrum One Mainnet Ignition** [`0x54c153…`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Dune + SHA-256 `GET /api/grant-audit` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 177 test files \| 778 PASS Clean)** |
+| **v1.0 Active Target** | ✅ Mainnet Ignition Delivered | Single blue-chip anchor: **GMX v2 ETH/USDC GM Pool** + Hyperliquid **1× short** hedge · Gate live on **42161** |
 | **v1.0 Partial — HL Orderbook Gap Guard** | ✅ Code-Verified | `evaluateHlOrderbookGapGuard()` in [`hl-orderbook-gap-guard.ts`](../../src/services/risk-control-lib/hl-orderbook-gap-guard.ts) · wired via [`soil-resistance.ts`](../../src/services/risk-control-lib/soil-resistance.ts) — gap-window leverage scale-down + 2× depth floor |
 | **V1.5 Roadmap Spec** | ⏳ Planned | **Sub-ms Agentic Security & Swarms** — [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) fleet enforcement · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) · BTC/USDC isomorphic GM (config-only) |
 | **V2.0 Design Spec** | ⏳ Planned | **Institutional CaaS & Orbit Shield** — `@slivervine/citadel-sdk` for AI DEXs / Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
 
 **Demo:** `pnpm run demo:e2e` — 5-step grant E2E (Intent+Deadman → Robinhood escort → GMX underweight → HL Session hedge → R20 Panic Flash).
 
+### 0.3 Turn-Key Agent Ecosystem Adapters
+
+Reference adapters in [`examples/adapters/`](../../examples/adapters/) — evaluator-reproducible harnesses; not production partnership attestations.
+
+| Framework | Spec | Implementation | CLI |
+|-----------|------|----------------|-----|
+| **ElizaOS** | TS-compliant `Plugin` / `Action` interface — `citadelShieldPlugin` + `citadelSoilGuardAction` wrapping `checkSoilResistance()` | [`elizaos-action-adapter.ts`](../../examples/adapters/elizaos-action-adapter.ts) | `pnpm tsx examples/adapters/elizaos-action-adapter.ts [--trip]` |
+| **Virtuals GAME** | TS-compliant `FunctionDefinition` custom worker action — `citadelSoilGuardFunction` wrapping `withCitadelShield()` | [`virtuals-game-adapter.ts`](../../examples/adapters/virtuals-game-adapter.ts) | `pnpm tsx examples/adapters/virtuals-game-adapter.ts [--trip]` |
+| **LangChain (TypeScript)** | `@langchain/core/tools` `DynamicTool`-compatible spec — `citadelSoilGuardTool` + JSON schema (no runtime dependency) | [`langchain-agent-adapter.ts`](../../examples/adapters/langchain-agent-adapter.ts) | `pnpm tsx examples/adapters/langchain-agent-adapter.ts [--trip]` |
+| **LangChain (Python)** | `langchain_core.tools.BaseTool` — `SlivervinePreExecutionGuardTool` (`slivervine_pre_execution_guard`) via Citadel REST `POST /api/hedge/evaluate` | [`langchain-agent-adapter.py`](../../examples/adapters/langchain-agent-adapter.py) | `python examples/adapters/langchain-agent-adapter.py [--trip]` |
+
+**PEV (Prevented Exploit Volume) — Dune Analytics Telemetry Metric:**
+
+| Field | Definition |
+|-------|------------|
+| **Metric** | **PEV** — nominal USD volume of toxic intents blocked pre-broadcast (0-Gas fail-closed severance) |
+| **Event sources** | `RiskTripBlocked` on-chain events · soil-trip `SOIL_RESISTANCE_TRIP` logs · `GET /api/grant-audit` `duneTelemetry` JSON |
+| **Indexer SSOT** | [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) — Sepolia event streaming verified; production DuneSQL targets **ChainID `42161`** |
+
 ---
 
 ## 1. Core Product Identity
 
-**SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum.**
+**SliverVine Citadel Shield (BeDelta Living Water v1.0 / BeΔ) is a Pre-Consensus Intent Firewall & Execution Safety Primitive for AI Agents on Arbitrum.**
 
 **Primary execution envelope:** **Delta-Neutral GM** on Arbitrum One — GMX v2 **ETH/USDC** GM pool + Hyperliquid **1× short hedge**, guarded by Pillar 3 sub-ms Wasm Shield (`checkSoilResistance()`).
 
@@ -148,12 +175,22 @@ Solidity vault surface splits capital into two non-fungible risk lanes:
 
 **Lean On-Chain Gate by Design:** Dual-contract settlement core is `SliverVineGate.sol` (consume-once attestation) + `SliverVineAgentPolicyGuard.sol` ([ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft policy validation). Both are **immutable, non-custodial, no proxy** so risk math remains on Edge (`checkSoilResistance()` **p50 ~106µs**) — on-chain is the fail-closed record, not the HFT hot path.
 
+**Arbitrum One (42161) — Mainnet Ignition Gate:**
+
+| Contract | Role | Verified Address (Arbitrum One) |
+|----------|------|----------------------------------|
+| `SliverVineGate` | Consume-once EIP-712 attestation anchor | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` |
+| **Mainnet Ignition Tx** | Forge broadcast · contract creation | [`0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
+| **Deploy script** | ChainID guard + optional smoke | [`DeployArbitrumOneGate.s.sol`](../../SliverVineGate/script/DeployArbitrumOneGate.s.sol) · [`deploy-mainnet-gate-ignition.ts`](../../scripts/deploy-mainnet-gate-ignition.ts) |
+
+> **Bootstrap Keys:** Initial mainnet deploy uses Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) for public verification; production multisig rotation via native governance.
+
 **Arbitrum Sepolia (421614) — verified deployment addresses:**
 
 | Contract | Role | Verified Address (Sepolia) |
 |----------|------|----------------------------|
 | **Deployer / Admin / Signer** | OpSec-isolated Forge broadcast signer · gate stack admin | `0xbd65d785Dac74EBa9efFdB357b2dC52fCC26EC7F` |
-| `SliverVineGate` | Consume-once EIP-712 attestation anchor | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
+| `SliverVineGate` | Consume-once EIP-712 attestation anchor | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` |
 | `SliverVineAgentPolicyGuard` | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft) agent-policy pre-screen · `SliverVineCitadel` domain · one-way `isPolicyActive` | **Code-Verified** (Foundry unit) · on-chain deploy pending |
 | `SliverVineRiskOracle` | EIP-712 offline risk report · `STATUS_SHUTDOWN` flush | `0x3FFa2539f502682E8145e6Eb427ff78d258D53a4` |
 | `IngressSafetySwitch` | Pillar 2 compliance filter (oracle flush + blacklist) | `0x3E4298e2b8d4e30396A54C1817Eb71c9272Ffb4B` |
@@ -640,9 +677,10 @@ allowedToSign =
 
 | Consumer | Integration | Reflex hook |
 |----------|-------------|-------------|
-| **Third-party dApps** | `@slivervine/citadel-sdk` · `verifyAgentIntent()` | Apache-2.0 · sub-ms soil gate |
+| **Third-party dApps** | `@slivervine/citadel-sdk` · `verifyAgentIntent()` · `withCitadelShield` | Apache-2.0 · sub-ms soil gate |
+| **ElizaOS / Virtuals / LangChain** | Turn-key adapters — §0.3 · [`examples/adapters/`](../../examples/adapters/) | `checkSoilResistance()` · `withCitadelShield()` |
 | **Institutional vaults** | ZeroDev Kernel + Citadel Worker BUSL payload path | ERC-7579 session + 106µs Shield |
-| **Grant audit / Dune** | `GET /api/grant-audit` · [Dune dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · production DuneSQL feed + chart ([`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md)) | Pillar 2 ingress · Pillar 3 intercepts · 10 bps builder revenue |
+| **Grant audit / Dune / PEV** | `GET /api/grant-audit` · **PEV (Prevented Exploit Volume)** · [Dune dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · production DuneSQL feed + chart ([`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md)) | Pillar 2 ingress · Pillar 3 intercepts · 10 bps builder revenue |
 
 **Migration safety:** Kernel v3 → v4 adapter swap (Gatehouse only) — **Shield, Wasm, Stylus coprocessor, and EIP-712 Gate require zero rewrite** (§2.4.2 migration rule).
 
@@ -752,6 +790,8 @@ Evaluator-facing comparison of SliverVine Protocol versus legacy execution, agen
 | Document | Purpose |
 |----------|---------|
 | [`docs/README.md`](../README.md) | Audience router |
+| [`docs/grants/SUBMISSION.md`](../grants/SUBMISSION.md) | Buildathon submission SSOT |
+| [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) | Public repository |
 | [`docs/grants/`](../grants/) | Public grant submissions (GMX · Arbitrum) |
 | [`CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md) | Apache-2.0 SDK API |
 | [`../audit/`](../audit/) | Principal audit · Robinhood Chain safety gate |
