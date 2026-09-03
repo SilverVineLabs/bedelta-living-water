@@ -165,6 +165,16 @@ pnpm audit:nightly
 | Invariants | **3 × 16,384** stateful calls · 0 counterexamples | same |
 | Core | `SliverVineGate.sol` consume-once attestation · gas-bounded `verifyAndConsume` | same |
 
+### Formal Verification — Halmos Lemmas (Honest Disclosure)
+
+| Item | Status | Verify |
+|------|--------|--------|
+| Lemma `check_consume_sets_consumed_flag` (I6a) | **Coded** in [`HalmosGateInvariant.t.sol`](../contracts/test/formal/HalmosGateInvariant.t.sol) | `forge test --match-contract HalmosGateInvariant` |
+| Lemma `check_replay_must_revert` (I6b) | **Coded** in same file | `forge test --match-test test_regression_replay_invariant_concrete` |
+| Halmos CLI symbolic execution | **Optional nightly** — **not claimed complete** when [`halmos.json`](./audit/halmos.json) `exitcode ≠ 0` | `pnpm audit:nightly` (exploratory) |
+
+> **Repo SSOT:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
+
 ---
 
 ## Tier 4 — ZeroDev AA Dry-Run

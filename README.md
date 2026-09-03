@@ -19,6 +19,7 @@
 **Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
 
 **Protocol:** SliverVine · **Entity:** SilverVine Labs · **Contact:** `grants@silvervinelabs.com` · **B2B:** `hello@silvervinelabs.com`  
+**Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)  
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune Telemetry (Sepolia Live Verification & Production SQL Spec)](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`  
 **Package:** [`@slivervine/citadel-sdk`](./src/sdk/README.md) (Apache-2.0) · **Judge entry:** [Verification Matrix](./docs/VERIFICATION_MATRIX.md) · [Technical Specification](./docs/architecture/TECHNICAL_SPECIFICATION.md)
 
@@ -177,7 +178,10 @@ pnpm test -- --run
 # 2. 3-Tier Security Matrix (Fast / Security / Nightly)
 pnpm run audit:fast # fast tier → docs/audit/security-scorecard.json (tsc + security slice + Solhint + Gitleaks)
 pnpm run audit:security # security tier 5/0/0 → docs/audit/static-analysis-report.json (Vitest + Forge + Slither + Aderyn + pnpm-audit)
-pnpm run audit:nightly # Echidna Property Fuzz + Halmos Symbolic + Deep Fuzz
+pnpm run audit:nightly # Echidna Property Fuzz + Halmos Symbolic (exploratory) + Deep Fuzz
+
+# Formal invariant lemmas (Forge-verifiable; Halmos CLI not claimed complete when exitcode ≠ 0)
+forge test --match-contract HalmosGateInvariant --match-test test_regression_replay_invariant_concrete
 
 # 3. Contract unit tests, fuzzing, & gas benchmark
 cd SliverVineGate && forge test --gas-report && cd .. # default fuzz: 5,120 (5×1,024)

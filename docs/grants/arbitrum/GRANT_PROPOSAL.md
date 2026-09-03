@@ -23,7 +23,7 @@ For LP exit semantics, the protocol enforces **zero protocol-level lock-up (100%
 
 **v1.0 Delivered (Sepolia verified)** · Mainnet deployment ties to **M6 Grant distribution**.
 
-Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5/0/0 PASS** lives in `docs/audit/static-analysis-report.json` (Vitest, Forge, Slither, Aderyn, pnpm-audit); `security-scorecard.json` mirrors the last run’s `"tier"`. Nightly adds Echidna / Halmos.
+Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5/0/0 PASS** lives in `docs/audit/static-analysis-report.json` (Vitest, Forge, Slither, Aderyn, pnpm-audit); `security-scorecard.json` mirrors the last run’s `"tier"`. Nightly adds Echidna / Halmos (exploratory — see `docs/audit/halmos.json`; invariant lemmas verifiable via `forge test`, Halmos CLI not claimed complete when `exitcode ≠ 0`).
 
 ---
 
