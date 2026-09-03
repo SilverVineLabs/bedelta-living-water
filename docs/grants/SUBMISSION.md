@@ -5,7 +5,8 @@
 | **Official Name** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
 | **Category** | Promising Products Track — AI Agents & Financial Primitives |
 | **Buildathon** | Arbitrum Open House Singapore Online Buildathon |
-| **Live Gate (Sepolia)** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
+| **Live Gate (Sepolia)** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` |
+| **Live Gate (Arbitrum One)** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
 | **Dune Telemetry** | [Dune Telemetry (Sepolia Live Verification & Production SQL Spec)](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 
 > **Core Pitch:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum. It acts as the 0-Gas off-chain risk brain and on-chain execution gate for AI Agents trading across Pendle and GMX, stopping prompt injections and toxic liquidation cascades in 106µs to achieve true Delta-Neutral execution safety.
@@ -23,7 +24,7 @@
 
 | Criterion | Evidence (CLI / code) |
 |-----------|------------------------|
-| **Smart Contract Quality** | **Lean On-Chain Gate by Design** — dual-contract core [`SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) (consume-once EIP-712) + [`SliverVineAgentPolicyGuard.sol`](../../contracts/src/SliverVineAgentPolicyGuard.sol) ([ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft policy pre-screen) · immutable · non-custodial · no proxy — keeps Edge `checkSoilResistance()` at **p50 ~106µs** · **Arbitrum One Mainnet Ignition Gate: Verified Non-Custodial Gate on ChainID 42161** — Arbiscan Tx: *(paste after [`scripts/deploy-mainnet-gate-ignition.ts`](../../scripts/deploy-mainnet-gate-ignition.ts) broadcast)* · Consume-once and replay-denial invariant lemmas 100% code-verified via native Foundry test suite ([`SliverVineGate.t.sol`](../../SliverVineGate/test/SliverVineGate.t.sol) & [`SliverVineGate.invariant.t.sol`](../../SliverVineGate/test/SliverVineGate.invariant.t.sol)) · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
+| **Smart Contract Quality** | **Lean On-Chain Gate by Design** — dual-contract core [`SliverVineGate.sol`](../../SliverVineGate/src/SliverVineGate.sol) (consume-once EIP-712) + [`SliverVineAgentPolicyGuard.sol`](../../contracts/src/SliverVineAgentPolicyGuard.sol) ([ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Emerging Draft policy pre-screen) · immutable · non-custodial · no proxy — keeps Edge `checkSoilResistance()` at **p50 ~106µs** · **Arbitrum One Mainnet Ignition Gate: Verified Non-Custodial Gate on ChainID 42161** — Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Arbiscan Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Consume-once and replay-denial invariant lemmas 100% code-verified via native Foundry test suite ([`SliverVineGate.t.sol`](../../SliverVineGate/test/SliverVineGate.t.sol) & [`SliverVineGate.invariant.t.sol`](../../SliverVineGate/test/SliverVineGate.invariant.t.sol)) · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** |
 | **Real Problem Solving** | AI Agent pre-broadcast death window — 0-Gas fail-closed sub-ms severance via `checkSoilResistance()` before Bundler / mempool · `lostUsd ≡ 0` in-flight invariant |
 | **Innovation and Creativity** | World's first AI Agent Cerebellum Citadel — Rust `#![no_std]` Wasm Edge hot-path (`pkg/soil_core.wasm`) · p50 ~106µs soil fuse · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft Sub-ms Policy Gate) |
 | **Product-Market Fit** | GMX v2 +10 bps `uiFeeReceiver` builder lane ([`gmx-v2-order-payload.ts`](../../src/services/adapters/gmx-v2-order-payload.ts)) · ZeroDev EIP-7702 EOA-to-Agent AA onboarding · **Reference Pre-Broadcast Interceptor Adapter for Virtuals Protocol & ElizaOS Agent Frameworks (Verified via [`examples/agent-interceptor-demo.ts`](../../examples/agent-interceptor-demo.ts))** |
@@ -81,7 +82,7 @@ SliverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 * **Test Suite**: **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** — re-run `pnpm test -- --run` to confirm. Full matrix: [Verification Matrix](../VERIFICATION_MATRIX.md).
 * **Formal Verification**: Consume-once and replay-denial invariant lemmas 100% code-verified via native Foundry test suite ([`SliverVineGate.t.sol`](../../SliverVineGate/test/SliverVineGate.t.sol) & [`SliverVineGate.invariant.t.sol`](../../SliverVineGate/test/SliverVineGate.invariant.t.sol)) · [Technical Specification §3](../architecture/TECHNICAL_SPECIFICATION.md#3-cross-venue-risk-engine--defense-matrix-r01r20).
 * **Game-Theoretic Simulation**: 10,000 Monte Carlo runs · **87.39% toxic flow blocked** · $9.88M **nominal simulated** LP capital — [`game_theory_simulation_results.json`](../telemetry/game_theory_simulation_results.json) *(simulation only; not live savings)*.
-* **Deployments**: Arbitrum Sepolia Gate `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` · Robinhood Chain `46630`/`4663` — [On-Chain Verification](#on-chain-verification--arbitrum-sepolia-421614).
+* **Deployments**: Arbitrum One Mainnet Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Arbitrum Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · Robinhood Chain `46630`/`4663` — [On-Chain Verification](#on-chain-verification--arbitrum-one-42161) · [Sepolia](#on-chain-verification--arbitrum-sepolia-421614).
 
 ### Core Risk Invariants (Judge Quick Reference)
 
@@ -269,7 +270,15 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 | **M-RH-Demo** | `46630`/`4663` → `42161` outbound escort OK · inbound AML blocked · `lostUsd ≡ 0` | Robinhood Chain | ✅ Code-verified · ⏳ video |
 | **M-GMX-Fee** | Unsigned GMX v2 payload injects **10 bps** `uiFeeReceiver` | GMX | ✅ Injected · ⏳ `claimUiFees` |
 | **M-Dune** | Publish Dune dashboard per [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Dune | ✅ [Live dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
-| **M6-Mainnet** | Arbitrum One limited-capital deployment · institutional AA on Kernel v3 | Arbitrum · Grant | ⏳ Post-grant |
+| **M6-Mainnet** | Arbitrum One Gate ignition on `42161` · Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Tx `0x54c153…b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) | Arbitrum · Grant | ✅ Delivered |
+
+---
+
+## On-Chain Verification — Arbitrum One (42161)
+
+| Contract | Role | Verified Address (Mainnet) | Proof |
+|----------|------|----------------------------|-------|
+| `SliverVineGate` | Consume-once EIP-712 attestation anchor | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` | [Ignition Tx `0x54c153…b0c6`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · [`DeployArbitrumOneGate.s.sol`](../../SliverVineGate/script/DeployArbitrumOneGate.s.sol) |
 
 ---
 

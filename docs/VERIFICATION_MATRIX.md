@@ -16,7 +16,9 @@ Open this document first. Each tier is CLI-reproducible with **zero mainnet sign
 |-------|--------------|--------|
 | **Official H1** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ): Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum | [`README.md`](../README.md) · [`SUBMISSION.md`](../grants/SUBMISSION.md) |
 | **Vitest baseline** | **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** | `pnpm test -- --run` |
-| **Sepolia Gate** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` | Arbiscan 421614 |
+| **Sepolia Gate** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` | [Arbiscan Sepolia](https://sepolia.arbiscan.io/address/0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1) |
+| **Arbitrum One Gate** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` | [Arbiscan One](https://arbiscan.io/address/0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1) |
+| **Mainnet Ignition Tx** | `0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6` | [Arbiscan Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
 | **Dune dashboard** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) | Public URL |
 | **DuneSQL (live feed)** | Query 0 — SliverVine Live Telemetry Feed (`arbitrum.blocks` · 12h · Gate `0xb174…`) | [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
 | **DuneSQL (activity chart)** | Query 0b — SliverVine Telemetry Activity Chart (1h minute buckets) | Same spec |
