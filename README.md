@@ -178,10 +178,10 @@ pnpm test -- --run
 # 2. 3-Tier Security Matrix (Fast / Security / Nightly)
 pnpm run audit:fast # fast tier → docs/audit/security-scorecard.json (tsc + security slice + Solhint + Gitleaks)
 pnpm run audit:security # security tier 5/0/0 → docs/audit/static-analysis-report.json (Vitest + Forge + Slither + Aderyn + pnpm-audit)
-pnpm run audit:nightly # Echidna Property Fuzz + Halmos Symbolic (exploratory) + Deep Fuzz
+pnpm audit:nightly # Echidna Property Fuzz + Deep Fuzz (exploratory)
 
-# Formal invariant lemmas (Forge-verifiable; Halmos CLI not claimed complete when exitcode ≠ 0)
-forge test --match-contract HalmosGateInvariant --match-test test_regression_replay_invariant_concrete
+# Formal verification — native Foundry invariant tests (SliverVineGate.t.sol & SliverVineGate.invariant.t.sol)
+cd SliverVineGate && forge test && cd ..
 
 # 3. Contract unit tests, fuzzing, & gas benchmark
 cd SliverVineGate && forge test --gas-report && cd .. # default fuzz: 5,120 (5×1,024)

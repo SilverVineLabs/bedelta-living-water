@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Virtuals Protocol & ElizaOS Agent Pre-Broadcast Protection Adapter Demo
+ * Reference Interceptor Harness & Adapter for Virtuals Protocol & ElizaOS AI Agents
  *
  * Simulates AI Agent UserOp lifecycle intercepted by SliverVine Citadel on Cloudflare Edge.
  * Usage: pnpm tsx examples/agent-interceptor-demo.ts
@@ -77,11 +77,11 @@ export async function virtualsAgentExecutionHook(userOpDraft: AgentUserOpDraft) 
 
   const t0 = performance.now();
   const soilResult = checkSoilResistance(soil);
-  const measuredUs = Math.round((performance.now() - t0) * 1000);
+  const measuredUs = (performance.now() - t0) * 1000;
   const soilPass = soilResult.ok;
   log("CITADEL_SOIL_FUSE", {
     fn: "checkSoilResistance()",
-    latencyUs: soilPass ? Math.min(measuredUs, 105) : measuredUs,
+    latencyUs: measuredUs,
     edgeP50Us: 106,
     pass: soilPass,
     reasons: soilResult.reasons,
@@ -92,6 +92,10 @@ export async function virtualsAgentExecutionHook(userOpDraft: AgentUserOpDraft) 
     log("USEROP_BLOCKED", { status: "FAIL_CLOSED_PRE_BROADCAST", gasCost: "0-Gas (no Bundler dispatch)" });
     throw new Error("[Citadel] Blocked Rogue Agent UserOp: RiskLimitExceeded");
   }
+
+  console.log(
+    `[Citadel] Soil Check PASS | Measured Local Harness Latency: ${measuredUs.toFixed(1)}µs (Production Edge Target: p50 ~106µs via Rust Wasm #![no_std])`,
+  );
 
   const gate = assertCitadelRiskGate(soil);
   const signingChannelOpen = gate.chainHealth?.sequencerSafe !== false;
@@ -111,9 +115,9 @@ export async function virtualsAgentExecutionHook(userOpDraft: AgentUserOpDraft) 
   log("USEROP_DISPATCHED", {
     status: "ALLOW_PRE_BROADCAST",
     target: "ZeroDev Bundler → EntryPoint v0.7",
-    latencyUs: Math.min(measuredUs, 105),
+    latencyUs: measuredUs,
   });
-  return { ...gate, signingChannelOpen, soilLatencyUs: Math.min(measuredUs, 105) };
+  return { ...gate, signingChannelOpen, soilLatencyUs: measuredUs };
 }
 
 async function main(): Promise<void> {

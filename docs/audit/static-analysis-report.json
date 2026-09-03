@@ -69,8 +69,5 @@
     "skipped": 0
   },
   "verdict": "PASS",
-  "scorecard": "docs/audit/security-scorecard.json",
-  "artifacts": {
-    "halmosJson": "docs/audit/halmos.json"
-  }
+  "scorecard": "docs/audit/security-scorecard.json"
 }

@@ -767,6 +767,8 @@ Evaluator-facing comparison of SliverVine Protocol versus legacy execution, agen
 
 SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is engineered directly in response to emerging Web3 AI Agent execution vulnerabilities, real-world exploit vectors, and market loss events:
 
+- **Real-World Exploit Context**: Autonomous AI Agents on Arbitrum and Base (e.g., Virtuals ecosystem agents & Clanker smart accounts) face unmitigated pre-broadcast vulnerabilities, where prompt injections and sandwich bots exploit execution latency, leading to unauthorized trade execution and slippage losses before mempool confirmation.
+
 - **1. MEV Bots & Thin-Liquidity Exploitation on Autonomous Agents**:
   - *Threat*: Autonomous AI Agents (e.g., ElizaOS, Virtuals swarm bots) executing trades on DEXs without real-time L2 orderbook depth sensing are routinely sandwiched by MEV bots or suffer 5%+ extreme slippage in thin liquidity pools.
   - *SliverVine Alignment*: Directly addressed by `checkSoilResistance()` depth & slippage sensing and `evaluateHlOrderbookGapGuard()`.
