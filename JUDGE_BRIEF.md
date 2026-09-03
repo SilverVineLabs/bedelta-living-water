@@ -74,9 +74,9 @@ A *tool* reports risk post-hoc. A *protocol primitive* **binds execution** with 
 
 → [`docs/telemetry/DUNE_DASHBOARD_SPECIFICATION.md`](./docs/telemetry/DUNE_DASHBOARD_SPECIFICATION.md) · `scripts/emit-sepolia-telemetry-events.ts`
 
-### AI Agent Ecosystem Runtimes (Virtuals / ElizaOS Integration)
+### AI Agent Ecosystem Runtimes (Virtuals / ElizaOS / LangChain TS & Python)
 
-**Zero-touch 1-line integration for agent swarms:**
+**Zero-touch integration for agent swarms (TS decorator + Python REST):**
 
 ```ts
 import { withCitadelShield } from "@slivervine/citadel-sdk";
@@ -84,7 +84,13 @@ import { withCitadelShield } from "@slivervine/citadel-sdk";
 const execute = withCitadelShield(async (intent) => agent.swap(intent));
 ```
 
-Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/adapters/) · Reference harness: [`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts)
+```python
+# pip install langchain-core pydantic
+# python examples/adapters/langchain-agent-adapter.py
+from langchain_core.tools import BaseTool  # SlivervinePreExecutionGuardTool in adapter module
+```
+
+Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/adapters/) (TS + Python) · Reference harness: [`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts)
 
 ---
 
@@ -102,7 +108,7 @@ Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/a
 ## Honest Scope (Do Not Over-Claim)
 
 - Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) on mainnet deploy — public verification only
-- Reference Agent harness — not an official Virtuals/ElizaOS partnership attestation
+- Reference Agent harness — not an official Virtuals/ElizaOS/LangChain partnership attestation
 - Stylus = **V2.0 roadmap probe**; live gateway = **Solidity Gate**
 - Monte Carlo **87.39%** toxic flow blocked — *nominal simulated*; not live TVL saved
 

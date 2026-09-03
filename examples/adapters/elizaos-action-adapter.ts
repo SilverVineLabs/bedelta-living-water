@@ -90,6 +90,7 @@ export const citadelSoilGuardAction = {
 export const citadelShieldPlugin = {
   name: "slivervine-citadel-shield",
   description: "Pre-consensus intent firewall plugin for ElizaOS agent swarms.",
+  simulatedRuntime,
   actions: [citadelSoilGuardAction],
 };
 
