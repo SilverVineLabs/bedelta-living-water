@@ -18,7 +18,7 @@
 ## Docs synced
 
 - `docs/telemetry/DUNE_DASHBOARD_SPECIFICATION.md`
-- `docs/grants/SUBMISSION.md`
+- `docs/ARB_Buildathon/SUBMISSION.md`
 - `docs/VERIFICATION_MATRIX.md`
 - `docs/sdk/CITADEL_SDK_BLUEPRINT.md`
 - `docs/architecture/01_TECHNICAL_SPECIFICATION.md`

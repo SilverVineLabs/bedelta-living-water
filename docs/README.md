@@ -41,7 +41,7 @@
 | **Compliance Ingress Firewall (Pillar 2)** | [`audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Venue-agnostic unidirectional AML escort · Robinhood Chain as inaugural reference adapter · 5/5 tests |
 | **Edge Shield Wasm Core (Pillar 3)** | [`audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | `checkSoilResistance()` · p50 ~106µs · Tri-Sensor · R01–R20 defense matrix |
 | **Security audit snapshot** | [`audit/PRINCIPAL_AUDIT_REPORT.md`](./audit/PRINCIPAL_AUDIT_REPORT.md) | Principal review · Gate / survival matrix |
-| **Grant submissions** | [`grants/SUBMISSION.md`](./grants/SUBMISSION.md) | Buildathon main submission pack |
+| **Grant submissions** | [`ARB_Buildathon/SUBMISSION.md`](./ARB_Buildathon/SUBMISSION.md) | Buildathon main submission pack |
 | **HackQuest dual-video scripts** | [`pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](./pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | Pitch 180s (rainstorm) · Demo 120s (live CLI) |
 | **Arbitrum grant scope** | [`grants/arbitrum/GRANT_PROPOSAL.md`](./grants/arbitrum/GRANT_PROPOSAL.md) | DAO proposal · milestone scope |
 | **GMX Builders** | [`grants/gmx/GMX_BUILDERS_PITCH.md`](./grants/gmx/GMX_BUILDERS_PITCH.md) | GMX v2 integration pitch |
@@ -59,7 +59,8 @@ docs/
  architecture/ Yellow Paper · standards wiki · risk mitigation & disclaimer framework
  audit/ DDIP · ZeroDev analysis · Robinhood gate · principal audit
  sdk/ Citadel SDK integration blueprint
- grants/ SUBMISSION + arbitrum/ + gmx/
+ ARB_Buildathon/ Buildathon main submission pack
+ grants/ arbitrum/ + gmx/
  pitch/ dual-video storyboards
  telemetry/ Dune SQL spec + Monte Carlo JSON
 ```

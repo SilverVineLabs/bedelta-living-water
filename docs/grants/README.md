@@ -9,7 +9,7 @@
 
 | Track | Status | Entry |
 |-------|--------|-------|
-| **Buildathon Main Submission** | ✅ Submitted | [`SUBMISSION.md`](./SUBMISSION.md) |
+| **Buildathon Main Submission** | ✅ Submitted | [`SUBMISSION.md`](../ARB_Buildathon/SUBMISSION.md) |
 | **Arbitrum One-Pager** | ✅ Submitted | [`arbitrum/ARBITRUM_ONE_PAGER.md`](./arbitrum/ARBITRUM_ONE_PAGER.md) |
 | **Arbitrum Grant Scope** | ✅ Submitted | [`arbitrum/GRANT_PROPOSAL.md`](./arbitrum/GRANT_PROPOSAL.md) |
 | **GMX Builders** | ✅ Submitted | [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md) |

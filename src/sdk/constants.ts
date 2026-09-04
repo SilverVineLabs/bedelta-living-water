@@ -13,7 +13,7 @@ export const EIP712_DOMAIN_VERSION = "1" as const;
 export const LOCAL_MOCK_GATE_ADDRESS =
   "0x511E111111111111111111111111111111111111" as const;
 
-/** Arbitrum Sepolia (421614) — verified SliverVineGate (SSOT: docs/grants/SUBMISSION.md). */
+/** Arbitrum Sepolia (421614) — verified SliverVineGate (SSOT: docs/ARB_Buildathon/SUBMISSION.md). */
 export const SLIVERVINE_GATE_SEPOLIA_ADDRESS =
   "0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1" as const;
 

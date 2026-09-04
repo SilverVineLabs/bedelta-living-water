@@ -303,7 +303,7 @@ SliverVine rejects unrealistic B2B sales models (e.g. charging DAOs $8k/mo upfro
 3. **Edge Execution Alliance (Partnership Model)**:
  * Acts as the **Sub-ms Intent Execution Edge** for macro risk engines (e.g., Chaos Labs, Gauntlet). Chaos Labs provides macro parameter tuning; SliverVine enforces microsecond off-chain intent protection.
 
-**GMX builder lane (adjacent):** +10 bps `uiFeeReceiver` on unsigned GMX v2 payloads — see [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md).
+**GMX builder lane (adjacent):** +10 bps `uiFeeReceiver` on unsigned GMX v2 payloads — see [`gmx/GMX_BUILDERS_PITCH.md`](../grants/gmx/GMX_BUILDERS_PITCH.md).
 
 ---
 
@@ -401,9 +401,9 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualL
 |----------|---------|
 | [`../architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) | R01–R20 Defense Matrix · latency benchmarks |
 | [`../telemetry/DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Production DuneSQL feed + activity chart (Queries 0–0b) + 3 reconciliation panels · [live dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
-| [`arbitrum/ARBITRUM_ONE_PAGER.md`](./arbitrum/ARBITRUM_ONE_PAGER.md) | One-pager |
-| [`arbitrum/GRANT_PROPOSAL.md`](./arbitrum/GRANT_PROPOSAL.md) | Scope & roadmap |
-| [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md) | GMX builder economics |
+| [`../grants/arbitrum/ARBITRUM_ONE_PAGER.md`](../grants/arbitrum/ARBITRUM_ONE_PAGER.md) | One-pager |
+| [`../grants/arbitrum/GRANT_PROPOSAL.md`](../grants/arbitrum/GRANT_PROPOSAL.md) | Scope & roadmap |
+| [`../grants/gmx/GMX_BUILDERS_PITCH.md`](../grants/gmx/GMX_BUILDERS_PITCH.md) | GMX builder economics |
 | [`../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | 180s Pitch + 120s Demo dual-video scripts |
 | [§ Threat Model Appendix](#appendix-real-world-threat-model--market-landscape) | Agentic web metrics · case studies · competitive matrix |
 

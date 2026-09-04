@@ -15,7 +15,7 @@ SOURCES = [
     ROOT / "docs" / "Buildaton.md",
     ROOT / "docs" / "grant" / "ARCHITECTURE.md",
     ROOT / "docs" / "grant" / "GRANT_PROPOSAL.md",
-    ROOT / "docs" / "grant" / "SUBMISSION.md",
+    ROOT / "docs" / "ARB_Buildathon" / "SUBMISSION.md",
     ROOT / "docs" / "grant" / "GMX_BUILDERS_PITCH.md",
     ROOT / "scripts" / "chaos-blackswan-stress.ts",
     ROOT / "docs" / "audit" / "chaos-blackswan-metrics.json",
