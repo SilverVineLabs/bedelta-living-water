@@ -75,7 +75,7 @@ pnpm tsx examples/agent-interceptor-demo.ts --trip   # Rogue ElizaOS intent → 
 | Pendle × GMX cross-guard | [§ Core Risk Decision Matrix](#core-risk-decision-matrix-evaluatependlegmxcrossguard) · [`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts) |
 | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) agent policy | [Technical Specification §0.1](../architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
 | Institutional DD / Basel mapping | [Due Diligence Memorandum](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
-| **80/20 boundaries & V2.0 R&D** | [§ 88% Defense Mesh](#88-defense-mesh--honest-12-post-grant-rd-blueprint) · [`JUDGE_BRIEF.md`](../../JUDGE_BRIEF.md) |
+| **80/20 boundaries & V2.0 R&D** | [Risk Spectrum §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) · [§ 88% Defense Mesh](#88-defense-mesh--honest-12-post-grant-rd-blueprint) · [`JUDGE_BRIEF.md`](../../JUDGE_BRIEF.md) |
 
 Built on the Santenmoku internal engine (p50 ~106µs), [`@slivervine/citadel-sdk`](../../src/sdk/README.md), and consume-once EIP-712 Gate attestation — SliverVine intercepts AI trade intents **before** mempool or bundler ingress. Deep narrative: [Problem / Solution](#the-problem) · [Sponsor Integration Matrix](#sponsor-integration-matrix).
 
@@ -101,6 +101,8 @@ SliverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 
 ## 88% Defense Mesh & Honest 12% Post-Grant R&D Blueprint
 
+> **Formal definition (SSOT):** [Risk Mitigation & Disclaimer Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) — **100%** on-chain risk surface = **88%** pre-broadcast interception mesh + **12%** insurmountable systemic residuals · **80/20 Pareto** (microstructure loss concentration) targets the acute 20% tail within Pillar 3.
+
 ### Industry Baseline (~80% or Below)
 
 Traditional DeFi / Agent risk checks rely on **post-hoc analytics** or **mutable pause functions**, leaving exploitable gaps for MEV sandwiching, LLM retry token-burn, and session-key blast-radius expansion.
@@ -115,7 +117,7 @@ Traditional DeFi / Agent risk checks rely on **post-hoc analytics** or **mutable
 | 🟢 **Session Key Blast-Radius Isolation** | Scoped `ORDER_EXECUTE` + **$5,000** notional cap (`SESSION_KEY_NOTIONAL_CAP_USD`) caps key-compromise damage |
 | 🟢 **Oracle & RPC Resilience** | **30s** oracle-lag fail-closed (`ORACLE_LAG_DEADLOCK` / `ORACLE_LAG_DEADLOCK_MS = 30_000`) + **Honeypot trap RPC** defense (`evaluateRpcDefenseGate()` · 99% synthetic slippage decoy) |
 
-> **Honest engineering boundary:** Citadel is a **pre-consensus intent firewall**, not a universal risk insurer. We model **88% mesh coverage** for V1.0 and disclose the residual **12%** tail explicitly.
+> **Honest engineering boundary:** Citadel is a **pre-consensus intent firewall**, not a universal risk insurer. We model **88% mesh coverage** for V1.0 and disclose the residual **12%** tail explicitly — see [Risk Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee).
 
 ### The Remaining **12%** (Why We Need This Foundation Grant)
 

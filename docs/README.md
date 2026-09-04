@@ -36,7 +36,7 @@
 
 | Audience | Document | Role |
 |----------|----------|------|
-| **Risk mitigation & disclaimer framework** | [`architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](./architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Fail-closed boundaries · force majeure · AI attack vectors · 60 invariants · V1.0 vs V1.5/V2.0 roadmap |
+| **Risk mitigation & disclaimer framework** | [`architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](./architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Fail-closed boundaries · **88% / 12% risk spectrum** · **80/20 Pareto** · force majeure · AI attack vectors · 60 invariants · V1.0 vs V1.5/V2.0 roadmap |
 | **Compliance Ingress Firewall (Pillar 2)** | [`audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Venue-agnostic unidirectional AML escort · Robinhood Chain as inaugural reference adapter · 5/5 tests |
 | **Edge Shield Wasm Core (Pillar 3)** | [`audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | `checkSoilResistance()` · p50 ~106µs · Tri-Sensor · R01–R20 defense matrix |
 | **Security audit snapshot** | [`audit/PRINCIPAL_AUDIT_REPORT.md`](./audit/PRINCIPAL_AUDIT_REPORT.md) | Principal review · Gate / survival matrix |

@@ -24,6 +24,7 @@
 | **Fuzzing Baseline** | **327,675 Property Fuzz Executions** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep` · 5×65,535) · standard `forge test` = **5,120** (5×1,024) | Forge property suite · Gate unit **60 Passed** |
 | **Decision latency** | p50 ~106 µs (`checkSoilResistance()` / Shield hot path) | Resilience / soil benchmark harness |
 | **Chaos matrix** | **255 / 255** toxic scenarios blocked · `failClosedRate: 100.00%` · `capitalLossUsd: 0` | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) |
+| **Risk spectrum (modeled)** | **88%** pre-broadcast interception mesh · **12%** insurmountable systemic residuals (`88% + 12% = 100%`) | [Risk Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) |
 
 **Single regression phrase (all audit prose):**
 `173 test files | 765 PASS Clean` · `3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)` · Wasm `<28kb` / `<60µs` (`<150µs` P99 tail).

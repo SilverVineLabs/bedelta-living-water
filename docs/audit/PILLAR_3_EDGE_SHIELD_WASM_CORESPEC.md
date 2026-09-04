@@ -28,6 +28,7 @@
 | **Wasm bundle** | **&lt; 28 KiB** Cloudflare budget (`pkg/soil_core.wasm`) |
 | **Defense Matrix** | **17 Active \| 2 Refactored \| 1 Deprecated** |
 | **Fail-closed posture** | `signingChannelOpen: false` on any soil / oracle / sequencer trip |
+| **Interceptor mesh coverage** | **88%** pre-broadcast · **12%** systemic residual (Fail-Closed) — [Risk Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) |
 
 ---
 

@@ -8,7 +8,7 @@
 | **Branch baseline** | `v1.0_push_BDLW` |
 | **Entity** | SilverVine Labs · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
 | **Baseline** | **Vitest SSOT:** **173 test files | 765 PASS Clean** · Wasm **91.2 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
-| **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
+| **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 · [Risk Spectrum §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) |
 
 > **Scope note:** This document compares **consumer-focused EIP-7702 AA implementations** with SliverVine Protocol's **institutional-grade pre-execution risk substrate**. It is an architectural diligence artifact — not legal or investment advice.
 

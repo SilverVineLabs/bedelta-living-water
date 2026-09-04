@@ -122,6 +122,8 @@ $$
 
 Derivations & R01–R20 bounds: [Technical Specification §3.1](./docs/architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats) · [Verification Matrix](./docs/VERIFICATION_MATRIX.md) · [`JUDGE_BRIEF.md`](./JUDGE_BRIEF.md).
 
+**Risk spectrum (88% / 12%):** Formal mathematical definition — [Risk Mitigation & Disclaimer Framework §0.1](./docs/architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) · **80/20 Pareto** (microstructure loss concentration) targets the acute 20% tail within Pillar 3.
+
 ## 🛣️ Post-Buildathon B2B Commercialization & PMF Roadmap (Post-9/14)
 
 SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction Hackathon Verification with Long-Term Commercial Sustainability:
@@ -289,7 +291,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 | Document | Purpose |
 |----------|---------|
 | [`docs/pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](./docs/pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | Grant pitch · 35s demo video storyboard |
-| [`docs/architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](./docs/architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Risk mitigation · fail-closed boundaries · disclaimer framework |
+| [`docs/architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](./docs/architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Risk mitigation · **88% / 12% spectrum** · fail-closed boundaries · disclaimer framework |
 | [`docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 reference adapter audit · 5/5 bridge tests |
 | [`docs/audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./docs/audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield core spec · R01–R20 · Tri-Sensor |
 | [`docs/grants/SUBMISSION.md`](./docs/grants/SUBMISSION.md) | Buildathon main submission pack |

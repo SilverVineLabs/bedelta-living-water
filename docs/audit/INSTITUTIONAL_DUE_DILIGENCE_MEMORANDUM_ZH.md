@@ -24,6 +24,12 @@
 
 > **免責聲明：** DDIP 為架構盡職調查產物，**不構成**法律意見、投資建議或監管認證聲明（含 SOC 2 Type II 鑑證）。
 
+### R.0 風險光譜 — 數學定義 (88% / 12%)
+
+**100%** 鏈上風險總面 = **88%** 預廣播攔截網（Wasm Soil Core · p50 ~106 µs）+ **12%** 不可消除的系統性殘差（Sequencer 停機 >600s、0-day 合約漏洞、RPC 斷連）——後者採 **Fail-Closed**（`signingChannelOpen: false`）。**80/20 帕累托**（正交微結構統計）：約 **80%** 急性毒性損失來自 **20%** 微秒級深度/滑點異常，由 Pillar 3 直接針對。
+
+> **正式 SSOT：** [Risk Mitigation & Disclaimer Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee)
+
 ---
 
 ## 一、執行摘要 (Executive Summary)

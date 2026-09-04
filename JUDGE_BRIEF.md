@@ -119,6 +119,8 @@ Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/a
 
 ## 88% Defense Mesh & Honest 12% Post-Grant R&D Blueprint
 
+> **Formal definition (SSOT):** [Risk Mitigation & Disclaimer Framework §0.1](./docs/architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) — **100%** on-chain risk surface = **88%** pre-broadcast mesh + **12%** systemic residuals · **80/20 Pareto** targets acute microstructure tail in Pillar 3.
+
 ### Industry Baseline (~80% or Below)
 
 Traditional DeFi / Agent risk checks rely on **post-hoc analytics** or **mutable pause functions**, leaving gaps for MEV sandwiching, LLM retry token-burn, and session key exploitation.

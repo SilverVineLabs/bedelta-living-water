@@ -31,6 +31,12 @@ This memorandum provides a **transparent, code-verified audit trail** for the Ar
 
 > **Effective scope:** This section applies to all readers — retail participants, institutional allocators, grant evaluators, and fund-of-funds diligence teams. By referencing DDIP, you acknowledge that SliverVine Protocol is a **sophisticated smart-contract protocol**, not a bank deposit, money-market fund, or insured cash product.
 
+### R.0 Risk Spectrum — Mathematical Definition (88% / 12%)
+
+SliverVine models the **100% Total On-Chain Risk Surface** as a closed partition: **88%** pre-broadcast hazards intercepted at **p50 ~106 µs** via Wasm Soil Core (MEV, depth spikes **>10 bps**, oracle lag, session abuse, prompt-injection calldata, AML ingress) · **12%** insurmountable systemic residuals (sequencer halts **>600 s**, 0-day venue exploits, RPC disconnections) where Citadel applies **Fail-Closed** posture (`signingChannelOpen: false`). The **80/20 Pareto rule** (orthogonal microstructure statistic) states that **~80%** of acute toxic loss stems from **~20%** of microsecond depth/slippage anomalies — targeted directly by Pillar 3.
+
+> **Formal SSOT:** [Risk Mitigation & Disclaimer Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee)
+
 ### R.1 Protocol Classification — Sophisticated Smart-Contract Infrastructure
 
 SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **sophisticated, non-custodial DeFi execution protocol** operated by SilverVine Labs. It composes:

@@ -807,7 +807,7 @@ The Web3 attack surface is shifting from human UI phishing to **autonomous agent
 | **Share of on-chain transactions** | **~19%** agent-attributed activity |
 | **Daily Active Wallets (DAW) touchpoints** | **~4.5M** wallets interacting with agent frameworks |
 
-**Implication:** Security must evolve from post-hoc dashboards and mutable pause functions to **microsecond Pre-Broadcast Intent Firewalls** — severing toxic calldata **before** Sequencer queues, Bundler ingress, or MEV mempools. Citadel Shield targets this gap at **p50 ~106µs** Edge Wasm evaluation ([§3.5 Wasm Soil Core](#35-wasm-soil-core-m4)).
+**Implication:** Security must evolve from post-hoc dashboards and mutable pause functions to **microsecond Pre-Broadcast Intent Firewalls** — severing toxic calldata **before** Sequencer queues, Bundler ingress, or MEV mempools. Citadel Shield targets this gap at **p50 ~106µs** Edge Wasm evaluation ([§3.5 Wasm Soil Core](#35-wasm-soil-core-m4)) — covering **88%** of the modeled on-chain risk surface per [Risk Framework §0.1](./RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee); the residual **12%** systemic tail is disclosed with Fail-Closed posture.
 
 ### Real-World Case Studies (Why Citadel Shield is Essential)
 
@@ -827,7 +827,7 @@ The Web3 attack surface is shifting from human UI phishing to **autonomous agent
 | **Session blast-radius** | ✅ $5k cap · scoped `ORDER_EXECUTE` | Varies | **Unbound drain risk** | Framework-dependent | ✅ ERC-4337 scopes |
 | **Prompt injection immunity** | ✅ Bytecode predicates | Partial | Partial | **Vulnerable** at hook | **Vulnerable** to injected UserOps |
 
-> See also [§0 Competitive Matrix — Pre-Execution vs. Post-Execution Risk](#️-competitive-matrix--pre-execution-vs-post-execution-risk) and [88% Defense Mesh](#88-defense-mesh--honest-12-post-grant-rd-blueprint) in [`SUBMISSION.md`](../grants/SUBMISSION.md).
+> See also [§0 Competitive Matrix — Pre-Execution vs. Post-Execution Risk](#️-competitive-matrix--pre-execution-vs-post-execution-risk) · [88% Defense Mesh](../grants/SUBMISSION.md#88-defense-mesh--honest-12-post-grant-rd-blueprint) in [`SUBMISSION.md`](../grants/SUBMISSION.md) · [Risk Spectrum §0.1](./RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) (formal **88% / 12%** + **80/20 Pareto** definition).
 
 ### Supplementary Industry References
 
