@@ -3,7 +3,7 @@
 **Document:** Documentation Index
 **Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 **Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
-**Entity:** SilverVine Labs · **Protocol:** SliverVine · **Branch:** `v1.0_push_BDLW`
+**Entity:** SilverVine Labs · **Protocol:** SliverVine · **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) · **Branch:** `main`
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · **Dune:** [silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · **Contact:** `grants@silvervinelabs.com`
 
 > **Vitest SSOT:** **180 test files | 803 PASS Clean** · `pnpm test` · `pnpm demo` (12 Tri-Pillar scenarios) · `pnpm demo:e2e` (5-step macro) · live proof `GET /api/grant-audit`.
