@@ -177,7 +177,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 | **M0: Operational Foundation** | ✅ Delivered | WSL / PNPM Monorepo, Cloudflare Edge Worker pipeline, and CI/CD strict typecheck. |
 | **M1: On-Chain Citadel Gate** | ✅ Delivered | `SliverVineGate.sol` core invariant locks · **327,675 deep fuzz** (`FOUNDRY_PROFILE=deep`) · 25k gas bounds. |
 | **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, **173 test files | 765 PASS Clean**, 91.2 KiB gzip bundle, sub-ms latency. |
-| **M3: Dual-Chain & ZeroDev AA** | ✅ Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7) | ZeroDev Kernel v3 AA Adapter · optional Robinhood Chain / Across (`46630`/`4663`) **Pillar 2 Reference Escort Adapters** into Arbitrum. |
+| **M3: Dual-Chain & ZeroDev AA** | ✅ Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7) | **Opt-In Pillar 1** ZeroDev Kernel v3 AA Adapter (`USE_ZERODEV_AA` default-off) · optional Robinhood Chain / Across (`46630`/`4663`) **Pillar 2 Reference Escort Adapters** into Arbitrum. Wasm Shield + Native Ingress unaffected. |
 | **M4: WASM Engine & IP Moat** | ✅ Delivered | Rust `#![no_std]` Wasm core (`pkg/soil_core.wasm`) — Cloudflare budget `<28kb`, hot-path exec `<60µs` — & `@slivervine/citadel-sdk` shipped. |
 | **M5: TCA Data & Hyperliquid** | ✅ Delivered (evolving) | TCA / grant-audit surfaces & HL Testnet 5-trade provenance — **Live TCA Analytics HUD actively evolving**. |
 | **M6: Institutional Grant Submission** | ✅ Mainnet Ignition Delivered · ⏳ Final Demo Video | Arbitrum One Gate `0xb174118b…` · [Ignition Tx `0x54c153…`](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · GMX / Arbitrum grant application package. |
@@ -229,9 +229,8 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
  │
  ▼
  ┌─────────────────────────────────────────────────────────┐
- │ Pillar 1: GATEHOUSE (Account Abstraction) │
- │ ZeroDev Kernel v3 · 30s TTL Heartbeat / Intent Window │
- │ Paymaster gas-free onboarding (conditional sponsorship) │
+ │ Pillar 1: GATEHOUSE (Opt-In AA Layer) │
+ │ ZeroDev Kernel v3 · 30s TTL · Paymaster (optional) │
  └──────────────────────┬──────────────────────────────────┘
  │
  ▼
@@ -252,7 +251,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 [ PRIMARY: Arbitrum One GMX v2 ETH/USDC GM + Hyperliquid 1× Short ]
 ```
 
-**[Pillar 1: Gatehouse — Account Abstraction]** ZeroDev Kernel v3 scoped session keys · **30s TTL Heartbeat / Intent Execution Window** (`WS_HEARTBEAT_INTERVAL_MS` · `DEFAULT_TTL_MS`) — distinct from underlying cryptographic session key lifetime (bounded up to **24h / 7d** per module scope) · **Paymaster gas-free onboarding** (daily sponsorship caps; fail-closed fallback when exhausted). *Evaluated in E2E Demo via secure dry-run session scopes (`sessionOk`, `allowedToSign`); full ZeroDev Kernel v3 test coverage is verified via `pnpm test:zerodev`.*
+**[Pillar 1: Gatehouse — Opt-In Account Abstraction Layer]** ZeroDev Kernel v3 **opt-in** scoped session keys (`USE_ZERODEV_AA` default-off) · **30s TTL Heartbeat / Intent Execution Window** (`WS_HEARTBEAT_INTERVAL_MS` · `DEFAULT_TTL_MS`) — distinct from underlying cryptographic session key lifetime (bounded up to **24h / 7d** per module scope) · **Paymaster gas sponsorship** ($0.50/op · $10/day cap; fail-closed fallback when exhausted). *Pillar 3 Wasm Shield (p50 ~106 µs) and Arbitrum Native Ingress operate independently of ZeroDev.* Evaluated via `pnpm test:zerodev` and E2E dry-run (`sessionOk`, `allowedToSign`).*
 
 **[Pillar 2: Compliance Ingress Firewall — Escort Accounting]** Venue-agnostic unidirectional AML firewall · honest **`IN_FLIGHT_BRIDGE_CAPITAL`** labels · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** — protocol never prematurely writes off in-flight bridge capital as loss during active execution · *(Robinhood Chain / Across are **Pillar 2 Reference Escort Adapters** — they serve as integration examples and are not the core product identity of SliverVine Protocol.)* **Audit:** [`docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
 
@@ -273,7 +272,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 | 1 | [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) | SSOT verification hub — Express → Three Pillars Inside → Outside |
 | 2 | [`docs/architecture/TECHNICAL_SPECIFICATION.md`](./docs/architecture/TECHNICAL_SPECIFICATION.md) | Yellow Paper · R01–R20 risk matrix |
 | 3 | [`docs/audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./docs/audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Institutional DDIP · Basel III alignment |
-| 4 | [`docs/audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./docs/audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | ZeroDev AA vs. pre-execution Wasm substrate |
+| 4 | [`docs/audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./docs/audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Opt-In Pillar 1 ZeroDev AA vs. independent Wasm Shield substrate |
 | 5 | [`docs/sdk/CITADEL_SDK_BLUEPRINT.md`](./docs/sdk/CITADEL_SDK_BLUEPRINT.md) | B2B CaaS integration blueprint · 10 bps builder + referral rebate model |
 
 ### Supporting

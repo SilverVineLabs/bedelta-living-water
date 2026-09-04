@@ -45,14 +45,15 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **sophisticated, non
 |-------|----------|------|
 | **Pillar 3 — Pre-Execution Shield** | **Fail-Closed** Citadel gate **before** broadcast | `checkSoilResistance()` · `pkg/soil_core.wasm` |
 | **Wasm Soil Engine** | **p50 ~106 µs** hot-path fuse on Edge | R01–R20 matrix · Vitest regression |
-| **Pillar 1 — Gatehouse** | Scoped Session Keys · EIP-712 · ZeroDev Kernel v3 AA | `session-key-gates.ts` |
+| **Pillar 1 — Gatehouse** | Scoped Session Keys · EIP-712 · **Opt-In** ZeroDev Kernel v3 AA | `session-key-gates.ts` · independent of Pillar 3 Wasm |
 | **Pillar 2 — Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort & Pending-Capital Recognition Invariant (`IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0`); inbound AML blocked. **Robinhood Chain / Across are Pillar 2 Reference Escort Adapters** — not the product identity | `src/adapters/across-ingress-bridge.ts` · `IngressSafetySwitch.sol` |
 | **Venue legs** | GMX v2 GM pools (Arbitrum One) + Hyperliquid 1× short hedge | Tech Spec §2 |
 
 **Fail-Closed posture:** When soil, oracle, sequencer, bridge, or session sensors trip, SliverVine Protocol **prefers no action over wrong action** — `signingChannelOpen: false`, UserOp rejected pre-bundler, bridge state `BRIDGE_TIMEOUT_FAIL_CLOSED`. This is a **pre-execution safety layer**, not a guarantee of profit, principal protection, or elimination of market risk.
 
 ```text
-User intent → 106µs Wasm Soil Engine (Fail-Closed) → Gate attestation → Venue broadcast
+User intent → 106µs Wasm Soil Engine (Fail-Closed · `pkg/soil_core.wasm`) → Gate attestation → Venue broadcast
+  (ZeroDev AA = optional Pillar 1 delivery path only)
  │
  └── trip → severance (no broadcast) — NOT "zero financial risk"
 ```
@@ -61,7 +62,7 @@ User intent → 106µs Wasm Soil Engine (Fail-Closed) → Gate attestation → V
 
 SliverVine Protocol operates on a **non-custodial execution substrate**:
 
-- User principal resides in **ZeroDev Kernel Smart Accounts** controlled by the user — not in a protocol treasury, omnibus wallet, or discretionary custodian account.
+- User principal resides in **ZeroDev Kernel Smart Accounts** (when AA is opted in) or institutional EOA/multisig (baseline native ingress) — not in a protocol treasury, omnibus wallet, or discretionary custodian account.
 - SilverVine Labs does **not** take discretionary possession of user funds, does **not** rehypothecate labeled in-flight bridge capital, and does **not** represent itself as a licensed custodian, broker-dealer, or payment institution.
 - Protocol yield accrual via GMX **`uiFeeReceiver` (+10 bps)** and **up to 25% GMX Referral Rebate** is **protocol revenue**, explicitly separated from user principal in accounting semantics (§6.3). The 10 bps builder fee is a native GMX v2 ExchangeRouter parameter — zero additional overhead on v1.0 execution safety.
 
@@ -132,7 +133,7 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **pre-execution Cita
 |--------|---------|------------------|
 | **Pillar 3 — SliverVine Citadel Shield** | Fail-closed before broadcast | `checkSoilResistance()` · `pkg/soil_core.wasm` · R01–R20 matrix · [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
 | **Capital accounting** | `lostUsd ≡ 0` on pending bridge liquidity | `src/adapters/across-ingress-bridge.ts` · 5/5 Vitest |
-| **Pillar 1 — Gatehouse** | Scoped keys · notional cap · gas ledger | ZeroDev AA gate · `session-key-gates.ts` · [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
+| **Pillar 1 — Gatehouse** | **Opt-In** scoped keys · notional cap · gas ledger | ZeroDev AA gate (`USE_ZERODEV_AA` default-off) · `session-key-gates.ts` · [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
 | **Stress & simulation** | 30D Survival Benchmark + **173 test files \| 765 PASS Clean** regression | `generate-survival-report.ts` · `pnpm test -- --run` |
 | **Pillar 2 — Compliance Ingress Firewall** | Outbound-only escort · AML inbound block · Robinhood Chain as inaugural reference adapter | `IngressSafetySwitch.sol` · [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
 
@@ -193,7 +194,7 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **pre-execution Cita
 
 ### 2.3 Three Pillars Architecture (Evaluator Mental Model)
 
-**Pillar 1 — Gatehouse (Auth):** ZeroDev Kernel v3 session keys · EIP-712 scopes · notional cap · AA dry-run harness. **Spec:** [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md).
+**Pillar 1 — Gatehouse (Auth):** **Opt-In Pillar 1 Account Abstraction Layer** — ZeroDev Kernel v3 session keys · EIP-712 scopes · notional cap · AA dry-run harness (`USE_ZERODEV_AA` default-off). v1.0 active scope: Stage ① Sign-in · ③ Gas · ④ Authorize · ⑤ Execute. Stage ② Smart Routing = Reference Harness. Stages ⑥⑦ = Post-Grant. **Spec:** [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md).
 
 **Pillar 2 — Compliance Ingress Firewall (Reference Escort Adapters):** A **venue-agnostic**, unidirectional AML firewall and escort accounting layer. Capital from permissioned ingress sources is escorted outbound-only into Arbitrum; inbound AML paths are fail-closed at the **Edge ingress adapter** (`src/adapters/across-ingress-bridge.ts`); in-flight bridge capital is honestly labeled via the **Pending-Capital Recognition Invariant** (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`) until settled. **Robinhood Chain / Across (`46630`/`4663`) are Pillar 2 Reference Escort Adapters** — not the product identity. **Spec:** [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
 
@@ -204,7 +205,7 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **pre-execution Cita
  │
  ▼
 ┌─────────────────────────────────────┐
-│ Pillar 1: GATEHOUSE (Auth) │ ZeroDev Kernel v3 · EIP-712 · Session Keys
+│ Pillar 1: GATEHOUSE (Opt-In AA) │ ZeroDev Kernel v3 · EIP-712 · Session Keys
 └──────────────────┬──────────────────┘
  ▼
 ┌─────────────────────────────────────┐
@@ -544,7 +545,7 @@ Portfolio tail ≤ $100k Alpha Cap + stress replay ← §4 + Survival Benchmark
 
 ### 5.3 0-Proxy Immutable Infrastructure (SOC 2–Aligned)
 
-**0-Proxy** denotes SliverVine Protocol's **non-custodial, non-rehypothecation architecture**: user principal resides in ZeroDev Kernel Smart Accounts; the protocol never acts as a balance-sheet proxy, omnibus wallet, or discretionary signer. Immutable artifacts prevent post-deployment tampering of the pre-execution gate.
+**0-Proxy** denotes SliverVine Protocol's **non-custodial, non-rehypothecation architecture**: user principal resides in ZeroDev Kernel Smart Accounts (when AA opted in) or institutional EOA — the protocol never acts as a balance-sheet proxy, omnibus wallet, or discretionary signer. Immutable artifacts prevent post-deployment tampering of the pre-execution gate. **Wasm Shield operates independently of AA.**
 
 | SOC 2 TSC domain | 0-Proxy / Immutable control | Verification |
 |------------------|----------------------------|--------------|
@@ -571,7 +572,7 @@ MiCA (Markets in Crypto-Assets Regulation) emphasizes **operational resilience, 
 
 | MiCA-aligned principle | SliverVine Protocol implementation | SSOT |
 |------------------------|---------------------|------|
-| **Asset segregation** | User funds in Kernel Smart Accounts — not protocol treasury | ZeroDev Kernel v3 · non-custodial SSOT |
+| **Asset segregation** | User funds in Kernel Smart Accounts (AA opt-in) or EOA — not protocol treasury | ZeroDev Kernel v3 · non-custodial SSOT · Native Ingress fallback |
 | **Operational resilience** | Fail-closed on bridge timeout · sequencer grace · soil trip | R01–R20 matrix |
 | **Conflicts / contamination prevention** | **Outbound-only** escort · inbound reverse path blocked | `validateAcrossBridgeDirection()` |
 | **AML inbound isolation** | `42161 → 46630/4663` → `AML_INBOUND_TO_ROBINHOOD_BLOCKED` | `src/adapters/across-ingress-bridge.ts` |
@@ -675,7 +676,7 @@ Deprecated fixed **$50 SL** is **forbidden** by workspace protocol rules and enf
 
 ### 6.3 Non-Custodial Semantics
 
-- User principal is held in **ZeroDev Kernel Smart Accounts** — not protocol treasury.
+- User principal is held in **ZeroDev Kernel Smart Accounts** (when AA opted in) or institutional EOA — not protocol treasury. Pillar 3 Wasm Shield operates independently of AA availability.
 - GMX `uiFeeReceiver` (+10 bps native builder fee) and GMX referral rebate (up to **25%** of trading fees) accrue protocol yield — never conflated with user principal. Builder fee injection uses GMX v2 ExchangeRouter parameters only; no change to v1.0 pre-execution safety path.
 - In-flight bridge capital is **labeled, not lent** — no rehypothecation claim in code paths.
 

@@ -6,7 +6,7 @@
 **Live:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit`
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
 
-> **Vitest SSOT:** **173 test files | 765 PASS Clean** on `pnpm test -- --run`. Forge **60/60** · Cargo Stylus **5/5** · Property Fuzz **327,675** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = **5,120** = 5×1,024) · ZeroDev AA **Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7)**.
+> **Vitest SSOT:** **173 test files | 765 PASS Clean** on `pnpm test -- --run`. Forge **60/60** · Cargo Stylus **5/5** · Property Fuzz **327,675** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = **5,120** = 5×1,024) · ZeroDev AA **Opt-In Pillar 1 · Dry-Run Harness Verified** (Kernel v3 / EntryPoint v0.7 · `USE_ZERODEV_AA` default-off).
 
 **Layout:** **Express Entry → Three Pillars Inside (Core) → Three Pillars Outside (Extended)**. Open this document first — each zone is CLI-reproducible with **zero mainnet signing dependency** unless explicitly noted.
 
@@ -79,7 +79,7 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 
 ## Zone B — Inside Three Pillars (Core Protocol Invariants)
 
-### Pillar 1 — Gatehouse (Account Abstraction & Scoped Auth)
+### Pillar 1 — Gatehouse (Opt-In Account Abstraction & Scoped Auth)
 
 **Command:** `pnpm test:zerodev`
 
@@ -91,7 +91,9 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 | Session scope + Risk Oracle Gate fail-closed | ✅ Offline / mock bundler |
 | Mainnet UserOp broadcast | ⚠️ **Not claimed** (`USE_ZERODEV_AA` default-off) |
 
-**Narrative:** ZeroDev Kernel v3 handles Account Abstraction, 30s session scopes, and Paymaster gas sponsorship. Wasm Soil Core handles sub-ms risk interception. `zerodev-aa-gate.ts` provides pre-bundler UserOp validation.
+**Narrative:** ZeroDev Kernel v3 is an **Opt-In Pillar 1 Account Abstraction Layer** — scoped 30s session keys and Paymaster gas sponsorship ($0.50/op · $10/day). **Pillar 3 Wasm Soil Core** (`pkg/soil_core.wasm` · p50 ~106 µs) and **Pillar 2 Arbitrum Native Ingress** operate **100% independently** of ZeroDev. `zerodev-aa-gate.ts` provides pre-bundler UserOp validation when AA is enabled.
+
+**v1.0 AA scope:** Stage ① Sign-in · ③ Gas · ④ Authorize · ⑤ Execute (Sepolia verified). Stage ② Smart Routing = Reference Harness. Stages ⑥⑦ = Post-Grant Roadmap.
 
 **Read order:**
 

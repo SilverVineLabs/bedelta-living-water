@@ -1,4 +1,4 @@
-# Pillar 1: The Gatehouse — ZeroDev Kernel v3 AA Analysis (EIP-7702 Comparative)
+# Pillar 1: The Gatehouse — Opt-In ZeroDev Kernel v3 AA Analysis (EIP-7702 Comparative)
 
 | Field | Value |
 |-------|-------|
@@ -10,6 +10,8 @@
 | **Baseline** | **Vitest SSOT:** **173 test files | 765 PASS Clean** · Wasm **91.2 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
 | **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 · [Risk Spectrum §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) |
 
+> **Boundary:** ZeroDev Kernel v3 is an **Opt-In Pillar 1 Account Abstraction Layer** (`USE_ZERODEV_AA` default-off). **Pillar 3 Edge Wasm Shield** (`checkSoilResistance()` · p50 ~106 µs · `pkg/soil_core.wasm`) and **Pillar 2 Arbitrum Native Ingress** function **100% independently** — ZeroDev failure never impairs sub-ms pre-broadcast protection or bridge `lostUsd ≡ 0` accounting.
+
 > **Scope note:** This document compares **consumer-focused EIP-7702 AA implementations** with SliverVine Protocol's **institutional-grade pre-execution risk substrate**. It is an architectural diligence artifact — not legal or investment advice.
 
 ---
@@ -18,18 +20,18 @@
 
 EIP-7702 and ERC-7579 enable EOAs to delegate execution to smart-account logic — unlocking **1-click intent composition**, **gas sponsorship**, and **session-scoped permissions**. Consumer AA stacks optimize for **conversion and retention**: long-lived session keys, broad contract scopes, and post-hoc policy checks.
 
-SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) adopts ZeroDev Kernel v3 as **Code-Verified / Dry-Run Verified** (Kernel v4 + EIP-7702 intent composer on the **⏳ V1.5 roadmap**) but **never substitutes UX for risk governance**. Frictionless onboarding rides on the same **Three Pillars** stack:
+SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) offers ZeroDev Kernel v3 as an **opt-in Pillar 1 Account Abstraction Layer** — **Code-Verified / Dry-Run Verified** (`pnpm test:zerodev`). Kernel v4 + EIP-7702 intent composer is **⏳ Post-Grant Roadmap (V1.5)**. ZeroDev **never substitutes** risk governance and **does not power** sub-ms latency (that is 100% `pkg/soil_core.wasm`). Frictionless onboarding rides on the same **Three Pillars** stack:
 
 ```text
-[Pillar 1: The Gatehouse (Auth)] ZeroDev Kernel v3 Session Keys & EIP-712 Scopes
-[Pillar 2: Compliance Ingress Firewall] optional reference adapters (Robinhood / Across)
+[Pillar 1: Opt-In Gatehouse (AA)] ZeroDev Kernel v3 Session Keys & EIP-712 Scopes (optional)
+[Pillar 2: Compliance Ingress Firewall] Arbitrum Native Ingress + optional reference adapters (Robinhood / Across)
  → outbound escort · AML inbound block · payloadHash binding · lostUsd ≡ 0
-[Pillar 3: Shield] checkSoilResistance() · pkg/soil_core.wasm · Fail-Closed pre-broadcast
+[Pillar 3: Shield] checkSoilResistance() · pkg/soil_core.wasm · Fail-Closed pre-broadcast (independent of AA)
 ```
 
 > **Pillar 1 verification scope:** **[Pillar 1: The Gatehouse (Auth)]** authorization mechanics (`sessionOk`, `allowedToSign`) are evaluated via secure dry-run adapters in the E2E demo (`pnpm run demo:e2e`); comprehensive ZeroDev Kernel v3 integration coverage is verified under `pnpm test:zerodev`.
 
-**Institutional differentiation:** SliverVine Protocol binds every UserOp to a **p50 ~106 µs Wasm soil gate** (Shield/TS Gateway path), **30s TTL Heartbeat / Intent Execution Window** (distinct from underlying session key lifetime bounded up to **24h / 7d**), and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** — before any GMX or Hyperliquid broadcast.
+**Institutional differentiation:** Sub-ms pre-broadcast protection is **100% Wasm-powered** (`checkSoilResistance()` · p50 ~106 µs · `pkg/soil_core.wasm`) — **independent of ZeroDev**. When AA is opted in, every UserOp is additionally bound to **30s TTL Heartbeat / Intent Execution Window** and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** before any GMX or Hyperliquid broadcast.
 
 ---
 
@@ -126,7 +128,7 @@ Consumer bridge UX often treats in-flight tokens as deployable balance. SliverVi
 | `BRIDGE_TIMEOUT_FAIL_CLOSED` | **No** — fail-closed severance | **0** |
 | `SETTLED` / Arbitrum-native | Yes — full soil envelope | **0** |
 
-**Invariant:** Pending bridge liquidity is **never mis-booked as principal loss** — eliminating phantom NAV inflation during Robinhood escort. ZeroDev orchestrates the UserOp; SliverVine Protocol's **`evaluateAcrossBridgeTransfer()`** state machine governs deployability.
+**Invariant:** Pending bridge liquidity is **never mis-booked as principal loss** — eliminating phantom NAV inflation during Robinhood escort. When AA is opted in, ZeroDev orchestrates the UserOp; SliverVine Protocol's **`evaluateAcrossBridgeTransfer()`** state machine governs deployability regardless of AA path.
 
 **Test anchor:** `tests/adapters/across-ingress-bridge.test.ts` · **5/5 PASS**
 
@@ -166,11 +168,23 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 ## 6. How SliverVine Protocol Adopts ZeroDev EIP-7702 Without Architectural Overhaul
 
+**v1.0 ZeroDev AA active scope:**
+
+| Stage | Status | Notes |
+|-------|--------|-------|
+| **① Sign-in** | ✅ v1.0 Delivered (Sepolia verified) | Kernel account resolution |
+| **② Fund (Smart Routing)** | 📋 Reference Harness & Spec (Vitest dry-run verified) | Not production ingress baseline |
+| **③ Gas** | ✅ v1.0 Delivered (Sepolia verified) | $0.50/op · $10/day cap |
+| **④ Authorize** | ✅ v1.0 Delivered (Sepolia verified) | ERC-7579 scoped session keys |
+| **⑤ Execute** | ✅ v1.0 Delivered (Sepolia verified) | UserOp after Shield PASS |
+| **⑥ Recover** | ⏳ Post-Grant Roadmap (V1.5 Spec) | Out of scope for v1.0 (upstream Kernel/EOA owner) |
+| **⑦ Compose** | ⏳ Post-Grant Roadmap (V2.0 CaaS) | Off-chain 2PC intent ledger (partial internal coverage) |
+
 | ZeroDev capability | SliverVine Citadel Shield usage | Risk control preserved |
 |--------------------|-----------|------------------------|
-| **Paymaster sponsorship** | Onboarding + agent gas | Daily cap **`DAILY_SPONSORSHIP_LIMIT_USD`** · exhaustion → fail-closed |
-| **Smart Routing deposit** | Robinhood → Arbitrum GM route | `IN_FLIGHT_BRIDGE_CAPITAL` until settled |
-| **Kernel v4 / EIP-7702 composer** | ⏳ V1.5 EOA → Agent Smart Account (no token migration) | Same Wasm Shield · same 30s TTL · same `payloadHash()` |
+| **Paymaster sponsorship** | Opt-in onboarding + agent gas | Daily cap **`DAILY_SPONSORSHIP_LIMIT_USD`** · exhaustion → self-pay fallback **after** soil gate |
+| **Smart Routing deposit** | 📋 Reference Harness — Robinhood → Arbitrum GM calldata spec | `IN_FLIGHT_BRIDGE_CAPITAL` until settled · production baseline = Arbitrum Native Ingress |
+| **Kernel v4 / EIP-7702 composer** | ⏳ Post-Grant Roadmap (V1.5) — EOA → Agent Smart Account | Same Wasm Shield · same 30s TTL · same `payloadHash()` |
 | **Session modules (ERC-7579)** | `ORDER_EXECUTE` scoped keys | R06 · R07 · heartbeat auto-healing |
 
 **Design rule (Tech Spec §2.4):** Adapter swap (v3 → v4) must **not** rewrite Shield or Wasm semantics. EIP-7702 is an **execution-plane upgrade**, not a relaxation of Fail-Closed gates.
@@ -196,7 +210,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 > Consumer AA protocols optimize for **making DeFi easy to click**. SliverVine Protocol optimizes for **making 1-click execution mathematically safe before broadcast**.
 >
-> We adopt ZeroDev's Kernel and EIP-7702 intent composer for frictionless, non-custodial onboarding — but every UserOp passes a **106 µs Wasm circuit breaker** (`soil_core.wasm`, Shield/TS Gateway path), **30s TTL Heartbeat / Intent Execution Window** (crypto session keys bounded up to 24h/7d), and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)**. Under a 3σ market shock, the AA pipeline **fails closed** — `signingChannelOpen: false` — rather than opening naked delta or mis-booking in-flight capital as deployable NAV.
+> Sub-ms protection is **100% Wasm-powered** (`soil_core.wasm` · p50 ~106 µs) — **not** provided by ZeroDev. When institutions **opt in** to ZeroDev Kernel v3, every UserOp additionally passes **30s TTL Heartbeat / Intent Execution Window** (crypto session keys bounded up to 24h/7d) and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)**. Under a 3σ market shock, the AA pipeline **fails closed** — `signingChannelOpen: false` — rather than opening naked delta or mis-booking in-flight capital as deployable NAV. Institutions may bypass AA entirely via **Arbitrum Native Ingress** without losing Shield protection.
 
 ---
 
@@ -205,7 +219,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 | Document | Purpose |
 |----------|---------|
 | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Full DDIP · Risk & Disclaimer · Basel mapping |
-| [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 | ZeroDev Kernel v3/v4 · 106 µs coupling |
+| [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 | Opt-In ZeroDev Kernel v3/v4 · Wasm Shield decoupled (§2.4.1) |
 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Three Pillars · AML firewall |
 | [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield · R01–R20 |
 | [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Risk mitigation · fail-closed boundaries · 60 invariants · real yield vs. toxic inflation |
