@@ -281,7 +281,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 | 1 | [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) | CLI Tier 0–5 verification entry |
 | 2 | [`docs/architecture/TECHNICAL_SPECIFICATION.md`](./docs/architecture/TECHNICAL_SPECIFICATION.md) | Yellow Paper · R01–R20 risk matrix |
 | 3 | [`docs/audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./docs/audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Institutional DDIP · Basel III alignment |
-| 4 | [`docs/audit/ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md`](./docs/audit/ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md) | ZeroDev AA vs. pre-execution Wasm substrate |
+| 4 | [`docs/audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./docs/audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | ZeroDev AA vs. pre-execution Wasm substrate |
 | 5 | [`docs/sdk/CITADEL_SDK_BLUEPRINT.md`](./docs/sdk/CITADEL_SDK_BLUEPRINT.md) | B2B CaaS integration blueprint · 10 bps builder + referral rebate model |
 
 ### Supporting

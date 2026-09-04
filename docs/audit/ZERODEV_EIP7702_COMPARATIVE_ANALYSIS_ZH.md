@@ -8,7 +8,7 @@
 | **分支基線** | `v1.0_push_BDLW` |
 | **實體** | SilverVine Labs · BeΔ Living Water (BDLW) |
 | **基線** | Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** |
-| **英文 SSOT** | [`ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md`](./ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md) |
+| **英文 SSOT** | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
 | **關聯 SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
 > **範圍說明：** 本文對照 **面向消費者的 EIP-7702 AA 實作** 與 BDLW **機構級預執行風控底層**。屬架構盡職 artifact — 非法律或投資建議。

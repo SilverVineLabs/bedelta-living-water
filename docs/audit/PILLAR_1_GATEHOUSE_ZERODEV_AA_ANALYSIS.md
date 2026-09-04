@@ -1,8 +1,8 @@
-# ZeroDev EIP-7702 vs. SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) Institutional Pre-Execution Risk Substrate
+# Pillar 1: The Gatehouse — ZeroDev Kernel v3 AA Analysis (EIP-7702 Comparative)
 
 | Field | Value |
 |-------|-------|
-| **Document** | ZeroDev EIP-7702 Comparative Analysis |
+| **Document** | Pillar 1: Gatehouse — ZeroDev Kernel v3 AA Analysis |
 | **Version** | **v1.0.0** |
 | **Classification** | Grant / Institutional Allocator · AA Architecture Benchmark |
 | **Branch baseline** | `v1.0_push_BDLW` |

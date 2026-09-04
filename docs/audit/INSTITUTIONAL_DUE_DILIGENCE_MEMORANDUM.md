@@ -151,7 +151,7 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 | 60 architectural invariants | §5.1–§5.2 | [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) §3 |
 | Robinhood reference adapter audit | §2.3 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
 | Principal security interrogations | §2 | [`PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) |
-| ZeroDev EIP-7702 vs. institutional substrate | — | [`ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md`](./ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md) |
+| ZeroDev EIP-7702 vs. institutional substrate | — | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
 | Yellow Paper / R01–R20 | §2.2 | [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 
 ---

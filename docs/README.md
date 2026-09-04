@@ -27,7 +27,7 @@
 | 1 | [`VERIFICATION_MATRIX.md`](./VERIFICATION_MATRIX.md) | **CLI Tier 0–5 Verification Entry** — reproducible PASS bars for evaluators |
 | 2 | [`architecture/TECHNICAL_SPECIFICATION.md`](./architecture/TECHNICAL_SPECIFICATION.md) | **Yellow Paper** — R01–R20 Risk Matrix · Three Pillars · Arbitrum-centric topology |
 | 3 | [`audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | **Institutional DDIP** — allocator diligence · Basel III alignment · chaos 255/255 |
-| 4 | [`audit/ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md`](./audit/ZERODEV_EIP7702_COMPARATIVE_ANALYSIS.md) | **ZeroDev AA vs. Pre-execution Wasm Risk Substrate** — Kernel v3 institutional differentiation |
+| 4 | [`audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | **ZeroDev AA vs. Pre-execution Wasm Risk Substrate** — Kernel v3 institutional differentiation |
 | 5 | [`sdk/CITADEL_SDK_BLUEPRINT.md`](./sdk/CITADEL_SDK_BLUEPRINT.md) | **B2B CaaS Integration Blueprint** — `@slivervine/citadel-sdk` · 10 bps builder + referral rebate model |
 
 ---
