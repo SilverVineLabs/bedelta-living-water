@@ -21,11 +21,13 @@ EIP-7702 and ERC-7579 enable EOAs to delegate execution to smart-account logic �
 BeDelta Living Water (BDLW) adopts ZeroDev Kernel v3 as **Code-Verified / Dry-Run Verified** (Kernel v4 + EIP-7702 intent composer on the **⏳ V1.5 roadmap**) but **never substitutes UX for risk governance**. Frictionless onboarding rides on the same **Three Pillars** stack:
 
 ```text
-Pillar 1 GATEHOUSE → ZeroDev Kernel · scoped Session Keys · Paymaster caps
-Pillar 2 COMPLIANCE INGRESS FIREWALL (Robinhood = inaugural ref adapter)
- → outbound escort · AML inbound block · payloadHash binding
-Pillar 3 SHIELD → checkSoilResistance() · pkg/soil_core.wasm · Fail-Closed pre-broadcast
+[Pillar 1: The Gatehouse (Auth)] ZeroDev Kernel v3 Session Keys & EIP-712 Scopes
+[Pillar 2: Compliance Ingress Firewall] optional reference adapters (Robinhood / Across)
+ → outbound escort · AML inbound block · payloadHash binding · lostUsd ≡ 0
+[Pillar 3: Shield] checkSoilResistance() · pkg/soil_core.wasm · Fail-Closed pre-broadcast
 ```
+
+> **Pillar 1 verification scope:** **[Pillar 1: The Gatehouse (Auth)]** authorization mechanics (`sessionOk`, `allowedToSign`) are evaluated via secure dry-run adapters in the E2E demo (`pnpm run demo:e2e`); comprehensive ZeroDev Kernel v3 integration coverage is verified under `pnpm test:zerodev`.
 
 **Institutional differentiation:** BDLW binds every UserOp to a **p50 ~106 µs Wasm soil gate** (Shield/TS Gateway path), **30s TTL Heartbeat / Intent Execution Window** (distinct from underlying session key lifetime bounded up to **24h / 7d**), and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** — before any GMX or Hyperliquid broadcast.
 
@@ -62,11 +64,13 @@ These patterns are appropriate for **retail conversion funnels**. They are **ins
 | **Emergency response** | Admin pause · multisig | **Automated** R17 daily severance · R20 physical deadlock · `rootProtection()` |
 | **Regression proof** | Vendor QA / audit snapshots | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · `zerodev-aa-gate.test.ts` **4/4** · chaos matrix **255/255** |
 
+> **Pillar 1 alignment note:** **[Pillar 1: The Gatehouse (Auth)] ZeroDev Kernel v3 Session Keys & EIP-712 Scopes** — `sessionOk` / `allowedToSign` gates are demonstrated in `pnpm run demo:e2e` (secure dry-run); full Kernel v3 harness regression is under `pnpm test:zerodev` (`tests/adapters/zerodev-aa-dryrun-harness.test.ts`).
+
 ---
 
 ## 4. Deep Dive — Three Institutional Anchors
 
-### 4.1 30s TTL Heartbeat / Intent Execution Window (Gatehouse)
+### 4.1 [Pillar 1: The Gatehouse (Auth)] — 30s TTL Heartbeat / Intent Execution Window
 
 Consumer AA extends session duration to reduce wallet prompts. BDLW **minimizes signing-channel exposure** via a **30s TTL Heartbeat / Intent Execution Window** — distinct from the underlying cryptographic session key lifetime (bounded up to **24h / 7d** per module scope):
 
@@ -144,6 +148,10 @@ EOA → EIP-7702 delegate → UserOp → bundler → venue
 Kernel Smart Account (ZeroDev v3)
  │
  ▼
+[Pillar 1: The Gatehouse (Auth)] ZeroDev Kernel v3 Session Keys & EIP-712 Scopes
+ │ sessionOk · allowedToSign · Paymaster caps
+ │
+ ▼
 Pillar 2 Compliance Ingress Firewall — payloadHash() bind · bridge direction validate
  │
  ▼
@@ -175,6 +183,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 |---|-------|-------------------|----------|
 | 1 | Full regression | `pnpm test -- --run` | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
 | 2 | ZeroDev AA gate fail-closed | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` | **4/4 PASS** |
+| 2b | Pillar 1 Gatehouse dry-run harness | `pnpm test:zerodev` | Kernel v3 session scopes · EIP-712 dry-run PASS |
 | 3 | Session R07 $5k cap | `pnpm exec vitest run tests/services/session-key-gates.test.ts` | Severance on breach |
 | 4 | 30s heartbeat expiry | `pnpm exec vitest run tests/services/nonce-auto-healing.test.ts` | Lock on expiry |
 | 5 | Bridge honest accounting | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` | **5/5 · lostUsd ≡ 0** |
