@@ -235,27 +235,39 @@ Anchors: [`gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-
 
 > **Status:** v1.0 production SSOT = **Kernel v3** (`ZERODEV_KERNEL_VERSION` v0.3.1 · EntryPoint v0.7); **Kernel v4** = V1.5 alignment path (Gatehouse adapter upgrade only — **no rewrite** of Shield / Wasm / EIP-712 Gate).
 
-#### 2.4.1 Why ZeroDev Is the Foundation of SliverVine Protocol's Non-Custodial 106 µs Execution Pipeline
+#### 2.4.1 Role of ZeroDev: Scoped Session Keys & Gas Sponsorship (Pillar 1 Opt-In AA Layer)
 
-BeDelta Living Water's product promise is **institutional pre-execution gate (p50 ~106 µs) + non-custodial capital flow**. Without a unified **smart-account execution plane**, the system would fall back to EOA multisig or hot-wallet custody — breaking `lostUsd ≡ 0` and compliance narrative.
+SliverVine Protocol separates **pre-broadcast risk enforcement** from **account delivery**. ZeroDev Kernel v3 is an **opt-in Pillar 1 layer** — institutions may enable scoped session keys and Paymaster gas sponsorship; the protocol does **not** require ZeroDev for core Citadel protection or bridge accounting.
 
-ZeroDev provides three capabilities SliverVine Protocol **cannot replicate in-house**:
+| Layer | Role | SSOT | Dependency on ZeroDev |
+|-------|------|------|------------------------|
+| **Pre-Broadcast Risk Core (p50 ~106 µs)** | Sub-ms soil fuse · R01–R20 · fail-closed severance | `pkg/soil_core.wasm` · `checkSoilResistance()` on Cloudflare Edge | **None** — runs 100% independently of AA |
+| **ZeroDev Kernel v3 (Pillar 1)** | Opt-in smart-account delivery plane · scoped **30s** session keys · Paymaster sponsorship | `src/adapters/arbitrum/zerodev-aa/` · `pnpm test:zerodev` | **Opt-in** — `USE_ZERODEV_AA` default-off |
+| **Baseline ingress (no AA)** | Direct Arbitrum Native Ingress · Across bridge escort | `across-ingress-bridge.ts` · native GMX/HL adapters | **Independent** — `lostUsd ≡ 0` guaranteed by bridge state machine, not AA |
 
-| Capability | Without ZeroDev | With SliverVine Protocol + ZeroDev integration |
-|------------|-----------------|-------------------------------|
-| **Scoped Session Keys** | Full private keys or manual multisig | Kernel modular `ORDER_EXECUTE` · R06/R07 notional cap · TTL auto-expiry |
-| **Paymaster sponsorship** | Institutions must prefund multi-chain gas | `zerodev.sponsorUserOperation` · per-op ≤ $0.50 · daily $10 circuit breaker |
-| **Bundler standard path** | Self-hosted relayer expands trust surface | EntryPoint v0.7 + **EIP-7562** compliant UserOp · fail-closed · no blind retry |
+**Separation of powers:**
 
-**Execution pipeline coupling (106 µs semantics):**
+- **Pre-Broadcast Risk Core (p50 ~106 µs):** Powered 100% independently by SliverVine Edge Wasm (`pkg/soil_core.wasm`). Every intent — EOA, Kernel UserOp, or bridge escort — is evaluated by `checkSoilResistance()` **before** any broadcast path.
+- **ZeroDev Kernel v3 (Pillar 1):** Serves as an **Opt-In Smart Account Delivery Plane** for scoped 30s session keys and Paymaster gas sponsorship. Citadel never holds user keys or principal — capital remains in the Kernel `sender` smart account when AA is enabled (R06–R07 · ERC-7579).
+- **Baseline Fallback:** Direct **Arbitrum One Native Ingress** and **Across Bridge** adapters operate smoothly with or without ZeroDev enabled. The `lostUsd ≡ 0` invariant is guaranteed by the bridge state machine and escort accounting — **not** by Account Abstraction.
+
+When ZeroDev **is** enabled, it provides three delivery-plane capabilities SliverVine does not replicate in-house:
+
+| Capability | Without ZeroDev (baseline) | With Opt-In ZeroDev integration |
+|------------|--------------------------|-----------------------------------|
+| **Scoped Session Keys** | EOA or institutional multisig signing | Kernel modular `ORDER_EXECUTE` · R06/R07 notional cap · 30s TTL auto-expiry |
+| **Paymaster sponsorship** | Institutions prefund Arbitrum gas | `zerodev.sponsorUserOperation` · per-op ≤ $0.50 · daily $10 circuit breaker |
+| **Bundler standard path** | Direct `eth_sendRawTransaction` or venue-native signing | EntryPoint v0.7 + **EIP-7562** compliant UserOp · fail-closed · no blind retry |
+
+**Execution pipeline (opt-in AA path only):**
 
 ```text
-UserOp draft → verifyAgentIntent() [Edge Shield · p50 ~106µs]
+UserOp draft → verifyAgentIntent() [Edge Shield · p50 ~106µs · Wasm — independent of AA]
  → evaluateStaticBreakerMatrix() [soil + gas ledger]
  → Paymaster sign → Bundler → EntryPoint → Kernel validateUserOp
 ```
 
-The Shield decides **before broadcast**; ZeroDev handles **non-custodial account delivery only**. Citadel never holds user keys or principal — capital remains in the **Kernel `sender` smart account** (R06–R07 · ERC-7579).
+The Shield decides **before broadcast** on every path; ZeroDev handles **non-custodial account delivery only** when explicitly opted in.
 
 #### 2.4.2 Kernel v3 / v4 Session Keys (ERC-7579 Modular Permissions)
 
@@ -469,7 +481,7 @@ Official infrastructure standards map — each row links a public ERC/EIP (or ve
 | **Pre-broadcast gate** | `verifyAgentIntent()` — `AllowedToSign = Injection ∧ Digest ∧ Soil ∧ Session ∧ Gas ∧ Attestation ∧ Armor ∧ Wasm` |
 | **106 µs coupling** | Shield (`checkSoilResistance`) runs **before** paymaster sign + bundler dispatch — ZeroDev delivers, Citadel decides |
 
-UserOps are drafted locally, sponsored via ZeroDev paymaster middleware, and submitted only after Edge soil + static-breaker evaluation. Bundler RPC MUST advertise EntryPoint v0.7 (`supportsEntryPoint07`). ZeroDev is the **non-custodial execution substrate**; Citadel Edge is the **pre-broadcast decision SSOT** (§2.4.1).
+UserOps are drafted locally, sponsored via ZeroDev paymaster middleware, and submitted only after Edge soil + static-breaker evaluation. Bundler RPC MUST advertise EntryPoint v0.7 (`supportsEntryPoint07`). ZeroDev is the **opt-in non-custodial delivery substrate** (Pillar 1); Citadel Edge Wasm is the **pre-broadcast decision SSOT** (§2.4.1).
 
 #### EIP-7562 — Account Abstraction Storage Access Rules
 
