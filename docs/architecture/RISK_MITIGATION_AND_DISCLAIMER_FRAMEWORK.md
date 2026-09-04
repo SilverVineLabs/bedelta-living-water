@@ -677,5 +677,5 @@ gmx-smart-route-payload-binding.ts → buildGmxSmartRoutePayloadBinding()
 | Document | Purpose |
 |----------|---------|
 | [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · Triangle Liquidity Loop |
-| [`../audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](../audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) | Robinhood Three Pillars audit |
+| [`../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 Compliance Ingress Firewall Audit |
 | [`../sdk/CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md) | `@slivervine/citadel-sdk` integration |
