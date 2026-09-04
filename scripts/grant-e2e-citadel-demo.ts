@@ -116,6 +116,7 @@ function highlightDemoLine(line: string): string {
   out = out.replace(/uiFeeReceiver/gi, `${YELLOW}uiFeeReceiver${RESET}`);
   out = out.replace(/\+\s*10\s*bps/gi, `${YELLOW}+10 bps${RESET}`);
   out = out.replace(/<\s*60\s*µs/gi, `${CYAN}<60µs${RESET}`);
+  out = out.replace(/Wasm Core Hot-Path/g, `${BRIGHT_CYAN}Wasm Core Hot-Path${RESET}`);
   out = out.replace(/524\s*µs/gi, `${CYAN}524µs${RESET}`);
   out = out.replace(/\d+\.?\d*\s*µs/g, (m) => `${CYAN}${m.trim()}${RESET}`);
   out = out.replace(/Δnet\s*≡\s*0/g, `${BRIGHT_CYAN}Δnet ≡ 0${RESET}`);
@@ -166,10 +167,22 @@ function sha16(payload: unknown): string {
   return createHash("sha256").update(JSON.stringify(payload)).digest("hex").slice(0, 16);
 }
 
+function measureWasmCoreHotPathUs(
+  input: Parameters<typeof evaluateSoilCore>[0],
+): number {
+  for (let i = 0; i < 5; i++) evaluateSoilCore(input);
+  let minUs = Number.POSITIVE_INFINITY;
+  for (let i = 0; i < 20; i++) {
+    minUs = Math.min(minUs, evaluateSoilCore(input).elapsedUs);
+  }
+  return minUs;
+}
+
 function step1CitadelPreExec(): {
   ok: boolean;
   wasmUsed: boolean;
-  elapsedUs: number;
+  wasmHotPathUs: number;
+  nodeE2eRttUs: number;
   deadmanOk: boolean;
 } {
   logStep(
@@ -192,11 +205,17 @@ function step1CitadelPreExec(): {
     maxSlippage: WASM_SOIL_DEFAULT_SLIPPAGE_FUSE,
     minDepthUsd: WASM_SOIL_MIN_DEPTH_USD,
   };
+  const wasmHotPathUs = measureWasmCoreHotPathUs(soilInput);
   const core = evaluateSoilCore(soilInput);
+  const wasmBudgetPass = wasmHotPathUs < WASM_EXEC_BUDGET_US;
   demoLog(
-    `Soil core: tripped=${core.output.tripped} wasmUsed=${core.wasmUsed} elapsed=${core.elapsedUs.toFixed(1)}µs`,
+    `Wasm Core Hot-Path (#![no_std] soil_core_eval): ${wasmHotPathUs.toFixed(1)}µs (<${WASM_EXEC_BUDGET_US}µs budget ${wasmBudgetPass ? "PASS" : "FAIL"})`,
+  );
+  demoLog(
+    `Soil core: tripped=${core.output.tripped} wasmUsed=${core.wasmUsed}`,
   );
 
+  const nodeT0 = performance.now();
   const verdict = verifyAgentIntent({
     intentDigest: DEMO_DIGEST,
     sessionKey: {
@@ -229,6 +248,7 @@ function step1CitadelPreExec(): {
     preset: "production",
     nowMs,
   });
+  const nodeE2eRttUs = (performance.now() - nodeT0) * 1000;
 
   demoLog(
     `Intent: allowedToSign=${verdict.allowedToSign} soilOk=${verdict.soilOk} sessionOk=${verdict.sessionOk} deadmanOk=${verdict.deadmanOk} wasmUsed=${verdict.wasmUsed}`,
@@ -238,6 +258,9 @@ function step1CitadelPreExec(): {
   );
   if (verdict.reasons.length) demoLog(`Reasons: ${verdict.reasons.join(" | ") || "(none)"}`);
   demoLog(`Gate: ${verdict.verifyingContract} · domain=${verdict.domainName}`);
+  demoLog(
+    `Full Node Script E2E RTT (wrapper + serialization + HUD): ${nodeE2eRttUs.toFixed(1)}µs`,
+  );
 
   if (!verdict.allowedToSign || !verdict.deadmanOk) {
     throw new Error(`STEP1_BLOCKED: ${verdict.reasons.join(",")}`);
@@ -246,7 +269,8 @@ function step1CitadelPreExec(): {
   return {
     ok: true,
     wasmUsed: verdict.wasmUsed,
-    elapsedUs: core.elapsedUs,
+    wasmHotPathUs,
+    nodeE2eRttUs,
     deadmanOk: verdict.deadmanOk,
   };
 }
@@ -538,7 +562,8 @@ async function main(): Promise<void> {
             ok: s1.ok,
             wasmUsed: s1.wasmUsed,
             deadmanOk: s1.deadmanOk,
-            soilElapsedUs: Number(s1.elapsedUs.toFixed(2)),
+            wasmHotPathUs: Number(s1.wasmHotPathUs.toFixed(2)),
+            nodeE2eRttUs: Number(s1.nodeE2eRttUs.toFixed(2)),
           },
           "2_robinhoodUnidirectionalEscort": {
             ok: s2.outboundOk && s2.inboundBlocked,
