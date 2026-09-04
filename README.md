@@ -104,7 +104,7 @@ For the full dual-axis verification hub (Express → Three Pillars Inside → Th
 | **V1.5 Roadmap Spec** | ⏳ Planned | **Sub-ms Agentic Security & Swarms** — [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) fleet enforcement · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) · BTC/USDC isomorphic GM (config-only) |
 | **V2.0 Design Spec** | ⏳ Planned | **Institutional CaaS & Orbit Shield** — productize `@slivervine/citadel-sdk` for AI DEXs / Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
 
-**Standards & Infrastructure:** [EIP-712](https://eips.ethereum.org/EIPS/eip-712) · [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) / [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579) · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft (Virtuals Protocol) · [§4 ERC/EIP Wiki](./docs/architecture/TECHNICAL_SPECIFICATION.md#4-standard-compliance--erceip-wiki).
+**Standards & Infrastructure:** [EIP-712](https://eips.ethereum.org/EIPS/eip-712) · [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) / [ERC-7579](https://eips.ethereum.org/EIPS/eip-7579) · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft (Virtuals Protocol) · [Standard Compliance & ERC/EIP Wiki](./docs/architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md).
 
 ### 📐 Core Risk Invariants (Judge Quick Reference)
 
@@ -257,7 +257,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 
 **[Pillar 3: Shield — Pre-Execution Risk Engine]** **`pkg/soil_core.wasm`** · `checkSoilResistance()` at **p50 ~106 µs** (Shield/TS Gateway path) · Wasm warm **&lt;60 µs** · **R01–R20 Defense Matrix (17 Active | 2 Refactored | 1 Deprecated)** · **`signingChannelOpen: false`** on any soil / oracle / sequencer trip — primary technical moat before Arbitrum / HL broadcast.
 
-**Architecture standards:** **EIP-712** Gate attestation · **ERC-4337/7579** ZeroDev Kernel v3 · **EIP-1559** ArbOS Tri-Sensor · **ArbOS 61** · optional Robinhood ingress · **Wasm** `soil_core` — see [§4 Standard Compliance Wiki](./docs/architecture/TECHNICAL_SPECIFICATION.md#4-standard-compliance--erceip-wiki).
+**Architecture standards:** **EIP-712** Gate attestation · **ERC-4337/7579** ZeroDev Kernel v3 · **EIP-1559** ArbOS Tri-Sensor · **ArbOS 61** · optional Robinhood ingress · **Wasm** `soil_core` — see [Standard Compliance & ERC/EIP Wiki](./docs/architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md).
 
 ---
 

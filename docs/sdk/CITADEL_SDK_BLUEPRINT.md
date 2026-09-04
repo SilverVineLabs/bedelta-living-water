@@ -123,7 +123,7 @@ Citadel UserOps **must not** trigger bundler rejection under [EIP-7562](https://
 | Bundler probe | `eth_supportedEntryPoints` must include EntryPoint **v0.7** (`supportsEntryPoint07`) |
 | Fail-closed | Bundler unreachable / timeout ⇒ `BUNDLER_TIMEOUT_FAIL_CLOSED` (`ZERODEV_BUNDLER_FAIL_CLOSED_TIMEOUT_MS = 3_000`) |
 
-See also: [`TECHNICAL_SPECIFICATION.md` §4.0](../architecture/TECHNICAL_SPECIFICATION.md) — EIP-7562 wiki entry.
+See also: [`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md) — EIP-7562 wiki entry.
 
 ### 4. CaaS Monetization — 10 bps GMX Native Builder Fee + Up to 25% GMX Referral Rebate
 

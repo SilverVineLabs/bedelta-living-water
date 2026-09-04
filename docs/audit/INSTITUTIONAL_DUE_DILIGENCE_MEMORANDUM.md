@@ -156,7 +156,7 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **pre-execution Cita
 | Simulation & chaos harness | §3 | This document · [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §4 |
 | Arbitrum Native vs Robinhood escort | §4 | This document · [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §5 |
 | Regulatory & institutional compliance | §5 | This document · [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §6 |
-| ArbOS Elara · Dynamic Target Range | §5.6 | [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §6.5 · Tech Spec §4.2 |
+| ArbOS Elara · Dynamic Target Range | §5.6 | [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §6.5 · [`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor) |
 | Real yield vs. toxic inflation | §2.6 (Risk Framework SSOT) | [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §2.6 |
 | 60 architectural invariants | §5.1–§5.2 | [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §3 |
 | Robinhood reference adapter audit | §2.3 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
@@ -596,12 +596,12 @@ pnpm test -- --run # 173 test files | 765 PASS Clean
 
 ### 5.6 ArbOS Elara Compliance Alignment & Dynamic Target Range
 
-> **V1.0 Design Spec.** SliverVine Protocol's **Pillar 2 Compliance Ingress Firewall** natively aligns with the **ArbOS Elara upgrade** — Arbitrum's protocol-level ingress filtering plane — documenting **transaction-ordering awareness** as a reinforcement layer alongside Edge fail-closed gates. See [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §4.2.
+> **V1.0 Design Spec.** SliverVine Protocol's **Pillar 2 Compliance Ingress Firewall** natively aligns with the **ArbOS Elara upgrade** — Arbitrum's protocol-level ingress filtering plane — documenting **transaction-ordering awareness** as a reinforcement layer alongside Edge fail-closed gates. See [`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor).
 
 | Compliance plane | Function | UI / code anchor |
 |------------------|----------|------------------|
 | **Edge SSOT (pre-broadcast)** | Soil matrix · signing channel severance · UserOp gate | `checkSoilResistance()` · `zerodev-aa-gate.ts` |
-| **Pillar 2 Compliance Ingress Firewall + ArbOS Elara** | Venue-agnostic outbound escort · inbound AML block · Robinhood / Across as **Pillar 2 Reference Escort Adapters** · Elara drops non-compliant / blacklisted senders before GM payload construction | Tech Spec §4.2 · `IngressSafetySwitch.sol` · `src/adapters/across-ingress-bridge.ts` |
+| **Pillar 2 Compliance Ingress Firewall + ArbOS Elara** | Venue-agnostic outbound escort · inbound AML block · Robinhood / Across as **Pillar 2 Reference Escort Adapters** · Elara drops non-compliant / blacklisted senders before GM payload construction | [`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor) · `IngressSafetySwitch.sol` · `src/adapters/across-ingress-bridge.ts` |
 | **Sequencer / ordering sensor** | ArbOS base-fee velocity · sequencer grace — no naked opens during desync | `arbitrum-gas-guard.ts` · `sequencer-guard.ts` |
 | **Multi-tranche demo HUD** | Tranche A native vault vs Tranche B bridge state machine | `SmartRoutingDepositCard` · `deposit-tranche-config.ts` |
 | **Reactive HUD alerts** | Institutional trip copy for allocators | `compliance-trip-alerts.ts` · `LivingWaterShieldCard` · `AMLShieldCard` |

@@ -26,6 +26,7 @@
 |---|----------|------|
 | 1 | [`VERIFICATION_MATRIX.md`](./VERIFICATION_MATRIX.md) | **CLI Tier 0–5 Verification Entry** — reproducible PASS bars for evaluators |
 | 2 | [`architecture/TECHNICAL_SPECIFICATION.md`](./architecture/TECHNICAL_SPECIFICATION.md) | **Yellow Paper** — R01–R20 Risk Matrix · Three Pillars · Arbitrum-centric topology |
+| 2b | [`architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](./architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md) | **ERC/EIP Standards Wiki** — compliance posture · ArbOS/Stylus · RPC/WSS |
 | 3 | [`audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | **Institutional DDIP** — allocator diligence · Basel III alignment · chaos 255/255 |
 | 4 | [`audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | **ZeroDev AA vs. Pre-execution Wasm Risk Substrate** — Kernel v3 institutional differentiation |
 | 5 | [`sdk/CITADEL_SDK_BLUEPRINT.md`](./sdk/CITADEL_SDK_BLUEPRINT.md) | **B2B CaaS Integration Blueprint** — `@slivervine/citadel-sdk` · 10 bps builder + referral rebate model |
@@ -55,7 +56,7 @@
 docs/
  README.md ← you are here
  VERIFICATION_MATRIX.md Tier 0–5 CLI map (evaluators start here)
- architecture/ Yellow Paper · risk mitigation & disclaimer framework
+ architecture/ Yellow Paper · standards wiki · risk mitigation & disclaimer framework
  audit/ DDIP · ZeroDev analysis · Robinhood gate · principal audit
  sdk/ Citadel SDK integration blueprint
  grants/ SUBMISSION + arbitrum/ + gmx/
