@@ -1,19 +1,19 @@
-# Robinhood Chain Safety Gate Audit — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) Three Pillars
+# Pillar 2: Compliance Ingress Firewall & Reference Adapter Audit (e.g., Robinhood Chain / Across)
 
 | Field | Value |
 |-------|-------|
-| **Document** | Robinhood Chain Safety Gate Audit |
+| **Document** | Pillar 2: Compliance Ingress Firewall & Reference Adapter Audit |
 | **Version** | **v1.0.0** |
 | **Classification** | Public Grant / Institutional Diligence |
 | **Entity** | SilverVine Labs |
 | **Protocol** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) · Santenmoku internal engine |
-| **Scope** | Robinhood Chain **46630** (testnet) · **4663** (mainnet) · Arbitrum One **42161** |
+| **Scope** | Pillar 2 Compliance Ingress Firewall · Robinhood Chain **46630** (testnet) · **4663** (mainnet) · Across reference escort · Arbitrum One **42161** |
 | **Spec SSOT** | [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 
-> **Role:** Robinhood Chain / Across are **Pillar 2 Reference Escort Adapters** — not SliverVine Protocol product identity.
+> **Product identity boundary:** Robinhood Chain and Across are **optional Pillar 2 Reference Ingress Adapters** demonstrating multi-chain compliance escort accounting — they are integration examples, **not** the core product identity of SliverVine Protocol. The protocol's center of gravity remains the **Pre-Consensus Intent Firewall & GMX/HL Execution Safety Primitive (Pillar 3 Shield)** — see [README § Three Pillars](../../README.md).
 
-> **Authority statement:** This report verifies the Robinhood Chain safety gate under the Citadel **Three Pillars Architecture**. All quantitative claims are CLI-verifiable via `pnpm test` and targeted bridge tests.
+> **Authority statement:** This report verifies the Pillar 2 Compliance Ingress Firewall under the Citadel **Three Pillars Architecture**, using Robinhood Chain / Across as inaugural reference adapters. All quantitative claims are CLI-verifiable via `pnpm test` and targeted bridge tests.
 
 ---
 
@@ -44,7 +44,7 @@
  │
  ▼
  ┌─────────────────────────────────────────────────────────┐
- │ Pillar 2: THE FIREWALL (Compliance — Robinhood Chain Gate) │
+ │ Pillar 2: COMPLIANCE INGRESS FIREWALL (Reference Adapters — Robinhood / Across) │
  │ Unidirectional Escort · AML inbound isolation │
  │ IngressSafetySwitch.sol · lostUsd ≡ 0 │
  └──────────────────────┬──────────────────────────────────┘
@@ -75,7 +75,7 @@
 
 ---
 
-## Pillar 2: The Firewall (Compliance — Robinhood Chain Gate)
+## Pillar 2: Compliance Ingress Firewall (Reference Adapters — Robinhood Chain / Across)
 
 ### 2.1 Vitest Verification — 5/5 PASS
 
@@ -190,4 +190,4 @@ cd SliverVineGate && forge test && cd ..
 
 ---
 
-*SilverVine Labs · BUSL-1.1 · Robinhood Chain Safety Gate Audit v1.0.0*
+*SilverVine Labs · BUSL-1.1 · Pillar 2 Compliance Ingress Firewall Audit v1.0.0*

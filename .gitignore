@@ -75,7 +75,7 @@ san
 !docs/sdk/
 !docs/sdk/**
 !docs/audit/PRINCIPAL_AUDIT_REPORT.md
-!docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md
+!docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md
 !src/sdk/README.md
 
 # Internal scorecards / self-audits (local-only; do not publish)
