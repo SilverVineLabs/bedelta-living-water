@@ -7,7 +7,7 @@
 > **Doc log (2026-08-25):** Tier-0 root [`Dockerfile`](../Dockerfile) E2E · Sidecar Tier-5 · R03/R04 RTT 200/500ms · 5-TX provenance SSOT.
 
 **Entity:** SilverVine Labs · **Official Site:** [silvervinelabs.com](https://silvervinelabs.com) · **Upstream:** `https://bedeltawater.slivervine.xyz/api/telemetry/health`
-**Regression bar:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · `tsc --noEmit` CLEAN
+**Regression bar:** **173 test files | 765 PASS Clean** · `tsc --noEmit` CLEAN
 
 ---
 

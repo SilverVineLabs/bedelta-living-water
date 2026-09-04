@@ -1,6 +1,6 @@
 # Dynamic APY UI 更新日誌
 
-> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+> **Vitest SSOT:** 173 test files | 765 PASS Clean
 
 **日期：** 2026-08-26  
 **分支：** `v1.0_push_BDLW`  
@@ -41,13 +41,13 @@
 ## 驗證結果
 
 ```bash
-pnpm test           # 168 files · 773 PASS (Proposal Baseline) · exit 0
+pnpm test           # 173 test files | 765 PASS (Proposal Baseline) · exit 0
 pnpm bundle:measure # 見下方輸出
 ```
 
 | 指標 | 結果 |
 |------|------|
-| Vitest | **773 PASS (Proposal Baseline)**（168 files） |
+| Vitest | **765 PASS**（173 test files） |
 | Bundle gzip | **87.76 KiB / 150.0 KiB PASS**（零回歸） |
 | 修改行數 | LivingWaterShieldCard + App ≈ **< 100 行** |
 

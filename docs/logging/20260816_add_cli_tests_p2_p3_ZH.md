@@ -1,6 +1,6 @@
 # add_cli_tests_p2_p3
 
-> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+> **Vitest SSOT:** 173 test files | 765 PASS Clean
 
 ## Summary of Changes
 - 新增 `scripts/test-rwa-refraction-cli.ts`：Pillar 2 端到端 Vault → Across → GMX 路由診斷輸出

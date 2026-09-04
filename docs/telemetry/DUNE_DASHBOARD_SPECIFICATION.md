@@ -1,6 +1,6 @@
 # Dune Analytics Dashboard Specification — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
-> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+> **Vitest SSOT:** 173 test files | 765 PASS Clean
 
 **Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 **Entity:** SilverVine Labs · **Live SSOT:** `GET /api/grant-audit`

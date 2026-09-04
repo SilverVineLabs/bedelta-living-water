@@ -1,6 +1,6 @@
 # v1.0_push_SliverVine Protocol 最終回歸驗證報告
 
-> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+> **Vitest SSOT:** 173 test files | 765 PASS Clean
 
 **日期：** 2026-08-25  
 **分支：** `v1.0_push_BDLW`  
@@ -130,7 +130,7 @@ Wrangler dry-run 與本地 gzip 一致；`nodejs_compat` 已移除（Phase C 優
 ## 8. 簽核
 
 ```
-Vitest:   742/773 PASS (Proposal Baseline) ✅
+Vitest:   765 PASS (Proposal Baseline) ✅
 Forge:    60/60  PASS ✅
 Bundle:   158.84 KiB / 158.99 KiB ✅
 Verdict:  RELEASE GREEN

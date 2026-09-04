@@ -1,6 +1,6 @@
 # cleanup_v10_execution_stubs
 
-> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+> **Vitest SSOT:** 173 test files | 765 PASS Clean
 
 ## Summary of Changes
 - `twap-engine-v2.ts`：`TwapExecutionStatus`（`EXECUTED` | `SKIPPED` | `PENDING`）取代靜態 `STUB` / `STAGED`

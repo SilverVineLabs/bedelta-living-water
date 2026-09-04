@@ -1,6 +1,6 @@
 # Grant Resilience Benchmark Audit
 
-> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+> **Vitest SSOT:** 173 test files | 765 PASS Clean
 
 **Timestamp:** 2026-08-19T11:34:52.415Z
 **Protocol:** Santenmoku v0.9

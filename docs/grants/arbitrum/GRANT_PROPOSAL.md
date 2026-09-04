@@ -6,7 +6,7 @@
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
 **Live DApp:** [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 
-> **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
+> **Vitest SSOT:** **173 test files | 765 PASS Clean** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
 
 **Audience:** Arbitrum ecosystem / Open House / future Security Grant.
 **Not this pack:** GMX `uiFeeReceiver` economics → [`../gmx/`](../gmx/).
@@ -55,13 +55,13 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 | Horizon | Status | Scope |
 |---------|--------|-------|
-| **v1.0 Delivered (Sepolia verified)** | ✅ Live | Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum · GMX v2 ETH/USDC GM + HL 1× short · Wasm Shield p50 ~106µs · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft · EIP-712 Gate `0xb174…` · **Proposal Baseline: 175 test files \| 773 PASS (Current Branch Live: 176 test files \| 775 PASS Clean)** · Sepolia / dry-run verified; mainnet ties to M6 |
+| **v1.0 Delivered (Sepolia verified)** | ✅ Live | Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum · GMX v2 ETH/USDC GM + HL 1× short · Wasm Shield p50 ~106µs · [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) Draft · EIP-712 Gate `0xb174…` · **173 test files \| 765 PASS Clean** · Sepolia / dry-run verified; mainnet ties to M6 |
 | **V1.5 Roadmap Spec** | ⏳ Planned | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) fleet enforcement · EIP-7702 EOA → Agent Smart Account · Prompt Injection Defense Circuit (`severSigningChannel()` sub-100µs) |
 | **V2.0 Design Spec** | ⏳ Planned | Institutional CaaS (`@slivervine/citadel-sdk`) for AI DEXs & Orbit L3s · **10 bps protocol authorization fee** on pre-execution risk checks |
 
 | Phase | Scope | Status |
 |-------|-------|--------|
-| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
+| Open House / Buildathon | Live HUD · Gate · Sepolia proof · **173 test files | 765 PASS Clean** · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
 | Security Grant pack | Cold audit pack · R01–R20 + Slither/Echidna narrative | ⏳ Planned |
 | Institutional AA | Kernel v3 Session Key — [ZeroDev Comparative Analysis](../../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) · [Technical Specification §2.4](../../architecture/TECHNICAL_SPECIFICATION.md#24-pillar-1--zerodev-account-abstraction-deep-specification) | ✅ Delivered in v1.0 |
 
@@ -71,7 +71,7 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 
 | Field | Locked value |
 |-------|--------------|
-| **Vitest baseline** | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
+| **Vitest baseline** | **173 test files | 765 PASS Clean** |
 | **Sepolia Gate** | `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
 | **Dune dashboard** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 | **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196)** | Aligned with emerging Draft (Virtuals Protocol) — **not a finalized standard** |
@@ -98,7 +98,7 @@ SliverVine Protocol enforces a strict two-stage strategy balancing Zero-Friction
 
 ```bash
 pnpm install
-pnpm test # Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+pnpm test # 173 test files | 765 PASS Clean
 pnpm run audit:security # 5/0/0 PASS
 pnpm run demo:e2e # 5-step Citadel E2E (dry-run)
 cd SliverVineGate && forge test && cd ..

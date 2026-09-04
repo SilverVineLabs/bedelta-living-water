@@ -1,6 +1,6 @@
 # SliverVine → SliverVine 協議拼寫糾正
 
-> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+> **Vitest SSOT:** 173 test files | 765 PASS Clean
 
 ## Summary of Changes
 - 組件 `SilverVineLogo` 重命名為 `SliverVineLogo`，UI 文案統一為 **SliverVine Protocol** / **SliverVine War Room**。

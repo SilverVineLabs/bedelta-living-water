@@ -9,7 +9,7 @@
 **Grant Audit:** `curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel`
 **Channel:** [t.me/GMXPartners](https://t.me/GMXPartners)
 
-> **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` / `<60µs`.
+> **Vitest SSOT:** **173 test files | 765 PASS Clean** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` / `<60µs`.
 
 **Audience:** GMX Builders only. Do not lead with ZeroDev / Robinhood / HL grant narratives.
 
@@ -54,7 +54,7 @@ Every unsigned increase / decrease / deposit payload injects **+10 bps `uiFeeRec
 
 | Milestone | Scope | Status |
 |-----------|-------|--------|
-| **M1** | **v1.0 Delivered (Sepolia verified)** · pre-exec gateway · Live HUD · +10 bps routing · `/api/grant-audit` · **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** | ✅ Delivered (Sepolia & dry-run; mainnet ties to M6) |
+| **M1** | **v1.0 Delivered (Sepolia verified)** · pre-exec gateway · Live HUD · +10 bps routing · `/api/grant-audit` · **173 test files | 765 PASS Clean** | ✅ Delivered (Sepolia & dry-run; mainnet ties to M6) |
 | **M2** | Institutional gateway · sidecar daemon · `claimUiFees` | ✅ Core Built (Sidecar Daemon Ready / Awaiting Treasury Claim Hook) |
 | **M3** | Multi-tenant B2B · cross-venue compensation SLA | Roadmap (Multi-tenant B2B & Cross-venue SLA) |
 
@@ -68,7 +68,7 @@ pnpm run audit:security # 5/0/0 PASS target
 curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .arbitrumCitadel.isGmxBalancerQualified
 ```
 
-**Regression bar:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Forge 60/60 · **327,675 Property Fuzz Executions** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = 5,120) · Wasm `<28kb` / `<60µs`.
+**Regression bar:** **173 test files | 765 PASS Clean** · Forge 60/60 · **327,675 Property Fuzz Executions** (`pnpm audit:nightly` / `FOUNDRY_PROFILE=deep`; standard `forge test` = 5,120) · Wasm `<28kb` / `<60µs`.
 
 ---
 

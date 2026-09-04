@@ -1,6 +1,6 @@
 # fix_robinhood_rwa_execution_chain
 
-> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+> **Vitest SSOT:** 173 test files | 765 PASS Clean
 
 ## Summary of Changes
 - 新增 `src/config/rwa-refraction.ts` SSOT；GMX GM pool 位址自 config 動態解析（ETH pool 對齊 `gmx-v2-gm-balance`）

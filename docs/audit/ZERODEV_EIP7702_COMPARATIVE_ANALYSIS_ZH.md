@@ -7,7 +7,7 @@
 | **分類** | Grant / 機構 Allocator · AA 架構基準 |
 | **分支基線** | `v1.0_push_BDLW` |
 | **實體** | SilverVine Labs · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
-| **基線** | Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** |
+| **基線** | Vitest **173 test files | 765 PASS Clean** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** |
 | **英文 SSOT** | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
 | **關聯 SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
@@ -60,7 +60,7 @@ Pillar 3 SHIELD      → checkSoilResistance() · pkg/soil_core.wasm · Fail-Clo
 | **意圖綁定** | 可選 calldata hash | **`payloadHash()`** → `SliverVineGate.sol` 單次消耗 |
 | **橋接在途** | 常計為 live NAV | **`IN_FLIGHT_BRIDGE_CAPITAL`** · **`lostUsd ≡ 0`** · `SETTLED` 前禁止裸倉 |
 | **緊急響應** | Admin pause · 多簽 | **自動化** R17 · R20 · `rootProtection()` |
-| **回歸證明** | 廠商 QA / 審計快照 | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · `zerodev-aa-gate` **4/4** · chaos **255/255** |
+| **回歸證明** | 廠商 QA / 審計快照 | **173 test files | 765 PASS Clean** · `zerodev-aa-gate` **4/4** · chaos **255/255** |
 
 ---
 
@@ -124,7 +124,7 @@ Kernel Smart Account → payloadHash 綁定 → checkSoilResistance() (106µs)
 
 | # | 宣稱 | 命令 | 預期 |
 |---|------|------|------|
-| 1 | 全量回歸 | `pnpm test -- --run` | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
+| 1 | 全量回歸 | `pnpm test -- --run` | **173 test files | 765 PASS Clean** |
 | 2 | ZeroDev AA gate | `vitest run tests/adapters/zerodev-aa-gate.test.ts` | **4/4** |
 | 3 | R07 $5k cap | `vitest run tests/services/session-key-gates.test.ts` | 超限 severance |
 | 4 | 30s 心跳 | `vitest run tests/services/nonce-auto-healing.test.ts` | 過期鎖定 |

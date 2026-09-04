@@ -1,6 +1,6 @@
 # SilverVineLogo CSS 裁切與尺寸調整
 
-> **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+> **Vitest SSOT:** 173 test files | 765 PASS Clean
 
 ## Summary of Changes
 - 移除 `object-contain`，改以 `overflow-hidden` 比例容器 + `-my-2` 負邊距裁切透明留白。

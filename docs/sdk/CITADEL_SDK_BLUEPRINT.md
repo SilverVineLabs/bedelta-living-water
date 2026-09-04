@@ -427,12 +427,12 @@ Verified by [`tests/risk-control/margin-buffer.test.ts`](../../tests/risk-contro
 ```bash
 pnpm exec vitest run tests/sdk/citadel-sdk-intent.test.ts
 pnpm exec vitest run tests/sdk/citadel-sdk-bridge-armor.test.ts
-pnpm test -- --run # Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
+pnpm test -- --run # 173 test files | 765 PASS Clean
 pnpm audit:fast
 pnpm build:wasm # rebuild pkg/soil_core.wasm
 ```
 
-**Vitest SSOT:** `Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)`
+**Vitest SSOT:** `173 test files | 765 PASS Clean`
 
 ---
 

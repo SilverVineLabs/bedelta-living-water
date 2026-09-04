@@ -7,7 +7,7 @@
 | **Classification** | Grant / Institutional Allocator · AA Architecture Benchmark |
 | **Branch baseline** | `v1.0_push_BDLW` |
 | **Entity** | SilverVine Labs · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
-| **Baseline** | **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
+| **Baseline** | **Vitest SSOT:** **173 test files | 765 PASS Clean** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
 | **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
 > **Scope note:** This document compares **consumer-focused EIP-7702 AA implementations** with SliverVine Protocol's **institutional-grade pre-execution risk substrate**. It is an architectural diligence artifact — not legal or investment advice.
@@ -62,7 +62,7 @@ These patterns are appropriate for **retail conversion funnels**. They are **ins
 | **Intent binding** | Optional calldata hashing | **`payloadHash()`** → `SliverVineGate.sol` consume-once attestation |
 | **Bridge in-flight** | Often booked as live NAV | **`IN_FLIGHT_BRIDGE_CAPITAL`** · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** · no naked GM/HL until `SETTLED` |
 | **Emergency response** | Admin pause · multisig | **Automated** R17 daily severance · R20 physical deadlock · `rootProtection()` |
-| **Regression proof** | Vendor QA / audit snapshots | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · `zerodev-aa-gate.test.ts` **4/4** · chaos matrix **255/255** |
+| **Regression proof** | Vendor QA / audit snapshots | **173 test files | 765 PASS Clean** · `zerodev-aa-gate.test.ts` **4/4** · chaos matrix **255/255** |
 
 > **Pillar 1 alignment note:** **[Pillar 1: The Gatehouse (Auth)] ZeroDev Kernel v3 Session Keys & EIP-712 Scopes** — `sessionOk` / `allowedToSign` gates are demonstrated in `pnpm run demo:e2e` (secure dry-run); full Kernel v3 harness regression is under `pnpm test:zerodev` (`tests/adapters/zerodev-aa-dryrun-harness.test.ts`).
 
@@ -181,7 +181,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 | # | Claim | Command / artifact | Expected |
 |---|-------|-------------------|----------|
-| 1 | Full regression | `pnpm test -- --run` | **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** |
+| 1 | Full regression | `pnpm test -- --run` | **173 test files | 765 PASS Clean** |
 | 2 | ZeroDev AA gate fail-closed | `pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts` | **4/4 PASS** |
 | 2b | Pillar 1 Gatehouse dry-run harness | `pnpm test:zerodev` | Kernel v3 session scopes · EIP-712 dry-run PASS |
 | 3 | Session R07 $5k cap | `pnpm exec vitest run tests/services/session-key-gates.test.ts` | Severance on breach |
