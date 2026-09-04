@@ -347,6 +347,24 @@ Sign in ──► Fund ──► Gas ──► Authorize ──► Execute (v1.0
 
 **One Stack semantics (post-grant alignment):** When Kernel v4 ships, stages ①–⑤ will share one Kernel account, `sender` identity, and Citadel `AllowedToSign` predicate — institutions need not switch wallets between permissioned ingress and Arbitrum One. **Shield / Wasm / Gate invariants are unchanged** across Kernel major versions.
 
+### 2.5 Strategic Blue-Chip Ecosystem & Settlement Roadmap (V1.5 / V2.0)
+
+> **Scope honesty:** v1.0 active execution and fee capture remain **GMX v2 ETH/USDC GM + Hyperliquid 1× short** on Arbitrum One (§2 triangle). The milestones below extend topology and settlement — modular integration specs and post-grant rollout targets, **not** v1.0 production fee paths.
+
+| Partner / Venue | Strategic role | Citadel integration | Horizon | Status |
+|-----------------|----------------|---------------------|---------|--------|
+| **Pendle Finance** (Yield & Rate Hedging) | Strategic integration for AI agents in yield-tokenization and fixed-income markets — PT/YT safety sentinel (not a yield competitor) | `checkSoilResistance()` microsecond pre-execution firewall · `evaluatePendleGmxCrossGuard()` · `evaluatePendlePtExpiryRisk()` · [`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts) · [`pendle-pt-registry.ts`](../../src/adapters/pendle/pendle-pt-registry.ts) | **V1.5** | ✅ Code-Verified guard (Vitest) · full agent routing ⏳ Post-Grant |
+| **Camelot DEX & Stabilizer** (Native Liquidity & Zero-Slippage Settle) | Arbitrum-native liquidity (`GRAIL`) and zero-slippage stablecoin routing to optimize delta-neutral rebalance friction | Camelot API on RPC allowlist (`api.camelot.exchange`) · rebalance leg optimizer · `FRICTION_BUFFER_APY` absorption in [`rebalance-rules.ts`](../../src/services/rebalance-rules.ts) | **V1.5** | ⏳ Roadmap Spec |
+| **Variational** (Next-Gen Perps & Cross-Venue Alternative) | Future-proof integration for advanced decentralized perps and cross-chain margin routing — extensible complement/alternative to Hyperliquid hedge leg | `buildVariationalShortOrder()` · `evaluateVariationalOrderbookDepth()` PoC · same-chain Arbitrum hedge extension | **V2.0** | ⏳ PoC Spec ([`docs/logging/20260827_v1.5_aave_variational_adapter_poc_ZH.md`](../logging/20260827_v1.5_aave_variational_adapter_poc_ZH.md)) |
+
+```text
+v1.0 Active Triangle (42161)
+  GMX v2 GM Yield ──1× Δ-neutral──► Hyperliquid Short
+         │
+         └──► V1.5+: Pendle PT/YT sentinel · Camelot/Stabilizer zero-slippage settle
+         └──► V2.0: Variational native perp hedge (HL complement/alternative)
+```
+
 ---
 
 ## 3. Cross-Venue Risk Engine & Defense Matrix (R01–R20)
@@ -603,6 +621,16 @@ Multi-chain HTTPS/WSS placeholders live in `.env.example` — replace `YOUR_ALCH
 
 Gates must not assume instant atomicity across the triangle; inventory accounting holds legs in-flight until the respective window elapses or venue ack confirms.
 
+#### 5.1.1 Strategic Settlement Extensions (V1.5 / V2.0)
+
+| Extension | Settlement role | Horizon | Status |
+|-----------|-----------------|---------|--------|
+| **Pendle Finance** | PT/YT exit proceeds vs GMX margin shadow accounting before rebalance dispatch — expiry blackhole / oracle decoupling guard | **V1.5** | ✅ Guard code-verified · settlement wire ⏳ |
+| **Camelot DEX & Stabilizer** | Zero-slippage stablecoin routing and `GRAIL` liquidity depth for delta-neutral rebalance legs — reduces `FRICTION_BUFFER_APY` drag | **V1.5** | ⏳ Roadmap Spec |
+| **Variational** | Same-chain perp hedge settlement window (alternative to HL 15 min withdrawal budget) — cross-venue margin routing | **V2.0** | ⏳ PoC Spec |
+
+See [§2.5 Strategic Blue-Chip Ecosystem & Settlement Roadmap](#25-strategic-blue-chip-ecosystem--settlement-roadmap-v15--v20) for integration anchors.
+
 ### 5.2 Active Fee Path (v1.0)
 
 | Item | Definition | Status |
@@ -830,6 +858,17 @@ Evaluator-facing comparison of SliverVine Protocol versus legacy execution, agen
 │ 4. AML Shielding          │ Blocked Reverse Path (46630)│ Open Protocol Ingress      │ Unfiltered Contamination   │
 └───────────────────────────┴─────────────────────────────┴────────────────────────────┴────────────────────────────┘
 ```
+
+### 6.9 Strategic Blue-Chip Ecosystem & Settlement Integrations (V1.5 / V2.0)
+
+> **Commercial boundary:** v1.0 fee capture and liquidity routing are bound to **GMX v2 GM + HL delta-neutral** execution. Pendle, Camelot, Stabilizer, and Variational integrations extend the pre-execution firewall and settlement plane — see [§2.5](#25-strategic-blue-chip-ecosystem--settlement-roadmap-v15--v20) and [§5.1.1](#511-strategic-settlement-extensions-v15--v20).
+
+| Venue | Integration surface | Reflex hook | Horizon |
+|-------|-------------------|-------------|---------|
+| **Pendle Finance** | Yield-tokenization / fixed-income agent markets · PT/YT registry + cross-guard | `checkSoilResistance()` · `evaluatePendleGmxCrossGuard()` · maturity &lt;7d + jitter &gt;200 bps fail-closed | **V1.5** |
+| **Camelot DEX** | Arbitrum-native `GRAIL` liquidity depth for rebalance routing | Soil fuse on Camelot pool depth · RPC allowlist `api.camelot.exchange` | **V1.5** |
+| **Stabilizer** | Zero-slippage stablecoin settle path for delta-neutral friction reduction | Pre-broadcast slippage fuse · rebalance leg binding to `FRICTION_BUFFER_APY` | **V1.5** |
+| **Variational** | Next-gen decentralized perps · cross-venue margin routing (HL complement) | `checkSoilResistance()` on Variational orderbook depth · session-key clip (R06/R07) | **V2.0** |
 
 ---
 
