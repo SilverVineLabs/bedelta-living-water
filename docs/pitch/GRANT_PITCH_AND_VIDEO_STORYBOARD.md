@@ -12,7 +12,7 @@
 | **Baseline** | Vitest **173 test files | 765 PASS Clean** · Wasm **p50 ~106 µs** · chaos **255/255** |
 | **Live proof** | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · `GET /api/grant-audit` · [Dune telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 | **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196)** | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Emerging Draft Sub-ms Policy Gate) — **not a finalized standard** |
-| **Related SSOT** | [`VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) · [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
+| **Related SSOT** | [`VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md) · [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) · [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 
 > **HackQuest form mapping:** **SECTION A** = Pitch Video (180s). **SECTION B** = Demo Video (120s). Do not merge the two files. Do not guarantee APY. Do not claim Stylus is mainnet-deployed. Monte Carlo `$9.88M` is **10,000-run nominal simulated LP protection**, not live TVL.
 
@@ -169,7 +169,7 @@ Start CLI map: [`docs/VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md).
 | [`docs/README.md`](../README.md) | Grant reviewer navigation |
 | [`SUBMISSION.md`](../grants/SUBMISSION.md) | Buildathon pack |
 | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Allocator diligence |
-| [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Option C stress + 60 invariants |
+| [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Option C stress + 60 invariants |
 
 **Prepared by:** SilverVine Labs · HackQuest dual-video SSOT  
 **Last updated:** 2026-09-02 · Branch: `V1.0_b4_Buildaton_Submisson`

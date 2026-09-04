@@ -34,7 +34,7 @@
 ### 參照來源
 
 - `src/wasm/soil_core.rs` · `src/sdk/soil-wasm.ts` · `soil-resistance-math.ts`
-- `docs/architecture/TECHNICAL_SPECIFICATION.md` §4.2 · §3.5
+- `docs/architecture/01_TECHNICAL_SPECIFICATION.md` §4.2 · §3.5
 - `SliverVineGate/MILESTONES.md` D1 方向
 - `docs/internal/HOT_COLD_PATH_DECOUPLING.md`
 - README gas / latency baseline（28,043 gas · 200 ns · 106 µs）

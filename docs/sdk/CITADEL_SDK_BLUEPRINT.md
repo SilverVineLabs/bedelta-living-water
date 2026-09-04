@@ -123,7 +123,7 @@ Citadel UserOps **must not** trigger bundler rejection under [EIP-7562](https://
 | Bundler probe | `eth_supportedEntryPoints` must include EntryPoint **v0.7** (`supportsEntryPoint07`) |
 | Fail-closed | Bundler unreachable / timeout ⇒ `BUNDLER_TIMEOUT_FAIL_CLOSED` (`ZERODEV_BUNDLER_FAIL_CLOSED_TIMEOUT_MS = 3_000`) |
 
-See also: [`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md) — EIP-7562 wiki entry.
+See also: [`02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md) — EIP-7562 wiki entry.
 
 ### 4. CaaS Monetization — 10 bps GMX Native Builder Fee + Up to 25% GMX Referral Rebate
 
@@ -439,7 +439,7 @@ pnpm build:wasm # rebuild pkg/soil_core.wasm
 ## Related
 
 - SDK README: [`src/sdk/README.md`](../../src/sdk/README.md)
-- Technical Spec: [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md)
+- Technical Spec: [`docs/architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md)
 - Wasm core: [`src/wasm/soil_core.rs`](../../src/wasm/soil_core.rs)
 - On-chain Gate: [`SliverVineGate/`](../../SliverVineGate/)
 - Robinhood audit: [`docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md)

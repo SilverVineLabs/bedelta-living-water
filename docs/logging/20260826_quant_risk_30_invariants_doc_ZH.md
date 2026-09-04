@@ -39,7 +39,7 @@
 
 ### 參照來源
 
-- `docs/architecture/TECHNICAL_SPECIFICATION.md` R01–R20
+- `docs/architecture/01_TECHNICAL_SPECIFICATION.md` R01–R20
 - `src/wasm/soil_core.rs` · `soil-resistance.ts` · `gmx-revenue.ts`
 - `unidirectional-bridge.ts` · `zerodev-aa-*` · `GatedExecutor.sol`
 - 既有 internal docs（Hot/Cold · Smart Routing · Wasm/Stylus）

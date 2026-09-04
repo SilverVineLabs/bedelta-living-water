@@ -2,7 +2,7 @@
 
 > **Document:** Technical Specification & Risk Topology · **Internal engine codename:** Santenmoku · **Vitest SSOT:** **173 test files | 765 PASS Clean** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
 > **This file SSOT:** R01–R20 invariants · dual-engine topology · KV / MDD · settlement & fee bounds.
-> **Docs index:** [`docs/README.md`](../README.md) · **Risk framework:** [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](./RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) · **Standards wiki:** [`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](./STANDARD_COMPLIANCE_AND_EIP_WIKI.md) · **Grants:** [`docs/grants/`](../grants/)
+> **Docs index:** [`docs/README.md`](../README.md) · **Risk framework:** [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](./03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) · **Standards wiki:** [`02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](./02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md) · **Grants:** [`docs/grants/`](../grants/)
 
 **Philosophy — BeΔ (BeDelta Living Water v1.0):** **Be** is inspired by Bruce Lee's *"Be Water, My Friend"* — fluid, adaptive intent routing and friction-free multi-chain execution. **Δ (Delta)** denotes **market delta-neutrality** and risk-neutral execution — neutralizing directional exposure. **SliverVine** = fragmented intent protection & steel trading execution · **SliverVine Citadel Shield** = the pre-consensus execution safety primitive.
 **Entity:** SilverVine Labs · **Protocol brand:** SliverVine Citadel Shield
@@ -486,9 +486,9 @@ Routing policy: venue selected per risk flags; both paths share the same fail-cl
 
 ## 4. Standard Compliance & ERC/EIP Wiki
 
-> **See the comprehensive [Standard Compliance & ERC/EIP Wiki](./STANDARD_COMPLIANCE_AND_EIP_WIKI.md) for full technical breakdowns, compliance postures, and verification anchors.**
+> **See the comprehensive [Standard Compliance & ERC/EIP Wiki](./02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md) for full technical breakdowns, compliance postures, and verification anchors.**
 
-Citadel binds **ERC-4337** · **EIP-7562** · **EIP-712** · **ERC-1271** · **ERC-20/777** · **OpenZeppelin v5** · **ERC-7579** · **EIP-7702** · **ERC-7715** · **ERC-8196** (Draft) · **EIP-1559** · **Arbitrum Stylus SDK** · **ArbOS / Stylus** · **Robinhood Chain Ingress** · **Wasm `soil_core`** — each mapped to implementation anchors and verification probes in the dedicated wiki ([summary table](./STANDARD_COMPLIANCE_AND_EIP_WIKI.md#standards-summary-table) · [compliance posture](./STANDARD_COMPLIANCE_AND_EIP_WIKI.md#compliance-posture) · [ArbOS/Stylus](./STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor) · [RPC/WSS](./STANDARD_COMPLIANCE_AND_EIP_WIKI.md#infrastructure-rpc--wss-alchemy-ha)).
+Citadel binds **ERC-4337** · **EIP-7562** · **EIP-712** · **ERC-1271** · **ERC-20/777** · **OpenZeppelin v5** · **ERC-7579** · **EIP-7702** · **ERC-7715** · **ERC-8196** (Draft) · **EIP-1559** · **Arbitrum Stylus SDK** · **ArbOS / Stylus** · **Robinhood Chain Ingress** · **Wasm `soil_core`** — each mapped to implementation anchors and verification probes in the dedicated wiki ([summary table](./02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md#standards-summary-table) · [compliance posture](./02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md#compliance-posture) · [ArbOS/Stylus](./02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor) · [RPC/WSS](./02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md#infrastructure-rpc--wss-alchemy-ha)).
 
 ---
 
@@ -522,7 +522,7 @@ See [§2.5 Strategic Blue-Chip Ecosystem & Settlement Roadmap](#25-strategic-blu
 
 ### 5.3 Dynamic Target Range (8.2% ~ 11.8%) — Mathematical APY Breakdown
 
-Allocator-facing HUD band — **non-guaranteed**; derived from exogenous Delta-Neutral cash flows with **zero native token emissions**. Full narrative: [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md` §2.6.2](./RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#262-dynamic-target-range-82--118--mathematical-cash-flow-breakdown).
+Allocator-facing HUD band — **non-guaranteed**; derived from exogenous Delta-Neutral cash flows with **zero native token emissions**. Full narrative: [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md` §2.6.2](./03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#262-dynamic-target-range-82--118--mathematical-cash-flow-breakdown).
 
 | Yield Source Leg | Conservative Band (Lower 8.2%) | Bull/Volatile Band (Upper 11.8%) | Payer & Mechanism |
 | :--- | :--- | :--- | :--- |
@@ -762,7 +762,7 @@ Evaluator-facing comparison of SliverVine Protocol versus legacy execution, agen
 | [`docs/grants/SUBMISSION.md`](../grants/SUBMISSION.md) | Buildathon submission SSOT |
 | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) | Public repository |
 | [`docs/grants/`](../grants/) | Public grant submissions (GMX · Arbitrum) |
-| [`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](./STANDARD_COMPLIANCE_AND_EIP_WIKI.md) | ERC/EIP standards wiki · compliance posture · ArbOS/Stylus · RPC/WSS |
+| [`02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](./02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md) | ERC/EIP standards wiki · compliance posture · ArbOS/Stylus · RPC/WSS |
 | [`CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md) | Apache-2.0 SDK API |
 | [`../audit/`](../audit/) | Principal audit · Robinhood Chain safety gate |
 | [`../../docker/README.md`](../../docker/README.md) | Sidecar |
@@ -787,13 +787,13 @@ The Web3 attack surface is shifting from human UI phishing to **autonomous agent
 
 > **Telemetry note:** Figures are order-of-magnitude **industry estimates** for threat-modeling — not audited SliverVine protocol KPIs. Primary on-chain SSOT for agent identity and registration growth is [ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) telemetry on [Dune](https://dune.com/dune/erc-8004-onchain-ai-agents). See also [CryptoRank Symposium — agent-security focus](https://cryptorank.io/news/feed/fae5e-ai-agents-web3-hacking-wyoming-symposium).
 
-**Implication:** Security must evolve from post-hoc dashboards and mutable pause functions to **microsecond Pre-Broadcast Intent Firewalls** — severing toxic calldata **before** Sequencer queues, Bundler ingress, or MEV mempools. Citadel Shield targets this gap at **p50 ~106µs** Edge Wasm evaluation ([§3.5 Wasm Soil Core](#35-wasm-soil-core-m4)) — covering **88%** of the modeled on-chain risk surface per [Risk Framework §0.1](./RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee); the residual **12%** systemic tail is disclosed with Fail-Closed posture.
+**Implication:** Security must evolve from post-hoc dashboards and mutable pause functions to **microsecond Pre-Broadcast Intent Firewalls** — severing toxic calldata **before** Sequencer queues, Bundler ingress, or MEV mempools. Citadel Shield targets this gap at **p50 ~106µs** Edge Wasm evaluation ([§3.5 Wasm Soil Core](#35-wasm-soil-core-m4)) — covering **88%** of the modeled on-chain risk surface per [Risk Framework §0.1](./03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee); the residual **12%** systemic tail is disclosed with Fail-Closed posture.
 
 ### Real-World Case Studies (Why Citadel Shield is Essential)
 
 | # | Case | Loss / Impact | Citadel Alignment | Source |
 |---|------|---------------|-------------------|--------|
-| **1** | **[Jaredfromsubway.eth $7.5M Exploit (MEV Honeypot Trap)](https://etherscan.io/name/jaredfromsubway.eth)** | Automated signature logic exploited via malicious permission / honeypot traps | Validates **sub-ms Wasm pre-broadcast** `checkSoilResistance()` + honeypot RPC defense (`evaluateRpcDefenseGate()`) | [Blockaid incident analysis](https://www.blockaid.io/blog/the-predator-becomes-the-prey-how-a-counter-mev-honeypot-drained-75m-from-jaredfromsubway) · [Chainalysis](https://www.chainalysis.com/blog/sandwich-attack-jaredfromsubway-hack/) · [CertiK](https://www.certik.com/blog/jaredfromsubway-mev-bot-incident-analysis) · [The Defiant](https://thedefiant.io/news/hacks/jaredfromsubway-eth-mev-bot-drained-7-5-million-counter-mev-honeypot) |
+| **1** | **[Jaredfromsubway.eth $7.5M Exploit (MEV Honeypot Trap)](https://www.blockaid.io/blog/the-predator-becomes-the-prey-how-a-counter-mev-honeypot-drained-75m-from-jaredfromsubway)** | Automated signature logic exploited via malicious permission / honeypot traps | Validates **sub-ms Wasm pre-broadcast** `checkSoilResistance()` + honeypot RPC defense (`evaluateRpcDefenseGate()`) | [Blockaid incident analysis](https://www.blockaid.io/blog/the-predator-becomes-the-prey-how-a-counter-mev-honeypot-drained-75m-from-jaredfromsubway) · [Chainalysis](https://www.chainalysis.com/blog/sandwich-attack-jaredfromsubway-hack/) · [CertiK](https://www.certik.com/blog/jaredfromsubway-mev-bot-incident-analysis) · [The Defiant](https://thedefiant.io/news/hacks/jaredfromsubway-eth-mev-bot-drained-7-5-million-counter-mev-honeypot) |
 | **2** | **[Virtuals Protocol / BasisOS ~$531k Unbound Agent Drain](https://finance.yahoo.com/news/ai-agent-virtuals-protocol-stole-114617216.html)** | Unbound agent execution exceeded safe notional envelopes | Validates **R06/R07** · **`SESSION_KEY_NOTIONAL_CAP_USD = $5,000`** ([§3.6](#36-financial-risk-parameters--epoch-operations)) | [KuCoin — Virtuals compensation disclosure](https://www.kucoin.com/news/flash/virtuals-protocol-to-cover-full-compensation-for-basis-security-incident) · [Yahoo Finance](https://finance.yahoo.com/news/ai-agent-virtuals-protocol-stole-114617216.html) |
 | **3** | **[ElizaOS / ai16z Fraud & Governance Collapse](https://www.burwick.law/active-cases/ai16z-elizaos-token-lawsuit-doe-v-walters)** | SDNY class-action litigation — raw Node.js prompt wrappers lacked on-chain execution guarantees | Validates **bytecode predicate assertions** ([§0.1](#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec)) · EIP-712 Gate · **LLM back-off cooldown** | [Burwick Law — Doe v. Walters (SDNY)](https://www.burwick.law/active-cases/ai16z-elizaos-token-lawsuit-doe-v-walters) · [CoinDesk](https://www.coindesk.com/markets/2026/08/05/ai-agent-token-once-worth-usd2-4-billion-ends-with-founder-calling-it-dead) · [Decrypt](https://decrypt.co/374958/eliza-ai-token-dead-shuts-down-foundation-lawsuit) |
 
@@ -807,7 +807,7 @@ The Web3 attack surface is shifting from human UI phishing to **autonomous agent
 | **Session blast-radius** | ✅ $5k cap · scoped `ORDER_EXECUTE` | Varies | **Unbound drain risk** | Framework-dependent | ✅ ERC-4337 scopes |
 | **Prompt injection immunity** | ✅ Bytecode predicates | Partial | Partial | **Vulnerable** at hook | **Vulnerable** to injected UserOps |
 
-> See also [§0 Competitive Matrix — Pre-Execution vs. Post-Execution Risk](#️-competitive-matrix--pre-execution-vs-post-execution-risk) · [88% Defense Mesh](../grants/SUBMISSION.md#88-defense-mesh--honest-12-post-grant-rd-blueprint) in [`SUBMISSION.md`](../grants/SUBMISSION.md) · [Risk Spectrum §0.1](./RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) (formal **88% / 12%** + **80/20 Pareto** definition).
+> See also [§0 Competitive Matrix — Pre-Execution vs. Post-Execution Risk](#️-competitive-matrix--pre-execution-vs-post-execution-risk) · [88% Defense Mesh](../grants/SUBMISSION.md#88-defense-mesh--honest-12-post-grant-rd-blueprint) in [`SUBMISSION.md`](../grants/SUBMISSION.md) · [Risk Spectrum §0.1](./03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) (formal **88% / 12%** + **80/20 Pareto** definition).
 
 ### Supplementary Industry References
 

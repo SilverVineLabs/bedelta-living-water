@@ -45,7 +45,7 @@
 #### Innovation & Real Problem Solving — AI Behavioral Safety Substrate
 
 1. **Native LLM Back-off & Retry Intercepts**: Active **60-second cooldown lock** per `agentId` in `withCitadelShield` ([`src/sdk/decorator.ts`](../../src/sdk/decorator.ts)) prevents token-burning infinite retry loops and **RPC Rate-Limit Self-DoS** when transactions fail closed — `[Citadel Back-off] MANDATORY_COOLDOWN_ACTIVE` surfaced across ElizaOS / Virtuals / LangChain adapters (`examples/adapters/* --trip`).
-2. **Non-Semantic Bytecode Predicate Assertions**: Evaluates **raw bytecode parameters** at **p50 ~106µs** Edge Wasm rather than natural language — immune to **Indirect Prompt Injections** at the signing layer ([Technical Specification §0.1](../architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec)).
+2. **Non-Semantic Bytecode Predicate Assertions**: Evaluates **raw bytecode parameters** at **p50 ~106µs** Edge Wasm rather than natural language — immune to **Indirect Prompt Injections** at the signing layer ([Technical Specification §0.1](../architecture/01_TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec)).
 3. **Dynamic Threshold Obfuscation**: Cryptographic pseudo-random **±2–5 bps jitter** on `MAX_SLIPPAGE` / depth bounds ([`soil-threshold-jitter.ts`](../../src/services/risk-control-lib/soil-threshold-jitter.ts)) prevents MEV searchers from predicting exact **50 bps** cutoff boundaries off-chain.
 
 #### Reference Interceptor Harness — Virtuals Protocol & ElizaOS Agent Swarms
@@ -69,13 +69,13 @@ pnpm tsx examples/agent-interceptor-demo.ts --trip   # Rogue ElizaOS intent → 
 
 | Judge pointer | SSOT document |
 |---------------|---------------|
-| Three Pillars · R01–R20 | [Technical Specification §0–§3](../architecture/TECHNICAL_SPECIFICATION.md) |
+| Three Pillars · R01–R20 | [Technical Specification §0–§3](../architecture/01_TECHNICAL_SPECIFICATION.md) |
 | CLI Tier 0–5 verification | [Verification Matrix](../VERIFICATION_MATRIX.md) |
 | Dune telemetry · SQL panels | [Dune Dashboard Specification](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
 | Pendle × GMX cross-guard | [§ Core Risk Decision Matrix](#core-risk-decision-matrix-evaluatependlegmxcrossguard) · [`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts) |
-| [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) agent policy | [Technical Specification §0.1](../architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
+| [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) agent policy | [Technical Specification §0.1](../architecture/01_TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
 | Institutional DD / Basel mapping | [Due Diligence Memorandum](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
-| **80/20 boundaries & V2.0 R&D** | [Risk Spectrum §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) · [§ 88% Defense Mesh](#88-defense-mesh--honest-12-post-grant-rd-blueprint) · [`JUDGE_BRIEF.md`](../../JUDGE_BRIEF.md) |
+| **80/20 boundaries & V2.0 R&D** | [Risk Spectrum §0.1](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) · [§ 88% Defense Mesh](#88-defense-mesh--honest-12-post-grant-rd-blueprint) · [`JUDGE_BRIEF.md`](../../JUDGE_BRIEF.md) |
 
 Built on the Santenmoku internal engine (p50 ~106µs), [`@slivervine/citadel-sdk`](../../src/sdk/README.md), and consume-once EIP-712 Gate attestation — SliverVine intercepts AI trade intents **before** mempool or bundler ingress. Deep narrative: [Problem / Solution](#the-problem) · [Sponsor Integration Matrix](#sponsor-integration-matrix).
 
@@ -89,9 +89,9 @@ AI Trading Agents combine dynamic yield tokens (e.g., Pendle PTs), high-leverage
 
 SliverVine shifts risk management from "naive blocking" to **Intent-Aware Navigation**:
 
-1. **Observability**: Real-time monitoring of Pendle PT yield jitter/expiry dynamic fees, GMX maintenance margin buffers, and liquidity depth — [Pendle registry SSOT](../../src/adapters/pendle/pendle-pt-registry.ts) · [Technical Specification §1](../architecture/TECHNICAL_SPECIFICATION.md#1-core-product-identity).
+1. **Observability**: Real-time monitoring of Pendle PT yield jitter/expiry dynamic fees, GMX maintenance margin buffers, and liquidity depth — [Pendle registry SSOT](../../src/adapters/pendle/pendle-pt-registry.ts) · [Technical Specification §1](../architecture/01_TECHNICAL_SPECIFICATION.md#1-core-product-identity).
 2. **Intent Taxonomy**: Directional division separating `RISK_INCREASE` (`open`/`increase` → strict Fail-Closed evaluation) from `RISK_DECREASE` (`close`/`reduce` → greenlighted with safety routing) — [§ Core Risk Decision Matrix](#core-risk-decision-matrix-evaluatependlegmxcrossguard).
-3. **Shadow Margin Engine**: Pre-execution PT exit proceeds vs GMX maintenance margin — [`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts) · [Technical Specification §3.1](../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats).
+3. **Shadow Margin Engine**: Pre-execution PT exit proceeds vs GMX maintenance margin — [`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts) · [Technical Specification §3.1](../architecture/01_TECHNICAL_SPECIFICATION.md#31-microsecond-moats).
 
 ### Legal & Regulatory Positioning
 
@@ -101,7 +101,7 @@ SliverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 
 ## 88% Defense Mesh & Honest 12% Post-Grant R&D Blueprint
 
-> **Formal definition (SSOT):** [Risk Mitigation & Disclaimer Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) — **100%** on-chain risk surface = **88%** pre-broadcast interception mesh + **12%** insurmountable systemic residuals · **80/20 Pareto** (microstructure loss concentration) targets the acute 20% tail within Pillar 3.
+> **Formal definition (SSOT):** [Risk Mitigation & Disclaimer Framework §0.1](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) — **100%** on-chain risk surface = **88%** pre-broadcast interception mesh + **12%** insurmountable systemic residuals · **80/20 Pareto** (microstructure loss concentration) targets the acute 20% tail within Pillar 3.
 
 ### Industry Baseline (~80% or Below)
 
@@ -117,7 +117,7 @@ Traditional DeFi / Agent risk checks rely on **post-hoc analytics** or **mutable
 | 🟢 **Session Key Blast-Radius Isolation** | Scoped `ORDER_EXECUTE` + **$5,000** notional cap (`SESSION_KEY_NOTIONAL_CAP_USD`) caps key-compromise damage |
 | 🟢 **Oracle & RPC Resilience** | **30s** oracle-lag fail-closed (`ORACLE_LAG_DEADLOCK` / `ORACLE_LAG_DEADLOCK_MS = 30_000`) + **Honeypot trap RPC** defense (`evaluateRpcDefenseGate()` · 99% synthetic slippage decoy) |
 
-> **Honest engineering boundary:** Citadel is a **pre-consensus intent firewall**, not a universal risk insurer. We model **88% mesh coverage** for V1.0 and disclose the residual **12%** tail explicitly — see [Risk Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee).
+> **Honest engineering boundary:** Citadel is a **pre-consensus intent firewall**, not a universal risk insurer. We model **88% mesh coverage** for V1.0 and disclose the residual **12%** tail explicitly — see [Risk Framework §0.1](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee).
 
 ### The Remaining **12%** (Why We Need This Foundation Grant)
 
@@ -136,7 +136,7 @@ Grant allocation directly fuels our **V2.0 R&D Roadmap**:
 ## Architectural SSOT & Hardened Metrics
 
 * **Test Suite**: **173 test files | 765 PASS Clean** — re-run `pnpm test -- --run` to confirm. Full matrix: [Verification Matrix](../VERIFICATION_MATRIX.md).
-* **Formal Verification**: Consume-once and replay-denial invariant lemmas 100% code-verified via native Foundry test suite ([`SliverVineGate.t.sol`](../../SliverVineGate/test/SliverVineGate.t.sol) & [`SliverVineGate.invariant.t.sol`](../../SliverVineGate/test/SliverVineGate.invariant.t.sol)) · [Technical Specification §3](../architecture/TECHNICAL_SPECIFICATION.md#3-cross-venue-risk-engine--defense-matrix-r01r20).
+* **Formal Verification**: Consume-once and replay-denial invariant lemmas 100% code-verified via native Foundry test suite ([`SliverVineGate.t.sol`](../../SliverVineGate/test/SliverVineGate.t.sol) & [`SliverVineGate.invariant.t.sol`](../../SliverVineGate/test/SliverVineGate.invariant.t.sol)) · [Technical Specification §3](../architecture/01_TECHNICAL_SPECIFICATION.md#3-cross-venue-risk-engine--defense-matrix-r01r20).
 * **Game-Theoretic Simulation**: 10,000 Monte Carlo runs · **87.39% toxic flow blocked** · $9.88M **nominal simulated** LP capital — [`game_theory_simulation_results.json`](../telemetry/game_theory_simulation_results.json) *(simulation only; not live savings)*.
 * **Deployments**: Arbitrum One Mainnet Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) · Arbitrum Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · Robinhood Chain `46630`/`4663` — [On-Chain Verification](#on-chain-verification--arbitrum-one-42161) · [Sepolia](#on-chain-verification--arbitrum-sepolia-421614).
 
@@ -154,9 +154,9 @@ $$
 t_{\text{reflector\_p50}} \sim 106\,\mu\text{s} \ll t_{\text{mempool\_broadcast}}
 $$
 
-Full derivations: [Technical Specification §3.1](../architecture/TECHNICAL_SPECIFICATION.md#31-microsecond-moats) · [Verification Matrix](../VERIFICATION_MATRIX.md) · [`JUDGE_BRIEF.md`](../../JUDGE_BRIEF.md).
+Full derivations: [Technical Specification §3.1](../architecture/01_TECHNICAL_SPECIFICATION.md#31-microsecond-moats) · [Verification Matrix](../VERIFICATION_MATRIX.md) · [`JUDGE_BRIEF.md`](../../JUDGE_BRIEF.md).
 
-**Latency SSOT:** p50 ~106 µs Edge `checkSoilResistance()` · Wasm warm &lt;60 µs · M2M reflex `src/core/agent-citadel-guard.ts` &lt;12 µs. Full spec: [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md).
+**Latency SSOT:** p50 ~106 µs Edge `checkSoilResistance()` · Wasm warm &lt;60 µs · M2M reflex `src/core/agent-citadel-guard.ts` &lt;12 µs. Full spec: [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md).
 
 ### Version Roadmap SSOT (V1.0 / V1.5 / V2.0)
 
@@ -399,7 +399,7 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualL
 
 | Document | Purpose |
 |----------|---------|
-| [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | R01–R20 Defense Matrix · latency benchmarks |
+| [`../architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) | R01–R20 Defense Matrix · latency benchmarks |
 | [`../telemetry/DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) | Production DuneSQL feed + activity chart (Queries 0–0b) + 3 reconciliation panels · [live dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
 | [`arbitrum/ARBITRUM_ONE_PAGER.md`](./arbitrum/ARBITRUM_ONE_PAGER.md) | One-pager |
 | [`arbitrum/GRANT_PROPOSAL.md`](./arbitrum/GRANT_PROPOSAL.md) | Scope & roadmap |

@@ -10,8 +10,8 @@
 | **受眾** | Arbitrum Foundation · ZeroDev Grant 委員會 · 機構配置者 · Fund-of-Funds 盡職 |
 | **基線** | **Vitest SSOT：** **173 test files | 765 PASS Clean** · Wasm 熱路徑 **91.2 KiB gzip** · Shield **p50 ~106 µs** |
 | **即時驗證** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
-| **規格 SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
-| **風控框架 SSOT** | [`../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) |
+| **規格 SSOT** | [`../architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) |
+| **風控框架 SSOT** | [`../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) |
 | **英文 SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 
 > **哲學 — BeΔ (BeDelta Living Water v1.0)：** **Be** 源自 Bruce Lee *「Be Water, My Friend」* — 如水般流動、自適應的意圖路由與無摩擦多鏈執行。**Δ (Delta)** 為市場 **Delta 中性** 的數學符號 — 透過 GMX v2 GM + Hyperliquid 1× Short 對沖腿中和方向性敞口。**SliverVine Citadel Shield** 為將二者綁定的預共識執行安全原語。
@@ -28,7 +28,7 @@
 
 **100%** 鏈上風險總面 = **88%** 預廣播攔截網（Wasm Soil Core · p50 ~106 µs）+ **12%** 不可消除的系統性殘差（Sequencer 停機 >600s、0-day 合約漏洞、RPC 斷連）——後者採 **Fail-Closed**（`signingChannelOpen: false`）。**80/20 帕累托**（正交微結構統計）：約 **80%** 急性毒性損失來自 **20%** 微秒級深度/滑點異常，由 Pillar 3 直接針對。
 
-> **正式 SSOT：** [Risk Mitigation & Disclaimer Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee)
+> **正式 SSOT：** [Risk Mitigation & Disclaimer Framework §0.1](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee)
 
 ---
 
@@ -61,10 +61,10 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) 為包裹 Arbitrum One �
 
 | 主題 | DDIP 章節 | 延伸 SSOT |
 |------|----------|----------|
-| 60 重架構不變量 | §五（監管對齊） | [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §三 |
+| 60 重架構不變量 | §五（監管對齊） | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §三 |
 | Robinhood 三柱架構 | §2.3 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
 | Principal 安全質詢 | §二 | [`PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) |
-| Yellow Paper / R01–R20 | §2.2 | [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
+| Yellow Paper / R01–R20 | §2.2 | [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) |
 
 ---
 
@@ -163,7 +163,7 @@ SliverVine Protocol 將**誠實會計**作為硬不變量——在途流動性�
 | **Arbitrum 原生** | 即時 Soil 閘門 | **$100,000** | **$100,000** |
 | **Robinhood 護航** | ≤1h 橋接 + 結算窗口 | **$100,000** | 僅 `SETTLED` 後 |
 
-詳見 [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md` §五](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md)。
+詳見 [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md` §五](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md)。
 
 ---
 
@@ -274,8 +274,8 @@ pnpm tsx scripts/generate-survival-report.ts
 | 文檔 | 用途 |
 |------|------|
 | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | 英文官方 SSOT |
-| [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | Yellow Paper |
-| [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | 60 不變量 · 壓力框架 |
+| [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) | Yellow Paper |
+| [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | 60 不變量 · 壓力框架 |
 | [`PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) | 四項診斷質詢 |
 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | 三柱 · 橋接閘門 |
 

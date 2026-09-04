@@ -1,8 +1,8 @@
 # Standard Compliance & ERC/EIP Wiki
 
 > **Document:** SliverVine Citadel Shield — Standards Compliance & ERC/EIP Reference Wiki · **Vitest SSOT:** **173 test files | 765 PASS Clean**
-> **Breadcrumbs:** [`docs/README.md`](../README.md) · [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md) · **This file** — Standard Compliance & ERC/EIP Wiki
-> **Parent spec:** [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md) — R01–R20 invariants · dual-engine topology · settlement & fee bounds
+> **Breadcrumbs:** [`docs/README.md`](../README.md) · [`01_TECHNICAL_SPECIFICATION.md`](./01_TECHNICAL_SPECIFICATION.md) · **This file** — Standard Compliance & ERC/EIP Wiki
+> **Parent spec:** [`01_TECHNICAL_SPECIFICATION.md`](./01_TECHNICAL_SPECIFICATION.md) — R01–R20 invariants · dual-engine topology · settlement & fee bounds
 
 Official infrastructure standards map — each row links a public ERC/EIP (or venue spec) to Citadel implementation anchors and verification. The **ERC/EIP Standards Reference Wiki** below is the formal deep-dive for AA, attestation, and asset-escrow standards.
 
@@ -19,9 +19,9 @@ Official infrastructure standards map — each row links a public ERC/EIP (or ve
 | **[ERC-20](https://eips.ethereum.org/EIPS/eip-20) / [ERC-777](https://eips.ethereum.org/EIPS/eip-777)** | Non-custodial asset transfer & in-flight escrow semantics | `GMX_USDC_ARBITRUM` · `src/adapters/across-ingress-bridge.ts` · `GatedExecutor` payload binding | Across bridge tests · GMX payload tests |
 | **[OpenZeppelin Contracts v5](https://docs.openzeppelin.com/contracts/5.x/)** | On-chain gate access control & reentrancy guard | `SliverVineGate.sol` · OZ `ECDSA.tryRecover` alignment · `IngressSafetySwitch.sol` is a stateless compliance filter (no OZ import) | Foundry Gate **60 passed** · Forge property fuzz |
 | **[ERC-7579](https://eips.ethereum.org/EIPS/eip-7579)** | Modular smart-account modules — session-key permission scopes | ZeroDev Kernel v3 modular session keys · scoped `ORDER_EXECUTE` clip · daily gas sponsorship limits | Gatehouse (Pillar 1) · agent-intent SDK |
-| **[EIP-7702](https://eips.ethereum.org/EIPS/eip-7702)** | EOA Account Abstraction via `SetCode` — Agent Smart Account upgrade path (`SliverVineGate.sol` compatible) | Kernel v4 intent composer · [Technical Specification §2.4.5](./TECHNICAL_SPECIFICATION.md#245-zerodev-v4-seven-stages-one-stack-alignment-roadmap-post-grant-spec) · [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | ✅ v1.0 Delivered (Gate-compatible) · Kernel v4 adapter ⏳ V1.5 |
-| **[ERC-7715](https://eips.ethereum.org/EIPS/eip-7715)** | Advanced Wallet Permissions — session-key permission evolution target | [Technical Specification §0.1](./TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) · [Compliance Posture](#compliance-posture) · `session-key-gates.ts` · ZeroDev Kernel v3 session adapter | ✅ v1.0 Delivered (Kernel v3) · ERC-7715 universal permissions ⏳ Post-Grant |
-| **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Draft)** | AI Agent Wallet Policy — alignment only; **not a finalized standard** | [`SliverVineAgentPolicyGuard.sol`](../../contracts/src/SliverVineAgentPolicyGuard.sol) `validateAgentPolicy` / `checkAgentPolicy` · `src/core/agent-citadel-guard.ts` | Foundry `SliverVineAgentPolicyGuard.t.sol` · [Technical Specification §0.1](./TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
+| **[EIP-7702](https://eips.ethereum.org/EIPS/eip-7702)** | EOA Account Abstraction via `SetCode` — Agent Smart Account upgrade path (`SliverVineGate.sol` compatible) | Kernel v4 intent composer · [Technical Specification §2.4.5](./01_TECHNICAL_SPECIFICATION.md#245-zerodev-v4-seven-stages-one-stack-alignment-roadmap-post-grant-spec) · [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | ✅ v1.0 Delivered (Gate-compatible) · Kernel v4 adapter ⏳ V1.5 |
+| **[ERC-7715](https://eips.ethereum.org/EIPS/eip-7715)** | Advanced Wallet Permissions — session-key permission evolution target | [Technical Specification §0.1](./01_TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) · [Compliance Posture](#compliance-posture) · `session-key-gates.ts` · ZeroDev Kernel v3 session adapter | ✅ v1.0 Delivered (Kernel v3) · ERC-7715 universal permissions ⏳ Post-Grant |
+| **[ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) (Draft)** | AI Agent Wallet Policy — alignment only; **not a finalized standard** | [`SliverVineAgentPolicyGuard.sol`](../../contracts/src/SliverVineAgentPolicyGuard.sol) `validateAgentPolicy` / `checkAgentPolicy` · `src/core/agent-citadel-guard.ts` | Foundry `SliverVineAgentPolicyGuard.t.sol` · [Technical Specification §0.1](./01_TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
 | **[EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)** | Dynamic base-fee congestion sensing on Arbitrum One | Tri-Sensor **BaseFee Velocity** channel · `arbitrum-gas-guard.ts` | Gas-guard tests · Tri-Sensor Matrix |
 | **[Arbitrum Stylus SDK](https://github.com/OffchainLabs/stylus-sdk-rs)** (`0.10.7`) | WASM Soil Coprocessor Alignment — on-chain soil parity with Edge | [`contracts/stylus-probe/src/lib.rs`](../../contracts/stylus-probe/src/lib.rs) · `SliverVineSoilCoprocessor` · [Stylus docs](https://docs.arbitrum.io/stylus/reference/overview) | ✅ v1.0 Delivered · `cargo test` **5/5 PASS** · Sepolia deploy pending |
 | **ArbOS 61** | Arbitrum L2 execution / Stylus co-residence alignment (⏳ V1.0 Design Spec) | `IngressSafetySwitch.sol` · Elara ingress design · Stylus WASM parity path | Robinhood safety contracts · audit notes |
@@ -34,22 +34,22 @@ Official infrastructure standards map — each row links a public ERC/EIP (or ve
 
 ### ERC-4337 — Account Abstraction & UserOperation Structure
 
-> **Deep specification:** [Technical Specification §2.4](./TECHNICAL_SPECIFICATION.md#24-pillar-1--opt-in-zerodev-account-abstraction-integration-summary) Pillar 1 — ZeroDev Account Abstraction (Kernel v3/v4 · Paymaster · EIP-7562 · v4 Seven Stages roadmap).
+> **Deep specification:** [Technical Specification §2.4](./01_TECHNICAL_SPECIFICATION.md#24-pillar-1--opt-in-zerodev-account-abstraction-integration-summary) Pillar 1 — ZeroDev Account Abstraction (Kernel v3/v4 · Paymaster · EIP-7562 · v4 Seven Stages roadmap).
 
 | Field | Citadel binding |
 |-------|-----------------|
 | **EntryPoint** | `entryPoint07Address` — SSOT `ZERODEV_ENTRY_POINT_ADDRESS` |
-| **Kernel** | ZeroDev Kernel **v0.3.1** (`ZERODEV_KERNEL_VERSION`) — v4 adapter swap ⏳ Post-Grant (V1.5)（[§2.4.2](./TECHNICAL_SPECIFICATION.md#242-zerodev-kernel-v3--v4-session-keys-erc-7579-modular-permissions)） |
+| **Kernel** | ZeroDev Kernel **v0.3.1** (`ZERODEV_KERNEL_VERSION`) — v4 adapter swap ⏳ Post-Grant (V1.5)（[§2.4.2](./01_TECHNICAL_SPECIFICATION.md#242-zerodev-kernel-v3--v4-session-keys-erc-7579-modular-permissions)） |
 | **UserOp draft** | `sender` · `nonce` · `callData` · optional `factory`/`factoryData` · gas limits · `paymaster`/`paymasterData` · `signature` |
 | **Paymaster** | ZeroDev `zerodev.sponsorUserOperation` — per-op ≤ $0.50 · daily $10 · `zerodev-aa-gas-ledger.ts` |
 | **Pre-broadcast gate** | `verifyAgentIntent()` — `AllowedToSign = Injection ∧ Digest ∧ Soil ∧ Session ∧ Gas ∧ Attestation ∧ Armor ∧ Wasm` |
 | **106 µs decoupling** | Shield (`checkSoilResistance` · `pkg/soil_core.wasm`) runs **before** paymaster sign + bundler dispatch — Wasm powers sub-ms latency; ZeroDev is opt-in delivery only |
 
-UserOps are drafted locally, sponsored via ZeroDev paymaster middleware, and submitted only after Edge soil + static-breaker evaluation. Bundler RPC MUST advertise EntryPoint v0.7 (`supportsEntryPoint07`). ZeroDev is the **opt-in non-custodial delivery substrate** (Pillar 1); Citadel Edge Wasm is the **pre-broadcast decision SSOT** ([§2.4.1](./TECHNICAL_SPECIFICATION.md#241-role-of-zerodev-scoped-session-keys--gas-sponsorship-pillar-1-opt-in-aa-layer)).
+UserOps are drafted locally, sponsored via ZeroDev paymaster middleware, and submitted only after Edge soil + static-breaker evaluation. Bundler RPC MUST advertise EntryPoint v0.7 (`supportsEntryPoint07`). ZeroDev is the **opt-in non-custodial delivery substrate** (Pillar 1); Citadel Edge Wasm is the **pre-broadcast decision SSOT** ([§2.4.1](./01_TECHNICAL_SPECIFICATION.md#241-role-of-zerodev-scoped-session-keys--gas-sponsorship-pillar-1-opt-in-aa-layer)).
 
 ### EIP-7562 — Account Abstraction Storage Access Rules
 
-**Zero-Bundler-Rejection Invariant:** Citadel UserOps MUST NOT violate EIP-7562 opcode/storage rules during the validation phase; bundler rejection is treated as a **protocol fault**, not a retry signal. See [Technical Specification §2.4.4](./TECHNICAL_SPECIFICATION.md#244-eip-7562-zero-bundler-rejection-invariant).
+**Zero-Bundler-Rejection Invariant:** Citadel UserOps MUST NOT violate EIP-7562 opcode/storage rules during the validation phase; bundler rejection is treated as a **protocol fault**, not a retry signal. See [Technical Specification §2.4.4](./01_TECHNICAL_SPECIFICATION.md#244-eip-7562-zero-bundler-rejection-invariant).
 
 | Rule | Enforcement |
 |------|-------------|
@@ -144,7 +144,7 @@ Multi-chain HTTPS/WSS placeholders live in `.env.example` — replace `YOUR_ALCH
 
 | Document | Purpose |
 |----------|---------|
-| [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · Three Pillars · topology |
+| [`01_TECHNICAL_SPECIFICATION.md`](./01_TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · Three Pillars · topology |
 | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Pillar 1 — ZeroDev Kernel v3 AA · EIP-7702 comparative |
 | [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 — Wasm soil core · p50 ~106µs |
 | [`CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md) | Apache-2.0 SDK API |

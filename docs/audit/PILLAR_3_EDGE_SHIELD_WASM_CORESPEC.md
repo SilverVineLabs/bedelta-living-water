@@ -8,7 +8,7 @@
 | **Entity** | SilverVine Labs |
 | **Protocol** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) · Santenmoku internal engine |
 | **Scope** | Pre-Consensus Intent Firewall · `checkSoilResistance()` · `pkg/soil_core.wasm` · R01–R20 Defense Matrix · Tri-Sensor telemetry |
-| **Spec SSOT** | [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
+| **Spec SSOT** | [`docs/architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 
 > **Product identity:** **[Pillar 3: Shield]** is the **core technical moat** of SliverVine Protocol — the **Pre-Consensus Intent Firewall & GMX/HL Execution Safety Primitive**. Pillars 1 (Gatehouse) and 2 (optional ingress adapters) route capital and permissions; **Pillar 3 decides whether any broadcast may proceed** at sub-ms latency.
@@ -28,7 +28,7 @@
 | **Wasm bundle** | **&lt; 28 KiB** Cloudflare budget (`pkg/soil_core.wasm`) |
 | **Defense Matrix** | **17 Active \| 2 Refactored \| 1 Deprecated** |
 | **Fail-closed posture** | `signingChannelOpen: false` on any soil / oracle / sequencer trip |
-| **Interceptor mesh coverage** | **88%** pre-broadcast · **12%** systemic residual (Fail-Closed) — [Risk Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) |
+| **Interceptor mesh coverage** | **88%** pre-broadcast · **12%** systemic residual (Fail-Closed) — [Risk Framework §0.1](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) |
 
 ---
 
@@ -204,7 +204,7 @@ pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
 |------|------|
 | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Pillar 1 Gatehouse · ZeroDev Kernel v3 |
 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 optional ingress adapters |
-| [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | Cross-pillar topology · settlement · fee bounds |
+| [`docs/architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) | Cross-pillar topology · settlement · fee bounds |
 | [`src/services/risk-control-lib/soil-resistance.ts`](../../src/services/risk-control-lib/soil-resistance.ts) | Soil fuse SSOT |
 | [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) | Wasm soil core artifact |
 | [`tests/services/soil-resistance-latency.test.ts`](../../tests/services/soil-resistance-latency.test.ts) | Full-path p50 budget |

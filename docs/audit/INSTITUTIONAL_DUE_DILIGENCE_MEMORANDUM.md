@@ -12,8 +12,8 @@
 | **Audience** | Arbitrum Foundation · ZeroDev Grant Committee · Institutional allocators · Fund-of-funds diligence |
 | **Baseline** | **Vitest SSOT:** **173 test files \| 765 PASS Clean** · Wasm hot-path **91.2 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway) · Wasm warm **&lt;60 µs** |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
-| **Spec SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
-| **Risk Framework SSOT** | [`../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) |
+| **Spec SSOT** | [`../architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) |
+| **Risk Framework SSOT** | [`../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) |
 
 > **Philosophy — BeΔ (BeDelta Living Water v1.0):** **Be** is inspired by Bruce Lee's *"Be Water, My Friend"* — fluid, adaptive intent routing and friction-free multi-chain execution. **Δ (Delta)** denotes **market delta-neutrality** and risk-neutral execution — neutralizing directional exposure via the GMX v2 GM + Hyperliquid 1× short envelope. **SliverVine Citadel Shield** is the pre-consensus execution safety primitive that binds both.
 
@@ -35,7 +35,7 @@ This memorandum provides a **transparent, code-verified audit trail** for the Ar
 
 SliverVine models the **100% Total On-Chain Risk Surface** as a closed partition: **88%** pre-broadcast hazards intercepted at **p50 ~106 µs** via Wasm Soil Core (MEV, depth spikes **>10 bps**, oracle lag, session abuse, prompt-injection calldata, AML ingress) · **12%** insurmountable systemic residuals (sequencer halts **>600 s**, 0-day venue exploits, RPC disconnections) where Citadel applies **Fail-Closed** posture (`signingChannelOpen: false`). The **80/20 Pareto rule** (orthogonal microstructure statistic) states that **~80%** of acute toxic loss stems from **~20%** of microsecond depth/slippage anomalies — targeted directly by Pillar 3.
 
-> **Formal SSOT:** [Risk Mitigation & Disclaimer Framework §0.1](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee)
+> **Formal SSOT:** [Risk Mitigation & Disclaimer Framework §0.1](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee)
 
 ### R.1 Protocol Classification — Sophisticated Smart-Contract Infrastructure
 
@@ -119,7 +119,7 @@ Institutional allocators and sophisticated users interacting with SliverVine Pro
 3. **Do not rely on DDIP, HUD APY bands, or grant-audit telemetry** as substitutes for independent due diligence, legal review, and risk budgeting.
 4. **Recognize that Fail-Closed severance may delay or prevent execution** — potentially missing intended market opportunities (opportunity cost is a real economic risk).
 
-**Verification SSOT:** `pnpm test -- --run` · `GET /api/grant-audit` · [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §0 (disclaimers · force majeure · AI risks) · §2.5–§2.6 (economic sustainability · real yield) · §4 (ingress timing) · §6 (Basel mapping).
+**Verification SSOT:** `pnpm test -- --run` · `GET /api/grant-audit` · [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §0 (disclaimers · force majeure · AI risks) · §2.5–§2.6 (economic sustainability · real yield) · §4 (ingress timing) · §6 (Basel mapping).
 
 ---
 
@@ -153,17 +153,17 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **pre-execution Cita
 | Topic | DDIP section | Extended SSOT |
 |-------|-------------|---------------|
 | **Risk & Disclaimer** | [§ Risk & Disclaimer](#risk--disclaimer) | This document · non-custodial · residual risk table |
-| Simulation & chaos harness | §3 | This document · [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §4 |
-| Arbitrum Native vs Robinhood escort | §4 | This document · [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §5 |
-| Regulatory & institutional compliance | §5 | This document · [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §6 |
-| ArbOS Elara · Dynamic Target Range | §5.6 | [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §6.5 · [`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor) |
-| Real yield vs. toxic inflation | §2.6 (Risk Framework SSOT) | [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §2.6 |
-| 60 architectural invariants | §5.1–§5.2 | [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §3 |
+| Simulation & chaos harness | §3 | This document · [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §4 |
+| Arbitrum Native vs Robinhood escort | §4 | This document · [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §5 |
+| Regulatory & institutional compliance | §5 | This document · [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §6 |
+| ArbOS Elara · Dynamic Target Range | §5.6 | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §6.5 · [`02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor) |
+| Real yield vs. toxic inflation | §2.6 (Risk Framework SSOT) | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §2.6 |
+| 60 architectural invariants | §5.1–§5.2 | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §3 |
 | Robinhood reference adapter audit | §2.3 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
 | Principal security interrogations | §2 | [`PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) |
 | Pillar 1 — ZeroDev Gatehouse AA | — | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
 | Pillar 3 — Edge Shield Wasm core | — | [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
-| Yellow Paper / R01–R20 | §2.2 | [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
+| Yellow Paper / R01–R20 | §2.2 | [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) |
 
 ---
 
@@ -410,7 +410,7 @@ V1.0 exposes two **capital ingress modes** that converge on the same Citadel pre
 | **HL withdrawal window** | **~15 min** (both paths) | Same after hedge leg live |
 | **Recommended use** | Existing Arb USDC / GM positions | Robinhood USDG earn + institutional compliance escort |
 
-**Quant anchor:** **$100,000** is the code-verified convergence of `MIN_DEPTH_USD`, `ORDER_SIZE_MAX_USD`, Survival Benchmark `NOTIONAL_USD`, and `TECHNICAL_SPECIFICATION.md` §3.6 Alpha Vault Cap.
+**Quant anchor:** **$100,000** is the code-verified convergence of `MIN_DEPTH_USD`, `ORDER_SIZE_MAX_USD`, Survival Benchmark `NOTIONAL_USD`, and `01_TECHNICAL_SPECIFICATION.md` §3.6 Alpha Vault Cap.
 
 **Code SSOT:**
 
@@ -596,12 +596,12 @@ pnpm test -- --run # 173 test files | 765 PASS Clean
 
 ### 5.6 ArbOS Elara Compliance Alignment & Dynamic Target Range
 
-> **V1.0 Design Spec.** SliverVine Protocol's **Pillar 2 Compliance Ingress Firewall** natively aligns with the **ArbOS Elara upgrade** — Arbitrum's protocol-level ingress filtering plane — documenting **transaction-ordering awareness** as a reinforcement layer alongside Edge fail-closed gates. See [`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor).
+> **V1.0 Design Spec.** SliverVine Protocol's **Pillar 2 Compliance Ingress Firewall** natively aligns with the **ArbOS Elara upgrade** — Arbitrum's protocol-level ingress filtering plane — documenting **transaction-ordering awareness** as a reinforcement layer alongside Edge fail-closed gates. See [`02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor).
 
 | Compliance plane | Function | UI / code anchor |
 |------------------|----------|------------------|
 | **Edge SSOT (pre-broadcast)** | Soil matrix · signing channel severance · UserOp gate | `checkSoilResistance()` · `zerodev-aa-gate.ts` |
-| **Pillar 2 Compliance Ingress Firewall + ArbOS Elara** | Venue-agnostic outbound escort · inbound AML block · Robinhood / Across as **Pillar 2 Reference Escort Adapters** · Elara drops non-compliant / blacklisted senders before GM payload construction | [`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor) · `IngressSafetySwitch.sol` · `src/adapters/across-ingress-bridge.ts` |
+| **Pillar 2 Compliance Ingress Firewall + ArbOS Elara** | Venue-agnostic outbound escort · inbound AML block · Robinhood / Across as **Pillar 2 Reference Escort Adapters** · Elara drops non-compliant / blacklisted senders before GM payload construction | [`02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor) · `IngressSafetySwitch.sol` · `src/adapters/across-ingress-bridge.ts` |
 | **Sequencer / ordering sensor** | ArbOS base-fee velocity · sequencer grace — no naked opens during desync | `arbitrum-gas-guard.ts` · `sequencer-guard.ts` |
 | **Multi-tranche demo HUD** | Tranche A native vault vs Tranche B bridge state machine | `SmartRoutingDepositCard` · `deposit-tranche-config.ts` |
 | **Reactive HUD alerts** | Institutional trip copy for allocators | `compliance-trip-alerts.ts` · `LivingWaterShieldCard` · `AMLShieldCard` |
@@ -618,7 +618,7 @@ pnpm test -- --run # 173 test files | 765 PASS Clean
 
 | Parameter | Value | SSOT |
 |-----------|-------|------|
-| **Dynamic Target Range** | **8.2% ~ 11.8% APY** (non-guaranteed display band) | `App.tsx` · [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §6.5 |
+| **Dynamic Target Range** | **8.2% ~ 11.8% APY** (non-guaranteed display band) | `App.tsx` · [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §6.5 |
 | **Hurdle Gate friction buffer** | **+0.5%** (`FRICTION_BUFFER_APY = 0.005`) | `rebalance-rules.ts` |
 | **Rebalance predicate** | Deploy only when excess yield exceeds friction buffer | `resolveCapitalAllocation()` · `passesDeltaNeutralHurdle()` |
 
@@ -708,8 +708,8 @@ Ingress capacity and execution timing are fully specified in **§4**. Basel / ES
 
 | Document | Purpose |
 |----------|---------|
-| [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · formal risk equations |
-| [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Risk mitigation · disclaimers · 60 invariants · stress harness · Basel mapping |
+| [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · formal risk equations |
+| [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Risk mitigation · disclaimers · 60 invariants · stress harness · Basel mapping |
 | [`PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) | Four diagnostic interrogations · Three Pillars mapping |
 | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Pillar 1 — ZeroDev Kernel v3 AA · EIP-7702 comparative |
 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 — AML escort · inbound block · bridge accounting |

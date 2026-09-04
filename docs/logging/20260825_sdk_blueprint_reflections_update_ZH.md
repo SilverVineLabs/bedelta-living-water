@@ -26,8 +26,8 @@
 
 ## 錨點對照
 
-- 三角迴路：`docs/architecture/TECHNICAL_SPECIFICATION.md` §2
-- EIP-7562 wiki：`docs/architecture/TECHNICAL_SPECIFICATION.md` §4.0
+- 三角迴路：`docs/architecture/01_TECHNICAL_SPECIFICATION.md` §2
+- EIP-7562 wiki：`docs/architecture/01_TECHNICAL_SPECIFICATION.md` §4.0
 - Nonce healing：`src/services/session-key-adapter-lib/nonce-auto-healing.ts`
 - UI fee SSOT：`src/config/gmx-revenue.ts` · `GMX_UI_FEE_BPS = 10`
 

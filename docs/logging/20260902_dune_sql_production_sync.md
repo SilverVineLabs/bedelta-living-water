@@ -21,7 +21,7 @@
 - `docs/grants/SUBMISSION.md`
 - `docs/VERIFICATION_MATRIX.md`
 - `docs/sdk/CITADEL_SDK_BLUEPRINT.md`
-- `docs/architecture/TECHNICAL_SPECIFICATION.md`
+- `docs/architecture/01_TECHNICAL_SPECIFICATION.md`
 
 ## Brand SSOT
 

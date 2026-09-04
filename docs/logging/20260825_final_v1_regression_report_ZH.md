@@ -80,10 +80,10 @@ Wrangler dry-run 與本地 gzip 一致；`nodejs_compat` 已移除（Phase C 優
 
 | # | 任務 | 交付 | 狀態 |
 |---|------|------|------|
-| 2/6 | EIP/ERC 標準 Wiki | `TECHNICAL_SPECIFICATION.md` §4.0 · `20260825_eip_standards_wiki_update.md` | ✅ |
+| 2/6 | EIP/ERC 標準 Wiki | `01_TECHNICAL_SPECIFICATION.md` §4.0 · `20260825_eip_standards_wiki_update.md` | ✅ |
 | 3/6 | Daily Compliance SDK | `exportDailyRobinhoodComplianceReport()` · SDK test | ✅ |
 | 4/6 | SDK Blueprint 不變量 | `CITADEL_SDK_BLUEPRINT.md` Triangle + 4 invariants · log | ✅ |
-| 5/6 | Smart Routing Tech Spec | `TECHNICAL_SPECIFICATION.md` §2.3 Pillar 2 · log | ✅ |
+| 5/6 | Smart Routing Tech Spec | `01_TECHNICAL_SPECIFICATION.md` §2.3 Pillar 2 · log | ✅ |
 | 6/6 | 最終回歸 | 本報告 | ✅ |
 
 **Phase A–C（Smart Routing 程式）：** 已合併於 `d05fdf1` — GMX registry · payload binding · UI stub · bundle guard。
@@ -93,7 +93,7 @@ Wrangler dry-run 與本地 gzip 一致；`nodejs_compat` 已移除（Phase C 優
 ## 5. 工作區未提交變更
 
 ```
- M docs/architecture/TECHNICAL_SPECIFICATION.md
+ M docs/architecture/01_TECHNICAL_SPECIFICATION.md
  M docs/sdk/CITADEL_SDK_BLUEPRINT.md
  M src/sdk/index.ts
  M src/sdk/robinhood-audit-snapshot.ts

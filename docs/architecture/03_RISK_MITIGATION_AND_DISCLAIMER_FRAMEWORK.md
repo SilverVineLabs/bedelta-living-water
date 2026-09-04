@@ -6,7 +6,7 @@
 > **Version:** v1.0 → v2.0 Roadmap Alignment
 > **Baseline:** Vitest **173 test files | 765 PASS Clean** · Wasm hot-path **91.2 KiB gzip** · Shield **p50 ~106 µs**
 > **Core Principle:** Honest Accounting, Physical Invariants (`lostUsd ≡ 0`), and Venue-Agnostic Pre-Execution Citadel Protection.
-> **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md)
+> **Spec SSOT:** [`01_TECHNICAL_SPECIFICATION.md`](./01_TECHNICAL_SPECIFICATION.md)
 
 > **Philosophy — BeΔ (BeDelta Living Water v1.0):** **Be** is inspired by Bruce Lee's *"Be Water, My Friend"* — fluid, adaptive intent routing and friction-free multi-chain execution. **Δ (Delta)** denotes **market delta-neutrality** and risk-neutral execution. **SliverVine Citadel Shield** is the pre-consensus execution safety primitive that binds both.
 
@@ -191,7 +191,7 @@ Even in a V2.0 CaaS / Orbit Shield setup, ZeroDev remains the Gatehouse engine:
 | **Scoped Security** | 30s TTL Session Keys · `ORDER_EXECUTE` only | Zero withdrawal scope preserved |
 | **Atomic Composition** | 1-click GM + HL hedge under Citadel gates | EOA → Agent Smart Account · CaaS tenant UserOps |
 
-**Spec SSOT:** [`TECHNICAL_SPECIFICATION.md` §2.4](./TECHNICAL_SPECIFICATION.md)
+**Spec SSOT:** [`01_TECHNICAL_SPECIFICATION.md` §2.4](./01_TECHNICAL_SPECIFICATION.md)
 
 ### 2.5 Economic Sustainability Philosophy: Why Low Fees Without Depth Destroy Yield
 
@@ -340,7 +340,7 @@ Real yield stack (conceptual):
 
 ## 3. The 60 Reflective Architectural Invariants (Summary Matrix)
 
-> **Defense Matrix (R01–R20):** 17 Active · 2 Refactored · 1 Deprecated — see [`TECHNICAL_SPECIFICATION.md` §3.3](./TECHNICAL_SPECIFICATION.md)
+> **Defense Matrix (R01–R20):** 17 Active · 2 Refactored · 1 Deprecated — see [`01_TECHNICAL_SPECIFICATION.md` §3.3](./01_TECHNICAL_SPECIFICATION.md)
 > **Status legend:** **✅ Code-Verified** = v1.0 baseline with code/test anchor · **⏳ Roadmap Spec** = V1.5/V2.0 design — not claimed as shipped
 
 ### I. Honest Accounting & Cross-Chain Physics (1–10)
@@ -524,7 +524,7 @@ V1.0 operates two **distinct capital ingress modes**. They share the same Citade
 | **Depth prerequisite** | `MIN_DEPTH_USD` = **$100,000** on HL book | Same hedge leg requirements after settlement |
 | **Gap-window tightening** | HL orderbook gap guard: depth **2×** ($200k) · leverage **3× → 1×** | Bridge timeout fail-closed — no naked GM/HL legs during in-flight |
 
-**Quant anchor:** The **$100,000** convergence is not arbitrary — it is the intersection of `MIN_DEPTH_USD`, `ORDER_SIZE_MAX_USD`, Survival Benchmark `NOTIONAL_USD`, and `TECHNICAL_SPECIFICATION.md` §3.6 Alpha Vault Cap.
+**Quant anchor:** The **$100,000** convergence is not arbitrary — it is the intersection of `MIN_DEPTH_USD`, `ORDER_SIZE_MAX_USD`, Survival Benchmark `NOTIONAL_USD`, and `01_TECHNICAL_SPECIFICATION.md` §3.6 Alpha Vault Cap.
 
 ### 5.2 Execution Timing: Instant vs. In-Flight Bridge State Machine
 
@@ -618,7 +618,7 @@ lostUsd: number; // Always 0 — pending bridge liquidity is never booked as los
 | Layer | Compliance function | Transaction-ordering awareness | Status |
 |-------|---------------------|-------------------------------|--------|
 | **Edge Citadel (SSOT)** | `checkSoilResistance()` · R01–R20 · signing channel severance | Pre-broadcast intent ordering · UserOp gate before bundler | ✅ v1.0 Delivered (Sepolia verified) |
-| **Pillar 2 AML Firewall + ArbOS Elara** | Outbound-only Robinhood escort · `AML_INBOUND_TO_ROBINHOOD_BLOCKED` · Elara ingress drops non-compliant / blacklisted senders before GM payload construction | Sequencer / ArbOS ordering sensor alignment · complements **`IngressSafetySwitch.sol`** | ⏳ V1.0 Design Spec ([`STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](./STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor)) |
+| **Pillar 2 AML Firewall + ArbOS Elara** | Outbound-only Robinhood escort · `AML_INBOUND_TO_ROBINHOOD_BLOCKED` · Elara ingress drops non-compliant / blacklisted senders before GM payload construction | Sequencer / ArbOS ordering sensor alignment · complements **`IngressSafetySwitch.sol`** | ⏳ V1.0 Design Spec ([`02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](./02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor)) |
 | **UI reactive HUD** | `LivingWaterShieldCard` · `AMLShieldCard` · `SmartRoutingDepositCard` tranche switcher | Trip banners · Tranche A native vs Tranche B bridge state machine | ✅ v1.0 UI SSOT |
 
 **Dynamic Target Range (non-guaranteed yield band):**
@@ -676,6 +676,6 @@ gmx-smart-route-payload-binding.ts → buildGmxSmartRoutePayloadBinding()
 
 | Document | Purpose |
 |----------|---------|
-| [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · Triangle Liquidity Loop |
+| [`01_TECHNICAL_SPECIFICATION.md`](./01_TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · Triangle Liquidity Loop |
 | [`../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 Compliance Ingress Firewall Audit |
 | [`../sdk/CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md) | `@slivervine/citadel-sdk` integration |

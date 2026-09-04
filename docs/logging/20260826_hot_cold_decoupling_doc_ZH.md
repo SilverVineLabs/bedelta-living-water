@@ -40,7 +40,7 @@
 - `docs/logging/20260825_worker_bundle_lean_surgery_report.md`
 - `src/worker-entry.ts` · `src/worker-cron-entry.ts` · `src/worker-scheduled.ts`
 - `wrangler.toml` · `wrangler.cron.toml`
-- `docs/architecture/TECHNICAL_SPECIFICATION.md`
+- `docs/architecture/01_TECHNICAL_SPECIFICATION.md`
 
 ---
 

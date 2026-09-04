@@ -8,7 +8,7 @@
 | **Entity** | SilverVine Labs |
 | **Protocol** | SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) · Santenmoku internal engine |
 | **Scope** | Pillar 2 Compliance Ingress Firewall · Robinhood Chain **46630** (testnet) · **4663** (mainnet) · Across reference escort · Arbitrum One **42161** |
-| **Spec SSOT** | [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
+| **Spec SSOT** | [`docs/architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 
 > **Product identity boundary:** Robinhood Chain and Across are **optional Pillar 2 Reference Ingress Adapters** demonstrating multi-chain compliance escort accounting — they are integration examples, **not** the core product identity of SliverVine Protocol. The protocol's center of gravity remains the **Pre-Consensus Intent Firewall & GMX/HL Execution Safety Primitive (Pillar 3 Shield)** — see [README § Three Pillars](../../README.md).
@@ -182,7 +182,7 @@ cd SliverVineGate && forge test && cd ..
 
 | Path | Role |
 |------|------|
-| [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | Triangle Liquidity Loop · Segregated Tranches · Elara alignment |
+| [`docs/architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) | Triangle Liquidity Loop · Segregated Tranches · Elara alignment |
 | [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield · R01–R20 · Tri-Sensor |
 | [`docs/audit/PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) | Principal Audit v1.0.0-rc1 · survival matrix |
 | [`src/adapters/across-ingress-bridge.ts`](../../src/adapters/across-ingress-bridge.ts) | Edge adapter — unidirectional routing + AML block |

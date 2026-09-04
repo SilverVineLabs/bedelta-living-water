@@ -14,7 +14,7 @@
 | Live DApp | [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) |
 | Regression bar | **173 test files | 765 PASS Clean** · `tsc --noEmit` clean |
 | License | BUSL-1.1 → Apache-2.0 at M2 / $10M TVL or 24 months |
-| Spec SSOT | `[docs/architecture/TECHNICAL_SPECIFICATION.md](../../architecture/TECHNICAL_SPECIFICATION.md)` |
+| Spec SSOT | `[docs/architecture/01_TECHNICAL_SPECIFICATION.md](../../architecture/01_TECHNICAL_SPECIFICATION.md)` |
 
 
 ---

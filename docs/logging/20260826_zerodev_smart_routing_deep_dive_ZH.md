@@ -35,7 +35,7 @@
 - `src/config/gmx-revenue.ts` · `gmx-smart-route-payload-binding.ts` · `gated-executor-payload.ts`
 - `SliverVineGate/src/GatedExecutor.sol`
 - `r-chain-yield-router.ts` · `unidirectional-bridge.ts` · `smart-route-deposit-flow.ts`
-- `docs/architecture/TECHNICAL_SPECIFICATION.md` §2.3
+- `docs/architecture/01_TECHNICAL_SPECIFICATION.md` §2.3
 - `tests/adapters/gmx-smart-route-payload-binding.test.ts`
 
 ---

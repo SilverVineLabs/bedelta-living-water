@@ -4,7 +4,7 @@
 
 **日期：** 2026-08-25  
 **分支：** `v1.0_push_BDLW`  
-**範圍：** `docs/architecture/TECHNICAL_SPECIFICATION.md` §4  
+**範圍：** `docs/architecture/01_TECHNICAL_SPECIFICATION.md` §4  
 **作者：** Lead Architect（Agent）
 
 ---

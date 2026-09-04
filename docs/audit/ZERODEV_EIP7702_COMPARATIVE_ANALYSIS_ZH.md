@@ -9,7 +9,7 @@
 | **實體** | SilverVine Labs · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
 | **基線** | Vitest **173 test files | 765 PASS Clean** · Wasm **91.2 KiB gzip** · Shield **p50 ~106 µs** |
 | **英文 SSOT** | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
-| **關聯 SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
+| **關聯 SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) §2.4 |
 
 > **範圍說明：** 本文對照 **面向消費者的 EIP-7702 AA 實作** 與 SliverVine Protocol **機構級預執行風控底層**。屬架構盡職 artifact — 非法律或投資建議。
 
@@ -145,9 +145,9 @@ Kernel Smart Account → payloadHash 綁定 → checkSoilResistance() (106µs)
 | 文檔 | 用途 |
 |------|------|
 | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | 完整 DDIP · Risk & Disclaimer |
-| [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 | ZeroDev · 106 µs 耦合 |
+| [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) §2.4 | ZeroDev · 106 µs 耦合 |
 | [`../internal/ZERODEV_SMART_ROUTING_DEEP_DIVE_ZH.md`](../internal/ZERODEV_SMART_ROUTING_DEEP_DIVE_ZH.md) | Smart Routing 深度解析 |
-| [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | 60 不變量 · 真實收益 |
+| [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | 60 不變量 · 真實收益 |
 
 ---
 
