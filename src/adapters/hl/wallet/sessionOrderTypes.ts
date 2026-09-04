@@ -1,4 +1,4 @@
-import type { TerminalLogLevel } from "../../../components/hud/Section3/terminal-log";
+import type { TerminalLogLevel } from "../../../lib/gui-bridge/terminal-log";
 
 export interface BrowserLive5TxLogEntry {
   level: TerminalLogLevel;

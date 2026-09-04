@@ -5,11 +5,11 @@
 
 import type { SystemState } from "../systemState";
 import { MAX_SLIPPAGE } from "../risk-control";
-import type { Root17DailyState } from "../../v2/services/root17-daily";
+import type { Root17DailyState } from "../../services/root17-daily";
 import {
   checkRoot17DailyLimit,
   createRoot17DailyState,
-} from "../../v2/services/root17-daily";
+} from "../../services/root17-daily";
 import type { CircuitBreakerTarget } from "./deadlock-registry";
 import {
   armDeadlock,

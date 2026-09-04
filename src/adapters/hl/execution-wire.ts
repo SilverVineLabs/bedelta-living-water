@@ -10,7 +10,7 @@ import {
   assertMaxOrderClipUsd,
   shouldTriggerReduceOnlyFlatten,
 } from "../../config/risk-parameters";
-import { passesHighFundingAsymmetryFilter } from "../../v2/services/step2/scoring";
+import { passesHighFundingAsymmetryFilter } from "../../services/step2-scoring";
 import {
   PreTradeValidationError,
   type PreTradeValidationInput,

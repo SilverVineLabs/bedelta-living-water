@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { extendToFullGrantAuditView } from "../../src/components/hud/v0/grant-audit-view-adapter";
-import { buildExecutionProofDetails } from "../../src/components/hud/v0/execution-proof-build";
+import { extendToFullGrantAuditView } from "../../src/lib/gui-bridge/grant-audit/grant-audit-view-adapter";
+import { buildExecutionProofDetails } from "../../src/lib/gui-bridge/grant-audit/execution-proof-build";
 import { GRANT_AUDIT_VENUE_MOCK_VIEW } from "../fixtures/grant-audit-venue-mock";
 
 describe("execution-proof-build", () => {

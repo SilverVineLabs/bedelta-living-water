@@ -3,7 +3,7 @@ import {
   runArbitrumNativeDepositPreview,
   runDepositPreviewByTranche,
   runSmartRouteDepositPreview,
-} from "../../src/components/hud/smart-route-deposit-flow";
+} from "../../src/lib/gui-bridge/grant-audit/smart-route-deposit-flow";
 
 const WALLET = "0xcccccccccccccccccccccccccccccccccccccccc";
 const NOW = 1_700_000_000_000;

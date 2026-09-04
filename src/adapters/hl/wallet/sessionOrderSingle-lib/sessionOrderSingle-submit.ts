@@ -8,7 +8,7 @@ import {
   formatLive5TxRejectLog,
   formatLive5TxSubmitLog,
   formatSessionKeyAgentRegistrationLog,
-} from "../../../../components/hud/Section1/section1-hud-log-formatters";
+} from "../../../../lib/gui-bridge/section1-hud-log-formatters";
 import { buildLive5TxFillRecord } from "../sessionOrderFillRecord";
 import {
   extractHlExchangeErrorDetail,

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildGmxGrantAuditCertificate } from "../../src/components/hud/gmx-grant-audit-certificate";
+import { buildGmxGrantAuditCertificate } from "../../src/lib/gui-bridge/grant-audit/gmx-grant-audit-certificate";
 import type { ArbitrumCitadelRiskMetrics } from "../../src/routes/grant-audit-lib/grant-audit-citadel-metrics";
 import type { HlTelemetryMetrics } from "../../src/routes/grant-audit-lib/grant-audit.types";
 

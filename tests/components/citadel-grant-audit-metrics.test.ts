@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { ArbitrumCitadelRiskMetrics } from "../../src/routes/grant-audit-lib/grant-audit-citadel-metrics";
 import type { HlTelemetryMetrics } from "../../src/routes/grant-audit-lib/grant-audit.types";
-import { resolveGrantAuditVenueView } from "../../src/components/hud/citadel-grant-audit-metrics";
+import { resolveGrantAuditVenueView } from "../../src/lib/gui-bridge/grant-audit/citadel-grant-audit-metrics";
 
 const MOCK_GMX_LIQUIDITY = 802.43;
 const MOCK_HL_TOTAL = 499.96;

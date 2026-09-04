@@ -11,7 +11,7 @@ import {
   checkRoot17DailyLimit,
   createRoot17DailyState,
   recordRoot17SlTrip,
-} from "../src/v2/services/root17-daily";
+} from "../src/services/root17-daily";
 
 describe("Effective Max SL boundary", () => {
   it("computes (equity × 1%) + $100", () => {

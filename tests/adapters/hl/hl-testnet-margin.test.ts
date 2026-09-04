@@ -12,7 +12,7 @@ import { loadVerified5TxResults } from "../../../src/data/verified-5tx";
 import {
   buildBatchConsoleHydrationLogs,
   createBatchFromLiveResults,
-} from "../../../src/components/hud/Section1/section1-hud-engine";
+} from "../../../src/lib/gui-bridge/section1-hud-engine";
 
 describe("hl-testnet-margin preflight", () => {
   it("parseHlPerpsMarginSnapshot reads marginSummary.accountValue", () => {

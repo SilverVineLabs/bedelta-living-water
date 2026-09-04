@@ -18,7 +18,7 @@ import {
   checkSoilResistance,
   vineWrapProtection,
 } from "../src/services/risk-control";
-import { checkRoot17DailyLimit } from "../src/v2/services/root17-daily";
+import { checkRoot17DailyLimit } from "../src/services/root17-daily";
 import {
   __resetArbitrumGasGuardForTests,
   __setArbitrumGasGuardForTests,

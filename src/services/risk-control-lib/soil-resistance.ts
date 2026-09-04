@@ -35,8 +35,6 @@ import {
 } from "./soil-resistance-math";
 import { resolveJitteredSoilThresholds } from "./soil-threshold-jitter";
 import {
-  MAX_SLIPPAGE,
-  resolveSoilMinDepthUsd,
   VINE_SOIL_MAX_SLIPPAGE,
   type SoilResistanceInput,
   type SoilResistanceResult,

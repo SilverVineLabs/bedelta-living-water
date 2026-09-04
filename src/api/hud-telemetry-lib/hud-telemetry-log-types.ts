@@ -3,7 +3,7 @@
  */
 
 import type { CircuitBreakerTerminalEntry } from "../../services/rootProtectionService";
-import type { TerminalLogLevel } from "../../components/hud/Section3/terminal-log";
+import type { TerminalLogLevel } from "../../lib/gui-bridge/terminal-log";
 
 export type { CircuitBreakerTerminalEntry };
 

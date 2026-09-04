@@ -5,7 +5,7 @@ import {
   ORACLE_LAG_DEADLOCK,
   SYSTEM_FAIL_CLOSED_TRIP,
   resolveComplianceAlertsFromReasons,
-} from "../../src/components/compliance-trip-alerts";
+} from "../../src/lib/gui-bridge/compliance-trip-alerts";
 
 describe("compliance-trip-alerts", () => {
   it("resolves SYSTEM_FAIL_CLOSED_TRIP from signing channel severance", () => {
