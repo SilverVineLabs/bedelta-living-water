@@ -42,8 +42,8 @@ const BUNDLE_GZIP_LIMIT_KIB = 150.0 as const;
 function main(): void {
   const full = process.argv.includes("--full");
   if (full || !existsSync(join(ROOT, "dist", "index.html"))) {
-    console.log("[bundle:measure] building SPA…");
-    const spa = run("pnpm", ["run", "build:spa"]);
+    console.log("[bundle:measure] building static assets…");
+    const spa = run("pnpm", ["run", "build:assets"]);
     if (!spa.ok) {
       console.error(spa.stderr || spa.stdout);
       process.exit(spa.status ?? 1);

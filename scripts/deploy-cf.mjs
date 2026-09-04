@@ -30,7 +30,7 @@ function assertFile(relPath, hint) {
 }
 
 assertFile("wrangler.toml", "Sole Worker SSOT — name=bedelta-living-water");
-assertFile("dist/index.html", "Run pnpm run build:spa first");
+assertFile("dist/index.html", "Run pnpm run build:assets first");
 
 console.log("[deploy:cf] Typecheck…");
 run("pnpm", ["exec", "tsc", "--noEmit"]);
@@ -38,8 +38,8 @@ run("pnpm", ["exec", "tsc", "--noEmit"]);
 console.log("[deploy:cf] Test suite…");
 run("pnpm", ["exec", "vitest", "run"]);
 
-console.log("[deploy:cf] SPA build…");
-run("pnpm", ["run", "build:spa"]);
+console.log("[deploy:cf] Static assets…");
+run("pnpm", ["run", "build:assets"]);
 
 console.log("[deploy:cf] Wrangler deploy…");
 run("pnpm", ["exec", "wrangler", "deploy"]);

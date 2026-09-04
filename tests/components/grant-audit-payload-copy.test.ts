@@ -4,7 +4,7 @@ import {
   copyGrantAuditPayload,
   serializeGrantAuditPayload,
 } from "../../src/lib/gui-bridge/grant-audit/grant-audit-payload-copy";
-import { formatDualVenueLatencyLabel } from "../../src/lib/gui-bridge/grant-audit/use-dual-venue-latency-probe";
+import { formatDualVenueLatencyLabel } from "../../src/lib/gui-bridge/grant-audit/dual-venue-latency";
 
 describe("grant-audit-payload-copy", () => {
   it("serializes fallback payload as pretty JSON", () => {

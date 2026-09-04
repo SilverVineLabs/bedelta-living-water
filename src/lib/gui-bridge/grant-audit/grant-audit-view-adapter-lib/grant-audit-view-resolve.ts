@@ -6,14 +6,13 @@ import {
   GRANT_AUDIT_SWR_GAS_YIELD_CAP_PCT,
   GRANT_AUDIT_SWR_ORACLE_LAG_MS,
 } from "../../../../routes/grant-audit-lib/grant-audit-swr-telemetry";
-import { GAS_CAP_PCT } from "../use-arbitrum-citadel-audit";
+import { GAS_CAP_PCT, type GrantAuditViewInput } from "../grant-audit-constants";
 import {
   SLIVERVINE_HUD_DAPP_NODE_URL,
   SILVERVINE_PROTOCOL_SHIELD_URL,
 } from "../../grant-ui-ssot";
 import type { GrantAuditVenueView } from "../citadel-grant-audit-metrics";
 import { resolveGrantAuditVenueView } from "../citadel-grant-audit-metrics";
-import type { useArbitrumCitadelAudit } from "../use-arbitrum-citadel-audit";
 import type { FullGrantAuditVenueView } from "../grant-audit-view-types";
 import { buildGrantAuditV0ViewFallback } from "../grant-audit-v0-telemetry-fallback";
 import {
@@ -21,7 +20,6 @@ import {
   deriveNetApyPctFromTvl,
 } from "../../../../services/retail-vault-yield-telemetry";
 import { buildSepoliaArbiscanTxUrl } from "../../../../routes/grant-audit-lib/sepolia-dual-leg-proof.types";
-import type { SepoliaDualLegProof } from "../../../../routes/grant-audit-lib/sepolia-dual-leg-proof.types";
 import type { GrantAuditClientPayload } from "../grant-audit-fetch";
 import {
   AA_GATEWAY_DISABLED_LABEL,
@@ -33,14 +31,6 @@ import {
   V0_VITEST_FILES,
   V0_VITEST_PASS,
 } from "./grant-audit-view-presets";
-
-type GrantAuditViewInput = Omit<
-  Pick<
-    ReturnType<typeof useArbitrumCitadelAudit>,
-    "c" | "hl" | "pollSeq" | "lagMs" | "seq" | "gas" | "resolved" | "lagHot" | "gasPct" | "gasFill" | "lagPct" | "graceLeft"
-  >,
-  "gasFill"
-> & { gasFill: number | string; sepoliaDualLegProof?: SepoliaDualLegProof | null };
 
 function resolveGasFillPct(value: number | string | undefined): number {
   if (typeof value === "number") return value;

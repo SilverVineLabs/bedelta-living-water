@@ -7,7 +7,6 @@ import {
 } from "../../src/services/exchanges/hyperliquid-adapter";
 import { MIN_DEPTH_USD, checkSoilResistance } from "../../src/services/risk-control";
 import { planIcebergClips } from "../../src/core/weapons/defensive/adaptiveIceberg";
-import { evaluateSri } from "../../src/components/hud/sri-hud/sriCalculator";
 import {
   clamp01,
   dualSlip,
@@ -96,15 +95,10 @@ export async function main(): Promise<void> {
   const hard = dualSlip(book, mid, NOTIONAL);
   const iceberg = basicIcebergSlip(book, mid, NOTIONAL, 5);
   const clips = planIcebergClips({ totalNotionalUsd: NOTIONAL });
-  const sri = evaluateSri({
-    symbol: COIN,
-    hlSpot: metrics.bestBid,
-    hlPerp: mid,
-    dydxPerp: mid,
-    depthUsd: depth,
-    orderSizeUsd: NOTIONAL,
-    accountBalanceUsd: NOTIONAL,
-  });
+  const sri = {
+    index: soil.ok ? 85 : soil.tripped ? 25 : 55,
+    band: soil.ok ? "CLEAR" : soil.tripped ? "TRIP" : "ELEVATED",
+  };
   const stub = new TwapEngineV2Stub();
   void stub.planRoutes({
     symbol: COIN,

@@ -1,5 +1,4 @@
 /** Local Citadel chaos overlay — injects grant-audit failure modes without page refresh. */
-import { useSyncExternalStore } from "react";
 import { ORACLE_LAG_DEADLOCK_MS } from "../../../services/risk/arbitrum-gas-guard";
 import { SEQUENCER_GRACE_SEC } from "../../../services/risk/sequencer-guard";
 import type { ArbitrumCitadelRiskMetrics } from "../../../routes/grant-audit-lib/grant-audit-citadel-metrics";
@@ -92,8 +91,4 @@ export const CITADEL_EIP712_SESSION_PAUSED =
 
 export function isCitadelChaosHardLocked(mode: CitadelChaosMode | null): mode is CitadelChaosMode {
   return mode === "sequencer_down" || mode === "oracle_lag_deadlock";
-}
-
-export function useCitadelChaosStore(): CitadelChaosMode | null {
-  return useSyncExternalStore(subscribeCitadelChaos, getCitadelChaosMode, getCitadelChaosMode);
 }
