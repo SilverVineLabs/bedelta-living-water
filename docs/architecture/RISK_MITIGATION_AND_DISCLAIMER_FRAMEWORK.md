@@ -439,6 +439,8 @@ Real yield stack (conceptual):
 
 SliverVine Protocol treats **simulation as a first-class risk artifact** — not a marketing appendix. All harnesses below are offline or read-only against live market data; they never mutate production signing state unless explicitly invoked with `--live`.
 
+> **SSOT verification hub:** All CLI commands, pillar mapping, and expected outputs → [`docs/VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md)
+
 ### 4.1 Survival Benchmark (HL Mainnet L2 + Dual-Radar)
 
 The **Survival Benchmark** is a 30-day lookback institutional stress report that fuses Hyperliquid mainnet L2 orderbook walks, Binance basis, funding history, and Citadel soil audits.
@@ -502,6 +504,7 @@ zerodev-aa-gate.ts → evaluateStaticBreakerMatrix() + Citadel risk gate
 | **Grant E2E Demo** | `pnpm demo:pipeline` (default **dry-run**) | Full Citadel pipeline simulation; pass `--live` only for controlled mainnet ignition |
 | **5-TX Verified Proof** | `pnpm verify:5tx` / `pnpm verify:grant` | Hyperliquid testnet 5-TX anchor with notional tiers ($1K / $100K / $1M) |
 | **Negative Proofs** | `pnpm verify:negative` | Confirms soil trips on depth breach (`DEPTH_USD < MIN_DEPTH_USD`) |
+| **AI Agent Interceptor** | `pnpm demo:agent` | `@slivervine/citadel-sdk` `withCitadelShield` — ALLOW / `--trip` FAIL_CLOSED |
 
 > Production soil fuse on Edge remains **`checkSoilResistance()`** — dry-run harnesses validate adjacent paths without replacing the Worker SSOT.
 
@@ -668,6 +671,8 @@ gmx-smart-route-payload-binding.ts → buildGmxSmartRoutePayloadBinding()
 | Full regression | `pnpm test -- --run` | **173 test files | 765 PASS Clean** |
 | Bridge invariants | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` | **5/5 PASS** |
 | Live audit | `GET /api/grant-audit` | `lostUsd: 0` · guard states exposed |
+
+> **Full verification matrix:** [`docs/VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md) — Express → Three Pillars Inside → Outside
 
 | Document | Purpose |
 |----------|---------|

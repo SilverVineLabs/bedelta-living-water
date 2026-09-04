@@ -9,7 +9,7 @@
 | **Live Dune Telemetry Portal** | [`https://bedeltawater.slivervine.xyz`](https://bedeltawater.slivervine.xyz) (Redirects to official Dune Dashboard) |
 | **Headless Audit Endpoint** | [`https://bedeltawater.slivervine.xyz/api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **Repo** | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) |
-| **Tests** | `pnpm test -- --run` → **173 test files | 765 PASS Clean** |
+| **Tests** | `pnpm test -- --run` → **173 test files | 765 PASS Clean** · full matrix → [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) |
 | **Deep docs** | [`docs/grants/SUBMISSION.md`](./docs/grants/SUBMISSION.md) · [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) |
 
 > **Headless Infrastructure Protocol:** Core interaction is API/SDK Native (`@slivervine/citadel-sdk`) & CLI HUD.
@@ -22,9 +22,11 @@ SliverVine is **not** a Wasm slippage calculator. It is a **pre-consensus execut
 
 ```bash
 pnpm test -- --run
-pnpm tsx examples/agent-interceptor-demo.ts          # ALLOW
-pnpm tsx examples/agent-interceptor-demo.ts --trip   # FAIL_CLOSED
+pnpm demo:agent          # ALLOW
+pnpm demo:agent --trip   # FAIL_CLOSED
 ```
+
+> All verification commands: [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md)
 
 ---
 
@@ -94,7 +96,7 @@ const execute = withCitadelShield(async (intent) => agent.swap(intent));
 from langchain_core.tools import BaseTool  # SlivervinePreExecutionGuardTool in adapter module
 ```
 
-Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/adapters/) (TS + Python) · Reference harness: [`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts)
+Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/adapters/) (TS + Python) · Reference harness: `pnpm demo:agent` ([`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts))
 
 ---
 

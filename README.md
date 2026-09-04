@@ -91,7 +91,7 @@ Canonical interactive demo commands for judges:
 3. **Path 2:** `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` — isolated E2E, no host toolchain drift.
 4. `grant-advanced-resilience-benchmark.ts` shows the sub-ms Wasm Shield latency path.
 
-For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API Verification` section below.
+For the full dual-axis verification hub (Express → Three Pillars Inside → Three Pillars Outside), see [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md).
 
 ---
 
@@ -186,35 +186,25 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 
 ## 🛡️ Auditor — 30-Second CLI & API Verification
 
+> **SSOT:** All verification commands, pillar mapping, and expected outputs live in [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md).
+
 ```bash
-# 1. Full Vitest suite (173 test files | 765 PASS Clean)
-pnpm test -- --run
+# Zone A — Express (recommended first pass)
+pnpm run demo:e2e && pnpm test -- --run
 
-# 2. 3-Tier Security Matrix (Fast / Security / Nightly)
-pnpm run audit:fast # fast tier → docs/audit/security-scorecard.json (tsc + security slice + Solhint + Gitleaks)
-pnpm run audit:security # security tier 5/0/0 → docs/audit/static-analysis-report.json (Vitest + Forge + Slither + Aderyn + pnpm-audit)
-pnpm audit:nightly # Echidna Property Fuzz + Deep Fuzz (exploratory)
-
-# Formal verification — native Foundry invariant tests (SliverVineGate.t.sol & SliverVineGate.invariant.t.sol)
-cd SliverVineGate && forge test && cd ..
-
-# 3. Contract unit tests, fuzzing, & gas benchmark
-cd SliverVineGate && forge test --gas-report && cd .. # default fuzz: 5,120 (5×1,024)
-pnpm audit:nightly # deep fuzz: 327,675 (5×65,535)
-
-# 4. Run Off-chain Resilience & Latency Benchmark
-npx tsx scripts/grant-advanced-resilience-benchmark.ts
-
-# 5. HL Testnet 5-trade provenance (grant-audit /api/grant-audit payload)
-pnpm exec vitest run tests/services/hl-5-trade-provenance.test.ts
-
-# 6. Robinhood Chain (46630) → Arbitrum unidirectional Across bridge edge cases
+# Zone B — Inside Three Pillars
+pnpm test:zerodev
 pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
+cd SliverVineGate && forge test && cd ..
+pnpm audit:fast && pnpm audit:security
 
-# 7. Dune Telemetry (Sepolia Live Verification & Production SQL Spec)
-# npx tsx scripts/emit-sepolia-telemetry-events.ts
-# https://dune.com/silvervinelabs/silvervine-citadel-telemetry
+# Zone C — Outside Three Pillars
+pnpm demo:agent
+pnpm tsx scripts/generate-survival-report.ts
+curl -s https://bedeltawater.slivervine.xyz/api/grant-audit | jq .provenanceVerified
 ```
+
+Full command matrix, narratives, and bundle checks → [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md).
 
 ---
 
@@ -280,7 +270,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 
 | # | Document | Role |
 |---|----------|------|
-| 1 | [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) | CLI Tier 0–5 verification entry |
+| 1 | [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) | SSOT verification hub — Express → Three Pillars Inside → Outside |
 | 2 | [`docs/architecture/TECHNICAL_SPECIFICATION.md`](./docs/architecture/TECHNICAL_SPECIFICATION.md) | Yellow Paper · R01–R20 risk matrix |
 | 3 | [`docs/audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./docs/audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Institutional DDIP · Basel III alignment |
 | 4 | [`docs/audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./docs/audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | ZeroDev AA vs. pre-execution Wasm substrate |
