@@ -2,8 +2,8 @@
 /**
  * Unified E2E Citadel Demo — 5-step institutional trade lifecycle (grant auditor CLI).
  *
- * Step 1: [Pillar 3] Edge Shield / Wasm Soil Core — checkSoilResistance() + Deadman Switch
- * Step 2: [Pillar 2] Compliance Ingress Firewall — Robinhood/Across escort · lostUsd ≡ 0
+ * Step 1: [Pillar 1] Gatehouse + [Pillar 3] Edge Shield — ZeroDev/EIP-712 + Wasm Soil + Deadman
+ * Step 2: [Optional Pillar 2] Reference Ingress Adapter — Robinhood/Across escort · lostUsd ≡ 0
  * Step 3: GMX v2 Underweight Rebalance & UI Fee Rebase (+10 bps uiFeeReceiver)
  * Step 4: Hyperliquid 1× Short Session Key Hedge Envelope — cross-venue Δnet proof
  * Step 5: [R20] Physical Deadlock / Fail-Closed Circuit Breaker — EIP-712 severance
@@ -116,6 +116,8 @@ function highlightDemoLine(line: string): string {
   out = out.replace(/uiFeeReceiver/gi, `${YELLOW}uiFeeReceiver${RESET}`);
   out = out.replace(/\+\s*10\s*bps/gi, `${YELLOW}+10 bps${RESET}`);
   out = out.replace(/<\s*60\s*µs/gi, `${CYAN}<60µs${RESET}`);
+  out = out.replace(/Optional Pillar 2/g, `${BRIGHT_CYAN}Optional Pillar 2${RESET}`);
+  out = out.replace(/The Gatehouse/g, `${BRIGHT_CYAN}The Gatehouse${RESET}`);
   out = out.replace(/Pillar [123]/g, (m) => `${BRIGHT_CYAN}${m}${RESET}`);
   out = out.replace(/Architecture:/g, `${CYAN}Architecture:${RESET}`);
   out = out.replace(/Wasm Core Hot-Path/g, `${BRIGHT_CYAN}Wasm Core Hot-Path${RESET}`);
@@ -164,10 +166,12 @@ function parseMode(argv: string[]): DemoMode {
   return "dry-run";
 }
 
-function logStep(n: number, title: string, architecture: string): void {
+function logStep(n: number, title: string, architecture: string | string[]): void {
   demoLog("");
   demoLog(`── Step ${n}: ${title} ──`);
-  demoLog(`    Architecture: ${architecture}`);
+  for (const line of Array.isArray(architecture) ? architecture : [architecture]) {
+    demoLog(`    Architecture: ${line}`);
+  }
 }
 
 function sha16(payload: unknown): string {
@@ -220,8 +224,11 @@ function step1CitadelPreExec(): {
 } {
   logStep(
     1,
-    "Citadel Pre-Execution — Wasm Soil + Deadman Switch",
-    "[Pillar 3: Edge Shield / Wasm Soil Core] checkSoilResistance() sub-ms intent clearing + Deadman Switch",
+    "Citadel Pre-Execution — Gatehouse + Wasm Soil + Deadman Switch",
+    [
+      "[Pillar 1: The Gatehouse] ZeroDev Kernel v3 session keys + EIP-712 intent scopes (sessionOk, allowedToSign) — secure dry-run adapter for zero-friction judge verification (deep regression: pnpm test:zerodev)",
+      "[Pillar 3: Edge Shield / Wasm Soil Core] checkSoilResistance() sub-ms intent clearing + Deadman Switch",
+    ],
   );
   const wasmOk = ensureSoilWasm();
   demoLog(
@@ -321,8 +328,8 @@ function step2RobinhoodEscort(): {
 } {
   logStep(
     2,
-    "Robinhood 46630 → 42161 Unidirectional Escort & AML Ingress Block",
-    "[Pillar 2: Compliance Ingress Firewall] Unidirectional Across/Robinhood Escort accounting with lostUsd ≡ 0",
+    "Reference Ingress Adapter — Robinhood 46630 → 42161 Escort & AML Block",
+    "[Optional Pillar 2 Reference Ingress Adapter (e.g., Robinhood Chain / Across)] Integration reference only — not core product identity · unidirectional escort accounting with lostUsd ≡ 0",
   );
   const nowMs = Date.now();
 
