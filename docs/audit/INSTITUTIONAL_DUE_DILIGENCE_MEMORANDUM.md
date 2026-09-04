@@ -10,7 +10,7 @@
 | **Product** | **SliverVine Citadel Shield** — Pre-Consensus Intent Firewall & Execution Safety Primitive |
 | **Identity** | **SliverVine Citadel Shield** on **SliverVine Protocol** (BeDelta Living Water v1.0 / BeΔ) — Sub-ms 0-Gas Pre-Broadcast Safety Citadel & Risk Navigator for AI Agents on Arbitrum |
 | **Audience** | Arbitrum Foundation · ZeroDev Grant Committee · Institutional allocators · Fund-of-funds diligence |
-| **Baseline** | **Vitest SSOT:** **173 test files \| 765 PASS Clean** · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway) · Wasm warm **&lt;60 µs** |
+| **Baseline** | **Vitest SSOT:** **173 test files \| 765 PASS Clean** · Wasm hot-path **91.2 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway) · Wasm warm **&lt;60 µs** |
 | **Live Proof** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **Spec SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **Risk Framework SSOT** | [`../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) |

@@ -164,7 +164,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 * **Vitest SSOT**: 🧪 **173 test files | 765 PASS Clean** on `pnpm test -- --run`
 * **Chaos Matrix**: 🌪️ **255 Severe Failure Cases | 0 Crashes**
 * **Edge Decision Latency**: ⏱️ **SLO &lt; 1.0ms | p50 ~106 μs Shield/TS Gateway | Wasm warm &lt;60 μs | Pure Math: 0.0002 ms (200 ns)**
-* **Worker Bundle**: 📦 **87.76 KiB gzip** measured hot path (`pnpm bundle:measure`) · **162.49 KiB gzip** full Edge deployment artifact
+* **Worker Bundle**: 📦 **91.2 KiB gzip** measured hot path (`pnpm bundle:measure`) · **369.69 KiB raw** Worker upload (`limitKiB: 150` · `pass: true`)
 
 ---
 
@@ -174,7 +174,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 |-----------|--------|-----------------------------|
 | **M0: Operational Foundation** | ✅ Delivered | WSL / PNPM Monorepo, Cloudflare Edge Worker pipeline, and CI/CD strict typecheck. |
 | **M1: On-Chain Citadel Gate** | ✅ Delivered | `SliverVineGate.sol` core invariant locks · **327,675 deep fuzz** (`FOUNDRY_PROFILE=deep`) · 25k gas bounds. |
-| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, **173 test files | 765 PASS Clean**, 162.49 KiB gzip bundle, sub-ms latency. |
+| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, **173 test files | 765 PASS Clean**, 91.2 KiB gzip bundle, sub-ms latency. |
 | **M3: Dual-Chain & ZeroDev AA** | ✅ Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7) | ZeroDev Kernel v3 AA Adapter · optional Robinhood Chain / Across (`46630`/`4663`) **Pillar 2 Reference Escort Adapters** into Arbitrum. |
 | **M4: WASM Engine & IP Moat** | ✅ Delivered | Rust `#![no_std]` Wasm core (`pkg/soil_core.wasm`) — Cloudflare budget `<28kb`, hot-path exec `<60µs` — & `@slivervine/citadel-sdk` shipped. |
 | **M5: TCA Data & Hyperliquid** | ✅ Delivered (evolving) | TCA / grant-audit surfaces & HL Testnet 5-trade provenance — **Live TCA Analytics HUD actively evolving**. |

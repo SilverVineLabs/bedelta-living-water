@@ -12,7 +12,7 @@
 
 | 指標 | 優化前 | 優化後 | 目標 |
 |------|--------|--------|------|
-| **Gzip** | 158.84 KiB | **87.76 KiB** | ≤ 150.0 KiB |
+| **Gzip** | 158.84 KiB | **91.2 KiB gzip** | ≤ 150.0 KiB |
 | **Raw** | 702.26 KiB | 357.46 KiB | — |
 | **Headroom** | 0.15 KiB | **62.24 KiB** | — |
 | **Vitest** | 765 PASS | **765 PASS** | 765 |
@@ -71,7 +71,7 @@
 ## 3. 驗證結果
 
 ```bash
-pnpm bundle:measure   # 87.76 KiB / 150.0 KiB PASS
+pnpm bundle:measure   # 91.2 KiB gzip / 150.0 KiB PASS
 pnpm test             # 173 test files | 765 PASS (Proposal Baseline)
 cd SliverVineGate && forge test  # 60/60 PASS
 ```

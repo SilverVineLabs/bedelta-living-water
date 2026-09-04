@@ -48,7 +48,7 @@ pnpm bundle:measure # 見下方輸出
 | 指標 | 結果 |
 |------|------|
 | Vitest | **765 PASS**（173 test files） |
-| Bundle gzip | **87.76 KiB / 150.0 KiB PASS**（零回歸） |
+| Bundle gzip | **91.2 KiB gzip / 150.0 KiB PASS**（零回歸） |
 | 修改行數 | LivingWaterShieldCard + App ≈ **< 100 行** |
 
 ---

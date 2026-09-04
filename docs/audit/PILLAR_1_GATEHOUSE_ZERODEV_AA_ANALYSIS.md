@@ -7,7 +7,7 @@
 | **Classification** | Grant / Institutional Allocator · AA Architecture Benchmark |
 | **Branch baseline** | `v1.0_push_BDLW` |
 | **Entity** | SilverVine Labs · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
-| **Baseline** | **Vitest SSOT:** **173 test files | 765 PASS Clean** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
+| **Baseline** | **Vitest SSOT:** **173 test files | 765 PASS Clean** · Wasm **91.2 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
 | **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
 > **Scope note:** This document compares **consumer-focused EIP-7702 AA implementations** with SliverVine Protocol's **institutional-grade pre-execution risk substrate**. It is an architectural diligence artifact — not legal or investment advice.
@@ -99,7 +99,7 @@ Consumer stacks often simulate transactions **after** UserOp construction. Slive
 |--------|-------------|------|
 | **Shield latency (p50)** | **~106 µs** — Shield/TS Gateway path | Edge `checkSoilResistance()` · `pkg/soil_core.wasm` |
 | **Wasm warm execution** | **&lt;60 µs** | `pkg/soil_core.wasm` hot path |
-| **Worker bundle (measured)** | **87.76 KiB gzip** | `pnpm bundle:measure` |
+| **Worker bundle (measured)** | **91.2 KiB gzip** | `pnpm bundle:measure` |
 | **Slippage fuse** | **0.5%** (`MAX_SLIPPAGE`) | `soil-resistance-types.ts` |
 | **Depth floor** | **$100,000** (`MIN_DEPTH_USD`) | soil matrix |
 | **Trip behavior** | `TRIP_SOIL_RESISTANCE` · no broadcast | `zerodev-aa-gate.test.ts` |
@@ -187,7 +187,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 | 3 | Session R07 $5k cap | `pnpm exec vitest run tests/services/session-key-gates.test.ts` | Severance on breach |
 | 4 | 30s heartbeat expiry | `pnpm exec vitest run tests/services/nonce-auto-healing.test.ts` | Lock on expiry |
 | 5 | Bridge honest accounting | `pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts` | **5/5 · lostUsd ≡ 0** |
-| 6 | Wasm bundle budget | `pnpm bundle:measure` | **87.76 KiB gzip** |
+| 6 | Wasm bundle budget | `pnpm bundle:measure` | **91.2 KiB gzip** |
 | 7 | Live audit | `GET /api/grant-audit` | Guard states exposed |
 
 ---

@@ -33,7 +33,7 @@
   status={{
     marketState: "🌊 CLEAR (Optimal Delta Balance)",
     marketStateVariant: "clear",
-    edgeEngineLabel: "87.76 KiB Wasm Hot-Path",
+    edgeEngineLabel: "91.2 KiB gzip measured hot path",
     skewPremiumLabel: "+5bps ~ +10bps uiFeeReceiver",
   }}
   logLines={[

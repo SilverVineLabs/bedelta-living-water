@@ -8,7 +8,7 @@
 | **實體** | SilverVine Labs |
 | **協議** | SliverVine / SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) · Santenmoku 風控引擎 |
 | **受眾** | Arbitrum Foundation · ZeroDev Grant 委員會 · 機構配置者 · Fund-of-Funds 盡職 |
-| **基線** | **Vitest SSOT：** **173 test files | 765 PASS Clean** · Wasm 熱路徑 **87.76 KiB gzip** · Shield **p50 ~106 µs** |
+| **基線** | **Vitest SSOT：** **173 test files | 765 PASS Clean** · Wasm 熱路徑 **91.2 KiB gzip** · Shield **p50 ~106 µs** |
 | **即時驗證** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **規格 SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **風控框架 SSOT** | [`../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) |

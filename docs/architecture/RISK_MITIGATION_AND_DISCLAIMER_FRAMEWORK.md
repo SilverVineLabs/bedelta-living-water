@@ -4,7 +4,7 @@
 > **Protocol:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) · Santenmoku internal engine
 > **Document Status:** Official SSOT for Arbitrum Foundation · ZeroDev Grant Committees · Institutional allocators
 > **Version:** v1.0 → v2.0 Roadmap Alignment
-> **Baseline:** Vitest **173 test files | 765 PASS Clean** · Wasm hot-path **87.76 KiB gzip** · Shield **p50 ~106 µs**
+> **Baseline:** Vitest **173 test files | 765 PASS Clean** · Wasm hot-path **91.2 KiB gzip** · Shield **p50 ~106 µs**
 > **Core Principle:** Honest Accounting, Physical Invariants (`lostUsd ≡ 0`), and Venue-Agnostic Pre-Execution Citadel Protection.
 > **Spec SSOT:** [`TECHNICAL_SPECIFICATION.md`](./TECHNICAL_SPECIFICATION.md)
 
@@ -356,7 +356,7 @@ Real yield stack (conceptual):
 |---|--------|-----------|-----------|
 | 31 | ✅ | **Venue-Agnostic Shield** | `checkSoilResistance()` on abstract Soil state — independent of venue |
 | 32 | ✅ | **p50 ~106 µs Hot Path** | Rust `#![no_std]` Wasm on Cloudflare Edge |
-| 33 | ✅ | **Hot/Cold Decoupling** | 87.76 KiB hot path isolated from 5-min Cron Workers; zero GC pauses |
+| 33 | ✅ | **Hot/Cold Decoupling** | 91.2 KiB gzip hot path isolated from 5-min Cron Workers; zero GC pauses |
 | 34 | ✅ | **Wasm Budget** | `<28kb` artifact · `<60µs` warm execution (`pkg/soil_core.wasm`) |
 | 35 | ✅ | **R01 Soil Resistance** | Depth · cross-spread · slippage fuse — fail-closed pre-broadcast |
 | 36 | ✅ | **R04 PGATE Latency** | `PGATE_MAX_LATENCY_MS` = 200 — rejects stale venue timestamps |
@@ -393,7 +393,7 @@ Real yield stack (conceptual):
 | 57 | ⏳ | **PoR De-peg Defense** | Chainlink Proof-of-Reserve >0.5% RWA de-peg → execution hard-lock |
 | 58 | ⏳ | **EIP-7702 Zero-Friction Onboarding** | EOA wallet → Smart Account without asset migration |
 | 59 | ⏳ | **Dynamic Hurdle Rate** | Performance fee charged only above Aave benchmark + 1.5% *(Hurdle-rate probe only — not a yield-stacking product track)* |
-| 60 | ⏳ | **Immutable B2B License** | Static 87.76 KiB Wasm core powering CaaS ecosystem subscriptions |
+| 60 | ⏳ | **Immutable B2B License** | Static 91.2 KiB gzip Worker hot path powering CaaS ecosystem subscriptions |
 
 ---
 

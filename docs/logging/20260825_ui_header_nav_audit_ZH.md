@@ -31,7 +31,7 @@
   telemetry={{
     protocolState: "🌊 LIVING WATER FLOWING",
     edgeLatencyLabel: "106µs (p50)",
-    workerHeadroomLabel: "87.76 KiB",
+    workerHeadroomLabel: "91.2 KiB gzip",
   }}
   onConnectWallet={() => {/* ZeroDev session key flow */}}
 />

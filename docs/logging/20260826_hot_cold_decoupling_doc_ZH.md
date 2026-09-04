@@ -23,7 +23,7 @@
 ### 文件涵蓋範圍
 
 1. **五大物理優勢（繁體中文）**
-   - L1/L2 CPU Cache 駐留（87.76 KiB Core Gate）
+   - L1/L2 CPU Cache 駐留（91.2 KiB gzip measured hot path）
    - 零冷啟動延遲（< 1 ms 解析 · SLO 對齊）
    - Heap & Zero-GC 隔離（主 Worker STW 暫停自由）
    - 爆炸半徑隔離（Cron 故障不衝擊 106 µs 風險閘門）

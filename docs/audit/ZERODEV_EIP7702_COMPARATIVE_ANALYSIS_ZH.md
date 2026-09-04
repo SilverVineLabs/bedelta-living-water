@@ -7,7 +7,7 @@
 | **分類** | Grant / 機構 Allocator · AA 架構基準 |
 | **分支基線** | `v1.0_push_BDLW` |
 | **實體** | SilverVine Labs · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
-| **基線** | Vitest **173 test files | 765 PASS Clean** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** |
+| **基線** | Vitest **173 test files | 765 PASS Clean** · Wasm **91.2 KiB gzip** · Shield **p50 ~106 µs** |
 | **英文 SSOT** | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
 | **關聯 SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
@@ -83,7 +83,7 @@ Pillar 3 SHIELD      → checkSoilResistance() · pkg/soil_core.wasm · Fail-Clo
 | 指標 | 鎖定值 | SSOT |
 |------|--------|------|
 | **Shield p50** | **~106 µs** | `checkSoilResistance()` · `soil_core.wasm` |
-| **Worker bundle** | **87.76 KiB gzip** | `pnpm bundle:measure` |
+| **Worker bundle** | **91.2 KiB gzip** | `pnpm bundle:measure` |
 | **滑點 fuse** | **0.5%** | `MAX_SLIPPAGE` |
 | **深度下限** | **$100,000** | soil matrix |
 
