@@ -169,7 +169,7 @@ Start CLI map: [`docs/VERIFICATION_MATRIX.md`](../VERIFICATION_MATRIX.md).
 | [`docs/README.md`](../README.md) | Grant reviewer navigation |
 | [`SUBMISSION.md`](../grants/SUBMISSION.md) | Buildathon pack |
 | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Allocator diligence |
-| [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) | Option C stress + 60 invariants |
+| [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Option C stress + 60 invariants |
 
 **Prepared by:** SilverVine Labs · HackQuest dual-video SSOT  
 **Last updated:** 2026-09-02 · Branch: `V1.0_b4_Buildaton_Submisson`

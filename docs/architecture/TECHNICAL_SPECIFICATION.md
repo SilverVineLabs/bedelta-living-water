@@ -2,7 +2,7 @@
 
 > **Document:** Technical Specification & Risk Topology · **Internal engine codename:** Santenmoku · **Vitest SSOT:** **173 test files | 765 PASS Clean** · Security-tier `5/0/0 PASS` · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm Core `<28kb` Cloudflare budget, `<60µs` execution.
 > **This file SSOT:** R01–R20 invariants · dual-engine topology · KV / MDD · settlement & fee bounds.
-> **Docs index:** [`docs/README.md`](../README.md) · **Grants:** [`docs/grants/`](../grants/)
+> **Docs index:** [`docs/README.md`](../README.md) · **Risk framework:** [`RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](./RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) · **Grants:** [`docs/grants/`](../grants/)
 
 **Philosophy — BeΔ (BeDelta Living Water v1.0):** **Be** is inspired by Bruce Lee's *"Be Water, My Friend"* — fluid, adaptive intent routing and friction-free multi-chain execution. **Δ (Delta)** denotes **market delta-neutrality** and risk-neutral execution — neutralizing directional exposure. **SliverVine** = fragmented intent protection & steel trading execution · **SliverVine Citadel Shield** = the pre-consensus execution safety primitive.
 **Entity:** SilverVine Labs · **Protocol brand:** SliverVine Citadel Shield
