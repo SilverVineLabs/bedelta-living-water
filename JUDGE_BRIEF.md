@@ -117,9 +117,26 @@ Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/a
 
 ---
 
-## Honest Scope (Do Not Over-Claim)
+## Honest Engineering Boundaries & Grant R&D Roadmap
 
-- Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) on mainnet deploy — public verification only
+### The 80/20 Security Principle
+
+| Layer | Scope |
+|-------|-------|
+| **80% Covered (Citadel)** | Pre-broadcast execution safety · 0-Gas Wasm soil fusion (p50 ~106µs) · EIP-712 consume-once · LLM back-off cooldown · dynamic threshold jitter · bytecode predicate assertions |
+| **20% Out-of-Scope (Disclosed)** | GMX/HL protocol & oracle black swans · RPC eclipse · KMS/HSM supply-chain breach · malicious admin keys |
+
+### Why We Need This Grant (V2.0 R&D Blueprint)
+
+No single SDK guarantees 100% immunity. Grant funding accelerates:
+
+1. **TEE / Enclave Key Isolation** — AWS KMS / TEE Enclaves for production signer hardening.
+2. **Multi-RPC Consensus Verification** — Quorum cross-checks before Wasm evaluation (anti-eclipse).
+3. **Pre-Execution Threat Intelligence** — Dune **PEV** feeds into decentralized agent alert networks.
+
+### V1.0 Honest Limits (Do Not Over-Claim)
+
+- Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) — public verification only
 - Reference Agent harness — not an official Virtuals/ElizaOS/LangChain partnership attestation
 - Stylus = **V2.0 roadmap probe**; live gateway = **Solidity Gate**
 - Monte Carlo **87.39%** toxic flow blocked — *nominal simulated*; not live TVL saved

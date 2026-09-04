@@ -75,6 +75,7 @@ pnpm tsx examples/agent-interceptor-demo.ts --trip   # Rogue ElizaOS intent → 
 | Pendle × GMX cross-guard | [§ Core Risk Decision Matrix](#core-risk-decision-matrix-evaluatependlegmxcrossguard) · [`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts) |
 | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) agent policy | [Technical Specification §0.1](../architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
 | Institutional DD / Basel mapping | [Due Diligence Memorandum](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
+| **80/20 boundaries & V2.0 R&D** | [§ Honest Engineering Boundaries](#honest-engineering-boundaries--grant-rd-roadmap) · [`JUDGE_BRIEF.md`](../../JUDGE_BRIEF.md) |
 
 Built on the Santenmoku internal engine (p50 ~106µs), [`@slivervine/citadel-sdk`](../../src/sdk/README.md), and consume-once EIP-712 Gate attestation — SliverVine intercepts AI trade intents **before** mempool or bundler ingress. Deep narrative: [Problem / Solution](#the-problem) · [Sponsor Integration Matrix](#sponsor-integration-matrix).
 
@@ -95,6 +96,29 @@ SliverVine shifts risk management from "naive blocking" to **Intent-Aware Naviga
 ### Legal & Regulatory Positioning
 
 > **DISCLAIMER**: SliverVine Protocol provides software-based risk analytics, monitoring, policy enforcement, and execution-safety tooling only. It does NOT provide asset custody, underwriting, indemnity, reimbursement, profit guarantees, or any form of insurance-like coverage. All risk decisions are algorithmic and based on user-defined policy parameters and protocol-aware market signals. SLA commitments apply strictly to system availability, sub-millisecond latency, logging integrity, and observability uptime. Fees charged are software access, API, and computational SLA routing fees, creating no obligation to compensate financial losses.
+
+---
+
+## Honest Engineering Boundaries & Grant R&D Roadmap
+
+### The 80/20 Security Principle
+
+| Layer | Scope | What Citadel Covers / Does Not Cover |
+|-------|-------|--------------------------------------|
+| **80% Covered (SliverVine Citadel Scope)** | Pre-broadcast execution safety plane | 0-Gas Wasm soil fusion (`checkSoilResistance()` p50 ~106µs) · EIP-712 consume-once invariant · LLM infinite-retry back-off cooldown (`withCitadelShield`) · dynamic ±2–5 bps threshold jitter against MEV sniping · non-semantic bytecode predicate assertions |
+| **20% Out-of-Scope Systemic Blindspots (Honest Disclosure)** | External venue & infrastructure tail risks | Protocol / oracle black swans on GMX · Hyperliquid · infrastructure **RPC eclipse** attacks · **KMS / HSM** supply-chain breaches · malicious or compromised admin keys |
+
+> **Honest engineering boundary:** Citadel is a **pre-consensus intent firewall**, not a universal risk insurer. We disclose the 20% tail explicitly so judges and integrators can reason about residual exposure.
+
+### Why We Need This Grant (V2.0 R&D Blueprint)
+
+Technology and AI capabilities evolve rapidly; **no single SDK can guarantee 100% immunity**. Grant funding directly accelerates our **V2.0 R&D Roadmap**:
+
+1. **TEE / Enclave Key Isolation** — Integrating AWS KMS / TEE Enclaves to eliminate supply-chain key compromises beyond Bootstrap Ignition Keys.
+2. **Multi-RPC Consensus Verification** — Protecting against RPC Eclipse attacks via quorum cross-checks before Wasm soil evaluation.
+3. **Pre-Execution Threat Intelligence** — Expanding Dune telemetry datasets to feed real-time **PEV (Prevented Exploit Volume)** alerts into decentralized agent networks.
+
+**V1.0 honest limits (do not over-claim):** Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) on mainnet deploy — public verification only · Reference Agent harness — not an official Virtuals / ElizaOS / LangChain partnership attestation · Stylus = **V2.0 roadmap probe**; live gateway = **Solidity Gate** · Monte Carlo **87.39%** toxic flow blocked — *nominal simulated*; not live TVL saved.
 
 ---
 
