@@ -779,21 +779,23 @@ Evaluator-facing comparison of SliverVine Protocol versus legacy execution, agen
 
 The Web3 attack surface is shifting from human UI phishing to **autonomous agent execution pipelines**. Industry telemetry indicates the agentic web is already material on-chain:
 
-| Metric | Estimate |
-|--------|----------|
-| **AI agents deployed** | **17,000+** autonomous on-chain agents |
-| **Share of on-chain transactions** | **~19%** agent-attributed activity |
-| **Daily Active Wallets (DAW) touchpoints** | **~4.5M** wallets interacting with agent frameworks |
+| Metric | Estimate | Source |
+|--------|----------|--------|
+| **AI agents deployed** | **17,000+** autonomous on-chain agents | [Dune — ERC-8004: Trustless Agent Activity](https://dune.com/dune/erc-8004-onchain-ai-agents) · [ERC-8004 (EIP)](https://eips.ethereum.org/EIPS/eip-8004) · [Dune AI Agents hub](https://dune.com/agents) |
+| **Share of on-chain transactions** | **~19%** agent-attributed activity | [Dune AI Agents](https://dune.com/agents) · [ERC-8004 cross-chain registrations](https://dune.com/queries/6705945) · agent-attribution telemetry (industry estimate) |
+| **Daily Active Wallets (DAW) touchpoints** | **~4.5M** wallets interacting with agent frameworks | [Dune AI Agents](https://dune.com/agents) · on-chain wallet–agent interaction dashboards (industry estimate) |
+
+> **Telemetry note:** Figures are order-of-magnitude **industry estimates** for threat-modeling — not audited SliverVine protocol KPIs. Primary on-chain SSOT for agent identity and registration growth is [ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) telemetry on [Dune](https://dune.com/dune/erc-8004-onchain-ai-agents). See also [CryptoRank Symposium — agent-security focus](https://cryptorank.io/news/feed/fae5e-ai-agents-web3-hacking-wyoming-symposium).
 
 **Implication:** Security must evolve from post-hoc dashboards and mutable pause functions to **microsecond Pre-Broadcast Intent Firewalls** — severing toxic calldata **before** Sequencer queues, Bundler ingress, or MEV mempools. Citadel Shield targets this gap at **p50 ~106µs** Edge Wasm evaluation ([§3.5 Wasm Soil Core](#35-wasm-soil-core-m4)) — covering **88%** of the modeled on-chain risk surface per [Risk Framework §0.1](./RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee); the residual **12%** systemic tail is disclosed with Fail-Closed posture.
 
 ### Real-World Case Studies (Why Citadel Shield is Essential)
 
-| # | Case | Loss / Impact | Citadel Alignment |
-|---|------|---------------|-------------------|
-| **1** | **Jaredfromsubway.eth $7.5M Exploit (MEV Honeypot Trap)** | Automated signature logic exploited via malicious permission / honeypot traps | Validates **sub-ms Wasm pre-broadcast** `checkSoilResistance()` + honeypot RPC defense (`evaluateRpcDefenseGate()`) |
-| **2** | **Virtuals Protocol $500k Unbound Agent Drain** | Unbound agent execution exceeded safe notional envelopes | Validates **R06/R07** · **`SESSION_KEY_NOTIONAL_CAP_USD = $5,000`** ([§3.6](#36-financial-risk-parameters--epoch-operations)) |
-| **3** | **ElizaOS / ai16z Fraud & Governance Collapse** | SDNY class-action litigation — raw Node.js prompt wrappers lacked on-chain execution guarantees | Validates **bytecode predicate assertions** ([§0.1](#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec)) · EIP-712 Gate · **LLM back-off cooldown** |
+| # | Case | Loss / Impact | Citadel Alignment | Source |
+|---|------|---------------|-------------------|--------|
+| **1** | **[Jaredfromsubway.eth $7.5M Exploit (MEV Honeypot Trap)](https://etherscan.io/name/jaredfromsubway.eth)** | Automated signature logic exploited via malicious permission / honeypot traps | Validates **sub-ms Wasm pre-broadcast** `checkSoilResistance()` + honeypot RPC defense (`evaluateRpcDefenseGate()`) | [Blockaid incident analysis](https://www.blockaid.io/blog/the-predator-becomes-the-prey-how-a-counter-mev-honeypot-drained-75m-from-jaredfromsubway) · [Chainalysis](https://www.chainalysis.com/blog/sandwich-attack-jaredfromsubway-hack/) · [CertiK](https://www.certik.com/blog/jaredfromsubway-mev-bot-incident-analysis) · [The Defiant](https://thedefiant.io/news/hacks/jaredfromsubway-eth-mev-bot-drained-7-5-million-counter-mev-honeypot) |
+| **2** | **[Virtuals Protocol / BasisOS ~$531k Unbound Agent Drain](https://finance.yahoo.com/news/ai-agent-virtuals-protocol-stole-114617216.html)** | Unbound agent execution exceeded safe notional envelopes | Validates **R06/R07** · **`SESSION_KEY_NOTIONAL_CAP_USD = $5,000`** ([§3.6](#36-financial-risk-parameters--epoch-operations)) | [KuCoin — Virtuals compensation disclosure](https://www.kucoin.com/news/flash/virtuals-protocol-to-cover-full-compensation-for-basis-security-incident) · [Yahoo Finance](https://finance.yahoo.com/news/ai-agent-virtuals-protocol-stole-114617216.html) |
+| **3** | **[ElizaOS / ai16z Fraud & Governance Collapse](https://www.burwick.law/active-cases/ai16z-elizaos-token-lawsuit-doe-v-walters)** | SDNY class-action litigation — raw Node.js prompt wrappers lacked on-chain execution guarantees | Validates **bytecode predicate assertions** ([§0.1](#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec)) · EIP-712 Gate · **LLM back-off cooldown** | [Burwick Law — Doe v. Walters (SDNY)](https://www.burwick.law/active-cases/ai16z-elizaos-token-lawsuit-doe-v-walters) · [CoinDesk](https://www.coindesk.com/markets/2026/08/05/ai-agent-token-once-worth-usd2-4-billion-ends-with-founder-calling-it-dead) · [Decrypt](https://decrypt.co/374958/eliza-ai-token-dead-shuts-down-foundation-lawsuit) |
 
 ### Competitive Landscape Matrix
 
