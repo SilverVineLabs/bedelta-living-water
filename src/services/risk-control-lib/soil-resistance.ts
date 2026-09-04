@@ -105,13 +105,14 @@ export function checkSoilResistance(
 ): SoilResistanceResult {
   const { symbol, depthUsd } = input;
   const { slippageFuse, minDepthUsd } = resolveJitteredSoilThresholds(input);
-  const effectiveInput: SoilResistanceInput = {
-    ...input,
+  const metrics = computeSoilSlippageMetrics(input, {
     maxSlippage: slippageFuse,
     minDepthUsd,
-  };
-  const metrics = computeSoilSlippageMetrics(effectiveInput);
-  const reasons = [...collectExternalSoilReasons(effectiveInput, minDepthUsd), ...metrics.reasons];
+  });
+  const reasons = collectExternalSoilReasons(input, minDepthUsd);
+  if (metrics.reasons.length > 0) {
+    reasons.push(...metrics.reasons);
+  }
 
   const tripped = reasons.length > 0;
   const result: SoilResistanceResult = {

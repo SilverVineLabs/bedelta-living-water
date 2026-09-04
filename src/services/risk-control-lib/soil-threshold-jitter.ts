@@ -21,16 +21,16 @@ function isJitterEnabled(input: SoilResistanceInput, forceEnable?: boolean): boo
 }
 
 function sampleJitterBps(): { magnitudeBps: number; sign: 1 | -1 } {
-  const buf = new Uint32Array(2);
+  const buf = new Uint32Array(1);
   if (typeof crypto !== "undefined" && crypto.getRandomValues) {
     crypto.getRandomValues(buf);
   } else {
     buf[0] = (Date.now() * 2654435761) >>> 0;
-    buf[1] = (buf[0] ^ 0x9e3779b9) >>> 0;
   }
   const span = JITTER_MAX_BPS - JITTER_MIN_BPS + 1;
-  const magnitudeBps = JITTER_MIN_BPS + (buf[0] % span);
-  const sign: 1 | -1 = buf[1] % 2 === 0 ? 1 : -1;
+  const word = buf[0];
+  const magnitudeBps = JITTER_MIN_BPS + (word % span);
+  const sign: 1 | -1 = (word >>> 16) & 1 ? -1 : 1;
   return { magnitudeBps, sign };
 }
 

@@ -9,6 +9,10 @@ import {
   type SoilResistanceInput,
 } from "../risk";
 import { resolveSoilMinDepthUsd, type SoilResistanceResult } from "../../services/risk-control";
+import {
+  evaluateSoilSlippagePacked,
+  packSoilLane,
+} from "../../services/risk-control-lib/soil-resistance-math";
 import { isXyzOrHip3Key } from "../../services/exchanges/asset-classifier-lib/asset-classifier-keywords";
 import { isArbitrumStatusSequencerHealthy } from "../../services/adapters/arbitrum-status-sentinel";
 import { isRpcRadarSequencerHealthy } from "../../services/adapters/rpc-radar";
@@ -34,21 +38,18 @@ export function isGatewayNominalFastPath(soil: SoilResistanceInput): boolean {
     fastPathSoilResult = false;
     return false;
   }
-  const hl = soil.hlPerp;
-  const dx = soil.dydxPerp;
-  if (hl <= 0 || dx <= 0) {
-    fastPathSoilRef = soil;
-    fastPathSoilResult = false;
-    return false;
-  }
   const fuse = soil.maxSlippage ?? MAX_SLIPPAGE;
-  if (Math.abs(dx - hl) / hl > fuse) {
-    fastPathSoilRef = soil;
-    fastPathSoilResult = false;
-    return false;
-  }
-  const depth = soil.depthUsd;
-  if (depth !== undefined && depth < resolveSoilMinDepthUsd(soil)) {
+  const minDepth = resolveSoilMinDepthUsd(soil);
+  const lane = packSoilLane(
+    soil.hlSpot,
+    soil.hlPerp,
+    soil.dydxPerp,
+    soil.depthUsd ?? Number.NaN,
+    fuse,
+    minDepth,
+  );
+  const { tripFlags } = evaluateSoilSlippagePacked(lane);
+  if (tripFlags !== 0) {
     fastPathSoilRef = soil;
     fastPathSoilResult = false;
     return false;
