@@ -98,18 +98,20 @@ SliverVine does not interpret natural-language LLM prompts. The Shield enforces 
 
 **Demo:** `pnpm run demo:e2e` — 5-step grant E2E (Intent+Deadman → Robinhood escort → GMX underweight → HL Session hedge → R20 Panic Flash).
 
-### 0.3 Turn-Key Agent Ecosystem Adapters
+### 0.3 Agent Ecosystem Adapters (V1.5 Roadmap)
 
-Reference adapters in [`examples/adapters/`](../../examples/adapters/) — evaluator-reproducible harnesses; not production partnership attestations.
+Reference adapters in [`examples/adapters/`](../../examples/adapters/) — evaluator-reproducible **modular integration specs**; not v1.0 production fee-capture paths or partnership attestations.
 
-| Framework | Spec | Implementation | CLI |
-|-----------|------|----------------|-----|
-| **ElizaOS** | TS-compliant `Plugin` / `Action` interface — `citadelShieldPlugin` + `citadelSoilGuardAction` wrapping `checkSoilResistance()` | [`elizaos-action-adapter.ts`](../../examples/adapters/elizaos-action-adapter.ts) | `pnpm tsx examples/adapters/elizaos-action-adapter.ts [--trip]` |
-| **Virtuals GAME** | TS-compliant `FunctionDefinition` custom worker action — `citadelSoilGuardFunction` wrapping `withCitadelShield()` | [`virtuals-game-adapter.ts`](../../examples/adapters/virtuals-game-adapter.ts) | `pnpm tsx examples/adapters/virtuals-game-adapter.ts [--trip]` |
-| **LangChain (TypeScript)** | `@langchain/core/tools` `DynamicTool`-compatible spec — `citadelSoilGuardTool` + JSON schema (no runtime dependency) | [`langchain-agent-adapter.ts`](../../examples/adapters/langchain-agent-adapter.ts) | `pnpm tsx examples/adapters/langchain-agent-adapter.ts [--trip]` |
-| **LangChain (Python)** | `langchain_core.tools.BaseTool` — `SlivervinePreExecutionGuardTool` (`slivervine_pre_execution_guard`) via Citadel REST `POST /api/hedge/evaluate` | [`langchain-agent-adapter.py`](../../examples/adapters/langchain-agent-adapter.py) | `python examples/adapters/langchain-agent-adapter.py [--trip]` |
-| **Wayfinder** | TS-compliant `@slivervine/citadel-sdk` decorator — `withCitadelShield()` / `verifyAgentIntent()` pre-broadcast hook | [`wayfinder-agent-adapter.ts`](../../examples/adapters/wayfinder-agent-adapter.ts) | `pnpm tsx examples/adapters/wayfinder-agent-adapter.ts [--trip]` |
-| **CrewAI / AutoGen** | Python `BaseTool` / Citadel REST Client — `SlivervineCrewAIGuardTool` + AutoGen `citadel_soil_guard` bindings | [`crewai-autogen-adapter.py`](../../examples/adapters/crewai-autogen-adapter.py) | `python examples/adapters/crewai-autogen-adapter.py [--trip]` |
+> *"These framework adapters provide modular integration specifications for pre-execution risk checks via `@slivervine/citadel-sdk` and REST APIs. In v1.0, active fee-capture and liquidity routing are strictly bound to Arbitrum One GMX v2 GM + HL delta-neutral execution; multi-platform agent fee routing is targeted for V2.0 CaaS monetization."*
+
+| Framework | Status | Spec | Implementation | CLI |
+|-----------|--------|------|----------------|-----|
+| **ElizaOS** | ⏳ V1.5 Ecosystem Roadmap / Modular Integration Spec | TS-compliant `Plugin` / `Action` interface — `citadelShieldPlugin` + `citadelSoilGuardAction` wrapping `checkSoilResistance()` | [`elizaos-action-adapter.ts`](../../examples/adapters/elizaos-action-adapter.ts) | `pnpm tsx examples/adapters/elizaos-action-adapter.ts [--trip]` |
+| **Virtuals GAME** | ⏳ V1.5 Ecosystem Roadmap / Modular Integration Spec | TS-compliant `FunctionDefinition` custom worker action — `citadelSoilGuardFunction` wrapping `withCitadelShield()` | [`virtuals-game-adapter.ts`](../../examples/adapters/virtuals-game-adapter.ts) | `pnpm tsx examples/adapters/virtuals-game-adapter.ts [--trip]` |
+| **LangChain (TypeScript)** | Reference harness (evaluator demo) | `@langchain/core/tools` `DynamicTool`-compatible spec — `citadelSoilGuardTool` + JSON schema (no runtime dependency) | [`langchain-agent-adapter.ts`](../../examples/adapters/langchain-agent-adapter.ts) | `pnpm tsx examples/adapters/langchain-agent-adapter.ts [--trip]` |
+| **LangChain (Python)** | Reference harness (evaluator demo) | `langchain_core.tools.BaseTool` — `SlivervinePreExecutionGuardTool` (`slivervine_pre_execution_guard`) via Citadel REST `POST /api/hedge/evaluate` | [`langchain-agent-adapter.py`](../../examples/adapters/langchain-agent-adapter.py) | `python examples/adapters/langchain-agent-adapter.py [--trip]` |
+| **Wayfinder** | ⏳ V1.5 Ecosystem Roadmap / Modular Integration Spec | TS-compliant `@slivervine/citadel-sdk` decorator — `withCitadelShield()` / `verifyAgentIntent()` pre-broadcast hook | [`wayfinder-agent-adapter.ts`](../../examples/adapters/wayfinder-agent-adapter.ts) | `pnpm tsx examples/adapters/wayfinder-agent-adapter.ts [--trip]` |
+| **CrewAI / AutoGen** | ⏳ V1.5 Ecosystem Roadmap / Modular Integration Spec | Python `BaseTool` / Citadel REST Client — `SlivervineCrewAIGuardTool` + AutoGen `citadel_soil_guard` bindings | [`crewai-autogen-adapter.py`](../../examples/adapters/crewai-autogen-adapter.py) | `python examples/adapters/crewai-autogen-adapter.py [--trip]` |
 
 **PEV (Prevented Exploit Volume) — Dune Analytics Telemetry Metric:**
 
@@ -715,12 +717,16 @@ allowedToSign =
 
 ### 6.5 AI Agent Integration Surface
 
+> *"These framework adapters provide modular integration specifications for pre-execution risk checks via `@slivervine/citadel-sdk` and REST APIs. In v1.0, active fee-capture and liquidity routing are strictly bound to Arbitrum One GMX v2 GM + HL delta-neutral execution; multi-platform agent fee routing is targeted for V2.0 CaaS monetization."*
+
 | Consumer | Integration | Reflex hook |
 |----------|-------------|-------------|
 | **Third-party dApps** | `@slivervine/citadel-sdk` · `verifyAgentIntent()` · `withCitadelShield` | Apache-2.0 · sub-ms soil gate |
-| **ElizaOS / Virtuals / LangChain** | Turn-key adapters — [§0.3](#03-turn-key-agent-ecosystem-adapters) · [`examples/adapters/`](../../examples/adapters/) | `checkSoilResistance()` · `withCitadelShield()` |
-| **Wayfinder (Arbitrum-native)** | `@slivervine/citadel-sdk` · `withCitadelShield()` / `verifyAgentIntent()` · [`wayfinder-agent-adapter.ts`](../../examples/adapters/wayfinder-agent-adapter.ts) · [§0.3](#03-turn-key-agent-ecosystem-adapters) | Sub-ms soil gate · ERC-7579 session clip |
-| **CrewAI / AutoGen (enterprise)** | `SlivervineCrewAIGuardTool` · AutoGen `citadel_soil_guard` · [`crewai-autogen-adapter.py`](../../examples/adapters/crewai-autogen-adapter.py) · [§0.3](#03-turn-key-agent-ecosystem-adapters) | `checkSoilResistance()` · Pillar 2 AML escort boundary |
+| **ElizaOS** | ⏳ V1.5 Ecosystem Roadmap / Modular Integration Spec — [`elizaos-action-adapter.ts`](../../examples/adapters/elizaos-action-adapter.ts) · [§0.3](#03-agent-ecosystem-adapters-v15-roadmap) | `checkSoilResistance()` · `withCitadelShield()` |
+| **Virtuals GAME** | ⏳ V1.5 Ecosystem Roadmap / Modular Integration Spec — [`virtuals-game-adapter.ts`](../../examples/adapters/virtuals-game-adapter.ts) · [§0.3](#03-agent-ecosystem-adapters-v15-roadmap) | `checkSoilResistance()` · `withCitadelShield()` |
+| **LangChain** | Reference harness (evaluator demo) — [§0.3](#03-agent-ecosystem-adapters-v15-roadmap) · [`examples/adapters/`](../../examples/adapters/) | `checkSoilResistance()` · `withCitadelShield()` |
+| **Wayfinder (Arbitrum-native)** | ⏳ V1.5 Ecosystem Roadmap / Modular Integration Spec — `@slivervine/citadel-sdk` · `withCitadelShield()` / `verifyAgentIntent()` · [`wayfinder-agent-adapter.ts`](../../examples/adapters/wayfinder-agent-adapter.ts) · [§0.3](#03-agent-ecosystem-adapters-v15-roadmap) | Sub-ms soil gate · ERC-7579 session clip |
+| **CrewAI / AutoGen (enterprise)** | ⏳ V1.5 Ecosystem Roadmap / Modular Integration Spec — `SlivervineCrewAIGuardTool` · AutoGen `citadel_soil_guard` · [`crewai-autogen-adapter.py`](../../examples/adapters/crewai-autogen-adapter.py) · [§0.3](#03-agent-ecosystem-adapters-v15-roadmap) | `checkSoilResistance()` · Pillar 2 AML escort boundary |
 | **Institutional vaults** | ZeroDev Kernel + Citadel Worker BUSL payload path | ERC-7579 session + 106µs Shield |
 | **Grant audit / Dune / PEV** | `GET /api/grant-audit` · **PEV (Prevented Exploit Volume)** · [Dune dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · production DuneSQL feed + chart ([`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md)) | Pillar 2 ingress · Pillar 3 intercepts · 10 bps builder revenue |
 
