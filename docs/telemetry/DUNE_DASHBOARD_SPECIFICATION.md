@@ -14,11 +14,16 @@
 | Field | Value |
 |-------|-------|
 | **Live Query URL** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) |
-| **On-chain ingest source** | Sepolia `SliverVineGate` `0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1` |
+| **On-chain ingest source** | Sepolia `SliverVineGate` `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` |
 | **Decoded events** | `IntentAttested` · `RiskTripBlocked` · `AttestationConsumed` |
+| **PEV metric** | **Prevented Exploit Volume (PEV)** — `SUM(blocked_intent_notional_usd)` from `RiskTripBlocked` logs (fully operational on Sepolia Gate) |
 | **Off-chain anchor** | `/api/grant-audit` → `duneTelemetry.responseRef` (sha256) |
 
-> **Clarification:** The Dune engine **actively ingests decoded events** from the Sepolia Gate (`0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1`) and reconciles against live `duneTelemetry` snapshots from the Edge Worker.
+> **Clarification:** The live Dune dashboard at [silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) displays **two concurrent on-chain streams** from Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`:
+> 1. **`IntentAttested`** — real-time EIP-712 intent attestations (PASS / emergency de-leverage greenlights).
+> 2. **`RiskTripBlocked`** — pre-broadcast fail-closed severance events (toxic intent blocked at 0-Gas; feeds **PEV**).
+>
+> The Dune engine **actively ingests decoded events** from the Sepolia Gate and reconciles against live `duneTelemetry` snapshots from the Edge Worker.
 
 ---
 
@@ -26,9 +31,10 @@
 
 | Panel | Metric | SSOT Module |
 |-------|--------|-------------|
-| **Live Telemetry Feed (Query 0)** | Block-level Gate monitor · `RiskTripBlocked` / `IntentAttested` / heartbeat | `arbitrum.blocks` · Sepolia Gate |
-| **Telemetry Activity Chart (Query 0b)** | Minute-bucket toxic-flow distribution | `arbitrum.blocks` · status taxonomy |
-| **Toxic Flow Blocked (Query 1)** | Sum of blocked notional USD (`FAIL_CLOSED_BLOCK`) | `RiskTripBlocked` · `evaluatePendleGmxCrossGuard` |
+| **Live Telemetry Feed (Query 0)** | Block-level Gate monitor · `IntentAttested` (PASS) + `RiskTripBlocked` (BLOCKED) + heartbeat | Sepolia Gate `0xb174…` |
+| **Telemetry Activity Chart (Query 0b)** | Minute-bucket toxic-flow distribution · PASS vs BLOCKED | Sepolia Gate ingest |
+| **PEV — Prevented Exploit Volume (Query 1)** | `SUM(blocked_intent_notional_usd)` from `RiskTripBlocked` | Sepolia Gate · live operational |
+| **Toxic Flow Blocked (Query 1b)** | Daily blocked notional USD reconciliation (`FAIL_CLOSED_BLOCK`) | `RiskTripBlocked` · grant-audit KV |
 | **Observatory Paradox Bypasses (Query 2)** | Count of `EMERGENCY_DELEVERAGE_ALLOWED` (`close`/`reduce`) | `IntentAttested` action=`2` |
 | **PT Expiry × GMX Margin Health (Query 3)** | Real-time shadow margin / maintenance ratio | `duneTelemetry.marginHealthRatio` |
 
@@ -100,7 +106,53 @@ ORDER BY minute_time ASC;
 
 ---
 
-## Query 1 — Total Toxic Flow Blocked in USD
+## Query 1 — PEV (Prevented Exploit Volume) — Canonical SSOT
+
+**Metric definition:**
+
+$$\text{PEV} = \sum \text{blocked\_intent\_notional\_usd}$$
+
+Sourced exclusively from decoded **`RiskTripBlocked`** event logs emitted by Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1`. Each `RiskTripBlocked` log carries the nominal USD notional of the toxic intent severed pre-broadcast (0-Gas fail-closed path).
+
+**Dashboard panel:** [silvervine-citadel-telemetry — PEV](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)
+
+```sql
+-- PEV (Prevented Exploit Volume) — canonical DuneSQL SSOT
+-- Event target: RiskTripBlocked on Sepolia SliverVineGate 0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1
+-- Formula: PEV = SUM(blocked_intent_notional_usd) from RiskTripBlocked logs
+SELECT
+  SUM(blocked_intent_notional_usd) AS prevented_exploit_volume_usd,
+  COUNT(*) AS risk_trip_blocked_count,
+  COUNT(DISTINCT agent) AS unique_agents_blocked
+FROM dune.silvervinelabs.result_citadel_risk_trips
+WHERE contract_address = 0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1
+  AND evt_name = 'RiskTripBlocked';
+```
+
+**Time-series rollup (daily PEV):**
+
+```sql
+SELECT
+  date_trunc('day', block_time) AS day,
+  SUM(blocked_intent_notional_usd) AS daily_pev_usd,
+  COUNT(*) AS blocked_intent_count
+FROM dune.silvervinelabs.result_citadel_risk_trips
+WHERE contract_address = 0xb174118bc0B84e8D6D59EEF2339e29bF7FCf8BF1
+  AND evt_name = 'RiskTripBlocked'
+GROUP BY 1
+ORDER BY 1 DESC;
+```
+
+**Dual-stream context on live dashboard:**
+
+| Event | Stream | Dashboard meaning |
+|-------|--------|-------------------|
+| `IntentAttested` | PASS / emergency de-leverage | Live real-time EIP-712 intent attestations (`Δnet ≡ 0` greenlights) |
+| `RiskTripBlocked` | FAIL_CLOSED | Pre-broadcast severance — **PEV numerator** (`blocked_intent_notional_usd`) |
+
+---
+
+## Query 1b — Total Toxic Flow Blocked in USD (Grant-Audit Reconciliation)
 
 ```sql
 -- Panel: Toxic Flow Blocked (sum of blocked notional)

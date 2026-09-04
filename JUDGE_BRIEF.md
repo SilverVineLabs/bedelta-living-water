@@ -6,7 +6,7 @@
 | **Entity** | SilverVine Labs |
 | **Track** | Promising Products — AI Agents & Financial Primitives |
 | **Arbitrum One Gate** | `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` · [Ignition Tx](https://arbiscan.io/tx/0x54c153e9a41f704b5eb0ae554eac593d1110d62bd826ff094e72f2bd60c1b0c6) |
-| **Live Dune Telemetry Portal** | [`https://bedeltawater.slivervine.xyz`](https://bedeltawater.slivervine.xyz) (Redirects to official Dune Dashboard) |
+| **Live Dune Telemetry Portal** | [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · PEV operational on Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` |
 | **Headless Audit Endpoint** | [`https://bedeltawater.slivervine.xyz/api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **Repo** | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) |
 | **Tests** | `pnpm test -- --run` → **173 test files | 765 PASS Clean** · full matrix → [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) |
@@ -72,11 +72,13 @@ A *tool* reports risk post-hoc. A *protocol primitive* **binds execution** with 
 
 ### Dune Analytics
 
+**Live dashboard:** [https://dune.com/silvervinelabs/silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry)
+
 **Structured on-chain events & PEV (Prevented Exploit Volume) metric:**
 
-- Sepolia Gate events: `IntentAttested` · `RiskTripBlocked` (live-indexed)
-- **PEV** — nominal USD of toxic intents blocked pre-broadcast
-- Production SQL spec targets Arbitrum One `42161`
+- Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` — **`IntentAttested`** (live EIP-712 attestations) + **`RiskTripBlocked`** (pre-broadcast fail-closed severance) indexed in real time
+- **PEV** — `SUM(blocked_intent_notional_usd)` from `RiskTripBlocked` logs; **fully operational on-chain** via Sepolia Gate
+- Production SQL spec + daily reconciliation panels target Arbitrum One `42161`
 
 → [`docs/telemetry/DUNE_DASHBOARD_SPECIFICATION.md`](./docs/telemetry/DUNE_DASHBOARD_SPECIFICATION.md) · `scripts/emit-sepolia-telemetry-events.ts`
 
@@ -154,4 +156,4 @@ Grant allocation directly fuels **V2.0 R&D**:
 
 ---
 
-**SilverVine Labs** · `grants@silvervinelabs.com` · [Live Dune Telemetry Portal](https://bedeltawater.slivervine.xyz) · [Headless Audit Endpoint](https://bedeltawater.slivervine.xyz/api/grant-audit)
+**SilverVine Labs** · `grants@silvervinelabs.com` · [Live Dune Dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · [Headless Audit Endpoint](https://bedeltawater.slivervine.xyz/api/grant-audit)

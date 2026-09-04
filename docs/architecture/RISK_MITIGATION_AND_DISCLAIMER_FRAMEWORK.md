@@ -13,7 +13,7 @@
 **Official Name:** SliverVine Citadel Shield on **SliverVine Protocol** (BeDelta Living Water v1.0 / BeΔ)
 **Entity:** SilverVine Labs
 **Positioning:** Sub-ms 0-Gas Pre-Broadcast Safety Citadel for AI Agents on Arbitrum
-**Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
+**Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz) · **Dune PEV dashboard:** [silvervine-citadel-telemetry](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) — **PEV tracking fully operational** on-chain via Sepolia Gate `0xb174118bC0B84e8D6D59EEF2339e29bF7FCf8BF1` (`RiskTripBlocked` → `SUM(blocked_intent_notional_usd)`)
 
 ### Three Pillars — Independent Audit Specs
 
@@ -576,7 +576,7 @@ USDG on 46630 → evaluateAcrossBridgeTransfer() state machine:
 | **Internal control environment** | Unidirectional `SystemState` · no orphan venue legs (R09 Saga) | `intent-ledger.ts` · `tests/risk-control/*` |
 | **Risk assessment** | Pre-execution `checkSoilResistance()` — depth, spread, slippage | `soil-resistance.ts` · `pkg/soil_core.wasm` |
 | **Control activities** | Session-key scope (`ORDER_EXECUTE` only) · notional cap R07 | `session-key-gates.ts` · `SESSION_KEY_NOTIONAL_CAP_USD` |
-| **Monitoring & reporting** | `GET /api/grant-audit` · 96h telemetry daemon | `pnpm telemetry:96h` |
+| **Monitoring & reporting** | `GET /api/grant-audit` · [Dune PEV dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · 96h telemetry daemon | `pnpm telemetry:96h` · [`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
 | **Fail-safe severance** | R17 daily loss · R20 physical deadlock · signing channel close | `circuit-breaker.ts` · `flatten-hardlock.ts` |
 
 ### 6.2 `lostUsd ≡ 0` → Principle of Honest Loss Recognition
