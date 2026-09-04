@@ -9,7 +9,7 @@
 | **Live Dune Telemetry Portal** | [`https://bedeltawater.slivervine.xyz`](https://bedeltawater.slivervine.xyz) (Redirects to official Dune Dashboard) |
 | **Headless Audit Endpoint** | [`https://bedeltawater.slivervine.xyz/api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **Repo** | [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water) |
-| **Tests** | `pnpm test -- --run` → **177 test files \| 778 PASS Clean** |
+| **Tests** | `pnpm test -- --run` → **178 test files \| 782 PASS Clean** |
 | **Deep docs** | [`docs/grants/SUBMISSION.md`](./docs/grants/SUBMISSION.md) · [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) |
 
 > **Headless Infrastructure Protocol:** Core interaction is API/SDK Native (`@slivervine/citadel-sdk`) & CLI HUD.
@@ -96,11 +96,13 @@ from langchain_core.tools import BaseTool  # SlivervinePreExecutionGuardTool in 
 
 Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/adapters/) (TS + Python) · Reference harness: [`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts)
 
-#### AI Behavioral Safety Substrate
+---
 
-- **Native LLM Back-off & Retry Intercepts** — `withCitadelShield` enforces a **60-second mandatory cooldown** per `agentId` after `SOIL_RESISTANCE_TRIP` / `FAIL_CLOSED` severance, returning an LLM-readable `[Citadel Back-off] MANDATORY_COOLDOWN_ACTIVE` error to stop token-burning infinity retry loops and RPC rate-limit storms ([`src/sdk/decorator.ts`](./src/sdk/decorator.ts)).
-- **Dynamic Threshold Jitter (±2–5 bps)** — `checkSoilResistance()` applies cryptographic pseudo-random noise to slippage / depth cutoffs so MEV searchers cannot snipe static 50 bps fuse boundaries off-chain ([`soil-threshold-jitter.ts`](./src/services/risk-control-lib/soil-threshold-jitter.ts)).
-- **Non-Semantic Bytecode Predicate Assertions** — Shield enforces **Asymmetric Predicate Bytecode Hard Assertions** on ERC-4337 UserOp calldata (not natural-language prompts) — immune to indirect prompt-injection narratives at the signing layer (§0.1 · [`TECHNICAL_SPECIFICATION.md`](./docs/architecture/TECHNICAL_SPECIFICATION.md)).
+## Innovation & Real Problem Solving — AI Behavioral Safety Substrate
+
+1. **Native LLM Back-off & Retry Intercepts**: Active **60-second cooldown lock** per `agentId` in `withCitadelShield` ([`src/sdk/decorator.ts`](./src/sdk/decorator.ts)) prevents token-burning infinite retry loops and **RPC Rate-Limit Self-DoS** when transactions fail closed — surfaces `[Citadel Back-off] MANDATORY_COOLDOWN_ACTIVE` for LLM runtimes (`pnpm tsx examples/adapters/elizaos-action-adapter.ts --trip`).
+2. **Non-Semantic Bytecode Predicate Assertions**: Evaluates **raw bytecode parameters** at **p50 ~106µs** Edge Wasm rather than natural language — rendering the system immune to **Indirect Prompt Injections** at the signing layer ([Technical Specification §0.1](./docs/architecture/TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec)).
+3. **Dynamic Threshold Obfuscation**: Cryptographic pseudo-random **±2–5 bps jitter** on slippage / depth cutoffs ([`soil-threshold-jitter.ts`](./src/services/risk-control-lib/soil-threshold-jitter.ts)) prevents MEV searchers from predicting exact **50 bps** fuse boundaries off-chain.
 
 ---
 
@@ -110,8 +112,8 @@ Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/a
 |---------------------|-----------|--------|
 | **Smart Contract Quality** | Immutable consume-once Gate on mainnet | Arbiscan Tx above · `SliverVineGate/test/` |
 | **Product-Market Fit** | GMX builder lane + Agent SDK + Pendle sentinel | `gmx-v2-order-payload.ts` · `decorator.ts` |
-| **Innovation & Creativity** | Pre-consensus intent firewall + PEV metric | This brief · SUBMISSION § Innovation |
-| **Real Problem Solving** | 0-Gas pre-broadcast death window | `--trip` demo · `lostUsd ≡ 0` |
+| **Innovation & Creativity** | Pre-consensus intent firewall + PEV + AI Behavioral Safety Substrate | This brief · SUBMISSION § Innovation |
+| **Real Problem Solving** | 0-Gas pre-broadcast death window + LLM back-off cooldown | `--trip` adapter demos · `lostUsd ≡ 0` |
 
 ---
 

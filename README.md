@@ -40,7 +40,7 @@
 
 **Triangle loop:** [Technical Specification §2](./docs/architecture/TECHNICAL_SPECIFICATION.md#2-triangle-liquidity-loop--segregated-tranches) · **Arbitrum execution premium:** +15–30 bps vs bridged routes *(design estimate)*.
 
-> **SSOT lock (Buildathon):** v1.0 Delivered (Sepolia + Arbitrum One verified) · Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** · deep fuzz **327,675** via `pnpm audit:nightly` · Tier-0 Docker [`Dockerfile`](./Dockerfile) · docs hub [`docs/README.md`](./docs/README.md) · **Judge quick brief:** [`JUDGE_BRIEF.md`](./JUDGE_BRIEF.md)
+> **SSOT lock (Buildathon):** v1.0 Delivered (Sepolia + Arbitrum One verified) · Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 178 test files | 782 PASS Clean)** · deep fuzz **327,675** via `pnpm audit:nightly` · Tier-0 Docker [`Dockerfile`](./Dockerfile) · docs hub [`docs/README.md`](./docs/README.md) · **Judge quick brief:** [`JUDGE_BRIEF.md`](./JUDGE_BRIEF.md)
 
 ---
 
@@ -52,7 +52,7 @@
 docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 ```
 
-Isolated container execution of 5-step `demo:e2e` dry-run; full regression **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** → `docker run --rm slivervine-citadel pnpm test`. Sidecar → [`docker/README.md`](./docker/README.md).
+Isolated container execution of 5-step `demo:e2e` dry-run; full regression **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 178 test files | 782 PASS Clean)** → `docker run --rm slivervine-citadel pnpm test`. Sidecar → [`docker/README.md`](./docker/README.md).
 
 **Tier 1+ — Monorepo CLI:**
 
@@ -87,7 +87,7 @@ Canonical interactive demo command for judges:
 
 1. **Tier 0:** `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` — isolated E2E, no host toolchain drift.
 2. Run `pnpm run demo:e2e` as the single interactive Citadel demo entry point.
-3. `pnpm test -- --run` verifies **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)**.
+3. `pnpm test -- --run` verifies **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 178 test files | 782 PASS Clean)**.
 4. `grant-advanced-resilience-benchmark.ts` shows the sub-ms Wasm Shield latency path.
 
 For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API Verification` section below.
@@ -160,7 +160,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 * **Runtime Bytecode**: 📦 **8,716 Bytes (8.71 KiB)** — Zero External Dependencies (`Assembly-optimized`)
 
 ### 2. Off-Chain Pre-Execution Radar (TypeScript / V8 Runtime)
-* **Vitest SSOT**: 🧪 **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)** on `pnpm test -- --run`
+* **Vitest SSOT**: 🧪 **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 178 test files | 782 PASS Clean)** on `pnpm test -- --run`
 * **Chaos Matrix**: 🌪️ **255 Severe Failure Cases | 0 Crashes**
 * **Edge Decision Latency**: ⏱️ **SLO &lt; 1.0ms | p50 ~106 μs Shield/TS Gateway | Wasm warm &lt;60 μs | Pure Math: 0.0002 ms (200 ns)**
 * **Worker Bundle**: 📦 **87.76 KiB gzip** measured hot path (`pnpm bundle:measure`) · **162.49 KiB gzip** full Edge deployment artifact
@@ -173,7 +173,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 |-----------|--------|-----------------------------|
 | **M0: Operational Foundation** | ✅ Delivered | WSL / PNPM Monorepo, Cloudflare Edge Worker pipeline, and CI/CD strict typecheck. |
 | **M1: On-Chain Citadel Gate** | ✅ Delivered | `SliverVineGate.sol` core invariant locks · **327,675 deep fuzz** (`FOUNDRY_PROFILE=deep`) · 25k gas bounds. |
-| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean)**, 162.49 KiB gzip bundle, sub-ms latency. |
+| **M2: Pre-Execution Radar** | ✅ Delivered | `checkSoilResistance()` engine, **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 178 test files | 782 PASS Clean)**, 162.49 KiB gzip bundle, sub-ms latency. |
 | **M3: Dual-Chain & ZeroDev AA** | ✅ Dry-Run Harness Verified (Kernel v3 / EntryPoint v0.7) | ZeroDev Kernel v3 AA Adapter · optional Robinhood Chain / Across (`46630`/`4663`) **Pillar 2 Reference Escort Adapters** into Arbitrum. |
 | **M4: WASM Engine & IP Moat** | ✅ Delivered | Rust `#![no_std]` Wasm core (`pkg/soil_core.wasm`) — Cloudflare budget `<28kb`, hot-path exec `<60µs` — & `@slivervine/citadel-sdk` shipped. |
 | **M5: TCA Data & Hyperliquid** | ✅ Delivered (evolving) | TCA / grant-audit surfaces & HL Testnet 5-trade provenance — **Live TCA Analytics HUD actively evolving**. |
@@ -184,7 +184,7 @@ SliverVine Protocol is engineered under strict mathematical invariants and zero-
 ## 🛡️ Auditor — 30-Second CLI & API Verification
 
 ```bash
-# 1. Full Vitest suite (Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 177 test files | 778 PASS Clean))
+# 1. Full Vitest suite (Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 178 test files | 782 PASS Clean))
 pnpm test -- --run
 
 # 2. 3-Tier Security Matrix (Fast / Security / Nightly)
@@ -288,7 +288,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 | Document | Purpose |
 |----------|---------|
 | [`docs/pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](./docs/pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | Grant pitch · 35s demo video storyboard |
-| [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) | 177 test files · 778 PASS · regression bar SSOT |
+| [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) | 178 test files · 782 PASS · regression bar SSOT |
 | [`docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md`](./docs/audit/ROBINHOOD_CHAIN_SAFETY_GATE_AUDIT.md) | Pillar 2 reference adapter audit · 5/5 bridge tests |
 | [`docs/grants/SUBMISSION.md`](./docs/grants/SUBMISSION.md) | Buildathon main submission pack |
 | [`docs/README.md`](./docs/README.md) | Full docs index · language policy |
