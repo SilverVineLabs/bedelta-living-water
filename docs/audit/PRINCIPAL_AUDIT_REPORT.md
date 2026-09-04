@@ -1,10 +1,12 @@
-# Principal Audit Report — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
+# Principal Audit Report — SliverVine Citadel Shield · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
-**Official Name:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
-**Entity:** SilverVine Labs · **Protocol:** SliverVine
+**Official Name:** SliverVine Citadel Shield — Pre-Consensus Intent Firewall & Execution Safety Primitive · **SliverVine Protocol** (BeDelta Living Water v1.0 / BeΔ)
+**Entity:** SilverVine Labs · **Product:** SliverVine Citadel Shield · **Protocol:** SliverVine Protocol
 **Audience:** Principal / security reviewers · GMX Builders · Arbitrum diligence
 **Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 **Yellow Paper SSOT:** [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md)
+
+> **Philosophy — BeΔ (BeDelta Living Water v1.0):** **Be** is inspired by Bruce Lee's *"Be Water, My Friend"* — fluid, adaptive intent routing and friction-free multi-chain execution. **Δ (Delta)** denotes **market delta-neutrality** and risk-neutral execution — neutralizing directional exposure via the GMX v2 GM + Hyperliquid 1× short envelope. **SliverVine Citadel Shield** is the pre-consensus execution safety primitive that binds both.
 
 > **Narrative:** Behavioral pass does not imply Web3 security. This report locks **codebase SSOT metrics** only — no marketing inflation.
 
@@ -14,7 +16,7 @@
 
 | Metric | Locked value | Artifact / verifier |
 |--------|--------------|---------------------|
-| **Vitest Baseline** | **173 test files | 765 PASS Clean** | `pnpm test` · security-tier Vitest in [`static-analysis-report.json`](./static-analysis-report.json) |
+| **Vitest Baseline** | **173 test files \| 765 PASS Clean** | `pnpm test` · security-tier Vitest in [`static-analysis-report.json`](./static-analysis-report.json) |
 | **Wasm Core Budget** | **`<28kb` Cloudflare budget, `<60µs` execution (`<150µs` P99 tail)** | [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) · [`soil_core.rs`](../../src/wasm/soil_core.rs) · `WASM_BUDGET_BYTES` in [`soil-wasm.ts`](../../src/sdk/soil-wasm.ts) |
 | **Active Guards** | **`agent-citadel-guard` (Configurable Dynamic Slippage Deadman)** + R01–R20 matrix **17 Active \| 2 Refactored \| 1 Deprecated** | `src/core/agent-citadel-guard.ts` |
 | **Revenue Integration** | GMX v2 **`uiFeeReceiver` (+10 bps protocol yield accrual)** + up to **25%** referral rebate | `GMX_UI_FEE_BPS` · `gmx-v2-order-payload.ts` |
@@ -25,6 +27,14 @@
 
 **Single regression phrase (all audit prose):**
 `173 test files | 765 PASS Clean` · `3-Tier Security Matrix: 5/0/0 PASS (Vitest, Forge, Slither, Aderyn, pnpm-audit)` · Wasm `<28kb` / `<60µs` (`<150µs` P99 tail).
+
+### Three Pillars — Independent Audit Specs
+
+| Pillar | Role | Independent spec |
+|--------|------|------------------|
+| **Pillar 1 — Gatehouse (Auth)** | ZeroDev Kernel v3 session keys · EIP-712 scopes · AA dry-run harness | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
+| **Pillar 2 — Compliance Ingress Firewall** | Venue-agnostic AML escort · outbound-only · `lostUsd ≡ 0` · Robinhood / Across as **reference adapters** | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
+| **Pillar 3 — Edge Shield (CORE MOAT)** | `checkSoilResistance()` · `pkg/soil_core.wasm` · R01–R20 · p50 ~106 µs | [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
 
 ---
 
@@ -40,9 +50,9 @@
 
 ---
 
-## 2. Four Diagnostic Interrogations
+## 2. Four Diagnostic Interrogations (Three Pillars Mapping)
 
-### Interrogation I — Gatehouse (Auth): Can agent credentials drift past session bounds?
+### Interrogation I — Pillar 1: Gatehouse (Auth): Can agent credentials drift past session bounds?
 
 | Probe | Expected fail-closed posture | SSOT |
 |-------|------------------------------|------|
@@ -50,9 +60,9 @@
 | Notional overrun | Blocked at **$5,000** single-order cap (R07) | `SESSION_KEY_NOTIONAL_CAP_USD` |
 | Deadman bypass | Impossible — `guardAgentUserOp` → `evaluateAgentCitadelGuard` → soil; Configurable Dynamic Slippage Deadman trip emits `CITADEL_SLIPPAGE_EXCEEDED` | `agent-citadel-guard.ts` |
 
-**Verdict:** Auth surface is ephemeral-session + EIP-712 intent; no LLM prompt interpretation — predicate / intent hard assertions only.
+**Verdict:** Auth surface is ephemeral-session + EIP-712 intent; no LLM prompt interpretation — predicate / intent hard assertions only. **Spec:** [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md).
 
-### Interrogation II — Firewall (Compliance): Can inbound AML contaminate Arbitrum GM TVL?
+### Interrogation II — Pillar 2: Compliance Ingress Firewall: Can inbound AML contaminate Arbitrum GM TVL?
 
 | Probe | Expected fail-closed posture | SSOT |
 |-------|------------------------------|------|
@@ -60,9 +70,9 @@
 | Inbound reverse path | **Blocked** (AML contamination short-circuit) | Firewall pillar · lostUsd ≡ 0 posture |
 | USDG native redeem on Arb | **Out of bound** — USDG clearing restricted to Robinhood Chain | § Asset Redemption (Tech Spec §0.1) |
 
-**Verdict:** Capital flow is unidirectional outbound escort; reverse AML scanning enforces inbound block.
+**Verdict:** Capital flow is unidirectional outbound escort; reverse AML scanning enforces inbound block. **Spec:** [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
 
-### Interrogation III — Shield (CORE MOAT): Can toxic depth / lag / sandwich reach GMX broadcast?
+### Interrogation III — Pillar 3: SliverVine Citadel Shield (CORE MOAT): Can toxic depth / lag / sandwich reach GMX broadcast?
 
 | Probe | Expected fail-closed posture | SSOT |
 |-------|------------------------------|------|
@@ -71,7 +81,7 @@
 | Sequencer / oracle lag | Sequencer grace + oracle-lag sensors fail-closed before payload | Supporting sensors · R03 / R04 family |
 | Receiver / parameter tamper | Asymmetric predicate bytecode assertions on ERC-4337 UserOp (`sender ≡ receiver`, `acceptablePrice` bounds) | Tech Spec §0.4 |
 
-**Verdict:** Shield is sub-ms Wasm + TS soil fuse; toxic vectors never leave Edge as unsigned GMX payload.
+**Verdict:** SliverVine Citadel Shield is sub-ms Wasm + TS soil fuse; toxic vectors never leave Edge as unsigned GMX payload. **Spec:** [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md).
 
 ### Interrogation IV — Revenue & Attestation: Is builder yield and L1 lock non-custodial and replay-safe?
 
@@ -181,7 +191,11 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .
 
 | Document | Purpose |
 |----------|---------|
-| [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | R01–R20 · §0.1 scope · §0.4 bytecode predicates |
+| [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · §0.1 scope · §0.4 bytecode predicates |
+| [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Pillar 1 — ZeroDev Kernel v3 AA · EIP-7702 comparative |
+| [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 — AML escort · inbound block · bridge accounting |
+| [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 — Wasm soil core · `checkSoilResistance()` · latency moats |
+| [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | DDIP — institutional allocator diligence |
 | [`../README.md`](../README.md) | Audience router |
 | [`static-analysis-report.json`](./static-analysis-report.json) | Security-tier 5/0/0 lock |
 | [`security-scorecard.json`](./security-scorecard.json) | Last `audit:*` tier run (do not mix tiers) |
