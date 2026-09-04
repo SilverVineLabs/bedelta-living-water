@@ -38,7 +38,7 @@ Santenmoku is a **unified sub-millisecond pre-execution gateway**. **Center of g
  │ 2. PILLAR 2: COMPLIANCE INGRESS FIREWALL │
  │ Venue-agnostic unidirectional AML escort & accounting│
  │ Robinhood Chain = inaugural reference adapter │
- │ · ZeroDev Smart Routing Addr (1-Click Deposit/Swap) │
+ │ · ZeroDev Smart Route Calldata Binding (Reference Harness — Demo Spec) │
  └──────────────────────┬──────────────────────────────────┘
  │
  ▼
@@ -156,7 +156,7 @@ Hyperliquid (1× Short Hedge)
 |-----|-------|------|
 | **Yield base (PRIMARY)** | Arbitrum One · GMX v2 GM | Underweight-side GM LP · builder `uiFeeReceiver` (**+10 bps**) · Citadel pre-execution gate |
 | **Hedge** | Hyperliquid | Session-key **1× short** Emergency Liquidity Sponge · nonce-healed signing |
-| **Ingress (optional example)** | Robinhood Chain | Supported permissioned institutional ingress · outbound-only escort into Arbitrum · **ZeroDev Smart Routing Address** (USDG → GMX `ExchangeRouter`) |
+| **Ingress (optional example)** | Robinhood Chain | Supported permissioned institutional ingress · outbound-only escort into Arbitrum · **ZeroDev Smart Route Calldata Binding** (reference harness — USDG → GMX `ExchangeRouter`; production baseline = **Arbitrum One Native Ingress**) |
 
 **Control plane:** Cloudflare Edge Worker (`SystemState` SSOT) evaluates sequencer · oracle lag · soil · RPC radar before any unsigned GMX payload or HL hedge dispatch. Routing is unidirectional into `SystemState`; venue adapters never mutate peer books without a gate pass.
 
@@ -219,9 +219,11 @@ Solidity vault surface splits capital into two non-fungible risk lanes:
 | **Arbitrum One Off-ramp** | Native **ETH, BTC, and USDC** supported directly upon GMX v2 async unwind (3–5 min). |
 | **USDG Clearing** | Native USDG treasury redemptions are restricted to Robinhood Chain (`46630`/`4663`) via the unidirectional bridge; Arbitrum USDC is converted on return to preserve compliance bounds. Inbound AML contamination (reverse path) is blocked. |
 
-### 2.3 ZeroDev Smart Routing Address (Pillar 2 Surface — 1-Click Crosschain Deposit/Swap)
+### 2.3 ZeroDev Smart Route Calldata Binding (Pillar 2 Reference Harness — Demo Spec)
 
-**Pillar 2 context:** This section documents one **production surface** of the Compliance Ingress Firewall — ZeroDev Kernel UserOp routing from permissioned ingress (Robinhood `46630`/`4663` **USDG** as inaugural reference adapter) to Arbitrum GMX execution. **`GMX_V2_EXCHANGE_ROUTER_ARBITRUM`** (`ZERODEV_SMART_ROUTE_TARGETS` · `gmx-revenue.ts`) → **`GM_ETH_USDC`** pool — single-click cross-chain deposit/swap, no hot-wallet custody.
+> **Status:** **Reference Harness & Spec** — Dry-run verified via Vitest (`tests/adapters/gmx-smart-route-payload-binding.test.ts`). This serves as an evaluator-reproducible reference adapter. Production execution baseline defaults to **Arbitrum One Native Ingress**.
+
+**Pillar 2 context:** This section documents a **reference harness surface** of the Compliance Ingress Firewall — ZeroDev Kernel UserOp calldata binding from permissioned ingress (Robinhood `46630`/`4663` **USDG** as inaugural reference adapter) to Arbitrum GMX execution. **`GMX_V2_EXCHANGE_ROUTER_ARBITRUM`** (`ZERODEV_SMART_ROUTE_TARGETS` · `gmx-revenue.ts`) → **`GM_ETH_USDC`** pool — single-click cross-chain deposit/swap calldata spec, no hot-wallet custody.
 
 **Payload binding (calldata-level, Gate struct unchanged):** `buildGmxSmartRoutePayloadBinding()` encodes smart-route calldata → `computeGatedExecutorPayloadHash()` mirrors on-chain `GatedExecutor.payloadHash(initiator, target, keccak256(data), nonce)`. The digest fills the existing `RiskAttestation.payloadHash` field — **`SliverVineGate.sol` `ATTESTATION_TYPEHASH` and struct layout are not modified**.
 
@@ -300,7 +302,7 @@ ZeroDev v4 converges the smart-wallet lifecycle into **seven stages, one stack**
 | Stage | ZeroDev v4 semantics | SliverVine Citadel Shield integration anchor | Status |
 |-------|---------------------|-------------------------|--------|
 | **① Sign in** | Identity · Kernel account resolution | ZeroDev login → `sender` Kernel address · no hot-wallet seed | ✅ v1.0 Delivered (Sepolia verified) |
-| **② Fund** | Cross-chain deposit · Smart Routing | `ZERODEV_SMART_ROUTE_TARGETS` · USDG → GMX ExchangeRouter (§2.3) | ✅ v1.0 Delivered (Sepolia verified) |
+| **② Fund** | Cross-chain deposit · Smart Routing | `ZERODEV_SMART_ROUTE_TARGETS` · USDG → GMX ExchangeRouter (§2.3 reference harness) | 📋 Reference Harness (Vitest dry-run verified) |
 | **③ Gas** | Paymaster sponsorship | `zerodev-aa-gas-ledger` · per-op / daily caps (§2.4.3) | ✅ v1.0 Delivered (Sepolia verified) |
 | **④ Authorize** | Session key scope | ERC-7579 `ORDER_EXECUTE` · R06/R07 · R14 re-auth | ✅ v1.0 Delivered (Sepolia verified) (v4 adapter ⏳) |
 | **⑤ Execute** | UserOp broadcast · on-chain execution | `verifyAgentIntent()` → Shield → Bundler → GMX/HL venue | ✅ v1.0 Delivered (Sepolia verified) |
