@@ -78,9 +78,11 @@ san
 !docs/audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md
 !docs/audit/04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md
 !src/sdk/README.md
+!docs/internal/
+!docs/internal/**
 
 # Internal scorecards / self-audits (local-only; do not publish)
-docs/internal/
+
 docs/audit/PROGRESS_TRUTH_CHECK.md
 docs/audit/BUILDATHON_JUDGE_REVIEW.md
 
