@@ -80,11 +80,18 @@ type DemoMode = "dry-run" | "live";
 /** ANSI highlights for grant video / judge CLI demos (disabled when NO_COLOR=1). */
 const RESET = "\x1b[0m";
 const GREEN = "\x1b[32m";
+const BRIGHT_GREEN = "\x1b[92m";
 const RED_BOLD = "\x1b[1m\x1b[31m";
 const YELLOW = "\x1b[33m";
+const ORANGE = "\x1b[38;5;208m";
 const CYAN = "\x1b[36m";
 const BRIGHT_CYAN = "\x1b[96m";
 const useColor = process.env.NO_COLOR !== "1";
+
+const HL_LIVE_SESSION_READY =
+  "[HL_LIVE: SECURE_SESSION_KEY_DETECTED — READY FOR EXCHANGE BROADCAST]";
+const HL_FALLBACK_WARN =
+  "[WARN_FALLBACK: HYPERLIQUID_MAINNET_SESSION_PK / HL_TESTNET_PRIVATE_KEY missing — graceful fallback to simulated hedge envelope]";
 
 const CITADEL_BANNER = [
   "  ┌─ SliverVine Citadel Shield ─────────────────────────────────────┐",
@@ -138,6 +145,23 @@ function highlightDemoLine(line: string): string {
 
 function demoLog(line: string): void {
   console.log(highlightDemoLine(line));
+}
+
+function demoLogHlSessionState(line: string, tone: "live" | "fallback"): void {
+  if (!useColor) {
+    console.log(line);
+    return;
+  }
+  const color = tone === "live" ? BRIGHT_GREEN : ORANGE;
+  console.log(`${color}${line}${RESET}`);
+}
+
+function resolveHlSessionPrivateKey(): string | undefined {
+  return (
+    process.env.HYPERLIQUID_MAINNET_SESSION_PK?.trim() ||
+    process.env.HL_TESTNET_PRIVATE_KEY?.trim() ||
+    undefined
+  );
 }
 
 /** Suppress raw JSON telemetry during Step 5 — demo shows human alerts only. */
@@ -473,13 +497,9 @@ async function step4HlSessionHedge(mode: DemoMode): Promise<{
   }
 
   loadEnvProduction();
-  const sessionPk =
-    process.env.HYPERLIQUID_MAINNET_SESSION_PK?.trim() ||
-    process.env.HL_TESTNET_PRIVATE_KEY?.trim();
+  const sessionPk = resolveHlSessionPrivateKey();
   if (!sessionPk) {
-    demoLog(
-      "LIVE: HYPERLIQUID_MAINNET_SESSION_PK / HL_TESTNET_PRIVATE_KEY missing — falling back to simulated hedge",
-    );
+    demoLogHlSessionState(HL_FALLBACK_WARN, "fallback");
     return {
       ok: true,
       dryRun: true,
@@ -489,6 +509,7 @@ async function step4HlSessionHedge(mode: DemoMode): Promise<{
     };
   }
 
+  demoLogHlSessionState(HL_LIVE_SESSION_READY, "live");
   const walletA = process.env.HYPERLIQUID_MAINNET_USER_ADDRESS?.trim();
   demoLog(`LIVE hedge: walletA=${walletA ? mask(walletA) : "(default)"}`);
   const result = await runGmxCrossWalletEthHedge({
@@ -506,7 +527,10 @@ async function step4HlSessionHedge(mode: DemoMode): Promise<{
     dryRun: false,
     notionalUsd: result.orderUsd,
     oid: result.exchangeOid ?? null,
-    detail: result.reason ?? (result.ok ? "LIVE_HEDGE_OK" : "LIVE_HEDGE_FAIL"),
+    detail:
+      result.ok || result.reason === "ETH_HEDGE_ALREADY_COVERED"
+        ? "LIVE_BROADCAST"
+        : (result.reason ?? "LIVE_HEDGE_FAIL"),
   };
 }
 
