@@ -233,7 +233,9 @@ Anchors: [`gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-
 
 > **Full Pillar 1 specification:** [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) — ZeroDev Kernel v3 session keys, EIP-7702 comparative analysis, `sessionOk` / `allowedToSign` dry-run scope (`pnpm run demo:e2e`), and `pnpm test:zerodev` harness. This section retains integration anchors only.
 
-> **Status:** v1.0 production SSOT = **Kernel v3** (`ZERODEV_KERNEL_VERSION` v0.3.1 · EntryPoint v0.7); **Kernel v4** = V1.5 alignment path (Gatehouse adapter upgrade only — **no rewrite** of Shield / Wasm / EIP-712 Gate).
+> **Status:** v1.0 production SSOT = **Kernel v3** (`ZERODEV_KERNEL_VERSION` v0.3.1 · EntryPoint v0.7); **Kernel v4** = post-grant V1.5 alignment path (Gatehouse adapter upgrade only — **no rewrite** of Shield / Wasm / EIP-712 Gate).
+
+> **Boundary:** ZeroDev Kernel v3 is an **opt-in Pillar 1 AA layer** (`USE_ZERODEV_AA` default-off). ZeroDev infrastructure failure, bundler outage, or Paymaster exhaustion **never** impairs the **Edge Wasm Shield** (`checkSoilResistance()` · p50 ~106 µs) or **Arbitrum Native Ingress** — institutions fall back to EOA / native signing paths with identical pre-broadcast protection.
 
 #### 2.4.1 Role of ZeroDev: Scoped Session Keys & Gas Sponsorship (Pillar 1 Opt-In AA Layer)
 
@@ -267,9 +269,11 @@ UserOp draft → verifyAgentIntent() [Edge Shield · p50 ~106µs · Wasm — ind
  → Paymaster sign → Bundler → EntryPoint → Kernel validateUserOp
 ```
 
-The Shield decides **before broadcast** on every path; ZeroDev handles **non-custodial account delivery only** when explicitly opted in.
+The Shield decides **before broadcast** on every path; ZeroDev handles **non-custodial account delivery only** when explicitly opted in. If ZeroDev is unavailable, institutions route through **Arbitrum Native Ingress** or **Across Bridge** escort — the Wasm Shield and `lostUsd ≡ 0` invariants remain fully operational.
 
 #### 2.4.2 Kernel v3 / v4 Session Keys (ERC-7579 Modular Permissions)
+
+> **Scope:** Kernel v3 session keys are the v1.0 delivered AA surface. Kernel v4 alignment is **post-grant (V1.5)** — adapter swap only; Shield / Wasm / Gate are unchanged.
 
 | Dimension | Kernel v3 (v1.0 delivered) | Kernel v4 (V1.5 alignment) |
 |-----------|------------------------------|------------------------------|
@@ -278,11 +282,13 @@ The Shield decides **before broadcast** on every path; ZeroDev handles **non-cus
 | **Notional cap** | `SESSION_KEY_NOTIONAL_CAP_USD` = **$5,000** (R07) | Config-driven · invariant formulas unchanged |
 | **TTL / re-auth** | Session TTL + R14 EIP-712 5-min re-auth | v4 Authorize stage native alignment · adapter swap only |
 | **Signature path** | Kernel `isValidSignature` → ERC-1271 `0x1626ba7e` | Dual plane: Kernel ERC-1271 ∥ Gate ECDSA m-of-n |
-| **Code anchors** | `src/adapters/arbitrum/zerodev-aa/` · `hl-session/permissions.ts` | ⏳ V1.0 adapter swap · **Shield / Wasm zero rewrite** |
+| **Code anchors** | `src/adapters/arbitrum/zerodev-aa/` · `hl-session/permissions.ts` | ⏳ Post-Grant (V1.5) adapter swap · **Shield / Wasm zero rewrite** |
 
 **Migration rule:** Kernel v3 → v4 replaces Gatehouse adapters only (`zerodev-aa-userop.ts` · `zerodev-aa-gate.ts`); `checkSoilResistance()`, `pkg/soil_core.wasm`, and `SliverVineGate.sol` **do not change** with Kernel major version.
 
 #### 2.4.3 Paymaster Gas Sponsorship (Sponsorship & Circuit Breakers)
+
+> **Scope:** Paymaster sponsorship is **opt-in** (Pillar 1). Daily cap exhaustion falls back to `sponsored: false` — UserOp drafting continues on self-funded gas; **Edge Wasm Shield and Arbitrum Native Ingress are unaffected**.
 
 | Parameter | Value | SSOT |
 |-----------|-------|------|
@@ -296,6 +302,8 @@ Sponsorship and soil fuse are **serially evaluated**: `evaluateStaticBreakerMatr
 
 #### 2.4.4 EIP-7562 Zero-Bundler-Rejection Invariant
 
+> **Scope:** Applies only when ZeroDev AA is **opted in**. Bundler timeout or rejection triggers fail-closed on the UserOp path — institutions may bypass AA entirely via Arbitrum Native Ingress without losing Shield protection.
+
 **Zero-Bundler-Rejection Invariant:** Citadel UserOps MUST NOT trigger EIP-7562 opcode/storage violations during the validation phase; bundler rejection is a **protocol fault**, not a retry signal.
 
 | Rule | Enforcement |
@@ -307,28 +315,31 @@ Sponsorship and soil fuse are **serially evaluated**: `evaluateStaticBreakerMatr
 
 This invariant ensures institutional UserOps are **predictably deliverable** on Arbitrum bundler infrastructure — not silently dropped for storage violations — consistent with the 106 µs Shield fail-closed philosophy.
 
-#### 2.4.5 ZeroDev v4 "Seven Stages, One Stack" Alignment Roadmap
+#### 2.4.5 ZeroDev v4 "Seven Stages, One Stack" Alignment Roadmap (Post-Grant Spec)
 
-ZeroDev v4 converges the smart-wallet lifecycle into **seven stages, one stack**. SliverVine Protocol aligns five **execution-critical stages** (Recover / Compose marked V1.0):
+ZeroDev v4 converges the smart-wallet lifecycle into **seven stages, one stack**. SliverVine Protocol v1.0 delivers stages **①–⑤** (with ② as reference harness only); stages **⑥–⑦** are explicitly **post-grant roadmap** — not claimed as v1.0 scope.
 
 | Stage | ZeroDev v4 semantics | SliverVine Citadel Shield integration anchor | Status |
 |-------|---------------------|-------------------------|--------|
 | **① Sign in** | Identity · Kernel account resolution | ZeroDev login → `sender` Kernel address · no hot-wallet seed | ✅ v1.0 Delivered (Sepolia verified) |
 | **② Fund** | Cross-chain deposit · Smart Routing | `ZERODEV_SMART_ROUTE_TARGETS` · USDG → GMX ExchangeRouter (§2.3 reference harness) | 📋 Reference Harness (Vitest dry-run verified) |
 | **③ Gas** | Paymaster sponsorship | `zerodev-aa-gas-ledger` · per-op / daily caps (§2.4.3) | ✅ v1.0 Delivered (Sepolia verified) |
-| **④ Authorize** | Session key scope | ERC-7579 `ORDER_EXECUTE` · R06/R07 · R14 re-auth | ✅ v1.0 Delivered (Sepolia verified) (v4 adapter ⏳) |
+| **④ Authorize** | Session key scope | ERC-7579 `ORDER_EXECUTE` · R06/R07 · R14 re-auth | ✅ v1.0 Delivered (Sepolia verified) |
 | **⑤ Execute** | UserOp broadcast · on-chain execution | `verifyAgentIntent()` → Shield → Bundler → GMX/HL venue | ✅ v1.0 Delivered (Sepolia verified) |
-| **⑥ Recover** | Account recovery · social recovery | — | ⏳ V1.0 |
-| **⑦ Compose** | Multi-step intent composition | 2PC intent ledger · `intent-ledger.ts` (partial coverage today) | ⏳ V1.0 |
+| **⑥ Recover** | Account recovery · social recovery | — | ⏳ Post-Grant Roadmap (V1.5) — *Out of scope for v1.0 (handled by upstream Kernel/EOA owner)* |
+| **⑦ Compose** | Multi-step intent composition | 2PC intent ledger · `intent-ledger.ts` (partial internal coverage) | ⏳ Post-Grant Roadmap (V2.0 CaaS) — *Off-chain 2PC intent ledger (partial internal coverage)* |
 
 ```text
-Sign in ──► Fund ──► Gas ──► Authorize ──► Execute
- │ │ │ │ │
- Kernel Smart Paymaster Session Shield 106µs
- Account Route Ledger Keys R06 + Venue
+Sign in ──► Fund ──► Gas ──► Authorize ──► Execute (v1.0 Core Active Scope)
+ │          │        │          │              │
+ Kernel   Smart    Paymaster  Session Keys   Shield 106µs
+ Account  Route    Ledger     R06/R07        + Venue
+ (Ref)    (Ref)                              dispatch
 ```
 
-**One Stack semantics:** All five stages share one Kernel account, `sender` identity, and Citadel `AllowedToSign` predicate — institutions need not switch wallets between Robinhood Chain and Arbitrum One or repeat onboarding.
+**v1.0 active scope:** Stages ①③④⑤ are Sepolia-verified AA delivery paths. Stage ② is a Vitest reference harness only. Stages ⑥⑦ are **not** v1.0 deliverables — recovery is upstream Kernel/EOA owner responsibility; multi-step Compose is a V2.0 CaaS roadmap item.
+
+**One Stack semantics (post-grant alignment):** When Kernel v4 ships, stages ①–⑤ will share one Kernel account, `sender` identity, and Citadel `AllowedToSign` predicate — institutions need not switch wallets between permissioned ingress and Arbitrum One. **Shield / Wasm / Gate invariants are unchanged** across Kernel major versions.
 
 ---
 
