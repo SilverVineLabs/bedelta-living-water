@@ -21,6 +21,8 @@ From repository root — **not** the sidecar image:
 docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 ```
 
+> **WSL2 / Linux User Note:** If executing Docker directly inside WSL2 without Docker Desktop integration, run commands with `sudo` (e.g., `sudo docker build -t slivervine-citadel . && sudo docker run --rm slivervine-citadel`), or leverage **Path 1 (`pnpm run demo:e2e`)** for instant 3-second host verification without containers.
+
 | Item | Value |
 |------|-------|
 | Dockerfile | [`../Dockerfile`](../Dockerfile) (repo root) |
