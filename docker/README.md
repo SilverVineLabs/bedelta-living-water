@@ -102,7 +102,7 @@ docker stop sv-sidecar && docker rm sv-sidecar
 
 
 
-## 4. Verification Testlist (Grant Evaluators)
+## 4. Verification Testlist for Express Auditors
 
 Run after container starts (~5s warm-up).
 

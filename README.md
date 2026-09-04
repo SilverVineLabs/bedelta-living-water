@@ -44,7 +44,7 @@
 
 ---
 
-## ⚡ 30-Second Quick Verification
+## ⚡ 30-Second Express Audit (Zero-Host Docker Verification)
 
 **Tier 0 — Docker (zero host Node/pnpm dependencies):**
 
@@ -52,7 +52,7 @@
 docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 ```
 
-Isolated container execution of 5-step `demo:e2e` dry-run; full regression **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 178 test files | 782 PASS Clean)** → `docker run --rm slivervine-citadel pnpm test`. Sidecar → [`docker/README.md`](./docker/README.md).
+Zero-dependency container execution — no host Node/pnpm install. The one-liner above runs the isolated 5-step `demo:e2e` dry-run, yielding our clean Vitest baseline proof path and the Tier-1 ANSI HUD demo. Full regression: `docker run --rm slivervine-citadel pnpm test` (**Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 178 test files | 782 PASS Clean)**). Sidecar express audit → [`docker/README.md`](./docker/README.md).
 
 **Tier 1+ — Monorepo CLI:**
 
