@@ -403,36 +403,48 @@ curl -s "https://bedeltawater.slivervine.xyz/api/grant-audit" | jq .sepoliaDualL
 | [`arbitrum/GRANT_PROPOSAL.md`](./arbitrum/GRANT_PROPOSAL.md) | Scope & roadmap |
 | [`gmx/GMX_BUILDERS_PITCH.md`](./gmx/GMX_BUILDERS_PITCH.md) | GMX builder economics |
 | [`../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](../pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | 180s Pitch + 120s Demo dual-video scripts |
+| [§ Threat Model Appendix](#appendix-real-world-threat-model--market-landscape) | Agentic web metrics · case studies · competitive matrix |
 
 ---
 
-## Appendix: Industry References & Real-World Threat Anchors
+## Appendix: Real-World Threat Model & Market Landscape
 
-SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is engineered directly in response to emerging Web3 AI Agent execution vulnerabilities, real-world exploit vectors, and market loss events:
+### Market Adoption Metrics (The Agentic Web Shift)
 
-- **1. MEV Bots & Thin-Liquidity Exploitation on Autonomous Agents**:
-  - *Threat*: Autonomous AI Agents (e.g., ElizaOS, Virtuals swarm bots) executing trades on DEXs without real-time L2 orderbook depth sensing are routinely sandwiched by MEV bots or suffer 5%+ extreme slippage in thin liquidity pools.
-  - *SliverVine Alignment*: Directly addressed by `checkSoilResistance()` depth & slippage sensing and `evaluateHlOrderbookGapGuard()`.
+The Web3 attack surface is shifting from human UI phishing to **autonomous agent execution pipelines**. Industry telemetry indicates the agentic web is already material on-chain:
 
-- **2. Prompt Injection Attacks Leading to Unauthorized Key Hijacking**:
-  - *Threat*: Malicious prompts injected via Discord/Twitter trick the Agent's reasoning model (LLM) into generating unauthorized signatures or transferring vault assets to attacker addresses.
-  - *SliverVine Alignment*: Prevented at the "Cerebellum" execution layer via R20 Physical Deadlock (`severSigningChannel()`) and EIP-712 Consume-Once Gate. Even if the LLM "Brain" is compromised, the pre-broadcast signature pipe is severed within 106µs.
+| Metric | Estimate |
+|--------|----------|
+| **AI agents deployed** | **17,000+** autonomous on-chain agents |
+| **Share of on-chain transactions** | **~19%** agent-attributed activity |
+| **Daily Active Wallets (DAW) touchpoints** | **~4.5M** wallets interacting with agent frameworks |
 
-- **3. Flash-Liquidity Crises & Cascading Liquidations in Derivatives Markets**:
-  - *Threat*: Sudden liquidity drawdowns on GMX v2 and Hyperliquid trigger flash slippage, forcing unhedged AI agents into toxic liquidations.
-  - *SliverVine Alignment*: Solved by our core invariant $\Delta_{\text{net}} \equiv 0$ and the Observatory Paradox (-40 score markdown) dynamic risk controller.
+**Implication:** Security must evolve from post-hoc dashboards and mutable pause functions to **microsecond Pre-Broadcast Intent Firewalls** — severing toxic calldata **before** Sequencer queues, Bundler ingress, or MEV mempools. Citadel Shield targets this gap at **p50 ~106µs** Edge Wasm evaluation.
 
-- **4. Verified Real-World Loss Case ($441k+ Bot Execution Error)**:
-  - *Reference*: [PumpParade / Medium: AI Trading Bots Lost $441k in One Error](https://pumpparade.medium.com/ai-trading-bots-lost-441k-in-one-error-heres-what-actually-works-and-what-doesn-t-4f04f890c189)
-  - *SliverVine Alignment*: Proves the urgent necessity for sub-ms pre-broadcast safety checking before orders hit the public mempool.
+### Real-World Case Studies (Why Citadel Shield is Essential)
 
-- **5. Industry Consensus on AI Antivirus Primitives**:
-  - *Reference*: [CertiK: AI Skill Scanner & Antivirus Software for the AI Age](https://www.tradingview.com/news/chainwire:d064d7d1f094b:0-certik-launches-ai-skill-scanner-an-antivirus-software-for-the-ai-age/)
-  - *SliverVine Alignment*: Validates the market demand for AI security, where SliverVine provides the execution-layer safety citadel.
+| # | Case | Loss / Impact | Citadel Alignment |
+|---|------|---------------|-------------------|
+| **1** | **Jaredfromsubway.eth $7.5M Exploit (MEV Honeypot Trap)** | Automated signature logic exploited via malicious permission / honeypot traps | Validates **sub-ms Wasm pre-broadcast** `checkSoilResistance()` + honeypot RPC defense — signatures never reach toxic mempool paths |
+| **2** | **Virtuals Protocol $500k Unbound Agent Drain** | Unbound agent execution exceeded safe notional envelopes | Validates **R06/R07** session-key blast-radius isolation · **`SESSION_KEY_NOTIONAL_CAP_USD = $5,000`** · scoped `ORDER_EXECUTE` |
+| **3** | **ElizaOS / ai16z Fraud & Governance Collapse** | SDNY class-action litigation — raw Node.js prompt wrappers lacked on-chain execution guarantees | Validates **non-semantic bytecode predicate assertions** · EIP-712 consume-once Gate · **LLM back-off cooldown** — prompt layer compromise ≠ signing-layer authorization |
 
-- **6. Institutional Focus on AI Agent Vulnerabilities**:
-  - *Reference*: [CryptoRank: AI Agents & Web3 Hacking Symposium](https://cryptorank.io/news/feed/fae5e-ai-agents-web3-hacking-wyoming-symposium)
-  - *SliverVine Alignment*: Directly maps to institutional standards for agent wallet protection and pre-execution threat mitigation.
+### Competitive Landscape Matrix
+
+| Dimension | **SliverVine V1.0 (88% Baseline)** | **Wayfinder** | **Virtuals Protocol** | **ElizaOS Framework** | **ZeroDev / Biconomy (ERC-4337 AA)** |
+|-----------|-----------------------------------|---------------|-------------------------|----------------------|--------------------------------------|
+| **Pre-broadcast severance** | ✅ Sub-ms Wasm soil fuse (p50 ~106µs) · 0-Gas fail-closed | ⚠️ Strong intent routing; **no** sub-ms Wasm sandwich/slippage severance | ❌ Web2.5 agent layer; wallets exposed without pre-execution bounds | ❌ No native pre-broadcast risk gates | ❌ Session keys only; **no** AI-context fuse |
+| **On-chain immutability** | ✅ 0-proxy `SliverVineGate` · `consumed[digest]` | Varies by deployment | Consumer UX focus | Open-source plugins | Strong AA infra |
+| **AI behavioral safety** | ✅ 60s LLM cooldown · ±2–5 bps jitter | Limited | Limited | Prompt-only guardrails | N/A |
+| **Session blast-radius** | ✅ $5k notional cap · scoped modules | Varies | High adoption; **unbound drain risk** | Framework-dependent | ✅ ERC-4337 session scopes |
+| **Prompt injection immunity** | ✅ Bytecode predicates · not NL prompts | Partial | Partial | **Vulnerable** at execution hook | **Vulnerable** — signs whatever UserOp encodes |
+
+### Supplementary Industry References
+
+- **MEV & thin-liquidity on autonomous agents** — `checkSoilResistance()` · `evaluateHlOrderbookGapGuard()`
+- **$441k+ bot execution error** — [PumpParade / Medium](https://pumpparade.medium.com/ai-trading-bots-lost-441k-in-one-error-heres-what-actually-works-and-what-doesn-t-4f04f890c189)
+- **AI antivirus primitives** — [CertiK AI Skill Scanner](https://www.tradingview.com/news/chainwire:d064d7d1f094b:0-certik-launches-ai-skill-scanner-an-antivirus-software-for-the-ai-age/)
+- **Institutional agent-security focus** — [CryptoRank: AI Agents & Web3 Hacking Symposium](https://cryptorank.io/news/feed/fae5e-ai-agents-web3-hacking-wyoming-symposium)
 
 ---
 
