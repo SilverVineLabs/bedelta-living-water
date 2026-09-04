@@ -3,19 +3,27 @@
  * LangChain DynamicTool-compatible adapter with Zod-style JSON schema.
  * Usage: pnpm tsx examples/adapters/langchain-agent-adapter.ts [--trip]
  */
-import { checkSoilResistance, type SoilResistanceInput } from "../../src/services/risk-control";
+import { withCitadelShield, type CitadelShieldIntent } from "../../src/sdk/decorator";
+import { type SoilResistanceInput } from "../../src/services/risk-control";
 import {
   HEALTHY_SOIL,
+  hudBackoff,
   hudBlocked,
   hudChannelOpen,
   hudDispatched,
+  hudIntent,
   hudSevered,
+  hudSoilFuse,
+  isCooldownError,
+  parseBackoffRemainingSec,
+  parseShieldTripReasons,
+  printBackoffDivider,
+  printBackoffResult,
   printBanner,
   printMode,
   printResult,
   R,
   RED,
-  runSoilCheckHud,
   seedAdapterProbes,
   TOXIC_SOIL,
 } from "./citadel-ansi-hud";
@@ -47,41 +55,49 @@ function parseToolInput(raw: string): CitadelToolInput {
 async function runCitadelSoilTool(raw: string, hud: boolean): Promise<string> {
   const input = parseToolInput(raw);
   const { symbol, hlSpot, hlPerp, dydxPerp, depthUsd, at, intent, agentId } = input;
-  const soil: SoilResistanceInput = { symbol, hlSpot, hlPerp, dydxPerp, depthUsd, at };
+  const soil: CitadelShieldIntent = {
+    symbol,
+    hlSpot,
+    hlPerp,
+    dydxPerp,
+    depthUsd,
+    at,
+    agentId: agentId ?? "langchain-agent",
+  };
+  const resolvedAgentId = soil.agentId ?? "langchain-agent";
+  const resolvedIntent = intent ?? "TRADE_INTENT";
 
-  const { result, measuredUs, pass } = hud
-    ? runSoilCheckHud(soil, {
-        agentId: agentId ?? "langchain-agent",
-        framework: "LangChain",
-        intent: intent ?? "TRADE_INTENT",
-      })
-    : (() => {
-        const t0 = performance.now();
-        const r = checkSoilResistance(soil);
-        return { result: r, measuredUs: (performance.now() - t0) * 1000, pass: r.ok };
-      })();
+  if (hud) hudIntent(resolvedAgentId, "LangChain", resolvedIntent, "GMX v2 ETH/USDC GM");
 
-  if (!pass) {
+  const shielded = withCitadelShield(async () => "SOIL_PASS: pre-broadcast clearance granted");
+
+  try {
+    const pass = await shielded(soil);
     if (hud) {
-      hudSevered("SOIL_FUSE_TRIP");
-      hudBlocked();
+      hudChannelOpen();
+      hudDispatched("LangChain DynamicTool → GMX v2 GM", 0);
     }
-    const reason = result.reasons.join("; ") || "soil fuse tripped";
-    throw new Error(`[Citadel Shield Trip] Execution blocked pre-broadcast: ${reason}`);
+    return pass;
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (hud) {
+      if (isCooldownError(message)) {
+        hudBackoff(resolvedAgentId, parseBackoffRemainingSec(message));
+      } else {
+        hudSoilFuse(false, 0, parseShieldTripReasons(message));
+        hudSevered("SOIL_FUSE_TRIP");
+        hudBlocked();
+      }
+    }
+    throw err;
   }
-
-  if (hud) {
-    hudChannelOpen();
-    hudDispatched("LangChain DynamicTool → GMX v2 GM", measuredUs);
-  }
-  return "SOIL_PASS: pre-broadcast clearance granted";
 }
 
 /** @langchain/core/tools DynamicTool-compatible spec (no runtime dependency). */
 export const citadelSoilGuardTool = {
   name: "citadel_soil_guard",
   description:
-    "Pre-consensus intent firewall — runs checkSoilResistance() before any trade intent is signed or broadcast.",
+    "Pre-consensus intent firewall — runs withCitadelShield() before any trade intent is signed or broadcast.",
   schema: soilInputJsonSchema,
   func: (input: string) => runCitadelSoilTool(input, false),
 };
@@ -100,12 +116,34 @@ async function main(): Promise<void> {
     ? { ...TOXIC_SOIL, intent: "PROMPT_INJECTION_HIGH_SLIPPAGE_OPEN", agentId: "langchain-demo" }
     : { ...HEALTHY_SOIL, intent: "DELTA_NEUTRAL_GM_DEPOSIT", agentId: "langchain-demo" };
 
+  if (!trip) {
+    try {
+      await invokeCitadelSoilGuardTool(input, true);
+      printResult(true);
+    } catch (err) {
+      printResult(false);
+      console.error(`${RED}${err instanceof Error ? err.message : String(err)}${R}`);
+      process.exit(1);
+    }
+    return;
+  }
+
   try {
     await invokeCitadelSoilGuardTool(input, true);
     printResult(true);
   } catch (err) {
     printResult(false);
-    console.error(`${RED}${err instanceof Error ? err.message : String(err)}${R}`);
+    console.error(`${RED}Phase 1: ${err instanceof Error ? err.message : String(err)}${R}`);
+  }
+
+  printBackoffDivider();
+  try {
+    await invokeCitadelSoilGuardTool(input, true);
+    printResult(true);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (isCooldownError(message)) printBackoffResult();
+    console.error(`${RED}${message}${R}`);
     process.exit(1);
   }
 }

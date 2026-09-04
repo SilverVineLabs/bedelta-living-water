@@ -3,16 +3,22 @@
  * Virtuals GAME Framework FunctionDefinition / worker action adapter.
  * Usage: pnpm tsx examples/adapters/virtuals-game-adapter.ts [--trip]
  */
-import { withCitadelShield } from "../../src/sdk/decorator";
+import { withCitadelShield, type CitadelShieldIntent } from "../../src/sdk/decorator";
 import { type SoilResistanceInput } from "../../src/services/risk-control";
 import {
   HEALTHY_SOIL,
+  hudBackoff,
   hudBlocked,
   hudChannelOpen,
   hudDispatched,
   hudIntent,
   hudSevered,
   hudSoilFuse,
+  isCooldownError,
+  parseBackoffRemainingSec,
+  parseShieldTripReasons,
+  printBackoffDivider,
+  printBackoffResult,
   printBanner,
   printMode,
   printResult,
@@ -34,7 +40,7 @@ export interface VirtualsGameWorkerPayload {
 
 export interface VirtualsGameWorkerResult {
   success: boolean;
-  status: "ALLOW" | "FAIL_CLOSED";
+  status: "ALLOW" | "FAIL_CLOSED" | "MANDATORY_COOLDOWN_ACTIVE";
   message: string;
   latencyUs?: number;
   reasons?: string[];
@@ -52,7 +58,7 @@ function payloadToSoil(payload: VirtualsGameWorkerPayload): SoilResistanceInput 
 }
 
 const shieldedExecute = withCitadelShield(
-  async (soil: SoilResistanceInput): Promise<VirtualsGameWorkerResult> => ({
+  async (_intent: CitadelShieldIntent): Promise<VirtualsGameWorkerResult> => ({
     success: true,
     status: "ALLOW",
     message: "GAME worker: pre-broadcast clearance granted",
@@ -91,34 +97,35 @@ export const citadelSoilGuardFunction: {
     const agentId = payload.agentId ?? "virtuals-game-agent";
     const intent = payload.intent ?? "GAME_TRADE_INTENT";
 
-    if (showHud) {
-      hudIntent(agentId, "Virtuals GAME", intent, "GMX v2 ETH/USDC GM");
-    }
+    if (showHud) hudIntent(agentId, "Virtuals GAME", intent, "GMX v2 ETH/USDC GM");
 
     const t0 = performance.now();
     try {
-      const result = await shieldedExecute(soil);
+      const result = await shieldedExecute({ ...soil, agentId });
       const latencyUs = (performance.now() - t0) * 1000;
       if (showHud) {
-        hudSoilFuse(true, latencyUs, []);
         hudChannelOpen();
         hudDispatched("Virtuals GAME Worker → GMX v2 GM", latencyUs);
       }
       return { ...result, latencyUs };
     } catch (err) {
       const latencyUs = (performance.now() - t0) * 1000;
-      const reasons = err instanceof Error ? err.message.split("; ") : ["SOIL_FUSE_TRIP"];
+      const message = err instanceof Error ? err.message : "Citadel Shield trip";
       if (showHud) {
-        hudSoilFuse(false, latencyUs, reasons);
-        hudSevered("SOIL_FUSE_TRIP");
-        hudBlocked();
+        if (isCooldownError(message)) {
+          hudBackoff(agentId, parseBackoffRemainingSec(message));
+        } else {
+          hudSoilFuse(false, latencyUs, parseShieldTripReasons(message));
+          hudSevered("SOIL_FUSE_TRIP");
+          hudBlocked();
+        }
       }
       return {
         success: false,
-        status: "FAIL_CLOSED",
-        message: err instanceof Error ? err.message : "Citadel Shield trip",
+        status: isCooldownError(message) ? "MANDATORY_COOLDOWN_ACTIVE" : "FAIL_CLOSED",
+        message,
         latencyUs,
-        reasons,
+        reasons: parseShieldTripReasons(message),
       };
     }
   },
@@ -135,12 +142,29 @@ async function main(): Promise<void> {
     : { ...HEALTHY_SOIL, intent: "DELTA_NEUTRAL_GM_DEPOSIT", agentId: "virtuals-game-demo" };
 
   const result = await citadelSoilGuardFunction.execute(payload, { hud: true });
-  if (!result.success) {
-    printResult(false);
-    console.error(`${RED}${result.message}${R}`);
-    process.exit(1);
+  if (!trip) {
+    if (!result.success) {
+      printResult(false);
+      console.error(`${RED}${result.message}${R}`);
+      process.exit(1);
+    }
+    printResult(true);
+    return;
   }
-  printResult(true);
+
+  if (!result.success && result.status === "FAIL_CLOSED") {
+    printResult(false);
+    console.error(`${RED}Phase 1: ${result.message}${R}`);
+    printBackoffDivider();
+    const retry = await citadelSoilGuardFunction.execute(payload, { hud: true });
+    if (retry.status === "MANDATORY_COOLDOWN_ACTIVE") {
+      printBackoffResult();
+      console.error(`${RED}${retry.message}${R}`);
+      process.exit(1);
+    }
+  }
+
+  if (result.success) printResult(true);
 }
 
 const isMain = process.argv[1]?.includes("virtuals-game-adapter");

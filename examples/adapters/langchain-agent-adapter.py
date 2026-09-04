@@ -57,9 +57,55 @@ TOXIC_SOIL: dict[str, Any] = {
     "hlSpot": 3500,
 }
 
+COOLDOWN_MS = 60_000
+_active_cooldowns: dict[str, float] = {}
+
+
+def _activate_cooldown(agent_id: str) -> None:
+    _active_cooldowns[agent_id] = time.time() * 1000 + COOLDOWN_MS
+
+
+def _check_cooldown(agent_id: str) -> Optional[dict[str, Any]]:
+    until_ms = _active_cooldowns.get(agent_id)
+    if until_ms is None:
+        return None
+    now_ms = time.time() * 1000
+    if now_ms < until_ms:
+        return {
+            "status": "FAIL_CLOSED",
+            "code": "MANDATORY_COOLDOWN_ACTIVE",
+            "agentId": agent_id,
+            "cooldown_ms": int(until_ms - now_ms),
+            "do_not_retry": True,
+            "error": (
+                f"[Citadel Back-off] MANDATORY_COOLDOWN_ACTIVE: Agent '{agent_id}' tripped soil fuse recently. "
+                "DO NOT RETRY or invoke LLM inference to prevent token burn and RPC rate limits."
+            ),
+        }
+    _active_cooldowns.pop(agent_id, None)
+    return None
+
+
+def format_soil_trip_json(agent_id: str, error: str, cooldown_ms: int = COOLDOWN_MS) -> str:
+    return json.dumps(
+        {
+            "status": "FAIL_CLOSED",
+            "code": "SOIL_RESISTANCE_TRIP",
+            "agentId": agent_id,
+            "error": error,
+            "cooldown_ms": cooldown_ms,
+            "do_not_retry": True,
+        },
+        indent=2,
+    )
+
 
 class CitadelShieldTrip(Exception):
     """Raised when Citadel REST returns SOIL_RESISTANCE_TRIP or R20_LOCKED."""
+
+    def __init__(self, message: str, *, payload: Optional[dict[str, Any]] = None) -> None:
+        super().__init__(message)
+        self.payload = payload
 
 
 def _pad_banner(text: str) -> str:
@@ -128,6 +174,25 @@ def hud_blocked() -> None:
     hud_line("BLOCKED", f"UserOp Dispatch: {RED}REJECTED{R} | Gas Cost: {CYAN}0-Gas (Pre-Broadcast){R}", RED)
 
 
+def hud_backoff(agent_id: str, remaining_sec: int) -> None:
+    hud_line(
+        "BACK-OFF",
+        f"LLM Back-off active for agent {CYAN}{agent_id}{R} — {YELLOW}DO NOT RETRY{R} or invoke LLM inference for {YELLOW}{remaining_sec}s{R}",
+        YELLOW,
+    )
+
+
+def print_backoff_result() -> None:
+    line = "═" * (BOX_W + 2)
+    print(f"\n{YELLOW}{line}{R}")
+    print(f"{YELLOW}{BOLD}RESULT: ⏸️  MANDATORY_COOLDOWN_ACTIVE (LLM Back-off Engaged){R}")
+    print(f"{YELLOW}{line}{R}")
+
+
+def print_backoff_divider() -> None:
+    print(f"\n{CYAN}{BOLD}--- LLM Back-off Demo: immediate retry (same agentId) ---{R}\n")
+
+
 def hud_channel_open() -> None:
     hud_line("CHANNEL", f"EIP-712 Signature Channel: {GREEN}OPEN{R}", GREEN)
 
@@ -190,7 +255,17 @@ def invoke_pre_execution_guard(
     intent: str = "TRADE_INTENT",
     api_url: Optional[str] = None,
     hud: bool = False,
+    raise_on_trip: bool = True,
 ) -> str:
+    cooldown = _check_cooldown(agent_id)
+    if cooldown is not None:
+        if hud:
+            hud_backoff(agent_id, max(1, cooldown["cooldown_ms"] // 1000))
+        payload = json.dumps(cooldown, indent=2)
+        if raise_on_trip:
+            raise CitadelShieldTrip(cooldown["error"], payload=cooldown)
+        return payload
+
     client = CitadelRestClient(api_url or os.environ.get("SLIVERVINE_CITADEL_API_URL", DEFAULT_API_URL))
     if hud:
         hud_intent(agent_id, "LangChain Python", intent, "GMX v2 ETH/USDC GM")
@@ -205,11 +280,23 @@ def invoke_pre_execution_guard(
         return "SOIL_PASS: pre-broadcast clearance granted"
     except CitadelShieldTrip as exc:
         latency_us = (time.perf_counter() - t0) * 1_000_000
+        _activate_cooldown(agent_id)
+        trip_payload = {
+            "status": "FAIL_CLOSED",
+            "code": "SOIL_RESISTANCE_TRIP",
+            "agentId": agent_id,
+            "error": str(exc),
+            "cooldown_ms": COOLDOWN_MS,
+            "do_not_retry": True,
+        }
         if hud:
             hud_soil_fuse(False, latency_us, str(exc))
             hud_severed("SOIL_FUSE_TRIP")
             hud_blocked()
-        raise
+        payload = json.dumps(trip_payload, indent=2)
+        if raise_on_trip:
+            raise CitadelShieldTrip(str(exc), payload=trip_payload) from exc
+        return payload
 
 
 try:
@@ -259,13 +346,20 @@ try:
                 "dydxPerp": dydxPerp,
                 "depthUsd": depthUsd,
             }
-            return invoke_pre_execution_guard(
-                soil,
-                agent_id=agentId or "langchain-python-agent",
-                intent=intent or "TRADE_INTENT",
-                api_url=self.api_base_url,
-                hud=False,
-            )
+            resolved_agent = agentId or "langchain-python-agent"
+            try:
+                return invoke_pre_execution_guard(
+                    soil,
+                    agent_id=resolved_agent,
+                    intent=intent or "TRADE_INTENT",
+                    api_url=self.api_base_url,
+                    hud=False,
+                    raise_on_trip=True,
+                )
+            except CitadelShieldTrip as exc:
+                if exc.payload is not None:
+                    return json.dumps(exc.payload, indent=2)
+                return format_soil_trip_json(resolved_agent, str(exc))
 
 except ImportError:
     BaseTool = None  # type: ignore[misc, assignment]
@@ -283,18 +377,33 @@ def main() -> int:
 
     soil = TOXIC_SOIL if args.trip else HEALTHY_SOIL
     intent = "PROMPT_INJECTION_HIGH_SLIPPAGE_OPEN" if args.trip else "DELTA_NEUTRAL_GM_DEPOSIT"
+    agent_id = "langchain-python-demo"
+
+    if not args.trip:
+        try:
+            invoke_pre_execution_guard(soil, agent_id=agent_id, intent=intent, hud=True)
+            print_result(True)
+            return 0
+        except CitadelShieldTrip as exc:
+            print_result(False)
+            print(f"{RED}{exc}{R}", file=sys.stderr)
+            return 1
 
     try:
-        invoke_pre_execution_guard(
-            soil,
-            agent_id="langchain-python-demo",
-            intent=intent,
-            hud=True,
-        )
+        invoke_pre_execution_guard(soil, agent_id=agent_id, intent=intent, hud=True)
         print_result(True)
         return 0
     except CitadelShieldTrip as exc:
         print_result(False)
+        print(f"{RED}Phase 1: {exc}{R}", file=sys.stderr)
+
+    print_backoff_divider()
+    try:
+        invoke_pre_execution_guard(soil, agent_id=agent_id, intent=intent, hud=True)
+        print_result(True)
+        return 0
+    except CitadelShieldTrip as exc:
+        print_backoff_result()
         print(f"{RED}{exc}{R}", file=sys.stderr)
         return 1
 

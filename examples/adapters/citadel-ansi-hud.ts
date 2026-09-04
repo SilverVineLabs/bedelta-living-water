@@ -120,6 +120,44 @@ export function hudDispatched(target: string, latencyUs: number): void {
   hudLine("DISPATCH", `UserOp Dispatch: ${GREEN}ALLOWED${R} | target: ${target} | latency: ${formatLatency(latencyUs)}`, GREEN);
 }
 
+export const COOLDOWN_MS = 60_000;
+
+export function isCooldownError(message: string): boolean {
+  return message.includes("MANDATORY_COOLDOWN_ACTIVE");
+}
+
+export function parseShieldTripReasons(message: string): string[] {
+  const prefix = "[Citadel Shield Trip] Execution blocked pre-broadcast: ";
+  if (message.startsWith(prefix)) {
+    return message.slice(prefix.length).split("; ").filter(Boolean);
+  }
+  return [message];
+}
+
+export function parseBackoffRemainingSec(message: string): number {
+  const match = message.match(/for the next (\d+) seconds/);
+  return match ? Number.parseInt(match[1], 10) : 60;
+}
+
+export function hudBackoff(agentId: string, remainingSec: number): void {
+  hudLine(
+    "BACK-OFF",
+    `LLM Back-off active for agent ${CYAN}${agentId}${R} — ${YELLOW}DO NOT RETRY${R} or invoke LLM inference for ${YELLOW}${remainingSec}s${R}`,
+    YELLOW,
+  );
+}
+
+export function printBackoffResult(): void {
+  const line = "═".repeat(BOX_W + 2);
+  console.log(`\n${YELLOW}${line}${R}`);
+  console.log(`${YELLOW}${BOLD}RESULT: ⏸️  MANDATORY_COOLDOWN_ACTIVE (LLM Back-off Engaged)${R}`);
+  console.log(`${YELLOW}${line}${R}`);
+}
+
+export function printBackoffDivider(): void {
+  console.log(`\n${CYAN}${BOLD}--- LLM Back-off Demo: immediate retry (same agentId) ---${R}\n`);
+}
+
 export interface SoilHudRun {
   result: SoilResistanceResult;
   measuredUs: number;
