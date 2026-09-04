@@ -108,8 +108,8 @@ Reference adapters in [`examples/adapters/`](../../examples/adapters/) — evalu
 | **Virtuals GAME** | TS-compliant `FunctionDefinition` custom worker action — `citadelSoilGuardFunction` wrapping `withCitadelShield()` | [`virtuals-game-adapter.ts`](../../examples/adapters/virtuals-game-adapter.ts) | `pnpm tsx examples/adapters/virtuals-game-adapter.ts [--trip]` |
 | **LangChain (TypeScript)** | `@langchain/core/tools` `DynamicTool`-compatible spec — `citadelSoilGuardTool` + JSON schema (no runtime dependency) | [`langchain-agent-adapter.ts`](../../examples/adapters/langchain-agent-adapter.ts) | `pnpm tsx examples/adapters/langchain-agent-adapter.ts [--trip]` |
 | **LangChain (Python)** | `langchain_core.tools.BaseTool` — `SlivervinePreExecutionGuardTool` (`slivervine_pre_execution_guard`) via Citadel REST `POST /api/hedge/evaluate` | [`langchain-agent-adapter.py`](../../examples/adapters/langchain-agent-adapter.py) | `python examples/adapters/langchain-agent-adapter.py [--trip]` |
-| **Wayfinder** | TS-compliant `@slivervine/citadel-sdk` decorator — `withCitadelShield()` / `verifyAgentIntent()` pre-broadcast hook | [`virtuals-game-adapter.ts`](../../examples/adapters/virtuals-game-adapter.ts) pattern · [`@slivervine/citadel-sdk`](../../src/sdk/decorator.ts) · [Wayfinder docs](https://docs.wayfinder.ai) | `pnpm tsx examples/adapters/virtuals-game-adapter.ts [--trip]` |
-| **CrewAI / AutoGen** | Python `BaseTool` / Citadel REST Client — `SlivervinePreExecutionGuardTool` via `POST /api/hedge/evaluate` | [`langchain-agent-adapter.py`](../../examples/adapters/langchain-agent-adapter.py) | `python examples/adapters/langchain-agent-adapter.py [--trip]` |
+| **Wayfinder** | TS-compliant `@slivervine/citadel-sdk` decorator — `withCitadelShield()` / `verifyAgentIntent()` pre-broadcast hook | [`wayfinder-agent-adapter.ts`](../../examples/adapters/wayfinder-agent-adapter.ts) | `pnpm tsx examples/adapters/wayfinder-agent-adapter.ts [--trip]` |
+| **CrewAI / AutoGen** | Python `BaseTool` / Citadel REST Client — `SlivervineCrewAIGuardTool` + AutoGen `citadel_soil_guard` bindings | [`crewai-autogen-adapter.py`](../../examples/adapters/crewai-autogen-adapter.py) | `python examples/adapters/crewai-autogen-adapter.py [--trip]` |
 
 **PEV (Prevented Exploit Volume) — Dune Analytics Telemetry Metric:**
 
@@ -719,8 +719,8 @@ allowedToSign =
 |----------|-------------|-------------|
 | **Third-party dApps** | `@slivervine/citadel-sdk` · `verifyAgentIntent()` · `withCitadelShield` | Apache-2.0 · sub-ms soil gate |
 | **ElizaOS / Virtuals / LangChain** | Turn-key adapters — [§0.3](#03-turn-key-agent-ecosystem-adapters) · [`examples/adapters/`](../../examples/adapters/) | `checkSoilResistance()` · `withCitadelShield()` |
-| **Wayfinder (Arbitrum-native)** | `@slivervine/citadel-sdk` · `withCitadelShield()` / `verifyAgentIntent()` · [`virtuals-game-adapter.ts`](../../examples/adapters/virtuals-game-adapter.ts) pattern · [§0.3](#03-turn-key-agent-ecosystem-adapters) | Sub-ms soil gate · ERC-7579 session clip |
-| **CrewAI / AutoGen (enterprise)** | `SlivervinePreExecutionGuardTool` · Citadel REST · [`langchain-agent-adapter.py`](../../examples/adapters/langchain-agent-adapter.py) · [§0.3](#03-turn-key-agent-ecosystem-adapters) | `checkSoilResistance()` · Pillar 2 AML escort boundary |
+| **Wayfinder (Arbitrum-native)** | `@slivervine/citadel-sdk` · `withCitadelShield()` / `verifyAgentIntent()` · [`wayfinder-agent-adapter.ts`](../../examples/adapters/wayfinder-agent-adapter.ts) · [§0.3](#03-turn-key-agent-ecosystem-adapters) | Sub-ms soil gate · ERC-7579 session clip |
+| **CrewAI / AutoGen (enterprise)** | `SlivervineCrewAIGuardTool` · AutoGen `citadel_soil_guard` · [`crewai-autogen-adapter.py`](../../examples/adapters/crewai-autogen-adapter.py) · [§0.3](#03-turn-key-agent-ecosystem-adapters) | `checkSoilResistance()` · Pillar 2 AML escort boundary |
 | **Institutional vaults** | ZeroDev Kernel + Citadel Worker BUSL payload path | ERC-7579 session + 106µs Shield |
 | **Grant audit / Dune / PEV** | `GET /api/grant-audit` · **PEV (Prevented Exploit Volume)** · [Dune dashboard](https://dune.com/silvervinelabs/silvervine-citadel-telemetry) · production DuneSQL feed + chart ([`DUNE_DASHBOARD_SPECIFICATION.md`](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md)) | Pillar 2 ingress · Pillar 3 intercepts · 10 bps builder revenue |
 
