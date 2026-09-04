@@ -178,7 +178,7 @@ During market storms, an **optional** accounting fallback to Aave v3 / Morpho Bl
 | Tier | Mechanism | Cap / Rule |
 |------|-----------|------------|
 | **Robinhood (Pillar 2 Reference Escort Adapter)** | Optional outbound compliance channel (`46630`/`4663` → `42161`) · `lostUsd ≡ 0` | Not a yield product · does not raise TVL cap |
-| **Citadel Safety Buffer** | GMX v2 Skew Arbitrage excess (+5~10 bps `uiFeeReceiver`) | Absorbs bridge fees, basis risk, and MEV slippage |
+| **Citadel Safety Buffer** | GMX v2 builder fee (**+10 bps `uiFeeReceiver`** via `GMX_UI_FEE_BPS`) + skew arbitrage surplus | Absorbs bridge fees, basis risk, and MEV slippage |
 | **Hurdle Gate** | Rebalance / performance fee crystallization | `FRICTION_BUFFER_APY = 0.005` — deploy only above friction-adjusted excess |
 
 ### 2.4 Evolution of ZeroDev: From Bridge Router to Intent Composer
@@ -241,7 +241,7 @@ export const FRICTION_BUFFER_APY = 0.005 as const; // 0.5% friction buffer
 **Net-yield inequality SliverVine Protocol enforces:**
 
 ```text
-GMX skew premium (+5~10 bps uiFeeReceiver) + funding cushion
++10 bps uiFeeReceiver (GMX_UI_FEE_BPS) + GMX skew rebate + funding cushion
  − bridge / basis / MEV friction
  > Native Earn APY + FRICTION_BUFFER_APY (0.5%)
  ⇔ capital deployment allowed (else park in Native Earn · fail-closed)
@@ -282,7 +282,7 @@ SliverVine Protocol composes yield from **three exogenous legs**, each with an i
 | Cash-flow leg | Source | Economic payer | Stage | Code / spec anchor |
 |---------------|--------|----------------|-------|-------------------|
 | **Risk-free base (probe only)** | Aave v3 / Morpho Blue USDC earn on Arbitrum One *(Hurdle-rate probe only — not a yield-stacking product track)* | Borrowers pay lending spread | Probe · optional storm floor | `arbitrum-yield-ingress.ts` · `rebalance-rules.ts` |
-| **GMX skew rebate + builder fee** | Underweight-side GM LP · `uiFeeReceiver` **+10 bps** · positive skew price-impact rebate (+5~10 bps band) | Traders / skew rebalancers on GMX v2 | A ✅ | `gmx-v2-order-payload.ts` · `GMX_UI_FEE_BPS` · Invariant #25–#27 |
+| **GMX skew rebate + builder fee** | Underweight-side GM LP · `uiFeeReceiver` **+10 bps** (`GMX_UI_FEE_BPS`) · positive skew price-impact rebate (up to **~5 bps** venue-native; separate from `uiFeeReceiver`) | Traders / skew rebalancers on GMX v2 | A ✅ | `gmx-v2-order-payload.ts` · `GMX_UI_FEE_BPS` · Invariant #25–#27 |
 | **HL funding cushion** | 1× short leg on Hyperliquid — hourly funding when perp > spot | Counterparty funding flow on HL book | A ✅ | HL session pipeline · Survival Benchmark funding replay |
 
 **Delta-neutral structure:** Long GM pool exposure (Arbitrum) is hedged by 1× HL short — net directional delta ≈ 0. Yield is therefore **carry and fee capture**, not leveraged directional bet + emission subsidy.
@@ -290,7 +290,7 @@ SliverVine Protocol composes yield from **three exogenous legs**, each with an i
 ```text
 Real yield stack (conceptual):
  Base floor ← Aave / Morpho USDC earn (~4–5% *(Hurdle-rate probe only — not a yield-stacking product track)*)
- + GMX surplus ← skew rebate + uiFeeReceiver (+10 bps builder · +5~10 bps skew band)
+ + GMX surplus ← +10 bps uiFeeReceiver (GMX_UI_FEE_BPS) + venue-native skew rebate (up to ~5 bps; separate)
  + HL funding ← 1× short funding cushion (hourly · regime-dependent)
  − friction ← bridge · basis · MEV · slippage (Citadel Safety Buffer absorbs)
  > hurdle ← Native Earn + FRICTION_BUFFER_APY (0.5%) before DN redeploy

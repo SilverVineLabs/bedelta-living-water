@@ -23,7 +23,7 @@
 
 | 類別 | GI 編號 | 重點錨點 |
 |------|---------|----------|
-| 1. 費用與利差覆蓋 | GI-01–05 | uiFeeReceiver +5bps · skew +5~+10bps · gas-yield fuse · Paymaster 限額 |
+| 1. 費用與利差覆蓋 | GI-01–05 | uiFeeReceiver **+10 bps** (`GMX_UI_FEE_BPS`) · skew rebate ~5 bps（venue-native） · gas-yield fuse · Paymaster 限額 |
 | 2. 盤口與滑點追蹤 | GI-06–10 | MAX_SLIPPAGE 0.5% · 10bps impact · HL L2 · TWAP · PGATE 200ms |
 | 3. GMX GM Pool 結構 | GI-11–15 | underweight · ETH/USDC · async settle · receiver/price bounds |
 | 4. 微秒級預執行風控 | GI-16–20 | **106µs** · Wasm <60µs · Dynamic Max SL · AllowedToSign · soil→paymaster trip |
@@ -34,7 +34,7 @@
 
 - 106 µs Wasm Soil Engine → GI-16–20
 - lostUsd ≡ 0 → GI-21, GI-27
-- uiFeeReceiver +5bps ~ +10bps → GI-01–03
+- uiFeeReceiver **+10 bps** (`GMX_UI_FEE_BPS`) + skew rebate ~5 bps → GI-01–03
 - ZeroDev Session Keys → GI-05, GI-19, GI-24
 
 ### 參照來源

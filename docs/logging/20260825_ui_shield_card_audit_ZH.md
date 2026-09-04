@@ -34,7 +34,7 @@
     marketState: "🌊 CLEAR (Optimal Delta Balance)",
     marketStateVariant: "clear",
     edgeEngineLabel: "91.2 KiB gzip measured hot path",
-    skewPremiumLabel: "+5bps ~ +10bps uiFeeReceiver",
+    skewPremiumLabel: "+10 bps uiFeeReceiver (GMX_UI_FEE_BPS)",
   }}
   logLines={[
     "[p50: 106µs] checkSoilResistance() -> ALLOW",

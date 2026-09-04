@@ -22,14 +22,14 @@
 1. **Non-Custodial Unidirectional Escort** — `lostUsd ≡ 0`、單向 escort、AML 反向封鎖
 2. **30s TTL Nonce-Healed Self-Exploding Session Keys** — 30s 心跳 / attestation TTL、nonce 自癒、簽章通道自爆鎖定
 3. **Zero-Bundler-Rejection Invariant (EIP-7562)** — UserOp 驗證階段 storage 規則、bundler fail-closed
-4. **Skew Neutralizer Premium** — `uiFeeReceiver` +5 bps + 正向 skew rebate ~5 bps（合計 +5 ~ +10 bps 帶）
+4. **Skew Neutralizer Premium** — `uiFeeReceiver` **+10 bps** (`GMX_UI_FEE_BPS`) + 正向 skew rebate ~5 bps（venue-native；與 `uiFeeReceiver` 分開核算）
 
 ## 錨點對照
 
 - 三角迴路：`docs/architecture/TECHNICAL_SPECIFICATION.md` §2
 - EIP-7562 wiki：`docs/architecture/TECHNICAL_SPECIFICATION.md` §4.0
 - Nonce healing：`src/services/session-key-adapter-lib/nonce-auto-healing.ts`
-- UI fee SSOT：`src/config/gmx-revenue.ts` · `GMX_UI_FEE_BPS = 5`
+- UI fee SSOT：`src/config/gmx-revenue.ts` · `GMX_UI_FEE_BPS = 10`
 
 ## 限制遵守
 

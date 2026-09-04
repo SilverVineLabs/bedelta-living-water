@@ -11,7 +11,7 @@ import {
 export const GMX_UI_FEE_RECEIVER =
   "0xc9BddABD80982d2201376195DD9B85fb7951546f" as const;
 
-/** GMX v2 ExchangeRouter native builder fee — 5–10 bps spec ceiling (SSOT default: 10 bps). */
+/** GMX v2 ExchangeRouter native builder fee — SSOT: +10 bps (`GMX_UI_FEE_BPS`). */
 export const GMX_UI_FEE_BPS = 10 as const;
 
 /** Registered GMX Builders referral code label — frozen on-chain bytes32 (Sil- spelling; do not rename). */
