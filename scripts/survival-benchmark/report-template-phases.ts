@@ -28,7 +28,7 @@ export function buildPhasesSection(ctx: SurvivalReportContext): string {
     fullSpecSaasYr, vaasBlocked, degraded, runANetApy, batch1DeltaApy,
     idleUsdcUsd, lendRes, affRes, shadowSlipSaved, shadowRes, zsrRes,
     batch1ExtraUsd, runANav, builderCommissionUsd,
-    runBNetApy, runBVsBaseApy, ingressTvlUsd, ingressSol, ingressArb, gasRes,
+    runBNetApy, runBVsBaseApy, runBTvlAfter, ingressTvlUsd, ingressSol, ingressArb, gasRes,
     gasImpactDropPct, gasSlipSaved, whaleRes, whaleFundingUsd, batch2ExtraUsd,
     batch2DeltaApy, runCNetApy, runCVsBaseApy, runCSharpe, runCMdd, runCSlip30d,
     runCSlip1m, runCNav, runCBlockRate, runCSaasYr, runCAffiliateYr,

@@ -22,7 +22,7 @@ export function buildMetricsSection(ctx: SurvivalReportContext): string {
     vaasSaasFeeAnnualized, phase5DeltaApy, phase5SlipCost, fullSpecNetApy,
     fullSpecSlip30d, fullSpecSlip1mStress, fullSpecSharpe, fullSpecMdd,
     fullSpecBlockRate, fullSpecSaasYr, runANetApy, batch1DeltaApy, runBNetApy,
-    ingressTvlUsd, runCNetApy, runCSharpe, runCMdd, runCCombinedRevYr,
+    ingressTvlUsd, runCNetApy, runCSharpe, runCMdd, runCCombinedRevYr, rotationOn,
   } = ctx;
   return `## 1. Live Orderbook Depth (ETH/USDC)
 

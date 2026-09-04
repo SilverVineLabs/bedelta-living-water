@@ -140,6 +140,7 @@ export interface SurvivalReportContext {
   batch2DeltaApy: number;
   runBNetApy: number;
   runBVsBaseApy: number;
+  runBTvlAfter: number;
   runCNetApy: number;
   runCVsBaseApy: number;
   runCSlip30d: number;
