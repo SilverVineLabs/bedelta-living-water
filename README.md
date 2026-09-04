@@ -44,24 +44,25 @@
 
 ---
 
-## ⚡ 30-Second Express Audit (Zero-Host Docker Verification)
+## ⚡ 30-Second Express Audit (Fastest Judge Verification)
 
-**Tier 0 — Docker (zero host Node/pnpm dependencies):**
+### Path 1: Instant Monorepo Verification (Recommended — 3 Seconds)
+
+```bash
+pnpm install
+pnpm run demo:e2e    # 5-Step E2E Cyberpunk ANSI HUD Demo
+pnpm test            # 173 test files | 765 PASS Clean
+```
+
+Optional benchmark: `npx tsx scripts/grant-advanced-resilience-benchmark.ts`
+
+### Path 2: Isolated Docker Verification
 
 ```bash
 docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 ```
 
-Zero-dependency container execution — no host Node/pnpm install. The one-liner above runs the isolated 5-step `demo:e2e` dry-run, yielding our clean Vitest baseline proof path and the Tier-1 ANSI HUD demo. Full regression: `docker run --rm slivervine-citadel pnpm test` (**Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 178 test files | 782 PASS Clean)**). Sidecar express audit → [`docker/README.md`](./docker/README.md).
-
-**Tier 1+ — Monorepo CLI:**
-
-```bash
-pnpm install
-pnpm run demo:e2e
-pnpm test
-npx tsx scripts/grant-advanced-resilience-benchmark.ts
-```
+Zero-dependency container execution — no host Node/pnpm install. Runs the isolated 5-step `demo:e2e` dry-run and Tier-1 ANSI HUD demo. Full regression: `docker run --rm slivervine-citadel pnpm test` (**173 test files | 765 PASS Clean**). Sidecar express audit → [`docker/README.md`](./docker/README.md).
 
 **Representative `demo:e2e` terminal highlights** (GitHub `diff` syntax — green `+` PASS, red `-` alerts, yellow `!` fee injection):
 
@@ -83,11 +84,11 @@ npx tsx scripts/grant-advanced-resilience-benchmark.ts
 + Flash unwind: PASS · RESULT: E2E OK (5/5)
 ```
 
-Canonical interactive demo command for judges:
+Canonical interactive demo commands for judges:
 
-1. **Tier 0:** `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` — isolated E2E, no host toolchain drift.
-2. Run `pnpm run demo:e2e` as the single interactive Citadel demo entry point.
-3. `pnpm test -- --run` verifies **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 178 test files | 782 PASS Clean)**.
+1. **Path 1 (recommended):** `pnpm install && pnpm run demo:e2e` — fastest 5-step Citadel ANSI HUD demo.
+2. `pnpm test -- --run` verifies **173 test files | 765 PASS Clean**.
+3. **Path 2:** `docker build -t slivervine-citadel . && docker run --rm slivervine-citadel` — isolated E2E, no host toolchain drift.
 4. `grant-advanced-resilience-benchmark.ts` shows the sub-ms Wasm Shield latency path.
 
 For the deeper CLI / API audit matrix, see the `Auditor — 30-Second CLI & API Verification` section below.

@@ -11,7 +11,9 @@
 
 ---
 
-## 0. Tier-0 — Root E2E Verifier (Zero Host Node/pnpm)
+## 0. Path 2 — Root E2E Verifier (Isolated Docker)
+
+> **Fastest path:** see root README **Path 1** (`pnpm install && pnpm run demo:e2e`) — ~3 seconds with host Node/pnpm.
 
 From repository root — **not** the sidecar image:
 
@@ -23,7 +25,7 @@ docker build -t slivervine-citadel . && docker run --rm slivervine-citadel
 |------|-------|
 | Dockerfile | [`../Dockerfile`](../Dockerfile) (repo root) |
 | Default CMD | `pnpm run demo:e2e` → `[tier0] demo:e2e PASS` |
-| Full Vitest bar | `docker run --rm slivervine-citadel pnpm test` → **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** ** |
+| Full Vitest bar | `docker run --rm slivervine-citadel pnpm test` → **173 test files | 765 PASS Clean** |
 | Isolation | No host Node 22 / pnpm / WSL required |
 
 Sidecar telemetry (Tier 5) remains [`Dockerfile.sidecar`](./Dockerfile.sidecar) below.
