@@ -4,7 +4,6 @@
 name = "bedelta-living-water"
 main = "src/worker-entry.ts"
 compatibility_date = "2025-08-01"
-compatibility_flags = ["nodejs_compat"]
 
 [observability]
 enabled = true

@@ -11,6 +11,7 @@ import {
 import { GMX_ORDER_TYPE_INDEX } from "../../src/services/adapters/gmx-v2-order-payload";
 import * as soilProbe from "../../src/services/risk-control-lib/soil-arb-probe-refresh";
 import * as gmxDelta from "../../src/services/gmx-eth-delta";
+import * as hedgeSoil from "../../src/services/gmx-cross-wallet-hedge-lib/build-hedge-soil-input";
 import * as hedge from "../../src/services/gmx-cross-wallet-hedge";
 import * as flashUnwind from "../../src/services/risk/flash-unwind";
 import type { Env } from "../../src/env";
@@ -18,6 +19,19 @@ import type { Env } from "../../src/env";
 afterEach(() => {
   vi.restoreAllMocks();
 });
+
+function mockLiveHedgeSoil(): void {
+  vi.spyOn(hedgeSoil, "buildLiveHedgeSoilInput").mockResolvedValue({
+    symbol: "ETH",
+    hlSpot: 3499,
+    hlPerp: 3500,
+    dydxPerp: 3500,
+    depthUsd: 600_000,
+    orderSizeUsd: 100,
+    at: new Date(),
+    isTestnet: false,
+  });
+}
 
 const CRON_ENV = {
   HYPERLIQUID_MAINNET_SESSION_PK: "0x" + "11".repeat(32),
@@ -56,6 +70,7 @@ describe("scheduled-gmx-hedge", () => {
   });
 
   it("runScheduledGmxHedgeCron executes unwind when over-hedged", async () => {
+    mockLiveHedgeSoil();
     vi.spyOn(gmxDelta, "fetchHlEthMarkUsdStrict").mockResolvedValue(3500);
     vi.spyOn(soilProbe, "checkSoilResistanceWithArbFallback").mockResolvedValue({
       tripped: false,
@@ -85,6 +100,7 @@ describe("scheduled-gmx-hedge", () => {
   });
 
   it("runScheduledGmxHedgeCron dispatches flash unwind on severe soil trip", async () => {
+    mockLiveHedgeSoil();
     vi.spyOn(gmxDelta, "fetchHlEthMarkUsdStrict").mockResolvedValue(3500);
     vi.spyOn(soilProbe, "checkSoilResistanceWithArbFallback").mockResolvedValue({
       tripped: true,

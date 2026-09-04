@@ -7,14 +7,12 @@
 export const TSUNAMI_SHIELD_HKT_START = 21;
 export const TSUNAMI_SHIELD_HKT_END = 23;
 
+/** Hong Kong is fixed UTC+8 — no DST; avoids Intl.DateTimeFormat alloc on hot path. */
+const HKT_OFFSET_MS = 8 * 3_600_000;
+
 /** Current hour in Hong Kong (UTC+8), 0–23 */
 export function getHktHour(now: Date = new Date()): number {
-  const hour = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Asia/Hong_Kong",
-    hour: "2-digit",
-    hour12: false,
-  }).format(now);
-  return parseInt(hour, 10);
+  return new Date(now.getTime() + HKT_OFFSET_MS).getUTCHours();
 }
 
 /** True during HKT 21:00–22:59 — US open tsunami volatility window */

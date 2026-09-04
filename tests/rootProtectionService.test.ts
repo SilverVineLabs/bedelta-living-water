@@ -13,7 +13,7 @@ import { MAX_SLIPPAGE } from "../src/services/risk-control";
 import {
   createRoot17DailyState,
   recordRoot17SlTrip,
-} from "../src/v2/services/root17-daily";
+} from "../src/services/root17-daily";
 
 const ADMIN_KEY = "test-admin-reset-key";
 

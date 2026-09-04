@@ -15,7 +15,7 @@ import {
   type CircuitBreakerResult,
   type SystemTakeoverResult,
 } from "../rootProtectionService";
-import { createRoot17DailyState } from "../../v2/services/root17-daily";
+import { createRoot17DailyState } from "../../services/root17-daily";
 import type {
   SandboxExecutionMode,
   SandboxMarketTick,

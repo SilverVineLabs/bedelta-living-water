@@ -7,8 +7,8 @@ import {
   UI_I18N,
   TOPOLOGY_DOMAIN_I18N,
   KPI_TOOLTIPS,
-} from "../src/v2/admin/hud-i18n";
-import { TOPOLOGY_SHIELD_TREE } from "../src/v2/services/tension-engine-service";
+} from "../src/lib/gui-bridge/hud-i18n";
+import { TOPOLOGY_SHIELD_TREE } from "../src/services/tension-engine-service";
 
 describe("HUD i18n English strings", () => {
   it("exposes English UI copy and weapon tooltips", () => {

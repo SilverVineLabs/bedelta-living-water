@@ -1,6 +1,6 @@
 {
   "schema": "silvervine.static-analysis.v3",
-  "generatedAt": "2026-08-22T05:08:10.040Z",
+  "generatedAt": "2026-08-24T08:40:03.603Z",
   "narrative": "behavioral_pass_does_not_imply_web3_security",
   "tier": "security",
   "tools": {
@@ -9,8 +9,8 @@
       "label": "Full Vitest suite",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 93450,
-      "detail": "[SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when isSystemFlushed is true | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when statusCode === 3 even if flush flag is false | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-use",
+      "elapsedMs": 32641,
+      "detail": "[SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when statusCode === 3 even if flush flag is false | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/v09/grant-v09-risk.test.ts > v0.9 grant risk simulation (OpSec state assertions) > F1+F3 gas spike scenario trips statusCode 3 before settlement | [SliverVineRiskOracle] ErrorTriggere",
       "counterexamples": [
         "✓ sessionOrderFillSync — waitForNewFill > throws OnChainFillFailedError after max attempts  506ms",
         "stdout | tests/adapters/hl/execution-transport.test.ts > hl/execution — HTTP transport > handles HTTP error responses",
@@ -22,31 +22,31 @@
       "label": "Forge unit + invariants",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 9517,
-      "detail": "|-------------+----------------+-------+---------+----------| | | GateHandler | warp           | 5452  | 0       | 0        | | ╰-------------+----------------+-------+---------+----------╯ |  | [PASS] test_HandlerCanSucceed() (gas: 122069) | Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 9.11s (24.69s CPU time) |  | Ran 4 test suites in 9.11s (19.60s CPU time): 60 tests passed, 0 failed, 0 skipped (60 total tests)"
+      "elapsedMs": 3530,
+      "detail": "|-------------+----------------+-------+---------+----------| | | GateHandler | warp           | 5390  | 0       | 0        | | ╰-------------+----------------+-------+---------+----------╯ |  | [PASS] test_HandlerCanSucceed() (gas: 122069) | Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 2.84s (8.20s CPU time) |  | Ran 4 test suites in 2.85s (8.85s CPU time): 60 tests passed, 0 failed, 0 skipped (60 total tests)"
     },
     "slither": {
       "id": "slither",
       "label": "Slither SliverVineGate",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 4264,
-      "detail": "GatedExecutor._call(address,bytes) (src/GatedExecutor.sol#159-167) uses assembly | \t- INLINE ASM (src/GatedExecutor.sol#162-164) | SliverVineGate._recover(bytes32,bytes) (src/SliverVineGate.sol#449-467) uses assembly | \t- INLINE ASM (src/SliverVineGate.sol#455-459) | SliverVineGate._revertWith(bytes4) (src/SliverVineGate.sol#471-476) uses assembly | \t- INLINE ASM (src/SliverVineGate.sol#472-475) | Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage | . analyzed (3 contracts with 100 detectors), 10 result(s) found"
+      "elapsedMs": 4978,
+      "detail": "'forge clean' running (wd: /home/lhsum/dev/bedelta-citadel-core/SliverVineGate) | 'forge config --json' running | 'forge build --build-info --deny never --skip ./test/** ./script/** --force' running (wd: /home/lhsum/dev/bedelta-citadel-core/SliverVineGate) |  | . analyzed (3 contracts with 96 detectors), 0 result(s) found | INFO:Slither:/home/lhsum/dev/bedelta-citadel-core/docs/audit/slither.json exists already, the overwrite is prevented"
     },
     "aderyn": {
       "id": "aderyn",
       "label": "Aderyn SliverVineGate",
       "verdict": "PASS",
-      "exitCode": 101,
-      "elapsedMs": 1028,
-      "detail": "report.md ok; ignore aderyn 0.1.9 solc metadata panic"
+      "exitCode": 0,
+      "elapsedMs": 2659,
+      "detail": "Detectors run, processing found issues | Found issues processed. Printing report | Report printed to report.md |  |  | thread 'main' (35632) panicked at /home/lhsum/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/aderyn-0.1.9/src/lib.rs:122:86: | called `Result::unwrap()` on an `Err` value: Error(\"unexpected character 'a' while parsing major version number\") | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace"
     },
     "pnpm-audit": {
       "id": "pnpm-audit",
       "label": "pnpm audit --prod",
       "verdict": "PASS",
       "exitCode": 0,
-      "elapsedMs": 1723,
+      "elapsedMs": 3273,
       "detail": "No known vulnerabilities found"
     }
   },
@@ -60,14 +60,7 @@
         "stdout | tests/adapters/hl/execution-transport.test.ts > hl/execution — HTTP transport > handles HTTP error responses",
         "stderr | tests/defense-matrix.test.ts > Defense Matrix — R20 Physical Deadlock Execution > vineWrapProtection criHardlock throws HardlockError (403 deadlock)"
       ],
-      "detail": "[SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when isSystemFlushed is true | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when statusCode === 3 even if flush flag is false | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-use"
-    },
-    "aderyn": {
-      "exitCode": 101,
-      "verdict": "PASS",
-      "exploratory": false,
-      "counterexamples": [],
-      "detail": "report.md ok; ignore aderyn 0.1.9 solc metadata panic"
+      "detail": "[SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/services/aa-adapter/risk-oracle-gate.test.ts > risk-oracle-gate > blocks UserOp when statusCode === 3 even if flush flag is false | [SliverVineRiskOracle] ErrorTriggered code=SLO_TIMEOUT actor=zerodev-userop-gate |  | stderr | tests/v09/grant-v09-risk.test.ts > v0.9 grant risk simulation (OpSec state assertions) > F1+F3 gas spike scenario trips statusCode 3 before settlement | [SliverVineRiskOracle] ErrorTriggere"
     }
   },
   "summary": {
@@ -76,6 +69,5 @@
     "skipped": 0
   },
   "verdict": "PASS",
-  "scorecard": "docs/audit/security-scorecard.json",
-  "artifacts": {}
+  "scorecard": "docs/audit/security-scorecard.json"
 }

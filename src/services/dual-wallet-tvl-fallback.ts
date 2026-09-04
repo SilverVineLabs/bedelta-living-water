@@ -3,8 +3,8 @@ import {
   DEFAULT_ARB_MAINNET_USER_ADDRESS,
   DEFAULT_HYPERLIQUID_MAINNET_USER_ADDRESS,
 } from "../env-grant-defaults";
-import { GMX_ETH_USD_MARKET_TOKEN } from "./adapters/gmx-v2-gm-balance";
-import type { GmxGmBalanceSnapshot } from "./adapters/gmx-v2-gm-balance";
+import { GMX_ETH_USD_MARKET_TOKEN } from "../config/gmx-markets";
+import type { GmxGmBalanceSnapshot } from "./adapters/gmx-v2-gm-balance-cache";
 import type { DualWalletTelemetrySnapshot } from "./dual-wallet-telemetry";
 
 export const GRANT_AUDIT_LIVE_COMBINED_TVL_USD = 1302.39;

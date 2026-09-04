@@ -4,7 +4,7 @@ import { resolveGrantAuditEnv } from "../../env-grant-defaults";
 import {
   evaluateZeroDevAaGatewayBadge,
   type ZeroDevAaGatewayBadgeStatus,
-} from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gate";
+} from "../../adapters/arbitrum/zerodev-aa/zerodev-aa-gateway-badge";
 
 const HUD_SOIL_PROBE = {
   symbol: "ETH",

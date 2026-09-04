@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { buildGrantAuditClientFallbackPayload } from "../../src/components/hud/grant-audit-client-fallback";
+import { buildGrantAuditClientFallbackPayload } from "../../src/lib/gui-bridge/grant-audit/grant-audit-client-fallback";
 import {
   copyGrantAuditPayload,
   serializeGrantAuditPayload,
-} from "../../src/components/hud/grant-audit-payload-copy";
-import { formatDualVenueLatencyLabel } from "../../src/components/hud/use-dual-venue-latency-probe";
+} from "../../src/lib/gui-bridge/grant-audit/grant-audit-payload-copy";
+import { formatDualVenueLatencyLabel } from "../../src/lib/gui-bridge/grant-audit/dual-venue-latency";
 
 describe("grant-audit-payload-copy", () => {
   it("serializes fallback payload as pretty JSON", () => {

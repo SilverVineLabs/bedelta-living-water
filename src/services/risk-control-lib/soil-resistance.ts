@@ -13,29 +13,33 @@ import { evaluateHlOrderbookGapGuard } from "./hl-orderbook-gap-guard";
 import { evaluateRwaSettlementLock } from "./rwa-settlement-lock";
 import { recordTelemetrySoilTrip } from "../telemetry-analytics-lib/telemetry-analytics-core";
 import { notifyFailClosedLock } from "../telemetry/telegram-alert";
-import {
-  getArbitrumStatusAnomalyReason,
-  isArbitrumStatusSequencerHealthy,
-} from "../adapters/arbitrum-status-sentinel";
-import {
-  getRpcRadarOutageReason,
-  isRpcRadarSequencerHealthy,
-} from "../adapters/rpc-radar";
-import { getSequencerUnsafeReason, isSequencerSafe } from "../risk/sequencer-guard";
-import { getArbitrumGasGuardReason, isArbitrumGasGuardBlocked } from "../risk/arbitrum-gas-guard";
-import {
-  getSoftConfirmationUnsafeReason,
-  isSoftConfirmationSafe,
-} from "../risk/soft-confirmation-guard";
-import { evaluateCrossSpreadSoilGate } from "../yield/cross-spread";
+import { isArbitrumStatusSequencerHealthy } from "../adapters/arbitrum-status-sentinel";
+import { isRpcRadarSequencerHealthy } from "../adapters/rpc-radar";
+import { isSequencerSafe } from "../risk/sequencer-guard";
+import { isArbitrumGasGuardBlocked } from "../risk/arbitrum-gas-guard";
+import { isSoftConfirmationSafe } from "../risk/soft-confirmation-guard";
+import { evaluatePendlePoolFactorySoilGate } from "../../adapters/pendle/pendle-pool-factory-adapter";
+import { evaluatePendleCrossGuardSoilGate, evaluatePendleOracleSoilGateFromRegistry } from "../../guards/pendle-gmx-cross-guard";
+import { evaluateCrossSpreadSoilGate } from "../yield/cross-spread-cache";
 import { evaluateGmxPriceImpactSoilGate } from "../yield/gmx-v2-price-impact";
 import {
   applySoilRiskCaps,
   computeSoilSlippageMetrics,
 } from "./soil-resistance-math";
 import {
-  MAX_SLIPPAGE,
-  resolveSoilMinDepthUsd,
+  appendSoilExternalReasons,
+  createSoilReasonScratch,
+  materializeSoilReasons,
+  SOIL_REASON_GAS_GUARD,
+  SOIL_REASON_RPC_OUTAGE,
+  SOIL_REASON_SEQUENCER_UNSAFE,
+  SOIL_REASON_SOFT_CONFIRMATION,
+  SOIL_REASON_STATUS_ANOMALY,
+  SOIL_REASON_TSUNAMI,
+  type SoilReasonScratch,
+} from "./soil-reason-codes";
+import { resolveJitteredSoilThresholds } from "./soil-threshold-jitter";
+import {
   VINE_SOIL_MAX_SLIPPAGE,
   type SoilResistanceInput,
   type SoilResistanceResult,
@@ -51,47 +55,51 @@ export {
   type SoilResistanceResult,
 } from "./soil-resistance-types";
 
-function collectExternalSoilReasons(input: SoilResistanceInput): string[] {
-  const reasons: string[] = [];
+function collectExternalSoilFlags(
+  input: SoilResistanceInput,
+  minDepthUsd: number,
+  scratch: SoilReasonScratch,
+): void {
   const { symbol, depthUsd } = input;
+  const atMs = input.at?.getTime();
 
-  if (isTsunamiShieldWindow(input.at)) {
-    reasons.push("TSUNAMI_SHIELD_LOCKED_HKT_21_23");
-  }
-  if (!isSequencerSafe(input.at?.getTime())) {
-    reasons.push(getSequencerUnsafeReason() ?? "ARBITRUM_SEQUENCER_UNSAFE");
-  }
-  if (!isArbitrumStatusSequencerHealthy(input.at?.getTime())) {
-    reasons.push(getArbitrumStatusAnomalyReason() ?? "SEQUENCER_ANOMALY_DETECTED");
-  }
-  if (!isRpcRadarSequencerHealthy(input.at?.getTime())) {
-    reasons.push(getRpcRadarOutageReason() ?? "SEQUENCER_OUTAGE_CONFIRMED");
-  }
-  if (isArbitrumGasGuardBlocked()) {
-    reasons.push(getArbitrumGasGuardReason() ?? "ARBITRUM_GAS_GUARD_BLOCKED");
-  }
-  if (!isSoftConfirmationSafe(input.at?.getTime())) {
-    reasons.push(getSoftConfirmationUnsafeReason() ?? "SOFT_CONFIRMATION_DRIFT_UNSAFE");
-  }
+  if (isTsunamiShieldWindow(input.at)) scratch.flags |= SOIL_REASON_TSUNAMI;
+  if (!isSequencerSafe(atMs)) scratch.flags |= SOIL_REASON_SEQUENCER_UNSAFE;
+  if (!isArbitrumStatusSequencerHealthy(atMs)) scratch.flags |= SOIL_REASON_STATUS_ANOMALY;
+  if (!isRpcRadarSequencerHealthy(atMs)) scratch.flags |= SOIL_REASON_RPC_OUTAGE;
+  if (isArbitrumGasGuardBlocked()) scratch.flags |= SOIL_REASON_GAS_GUARD;
+  if (!isSoftConfirmationSafe(atMs)) scratch.flags |= SOIL_REASON_SOFT_CONFIRMATION;
+
   if (input.crossSpread) {
     const spreadGate = evaluateCrossSpreadSoilGate(input.crossSpread);
-    if (spreadGate.triggered) reasons.push(...spreadGate.reasons);
+    if (spreadGate.triggered) appendSoilExternalReasons(scratch, spreadGate.reasons);
   }
   if (input.gmxPriceImpact) {
     const impactGate = evaluateGmxPriceImpactSoilGate(input.gmxPriceImpact);
-    if (impactGate.triggered) reasons.push(...impactGate.reasons);
+    if (impactGate.triggered) appendSoilExternalReasons(scratch, impactGate.reasons);
+  }
+  if (input.pendleCrossGuard) {
+    const pendleGate = evaluatePendleCrossGuardSoilGate(input.pendleCrossGuard);
+    if (pendleGate.triggered) appendSoilExternalReasons(scratch, pendleGate.reasons);
+  }
+  if (input.pendleOracle) {
+    const oracleGate = evaluatePendleOracleSoilGateFromRegistry(input.pendleOracle);
+    if (oracleGate.triggered) appendSoilExternalReasons(scratch, oracleGate.reasons);
+  }
+  if (input.pendlePoolFactory) {
+    const poolGate = evaluatePendlePoolFactorySoilGate(input.pendlePoolFactory);
+    if (poolGate.triggered) appendSoilExternalReasons(scratch, poolGate.reasons);
   }
   const hlOrderbookGap = evaluateHlOrderbookGapGuard({
     symbol,
     depthUsd,
-    minDepthUsd: resolveSoilMinDepthUsd(input),
+    minDepthUsd,
     requestedLeverage: input.requestedLeverage,
     at: input.at,
   });
-  if (hlOrderbookGap.triggered) reasons.push(...hlOrderbookGap.reasons);
+  if (hlOrderbookGap.triggered) appendSoilExternalReasons(scratch, hlOrderbookGap.reasons);
   const rwaSettlement = evaluateRwaSettlementLock({ symbol, at: input.at });
-  if (rwaSettlement.locked) reasons.push(...rwaSettlement.reasons);
-  return reasons;
+  if (rwaSettlement.locked) appendSoilExternalReasons(scratch, rwaSettlement.reasons);
 }
 
 /**
@@ -102,31 +110,46 @@ export function checkSoilResistance(
   input: SoilResistanceInput,
 ): SoilResistanceResult {
   const { symbol, depthUsd } = input;
-  const slippageFuse = input.maxSlippage ?? MAX_SLIPPAGE;
-  const metrics = computeSoilSlippageMetrics(input);
-  const reasons = [...collectExternalSoilReasons(input), ...metrics.reasons];
+  const { slippageFuse, minDepthUsd } = resolveJitteredSoilThresholds(input);
+  const metrics = computeSoilSlippageMetrics(input, {
+    maxSlippage: slippageFuse,
+    minDepthUsd,
+  });
+  const scratch = createSoilReasonScratch(metrics.tripFlags);
+  collectExternalSoilFlags(input, minDepthUsd, scratch);
 
-  const tripped = reasons.length > 0;
+  const tripped = scratch.flags !== 0 || scratch.external !== null;
+  const crossVenueSlippage = Number.isFinite(metrics.crossVenueSlippage)
+    ? metrics.crossVenueSlippage
+    : -1;
+  const spotPerpSlippage = Number.isFinite(metrics.spotPerpSlippage)
+    ? metrics.spotPerpSlippage
+    : -1;
+
   const result: SoilResistanceResult = {
     ok: !tripped,
     tripped,
-    crossVenueSlippage: Number.isFinite(metrics.crossVenueSlippage)
-      ? metrics.crossVenueSlippage
-      : -1,
-    spotPerpSlippage: Number.isFinite(metrics.spotPerpSlippage)
-      ? metrics.spotPerpSlippage
-      : -1,
+    crossVenueSlippage,
+    spotPerpSlippage,
     crossSpreadBps: input.crossSpread?.crossSpreadBps,
     isSpreadProfitable: input.crossSpread?.isSpreadProfitable,
     priceImpactSubsidiesBps: input.gmxPriceImpact?.priceImpactSubsidiesBps,
     priceImpactPenaltyBps: input.gmxPriceImpact?.priceImpactPenaltyBps,
     gmxReducesImbalance: input.gmxPriceImpact?.reducesImbalance,
-    reasons,
+    reasons: tripped
+      ? materializeSoilReasons(scratch, {
+          crossVenueSlippage,
+          slippageFuse,
+          depthUsd,
+          minDepthUsd,
+        })
+      : [],
   };
 
   applySoilRiskCaps(input, result, slippageFuse);
 
   if (tripped) {
+    const reasons = result.reasons;
     if (isAllowedTelemetrySymbol(symbol)) {
       recordTelemetrySoilTrip();
       emitRiskLog({
@@ -141,7 +164,7 @@ export function checkSoilResistance(
           spotPerpSlippage: result.spotPerpSlippage,
           maxSlippage: slippageFuse,
           depthUsd: depthUsd ?? null,
-          minDepthUsd: resolveSoilMinDepthUsd(input),
+          minDepthUsd,
           reasons: formatTripReasons(reasons),
           tradeAllowed: false,
         },

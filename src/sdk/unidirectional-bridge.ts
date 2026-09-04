@@ -16,7 +16,7 @@ import {
   DEFAULT_ACROSS_BRIDGE_TIMEOUT_MS,
   evaluateAcrossBridgeTransfer,
   type BridgeCapitalLabel,
-} from "../adapters/robinhood/robinhood-across-bridge";
+} from "../adapters/across-ingress-bridge";
 import {
   ROBINHOOD_MAINNET_CHAIN_ID,
   ROBINHOOD_TESTNET_CHAIN_ID,
@@ -35,6 +35,8 @@ export interface UnidirectionalBridgeInput {
 
 export interface BridgeEscortVerdict {
   ok: boolean;
+  routeAllowed: boolean;
+  deployable: boolean;
   direction: "outbound-only" | "blocked";
   capitalLabel: BridgeCapitalLabel;
   inFlightUsd: number;
@@ -54,6 +56,8 @@ function blocked(
 ): BridgeEscortVerdict {
   return {
     ok: false,
+    routeAllowed: false,
+    deployable: false,
     direction: "blocked",
     capitalLabel,
     inFlightUsd: 0,
@@ -99,6 +103,8 @@ export function assertUnidirectionalBridge(
 
   return {
     ok: evaluated.ok,
+    routeAllowed: evaluated.routeAllowed,
+    deployable: evaluated.deployable,
     direction: evaluated.direction,
     capitalLabel: evaluated.capitalLabel,
     inFlightUsd: evaluated.inFlightUsd,

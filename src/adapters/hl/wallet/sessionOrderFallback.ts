@@ -5,7 +5,7 @@ import {
   TELEMETRY_FALLBACK_WARN_LOG,
   type Verified5TxResults,
 } from "../../../data/verified-5tx";
-import { formatLive5TxSubmitLog } from "../../../components/hud/Section1/section1-hud-log-formatters";
+import { formatLive5TxSubmitLog } from "../../../lib/gui-bridge/section1-hud-log-formatters";
 import type { BrowserLive5TxProgress } from "./sessionOrderTypes";
 
 export const PRETRADE_TELEMETRY_FALLBACK_WARN_LOG =

@@ -1,14 +1,18 @@
 /** GMX v2 live delta reader — DataStore + GM ERC20 only (no HUD/execution fallbacks). */
 import { GMX_V2_DATASTORE } from "../../adapters/gmx";
 import { fetchArbitrumRpc } from "./arbitrum-rpc-fallback";
-import { GMX_ETH_USD_MARKET_TOKEN } from "./gmx-v2-gm-balance";
+import {
+  resolveGmxMarketBySymbol,
+} from "../../config/gmx-markets";
 import type { GmxV2AdapterOptions } from "./gmx-v2-adapter.types";
-import { hashData, hashString } from "./gmx-v2-datastore";
+import { hashData, hashString } from "./gmx-v2-datastore-lib/gmx-v2-datastore-keys";
 
+export {
+  GMX_ETH_USD_LONG_TOKEN,
+  GMX_ETH_USD_MARKET_TOKEN,
+  GMX_ETH_USD_SHORT_TOKEN,
+} from "../../config/gmx-markets";
 export const DATASTORE_GET_UINT_SELECTOR = "0xbd02d0f5" as const;
-
-export const GMX_ETH_USD_LONG_TOKEN = "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1" as const;
-export const GMX_ETH_USD_SHORT_TOKEN = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831" as const;
 
 const BALANCE_OF = "0x70a08231";
 const TOTAL_SUPPLY = "0x18160ddd";
@@ -97,7 +101,8 @@ export async function fetchGmxLiveEthDelta(input: {
   opts?: GmxV2AdapterOptions;
 }): Promise<GmxLiveDeltaSnapshot> {
   const opts = input.opts ?? {};
-  const marketToken = GMX_ETH_USD_MARKET_TOKEN;
+  const eth = resolveGmxMarketBySymbol("ETH");
+  const marketToken = eth.marketToken;
   const dataStore = opts.dataStore ?? GMX_V2_DATASTORE;
   const ethMidUsd = input.ethMidUsd;
   if (!(ethMidUsd > 0)) {
@@ -109,12 +114,12 @@ export async function fetchGmxLiveEthDelta(input: {
     ethCall(marketToken, TOTAL_SUPPLY, opts),
     ethCall(
       dataStore,
-      encodeGetUint(poolAmountDataStoreKey(marketToken, GMX_ETH_USD_LONG_TOKEN)),
+      encodeGetUint(poolAmountDataStoreKey(marketToken, eth.longToken)),
       opts,
     ),
     ethCall(
       dataStore,
-      encodeGetUint(poolAmountDataStoreKey(marketToken, GMX_ETH_USD_SHORT_TOKEN)),
+      encodeGetUint(poolAmountDataStoreKey(marketToken, eth.shortToken)),
       opts,
     ),
   ]);

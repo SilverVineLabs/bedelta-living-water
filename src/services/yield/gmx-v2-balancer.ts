@@ -8,6 +8,8 @@ import {
 } from "./gmx-v2-price-impact";
 import {
   getGmxGmBalanceCache,
+} from "../adapters/gmx-v2-gm-balance-cache";
+import {
   resolveArbMainnetEnvBinding,
   isZeroDeltaShieldActive,
 } from "./gmx-v2-gm-telemetry";

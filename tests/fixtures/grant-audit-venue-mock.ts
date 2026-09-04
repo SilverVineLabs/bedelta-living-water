@@ -1,4 +1,4 @@
-import type { GrantAuditVenueView } from "../../src/components/hud/citadel-grant-audit-metrics";
+import type { GrantAuditVenueView } from "../../src/lib/gui-bridge/grant-audit/citadel-grant-audit-metrics";
 
 /** SSOT mock venue view for grant-audit component tests (replaces deleted CitadelDualVenuePanel mock). */
 export const GRANT_AUDIT_VENUE_MOCK_VIEW: GrantAuditVenueView = {

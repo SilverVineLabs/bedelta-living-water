@@ -15,7 +15,7 @@ import {
   formatLive5TxActiveWalletLog,
   formatSessionKeyApprovalSuccessLog,
   formatSessionKeyAgentRegistrationLog,
-} from "../../../components/hud/Section1/section1-hud-log-formatters";
+} from "../../../lib/gui-bridge/section1-hud-log-formatters";
 import { truncateSessionKeyWallet } from "../../../data/verified-5tx";
 import type { BrowserLive5TxProgress } from "./sessionOrderTypes";
 

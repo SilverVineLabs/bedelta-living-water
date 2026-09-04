@@ -29,7 +29,7 @@ export interface Env {
   JAVIER_SIGNATURE?: string;
   /** Public HUD canary for /api/hud-stream handshake (also Vite build var) */
   NEXT_PUBLIC_HUD_CANARY?: string;
-  /** Strike alpha — inject via Wrangler vars (see docs/architecture/TECHNICAL_SPECIFICATION.md) */
+  /** Strike alpha — inject via Wrangler vars (see docs/architecture/01_TECHNICAL_SPECIFICATION.md) */
   STRIKE_IMBALANCE_RATIO_MIN?: string;
   STRIKE_MICRO_SPREAD_COLLAPSE_BPS?: string;
   STRIKE_SENSING_PROBE_USD?: string;
@@ -37,7 +37,7 @@ export interface Env {
   STRIKE_PITSTOP_FUNDING_BPS?: string;
   STRIKE_PITSTOP_MAX_HOLD_MS?: string;
   STRIKE_FLEET_MODE?: string;
-  /** Coach alpha — inject via Wrangler vars (see docs/architecture/TECHNICAL_SPECIFICATION.md) */
+  /** Coach alpha — inject via Wrangler vars (see docs/architecture/01_TECHNICAL_SPECIFICATION.md) */
   COACH_VIX_SPIKE_THRESHOLD?: string;
   COACH_DVOL_SPIKE_THRESHOLD?: string;
   COACH_VENUE_DELAY_MS?: string;

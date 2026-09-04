@@ -128,7 +128,7 @@ async function main(): Promise<void> {
   console.log(`[TEST 3] Benchmark Latency (< 1.0ms) & Memory Guard: ${t3.pass ? "PASS" : "FAIL"}`);
 
   const metrics = {
-    protocol: "Santenmoku v0.9",
+    protocol: "SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)",
     harness: "grant-advanced-resilience-benchmark",
     tests: {
       toctou: { pass: t1.pass, ...t1.result, keeperDelayMs: t1.keeperDelayMs },
@@ -162,7 +162,7 @@ async function main(): Promise<void> {
     "# Grant Resilience Benchmark Audit",
     "",
     `**Timestamp:** ${metrics.generatedAt}`,
-    `**Protocol:** Santenmoku v0.9`,
+    `**Protocol:** SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)`,
     `**Harness:** \`scripts/grant-advanced-resilience-benchmark.ts\``,
     "",
     "## Results",

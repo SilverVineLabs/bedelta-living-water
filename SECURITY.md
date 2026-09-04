@@ -1,7 +1,9 @@
-# Security Policy — SliverVine Protocol (bedelta-living-water)
+# Security Policy — SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)
 
-**Entity:** SilverVine Labs · **Contact:** `security@silvervinelabs.com`  
-**Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal  
+> **Vitest SSOT:** 173 test files | 765 PASS Clean
+
+**Entity:** SilverVine Labs · **Contact:** `security@silvervinelabs.com`
+**Official Site:** [silvervinelabs.com](https://silvervinelabs.com) — Defense Matrix portal
 **Grant / audit:** `grants@silvervinelabs.com`
 
 ---
@@ -11,9 +13,9 @@
 We take security reports seriously. Please **do not** open public GitHub issues for exploitable findings.
 
 1. Email `security@silvervinelabs.com` with:
-   - Description and impact
-   - Reproduction steps or proof-of-concept
-   - Affected commit or deployed version ID (from `wrangler deploy` output)
+ - Description and impact
+ - Reproduction steps or proof-of-concept
+ - Affected commit or deployed version ID (from `wrangler deploy` output)
 2. We acknowledge within **72 hours** and aim for an initial assessment within **7 business days**.
 3. Coordinate disclosure — we prefer coordinated release before public disclosure.
 
@@ -31,13 +33,13 @@ SliverVine Citadel is designed **fail-closed** — ambiguous or unsafe states ha
 | Oracle Lag Shield | `arbitrum-gas-guard.ts` | HALT when canonical lag exceeds cap (<120ms grant posture) |
 | Soil Resistance | `risk-control/soil.ts` | Trade rejected on depth, cross-spread, or slippage fuse breach |
 | Root Protection | `rootProtectionService.ts` | Fatal / R17·R20 breach kills hot-key signing pipelines |
-| Dynamic Max SL | `effective-max-sl.ts` | `Balance × 1% + $100` — deprecated fixed $50 SL forbidden |
+| Dynamic Max SL | `effective-max-sl.ts` | Dynamic Account Risk Ceiling (V0.8 Baseline: Equity-Weighted SL; V1.0 Mainnet: Dynamic Adaptive Engine) — deprecated fixed $50 SL forbidden |
 | Session Key | `session-key-adapter` | Expired or revoked keys → READ_ONLY_OBSERVER |
 | RPC Whitelist | `rpc-whitelist.ts` | External RPC monitored; >500ms latency trips circuit breaker |
 
 **No custody:** Worker holds no user private keys. Session keys are client-scoped; mainnet secrets live in Cloudflare Secrets Store / `wrangler secret` — never in repo or KV.
 
-**KV tenancy:** Single namespace ID with strict key-prefix isolation (`exec:*`, `state:*`, `sys:*`). See `wrangler.toml` comments and [docs/architecture/TECHNICAL_SPECIFICATION.md](./docs/architecture/TECHNICAL_SPECIFICATION.md).
+**KV tenancy:** Single namespace ID with strict key-prefix isolation (`exec:*`, `state:*`, `sys:*`). See `wrangler.toml` comments and [docs/architecture/01_TECHNICAL_SPECIFICATION.md](./docs/architecture/01_TECHNICAL_SPECIFICATION.md).
 
 **Public audit surface:** `GET /api/grant-audit` exposes guard states and telemetry — never signing material, calldata templates, or proprietary encode paths.
 
@@ -56,6 +58,6 @@ SliverVine Citadel is designed **fail-closed** — ambiguous or unsafe states ha
 
 | Document | Purpose |
 |----------|---------|
-| [docs/architecture/TECHNICAL_SPECIFICATION.md](./docs/architecture/TECHNICAL_SPECIFICATION.md) | Topology · R01–R20 · KV isolation |
+| [docs/architecture/01_TECHNICAL_SPECIFICATION.md](./docs/architecture/01_TECHNICAL_SPECIFICATION.md) | Topology · R01–R20 · KV isolation |
 | [docs/grants/arbitrum/GRANT_PROPOSAL.md](./docs/grants/arbitrum/GRANT_PROPOSAL.md) | Scope & roadmap |
 | [docs/README.md](./docs/README.md) | Audience router |

@@ -9,37 +9,43 @@ import { buildSystemState } from "../core/state";
 import type { IntentLeg } from "../core/intent-ledger";
 import { getGmxGmBalanceCache } from "./adapters/gmx-v2-gm-balance";
 import { getHlWalletTelemetryCache, type HlWalletTelemetrySnapshot } from "./hl-wallet-telemetry";
+import {
+  HL_AUTO_HEDGE_COOLDOWN_MS,
+  HL_AUTO_HEDGE_ETH_MID_FALLBACK_USD,
+  HL_AUTO_HEDGE_MASTER_WALLET_A,
+  HL_AUTO_HEDGE_MAX_NOTIONAL_USD,
+  HL_AUTO_HEDGE_MIN_MARGIN_USD,
+  HL_AUTO_HEDGE_MIN_NOTIONAL_USD,
+  HL_ETH_PERP_ASSET_INDEX,
+  HL_ETH_SZ_DECIMALS,
+  __readHlAutoHedgeStatusRef,
+} from "./hl-auto-hedge-status";
 
-export const HL_AUTO_HEDGE_MIN_MARGIN_USD = 50;
-export const HL_AUTO_HEDGE_COOLDOWN_MS = 3_600_000;
-export const HL_AUTO_HEDGE_MASTER_WALLET_A =
-  "0xef0752df6387248B897F3A59A180af42D801960d" as const;
-export const HL_AUTO_HEDGE_ETH_MID_FALLBACK_USD = 3_500;
-export const HL_AUTO_HEDGE_MIN_NOTIONAL_USD = 160;
-export const HL_AUTO_HEDGE_MAX_NOTIONAL_USD = 190;
-export const HL_ETH_PERP_ASSET_INDEX = 1;
-export const HL_ETH_SZ_DECIMALS = 4;
-/** @deprecated Legacy alias — ETH-only hedge path */
-export const HL_AUTO_HEDGE_TARGET_HYPE_QTY = 0.05;
-export const HL_AUTO_HEDGE_TARGET_HYPE_QTY_MIN = 0.04;
-export const HL_AUTO_HEDGE_TARGET_HYPE_QTY_MAX = 0.06;
-export const HL_AUTO_HEDGE_HYPE_MID_FALLBACK_USD = HL_AUTO_HEDGE_ETH_MID_FALLBACK_USD;
-export const HL_HYPE_PERP_ASSET_INDEX = HL_ETH_PERP_ASSET_INDEX;
-export const HL_HYPE_SZ_DECIMALS = HL_ETH_SZ_DECIMALS;
+export {
+  HL_AUTO_HEDGE_MIN_MARGIN_USD,
+  HL_AUTO_HEDGE_COOLDOWN_MS,
+  HL_AUTO_HEDGE_MASTER_WALLET_A,
+  HL_AUTO_HEDGE_ETH_MID_FALLBACK_USD,
+  HL_AUTO_HEDGE_MIN_NOTIONAL_USD,
+  HL_AUTO_HEDGE_MAX_NOTIONAL_USD,
+  HL_ETH_PERP_ASSET_INDEX,
+  HL_ETH_SZ_DECIMALS,
+  HL_AUTO_HEDGE_TARGET_HYPE_QTY,
+  HL_AUTO_HEDGE_TARGET_HYPE_QTY_MIN,
+  HL_AUTO_HEDGE_TARGET_HYPE_QTY_MAX,
+  HL_AUTO_HEDGE_HYPE_MID_FALLBACK_USD,
+  HL_HYPE_PERP_ASSET_INDEX,
+  HL_HYPE_SZ_DECIMALS,
+  getHlAutoHedgeStatus,
+  type HlAutoHedgeStatus,
+  __setHlAutoHedgeStatusForTests,
+  __resetHlAutoHedgeStatusForTests,
+} from "./hl-auto-hedge-status";
 
 export type HlAutoHedgeEnv = Pick<
   Env,
   "SRV_200_MAINNET_SESSION_PK" | "SRV_200_MAINNET_USER_ADDRESS" | "ARB_MAINNET_USER_ADDRESS" | "IS_MAINNET"
 >;
-
-export interface HlAutoHedgeStatus {
-  hedgeActive: boolean;
-  lastSizeUsd: number | null;
-  lastSymbol: string | null;
-  lastRunAt: string | null;
-  readOnlyMode: boolean;
-  lastReason: string | null;
-}
 
 export interface HlAutoHedgeResult {
   ok: boolean;
@@ -47,19 +53,6 @@ export interface HlAutoHedgeResult {
   sizeUsd: number;
   symbol: string;
   reason?: string;
-}
-
-let hedgeStatus: HlAutoHedgeStatus = {
-  hedgeActive: false,
-  lastSizeUsd: null,
-  lastSymbol: null,
-  lastRunAt: null,
-  readOnlyMode: true,
-  lastReason: null,
-};
-
-export function getHlAutoHedgeStatus(): HlAutoHedgeStatus {
-  return hedgeStatus;
 }
 
 export function resolveSrv200UserAddress(env: HlAutoHedgeEnv): string | null {
@@ -103,20 +96,21 @@ export async function runHlAutoHedgeForGmxGm(
   env: HlAutoHedgeEnv,
   opts: { dryRun?: boolean; fetchFn?: typeof fetch; force?: boolean } = {},
 ): Promise<HlAutoHedgeResult> {
+  const hedgeStatus = __readHlAutoHedgeStatusRef();
   const sessionPk = env.SRV_200_MAINNET_SESSION_PK?.trim() || "";
   const userAddress = resolveSrv200UserAddress(env);
   const readOnly = sessionPk.length === 0;
   const symbol = pickHedgeSymbol();
-  hedgeStatus = { ...hedgeStatus, readOnlyMode: readOnly };
+  Object.assign(hedgeStatus, { readOnlyMode: readOnly });
 
   if (!userAddress) {
     const reason = "SRV_200_USER_ADDRESS_MISSING";
-    hedgeStatus = { ...hedgeStatus, lastReason: reason };
+    Object.assign(hedgeStatus, { lastReason: reason });
     return { ok: false, dryRun: true, sizeUsd: 0, symbol, reason };
   }
   if (readOnly) {
     const reason = "SRV_200_SESSION_PK_EMPTY_READ_ONLY";
-    hedgeStatus = { ...hedgeStatus, lastReason: reason };
+    Object.assign(hedgeStatus, { lastReason: reason });
     return { ok: false, dryRun: true, sizeUsd: 0, symbol, reason };
   }
 
@@ -129,7 +123,7 @@ export async function runHlAutoHedgeForGmxGm(
 
   if (sizeUsd <= 0) {
     const reason = "HEDGE_SIZE_ZERO";
-    hedgeStatus = { ...hedgeStatus, lastReason: reason };
+    Object.assign(hedgeStatus, { lastReason: reason });
     return { ok: false, dryRun: true, sizeUsd: 0, symbol, reason };
   }
 
@@ -168,28 +162,13 @@ export async function runHlAutoHedgeForGmxGm(
   });
 
   const ok = result.ok;
-  hedgeStatus = {
+  Object.assign(hedgeStatus, {
     hedgeActive: ok,
     lastSizeUsd: sizeUsd,
     lastSymbol: symbol,
     lastRunAt: new Date().toISOString(),
     readOnlyMode: false,
     lastReason: ok ? null : (result.reason ?? "HL_HEDGE_FAILED"),
-  };
+  });
   return { ok, dryRun: !live, sizeUsd, symbol, reason: result.reason };
-}
-
-export function __setHlAutoHedgeStatusForTests(status: HlAutoHedgeStatus): void {
-  hedgeStatus = status;
-}
-
-export function __resetHlAutoHedgeStatusForTests(): void {
-  hedgeStatus = {
-    hedgeActive: false,
-    lastSizeUsd: null,
-    lastSymbol: null,
-    lastRunAt: null,
-    readOnlyMode: true,
-    lastReason: null,
-  };
 }

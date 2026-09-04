@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { evaluateRiskOracleUserOpGate } from "../../src/services/aa-adapter/risk-oracle-gate";
-import { isEvacuationTriggered, resolveSanmHudFrame } from "../../src/components/NirvanaEvacuationShield";
+import { isEvacuationTriggered, resolveSanmHudFrame } from "../../src/lib/gui-bridge/sanm-hud-frame";
 import { AnvilForkSimulator, buildRpcJitterRamp } from "../../src/v09-public/anvil-fork-sim";
 import { assertGrantAuditPayloadClean } from "../../src/v09-public/opsec-boundary";
 import { evaluatePublicRiskMock, RiskLevel } from "../../src/v09-public/risk-mock";

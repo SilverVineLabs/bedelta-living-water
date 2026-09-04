@@ -5,8 +5,8 @@
 
 import type { SoilResistanceResult } from "./soil-resistance";
 
-/** SSOT — GMX v2 / HL cron + soil telemetry: ETH/USD only */
-export const ALLOWED_SYMBOLS = ["ETH"] as const;
+/** SSOT — GMX v2 / HL cron + soil telemetry: ETH + BTC GM pools */
+export const ALLOWED_SYMBOLS = ["ETH", "BTC"] as const;
 
 export type AllowedTelemetrySymbol = (typeof ALLOWED_SYMBOLS)[number];
 

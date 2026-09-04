@@ -3,7 +3,7 @@ import {
   __resetGrantAuditClientCacheForTests,
   __setGrantAuditClientCacheForTests,
   fetchGrantAuditWithCache,
-} from "../../src/components/hud/grant-audit-fetch";
+} from "../../src/lib/gui-bridge/grant-audit/grant-audit-fetch";
 
 afterEach(() => {
   __resetGrantAuditClientCacheForTests();

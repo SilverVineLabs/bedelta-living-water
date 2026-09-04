@@ -19,7 +19,7 @@ import {
   type Verified5TxResults,
 } from "../../../data/verified-5tx";
 import { sanitizeSessionKeyForMasterWalletTrading } from "../execution-types";
-import { formatSessionKeyApprovalRequestLog } from "../../../components/hud/Section1/section1-hud-log-formatters";
+import { formatSessionKeyApprovalRequestLog } from "../../../lib/gui-bridge/section1-hud-log-formatters";
 import { isSessionKeyAgentRegisteredOnL2 } from "./agentRegister";
 
 export interface Live5TxOrchestratorOptions {

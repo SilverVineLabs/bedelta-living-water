@@ -7,32 +7,29 @@ import {
   pickGmxMarket,
   poolDepthUsd,
 } from "./gmx-v2-adapter.utils";
-import { hashData, hashString } from "./gmx-v2-datastore";
+import { hashData, hashString } from "./gmx-v2-datastore-lib/gmx-v2-datastore-keys";
+import {
+  GMX_ETH_USD_MARKET_TOKEN,
+  resolveGmxMarketBySymbol,
+} from "../../config/gmx-markets";
+import {
+  type GmxGmBalanceSnapshot,
+} from "./gmx-v2-gm-balance-cache";
 
-export const GMX_ETH_USD_MARKET_TOKEN = "0x70d95587d40A2caf56bd97485aB3Eec10Bee6336";
+export type { GmxGmBalanceSnapshot } from "./gmx-v2-gm-balance-cache";
+export { getGmxGmBalanceCache, setGmxGmBalanceCache, __resetGmxGmBalanceCacheForTests } from "./gmx-v2-gm-balance-cache";
+export { GMX_ETH_USD_MARKET_TOKEN };
 const BALANCE_OF_SELECTOR = "0x70a08231";
 const TOTAL_SUPPLY_SELECTOR = "0x18160ddd";
 const GET_UINT_SELECTOR = "0xbd02d0f5";
 const GM_TOKEN_DECIMALS = 18;
 const GM_POOL_AMOUNT = hashString("GM_POOL_AMOUNT");
 
-export interface GmxGmBalanceSnapshot {
-  userAddress: string;
-  symbol: string;
-  marketToken: string;
-  gmBalance: number;
-  gmTotalSupply: number;
-  gmLiquidityUsd: number;
-  dataStorePoolAmount: bigint;
-  source: "datastore" | "markets-info-fallback";
-  fetchedAt: string;
-  isCached?: boolean;
-  swrProofLabel?: string | null;
-}
-
-export function gmPoolAmountDataStoreKey(marketToken: string): string {
+function gmPoolAmountDataStoreKey(marketToken: string): string {
   return hashData(["bytes32", "address"], [GM_POOL_AMOUNT, marketToken]);
 }
+
+export { gmPoolAmountDataStoreKey };
 
 function encodeAddressArg(address: string): string {
   return address.slice(2).toLowerCase().padStart(64, "0");
@@ -88,7 +85,7 @@ export async function fetchGmxGmBalanceTelemetry(input: {
 }): Promise<GmxGmBalanceSnapshot> {
   const opts = input.opts ?? {};
   const symbol = (input.symbol ?? "ETH").toUpperCase();
-  const marketToken = GMX_ETH_USD_MARKET_TOKEN;
+  const { marketToken } = resolveGmxMarketBySymbol(symbol);
   const dataStore = opts.dataStore ?? GMX_V2_DATASTORE;
   const [balanceHex, supplyHex] = await Promise.all([
     rpcCall(marketToken, encodeBalanceOf(input.userAddress), opts),
@@ -122,18 +119,4 @@ export async function fetchGmxGmBalanceTelemetry(input: {
     source: poolUsd > 0 && totalSupply > 0 ? "datastore" : "markets-info-fallback",
     fetchedAt: new Date().toISOString(),
   };
-}
-
-let gmBalanceCache: GmxGmBalanceSnapshot | null = null;
-
-export function getGmxGmBalanceCache(): GmxGmBalanceSnapshot | null {
-  return gmBalanceCache;
-}
-
-export function setGmxGmBalanceCache(snapshot: GmxGmBalanceSnapshot | null): void {
-  gmBalanceCache = snapshot;
-}
-
-export function __resetGmxGmBalanceCacheForTests(): void {
-  gmBalanceCache = null;
 }

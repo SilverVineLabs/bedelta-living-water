@@ -1,20 +1,9 @@
 /** @module ZeroDevAA — Opt-in CLI/SDK Citadel Risk Gate (Not mounted on Worker hot path) */
 
-import { checkSoilResistance, RiskLimitExceeded } from "../../../services/risk-control";
-import type { SoilResistanceInput } from "../../../services/risk-control-lib/soil-resistance";
 import {
-  evaluateSponsoredGasLimits,
   getGasLedgerSnapshot,
   loadGasLedgerFromKv,
-  MAX_GAS_COST_PER_USEROP_USD,
-  type GasLedgerSnapshot,
 } from "./zerodev-aa-gas-ledger";
-import {
-  AGENT_DEADMAN_SLIPPAGE_BPS,
-  CITADEL_SLIPPAGE_EXCEEDED,
-  DEADMAN_SWITCH_TRIPPED,
-  evaluateAgentCitadelGuard,
-} from "../../../core/agent-citadel-guard";
 import {
   evaluateArbitrumOneHealth,
   resolveAaProbeRoute,
@@ -24,22 +13,22 @@ import {
   assertCitadelRiskGate as assertGatewayCitadelRiskGate,
   evaluateGatewayRules,
   type CitadelRiskGateVerdict,
-  type GatewayRulesInput,
   type GatewayRulesResult,
 } from "../../../core/risk-engine";
 import {
   evaluateStaticBreakerMatrix,
   tripStaticCircuitBreaker,
-  ZERODEV_GAS_LIMIT_EXCEEDED_TRIP,
 } from "./zerodev-aa-static-breaker";
 import {
-  AA_GATEWAY_DISABLED_LABEL,
-  AA_GATEWAY_SECURED_LABEL,
   type CitadelRiskGateInput,
   type CitadelRiskGateResult,
   type ZeroDevAaGateInput,
-  type ZeroDevAaGatewayBadgeStatus,
 } from "./zerodev-aa-gate-types";
+import {
+  assertAaDeadmanOrThrow,
+  evaluateZeroDevGasGuards,
+  toGatewayInput,
+} from "./zerodev-aa-gate-helpers";
 
 export {
   ARBITRUM_ONE_RPC_FAILOVER_LATENCY_MS,
@@ -68,62 +57,14 @@ export {
   type ZeroDevAaGatewayBadgeStatus,
 } from "./zerodev-aa-gate-types";
 
-function throwGasLimitExceededTrip(estimatedGasCostUsd: number): never {
-  throw new RiskLimitExceeded(
-    `${ZERODEV_GAS_LIMIT_EXCEEDED_TRIP}:${estimatedGasCostUsd.toFixed(4)}>${MAX_GAS_COST_PER_USEROP_USD}`,
-    {
-      level: "warn",
-      module: "risk-control",
-      event: "ROOT_PROTECTION_TRIP",
-      symbol: "AA",
-      timestamp: new Date().toISOString(),
-      message: ZERODEV_GAS_LIMIT_EXCEEDED_TRIP,
-      details: {
-        estimatedGasCostUsd,
-        maxGasCostPerUserOpUsd: MAX_GAS_COST_PER_USEROP_USD,
-        gate: "zerodev-aa",
-      },
-    },
-  );
-}
+export { evaluateZeroDevGasGuards };
 
-function readEnv(env?: Record<string, string>): Record<string, string> {
-  if (env) return env;
-  return typeof process !== "undefined" ? (process.env as Record<string, string>) : {};
-}
+export {
+  evaluateZeroDevAaGatewayBadge,
+  isZeroDevAAEnabled,
+} from "./zerodev-aa-gateway-badge";
 
-/** Feature flag — default off; v0.8 Citadel hot path unchanged when false. */
-export function isZeroDevAAEnabled(env?: Record<string, string>): boolean {
-  return readEnv(env).USE_ZERODEV_AA === "true";
-}
-
-export function evaluateZeroDevGasGuards(input: {
-  estimatedGasCostUsd?: number;
-  requestedSponsorship?: boolean;
-  snapshot?: GasLedgerSnapshot;
-  nowMs?: number;
-}): CitadelRiskGateResult {
-  const nowMs = input.nowMs ?? Date.now();
-  const snapshot = input.snapshot ?? getGasLedgerSnapshot(nowMs);
-  const gas = evaluateSponsoredGasLimits({
-    estimatedGasCostUsd: input.estimatedGasCostUsd,
-    requestedSponsorship: input.requestedSponsorship,
-    snapshot,
-    nowMs,
-  });
-  if (gas.perUserOp.exceeded && gas.perUserOp.estimatedGasCostUsd !== undefined) {
-    throwGasLimitExceededTrip(gas.perUserOp.estimatedGasCostUsd);
-  }
-  return {
-    sponsored: gas.sponsored,
-    gasGuardReason: gas.gasGuardReason,
-    dailySpentUsd: gas.dailySpentUsd,
-  };
-}
-
-/**
- * Static circuit breaker — pure matrix evaluation, fail-fast trip, then telemetry enrich.
- */
+/** Static circuit breaker — pure matrix evaluation, fail-fast trip, then telemetry enrich. */
 export function assertCitadelRiskGate(input: CitadelRiskGateInput): CitadelRiskGateResult {
   const nowMs = input.atMs ?? (input.at ? input.at.getTime() : Date.now());
   const matrix = evaluateStaticBreakerMatrix({
@@ -134,33 +75,7 @@ export function assertCitadelRiskGate(input: CitadelRiskGateInput): CitadelRiskG
     nowMs,
   });
   tripStaticCircuitBreaker(matrix, input.symbol);
-
-  const deadman = evaluateAgentCitadelGuard({
-    intent: {
-      maxSlippageBps: AGENT_DEADMAN_SLIPPAGE_BPS,
-      soilResistanceThreshold: AGENT_DEADMAN_SLIPPAGE_BPS,
-      targetMarket: input.symbol,
-    },
-    soil: input,
-    atMs: nowMs,
-  });
-  if (!deadman.allowed) {
-    throw new RiskLimitExceeded(`${DEADMAN_SWITCH_TRIPPED}:${CITADEL_SLIPPAGE_EXCEEDED}`, {
-      level: "warn",
-      module: "risk-control",
-      event: "ROOT_PROTECTION_TRIP",
-      symbol: input.symbol,
-      timestamp: new Date(nowMs).toISOString(),
-      message: CITADEL_SLIPPAGE_EXCEEDED,
-      details: {
-        estimatedGasCostUsd: 0,
-        maxGasCostPerUserOpUsd: MAX_GAS_COST_PER_USEROP_USD,
-        gate: "zerodev-aa-deadman",
-        deadmanTriggered: true,
-      },
-    });
-  }
-
+  assertAaDeadmanOrThrow(input, nowMs);
   return {
     sponsored: matrix.sponsored,
     gasGuardReason: matrix.gasGuardReason,
@@ -184,33 +99,7 @@ export async function assertCitadelRiskGateAsync(
     nowMs,
   });
   tripStaticCircuitBreaker(matrix, input.symbol);
-
-  const deadman = evaluateAgentCitadelGuard({
-    intent: {
-      maxSlippageBps: AGENT_DEADMAN_SLIPPAGE_BPS,
-      soilResistanceThreshold: AGENT_DEADMAN_SLIPPAGE_BPS,
-      targetMarket: input.symbol,
-    },
-    soil: input,
-    atMs: nowMs,
-  });
-  if (!deadman.allowed) {
-    throw new RiskLimitExceeded(`${DEADMAN_SWITCH_TRIPPED}:${CITADEL_SLIPPAGE_EXCEEDED}`, {
-      level: "warn",
-      module: "risk-control",
-      event: "ROOT_PROTECTION_TRIP",
-      symbol: input.symbol,
-      timestamp: new Date(nowMs).toISOString(),
-      message: CITADEL_SLIPPAGE_EXCEEDED,
-      details: {
-        estimatedGasCostUsd: 0,
-        maxGasCostPerUserOpUsd: MAX_GAS_COST_PER_USEROP_USD,
-        gate: "zerodev-aa-deadman",
-        deadmanTriggered: true,
-      },
-    });
-  }
-
+  assertAaDeadmanOrThrow(input, nowMs);
   const aaProbeRoute = await resolveAaProbeRouteAsync(undefined, nowMs);
   return {
     sponsored: matrix.sponsored,
@@ -219,33 +108,6 @@ export async function assertCitadelRiskGateAsync(
     chainHealth: aaProbeRoute.health,
     aaProbeRoute,
   };
-}
-
-/** HUD badge resolver — mirrors soil leg of static breaker without throwing. */
-export function evaluateZeroDevAaGatewayBadge(
-  soil: SoilResistanceInput,
-  env?: Record<string, string>,
-): ZeroDevAaGatewayBadgeStatus {
-  const enabled = isZeroDevAAEnabled(env);
-  if (!enabled) {
-    return { enabled: false, gatePass: false, secured: false, label: AA_GATEWAY_DISABLED_LABEL };
-  }
-  const gatePass = !checkSoilResistance(soil).tripped;
-  return {
-    enabled: true,
-    gatePass,
-    secured: gatePass,
-    label: gatePass ? AA_GATEWAY_SECURED_LABEL : AA_GATEWAY_DISABLED_LABEL,
-  };
-}
-
-function toGatewayInput(input: ZeroDevAaGateInput): GatewayRulesInput {
-  const gateway: GatewayRulesInput = { symbol: input.symbol, soil: input.soil };
-  if (input.estimatedLossUsd !== undefined) gateway.estimatedLossUsd = input.estimatedLossUsd;
-  if (input.accountBalanceUsd !== undefined) gateway.accountBalanceUsd = input.accountBalanceUsd;
-  if (input.criHardlock !== undefined) gateway.criHardlock = input.criHardlock;
-  if (input.payloadPoison !== undefined) gateway.payloadPoison = input.payloadPoison;
-  return gateway;
 }
 
 /** ZeroDev ERC-4337 UserOp preflight — fail-closed soil + oracle gate. */

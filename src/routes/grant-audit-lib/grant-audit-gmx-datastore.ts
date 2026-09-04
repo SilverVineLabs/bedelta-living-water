@@ -1,6 +1,6 @@
 /** Grant audit — cached GMX v2 DataStore long/short borrow posture (sync, no RPC). */
 
-import { getGmxDataStoreStatusCache } from "../../services/adapters/gmx-v2-datastore";
+import { getGmxDataStoreStatusCache } from "../../services/adapters/gmx-v2-datastore-lib/gmx-v2-datastore-keys";
 import type { Env } from "../../env";
 import { getGmxGmBalanceCache, resolveArbMainnetEnvBinding, isZeroDeltaShieldActive } from "../../services/yield/gmx-v2-gm-telemetry";
 import { readGmxSwrFlags } from "../../services/adapters/gmx-swr-guard";
@@ -25,7 +25,7 @@ export interface GmxDataStoreStatus {
 export {
   __resetGmxDataStoreStatusCacheForTests,
   __setGmxDataStoreStatusCacheForTests,
-} from "../../services/adapters/gmx-v2-datastore";
+} from "../../services/adapters/gmx-v2-datastore-lib/gmx-v2-datastore-keys";
 
 /** Serialize live DataStore posture from in-memory cache only. */
 export function buildGmxDataStoreStatusForGrantAudit(

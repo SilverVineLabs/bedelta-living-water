@@ -10,13 +10,16 @@ export const PERFORMANCE_FEE_RATE = 0.15;
 export const INSTANT_WITHDRAWAL_CONVENIENCE_FEE_RATE = 0.001;
 
 /** SliverVine Safety Module Reserve share — 10 bps = 0.1% */
-export const SAFETY_RESERVE_BPS = 10;
+export const SLIVERVINE_SAFETY_BPS = 10;
 
-/** @deprecated Use SAFETY_RESERVE_BPS */
-export const SILVERVINE_SAFETY_BPS = SAFETY_RESERVE_BPS;
+/** @deprecated Use SLIVERVINE_SAFETY_BPS */
+export const SAFETY_RESERVE_BPS = SLIVERVINE_SAFETY_BPS;
+
+/** @deprecated Use SLIVERVINE_SAFETY_BPS */
+export const SILVERVINE_SAFETY_BPS = SLIVERVINE_SAFETY_BPS;
 
 /** Safety Module Reserve rate as decimal (0.001) */
-export const SAFETY_RESERVE_RATE = SAFETY_RESERVE_BPS / 10_000;
+export const SAFETY_RESERVE_RATE = SLIVERVINE_SAFETY_BPS / 10_000;
 
 /** Conservative net APY band (percent points) for grant / API disclosure */
 export const CONSERVATIVE_NET_APY_BAND = {

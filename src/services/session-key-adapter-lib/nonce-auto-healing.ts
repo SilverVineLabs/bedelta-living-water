@@ -6,10 +6,10 @@ import {
   generateUniqueNonce,
   resetUniqueNonceState,
 } from "../../adapters/hl/auth/action-hash";
-import { WS_HEARTBEAT_INTERVAL_MS } from "../../adapters/hl/websocket/types";
 import { updateSystemState } from "../../core/state";
 
-export const SESSION_KEY_HEARTBEAT_MS = WS_HEARTBEAT_INTERVAL_MS;
+/** Session Key intent execution window — independent of HL WS transport heartbeat. */
+export const SESSION_KEY_HEARTBEAT_MS = 30_000;
 
 const INVALID_NONCE_PATTERN = /invalid nonce|nonce too low|nonce expired/i;
 

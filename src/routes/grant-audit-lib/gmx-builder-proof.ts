@@ -5,11 +5,12 @@ import {
   resolveGmxReferralCode,
   resolveGmxUiFeeReceiver,
 } from "../../services/adapters/gmx-v2-order-payload";
+import { GMX_UI_FEE_BPS } from "../../config/gmx-revenue";
 import type { ArbitrumCitadelRiskMetrics } from "./grant-audit-citadel-metrics";
 
-export const GMX_UI_FEE_BPS = 5;
+export { GMX_UI_FEE_BPS };
 export const GMX_BUILDER_FEE_ROUTING_LABEL =
-  "Protocol-Standard Builder Fee Routing Configured (+5 bps)" as const;
+  "Protocol-Standard Builder Fee Routing Configured (+10 bps)" as const;
 /** @deprecated Use GMX_BUILDER_FEE_ROUTING_LABEL */
 export const GMX_UI_FEE_ACCRUAL_LABEL = GMX_BUILDER_FEE_ROUTING_LABEL;
 export const GMX_UNDERWEIGHT_REBALANCE_LABEL = "Underweight GM Pool Rebalance Flow" as const;

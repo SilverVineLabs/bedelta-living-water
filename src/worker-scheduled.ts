@@ -7,7 +7,7 @@ import {
   syncLedgerToPersistence,
 } from "./core/intent-persistence";
 import { configureFlattenHardlockKv } from "./core/intent-ledger/flatten-hardlock";
-import { configureUnlockReauthorizationKv } from "./services/session-key-adapter-lib/unlock-reauthorization";
+import { configureUnlockReauthorizationKv } from "./services/session-key-adapter-lib/unlock-reauthorization-kv";
 import { runMainnetMonitorTick } from "./services/mainnet-monitor";
 import { refreshGrantAuditPayloadCache } from "./routes/grant-audit-lib/grant-audit-precache";
 
@@ -97,7 +97,6 @@ export async function runScheduledJobs(
   }
 
   if (env.SRV_200_MAINNET_SESSION_PK?.trim() && env.SRV_200_MAINNET_USER_ADDRESS?.trim()) {
-    const { runScheduledGmxHedgeCron } = await import("./scheduled-gmx-hedge");
-    await runScheduledGmxHedgeCron(env);
+    // GMX↔HL hedge cron runs on isolated worker — src/worker-cron-entry.ts (wrangler.cron.toml).
   }
 }

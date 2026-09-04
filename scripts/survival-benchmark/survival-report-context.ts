@@ -9,7 +9,7 @@ import type {
   PreemptiveGasBiddingStub,
   UsdYieldLendStub,
   ZeroSpreadRebalancerStub,
-} from "../../src/services/stubs";
+} from "./survival-stubs";
 import type { CrossAssetRotationService } from "../../src/services/cross-asset-rotation";
 import type {
   Candle,
@@ -140,6 +140,7 @@ export interface SurvivalReportContext {
   batch2DeltaApy: number;
   runBNetApy: number;
   runBVsBaseApy: number;
+  runBTvlAfter: number;
   runCNetApy: number;
   runCVsBaseApy: number;
   runCSlip30d: number;

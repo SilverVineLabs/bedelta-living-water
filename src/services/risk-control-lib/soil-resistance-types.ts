@@ -4,7 +4,12 @@
  * Soil resistance types + depth/slippage constants.
  */
 
-import type { CrossSpreadSoilInput } from "../yield/cross-spread";
+import type {
+  PendleCrossGuardSoilInput,
+  PendleOracleSoilInput,
+  PendlePoolFactorySoilInput,
+} from "../../core/pendle-types";
+import type { CrossSpreadSoilInput } from "../yield/cross-spread-cache";
 import type { GmxV2PriceImpactSoilInput } from "../yield/gmx-v2-price-impact";
 
 /** Cross-venue / cross-book slippage trip threshold (0.5%) */
@@ -47,6 +52,14 @@ export interface SoilResistanceInput {
   crossSpread?: CrossSpreadSoilInput;
   /** GMX v2 GM pool price-impact penalty / subsidy probe */
   gmxPriceImpact?: GmxV2PriceImpactSoilInput;
+  /** Pendle PT × GMX shadow-margin cross-guard probe */
+  pendleCrossGuard?: PendleCrossGuardSoilInput;
+  /** Pendle oracle freshness probe — trips with PENDLE_ORACLE_STALE */
+  pendleOracle?: PendleOracleSoilInput;
+  /** Pendle AI pool-factory pre-flight — PENDLE_CREATE_POOL / PENDLE_ADD_LIQUIDITY */
+  pendlePoolFactory?: PendlePoolFactorySoilInput;
+  /** Disable dynamic ±2–5 bps threshold jitter (tests / replay) */
+  disableThresholdJitter?: boolean;
 }
 
 export interface SoilResistanceResult {

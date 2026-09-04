@@ -5,7 +5,7 @@ import {
   formatMasterPresetLabel,
   SCALE_DOWN_COMBO_PRESETS,
   SHIELD_BREAKDOWN_BY_VERSION,
-} from "../src/components/hud/scale-down-presets";
+} from "../src/lib/gui-bridge/scale-down-presets";
 
 describe("ScaleDownCombobox presets", () => {
   it("exposes three Grant-safe combo bundles", () => {

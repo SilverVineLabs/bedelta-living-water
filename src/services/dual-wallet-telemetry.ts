@@ -1,9 +1,9 @@
 /** Dual-wallet dual-venue TVL — Wallet A (HL) + Wallet B (GMX GM + HL margin). */
 import type { Env } from "../env";
 import { resolveDualWalletEnv } from "../env-grant-defaults";
-import { getGmxGmBalanceCache } from "./adapters/gmx-v2-gm-balance";
+import { getGmxGmBalanceCache } from "./adapters/gmx-v2-gm-balance-cache";
 import { withLiveTvlFallback } from "./dual-wallet-tvl-fallback";
-import { getHlAutoHedgeStatus } from "./hl-auto-hedge";
+import { getHlAutoHedgeStatus } from "./hl-auto-hedge-status";
 import {
   fetchHlWalletTelemetry,
   getHlWalletTelemetryCache,

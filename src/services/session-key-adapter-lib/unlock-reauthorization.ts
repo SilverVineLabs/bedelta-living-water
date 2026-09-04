@@ -2,7 +2,6 @@
  * EIP-712 master re-authorization — SSOT for clearing R17/R20 hardlocks.
  */
 
-import { recoverTypedDataAddress, type Hex } from "viem";
 import type { Eip712TypedField } from "../../adapters/hl/eip712-signer";
 import { normalizeAddress } from "../../adapters/hl/crypto";
 import { buildUserSignedDomain } from "../../adapters/hl/auth/chain-id";
@@ -16,7 +15,10 @@ import {
   type SystemState,
 } from "../../core/state";
 import { saveSystemStateToKV } from "../kv-lib/system-state";
-import type { SliverVineKv } from "../kv-lib/keys";
+import {
+  readUnlockReauthorizationKv,
+  __resetUnlockReauthorizationKvForTests,
+} from "./unlock-reauthorization-kv";
 import { clearCircuitBreakerSever } from "../root-protection-lib/circuit-breaker-sever";
 import { appendStateTransactionLog } from "../state/system-state";
 import { resolveHudState } from "../systemState";
@@ -51,17 +53,11 @@ export type VerifyAndReleaseHardlockResult =
   | { ok: true; state: SystemState }
   | { ok: false; reason: string };
 
-let unlockKvBinding: SliverVineKv | undefined;
-
-/** Wire Worker KV for hardlock release persistence. */
-export function configureUnlockReauthorizationKv(kv: SliverVineKv | undefined): void {
-  unlockKvBinding = kv;
-}
-
-/** @internal test reset */
-export function __resetUnlockReauthorizationKvForTests(): void {
-  unlockKvBinding = undefined;
-}
+export {
+  configureUnlockReauthorizationKv,
+  readUnlockReauthorizationKv,
+  __resetUnlockReauthorizationKvForTests,
+} from "./unlock-reauthorization-kv";
 
 export function buildHardlockReleaseTypedData(
   masterAddress: string,
@@ -102,6 +98,8 @@ export async function verifyHardlockReleaseSignature(
       timestampMs,
       chainId,
     );
+    const { recoverTypedDataAddress } = await import("viem");
+    type Hex = `0x${string}`;
     const recovered = await recoverTypedDataAddress({
       domain: {
         name: domain.name,
@@ -188,7 +186,7 @@ export async function verifyAndReleaseHardlock(
     "R20",
   );
 
-  await saveSystemStateToKV(unlockKvBinding, released);
+  await saveSystemStateToKV(readUnlockReauthorizationKv(), released);
 
   return { ok: true, state: released };
 }

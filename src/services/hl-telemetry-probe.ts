@@ -1,7 +1,7 @@
 /**
  * GMX Grant / B2B telemetry probe — Hyperliquid adapter friction SSOT.
  */
-import { evaluateSoilResistance as evaluateHyperliquidMarginHealth } from "./hyperliquid-adapter";
+import { evaluateSoilResistance as evaluateHyperliquidMarginHealth } from "./exchanges/hl-margin";
 import { isR20Locked, type CoreSystemState } from "../core/state";
 import { checkSoilResistance, type SoilResistanceInput } from "../core/risk";
 

@@ -43,7 +43,13 @@ describe("risk-oracle-gate", () => {
     expect(
       shouldEnforceRiskOracleGate({
         USE_ZERODEV_AA: "true",
-        SILVERVINE_RISK_ORACLE_ADDRESS: "0x1111111111111111111111111111111111111111",
+        SLIVERVINE_RISK_ORACLE_ADDRESS: "0x1111111111111111111111111111111111111111",
+      }),
+    ).toBe(true);
+    expect(
+      shouldEnforceRiskOracleGate({
+        USE_ZERODEV_AA: "true",
+        SILVERVINE_RISK_ORACLE_ADDRESS: "0x2222222222222222222222222222222222222222",
       }),
     ).toBe(true);
     expect(shouldEnforceRiskOracleGate({ USE_ZERODEV_AA: "false" })).toBe(false);

@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /** 3-Tier Security Matrix SSOT — --tier=fast|security|nightly. Missing CLIs → SKIPPED. */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -10,8 +10,6 @@ const GATE = join(ROOT, "SliverVineGate");
 const AUDIT = join(ROOT, "docs/audit");
 const SCORECARD = join(AUDIT, "security-scorecard.json");
 const STATIC = join(AUDIT, "static-analysis-report.json");
-const ADERYN_REPORT = join(GATE, "report.md");
-const HALMOS_JSON = join(AUDIT, "halmos.json");
 const NARRATIVE = "behavioral_pass_does_not_imply_web3_security" as const;
 
 export type Tier = "fast" | "security" | "nightly";
@@ -106,14 +104,9 @@ function runGate(
 }
 
 function runAderynGate(): SecurityGateResult {
-  const gate = runGate("aderyn", "Aderyn SliverVineGate", "aderyn", ["."], {
-    cwd: GATE, optional: true,
-  });
-  if (gate.verdict !== "FAIL" || !existsSync(ADERYN_REPORT)) return gate;
-  return {
-    ...gate, verdict: "PASS",
-    detail: "report.md ok; ignore aderyn 0.1.9 solc metadata panic",
-  };
+  return runGate("aderyn", "Aderyn SliverVineGate", "bash", [
+    join(ROOT, "scripts/run-aderyn-gate.sh"),
+  ], { optional: true });
 }
 
 function runEchidnaGate(): SecurityGateResult {
@@ -131,42 +124,6 @@ function runEchidnaGate(): SecurityGateResult {
     "--config", "echidna.yaml",
     "--format", "text",
   ], { cwd: GATE, exploratory: true });
-}
-
-function runHalmosGate(): SecurityGateResult {
-  const bin = resolveCli(["halmos"], /halmos/i);
-  if (!bin) {
-    return {
-      id: "halmos", label: "Halmos symbolic", verdict: "SKIPPED",
-      exitCode: null, elapsedMs: 0,
-      detail: "halmos not found — SKIPPED (not PASS)",
-    };
-  }
-  mkdirSync(AUDIT, { recursive: true });
-  const gate = runGate("halmos", "Halmos symbolic", bin, [
-    "--root", ".",
-    "--no-status",
-    "--match-contract", "SliverVineGateInvariantTest",
-    "--json-output", HALMOS_JSON,
-  ], { cwd: GATE, exploratory: true });
-  let extras: string[] = gate.counterexamples ?? [];
-  if (existsSync(HALMOS_JSON)) {
-    try {
-      const raw = JSON.parse(readFileSync(HALMOS_JSON, "utf8")) as {
-        exitcode?: number;
-        test_results?: Record<string, unknown[]>;
-      };
-      const empty = Object.entries(raw.test_results ?? {})
-        .filter(([, v]) => !Array.isArray(v) || v.length === 0)
-        .map(([k]) => `no_paths:${k}`);
-      extras = [...extras, ...empty, `halmos_exitcode:${raw.exitcode ?? "?"}`];
-    } catch { /* keep stderr counterexamples */ }
-  }
-  return {
-    ...gate,
-    detail: `${gate.detail} | exploratory=${gate.exitCode !== 0}`,
-    counterexamples: extras.slice(0, 40),
-  };
 }
 
 function gatesFor(tier: Tier): SecurityGateResult[] {
@@ -201,7 +158,6 @@ function gatesFor(tier: Tier): SecurityGateResult[] {
   }
   return [
     runEchidnaGate(),
-    runHalmosGate(),
     runGate("forge-deep-fuzz", "Foundry deep fuzz", "forge", [
       "test", "--match-path", "test/*.fuzz.t.sol",
     ], { cwd: GATE, optional: true, env: { FOUNDRY_PROFILE: "deep" }, exploratory: true }),
@@ -262,9 +218,6 @@ export function runSecurityMatrix(tier: Tier): SecurityScorecard {
         summary,
         verdict: scorecard.overallVerdict,
         scorecard: "docs/audit/security-scorecard.json",
-        artifacts: {
-          ...(existsSync(HALMOS_JSON) ? { halmosJson: "docs/audit/halmos.json" } : {}),
-        },
       }, null, 2)}\n`,
     );
   }

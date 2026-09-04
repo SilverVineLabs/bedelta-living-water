@@ -7,7 +7,7 @@ import {
   getGmxGmBalanceCache,
   setGmxGmBalanceCache,
   type GmxGmBalanceSnapshot,
-} from "../adapters/gmx-v2-gm-balance";
+} from "../adapters/gmx-v2-gm-balance-cache";
 import { refreshGmxGmBalanceSwr } from "../adapters/gmx-v2-gm-balance-swr";
 
 export const GM_TELEMETRY_CACHE_MAX_AGE_MS = 60_000;
@@ -90,4 +90,4 @@ export function __setGmxGmTelemetryCacheForTests(snap: GmxGmBalanceSnapshot | nu
   setGmxGmBalanceCache(snap);
 }
 
-export { __resetGmxGmBalanceCacheForTests, getGmxGmBalanceCache } from "../adapters/gmx-v2-gm-balance";
+export { __resetGmxGmBalanceCacheForTests, getGmxGmBalanceCache } from "../adapters/gmx-v2-gm-balance-cache";

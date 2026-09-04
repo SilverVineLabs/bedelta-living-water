@@ -1,13 +1,13 @@
 # `@slivervine/citadel-sdk`
 
-**License:** Apache-2.0 · see [`LICENSE`](./LICENSE) · **Entity:** SilverVine Labs · **Protocol brand:** SliverVine  
+**Protocol:** SliverVine Citadel Shield — **Pre-Consensus Intent Firewall & Execution Safety Primitive** for AI Agents on Arbitrum (BeDelta Living Water v1.0 / BeΔ)
+**License:** Apache-2.0 · see [`LICENSE`](./LICENSE) · **Entity:** SilverVine Labs · **Protocol brand:** SliverVine
 **EIP-712 domain:** `SliverVineCitadel` · **Gate anchor:** `SLIVERVINE_GATE_ADDRESS`
 
-> **Baseline:** Vitest `135 files | 724 PASS (100% Clean)` · Security-tier `5/0/0 PASS` (`docs/audit/static-analysis-report.json`; Vitest, Forge, Slither, Aderyn, pnpm-audit) · Defense Matrix `17 Active | 2 Refactored | 1 Deprecated` · Wasm `<28kb` / `<60µs`.  
-> Fast-tier scorecard (`docs/audit/security-scorecard.json`) is overwritten by the last `audit:fast|security|nightly` run — do not mix tiers.
+> **Vitest SSOT:** **173 test files | 765 PASS Clean** · Security-tier `5/0/0 PASS` · Wasm `<28kb` / `<60µs`.
 
-> **"Behavioral pass does not imply Web3 security."**  
-> `@slivervine/citadel-sdk` currently performs **stateless attestation envelope validation** (EIP-712 structural checks: digest match, expiry, `verifyingContract`, domain `SliverVineCitadel`, sig hex shape) plus `&lt;28kb` Wasm soil evaluation **BEFORE** any UserOp hits the mempool.  
+> **"Behavioral pass does not imply Web3 security."**
+> `@slivervine/citadel-sdk` currently performs **stateless attestation envelope validation** (EIP-712 structural checks: digest match, expiry, `verifyingContract`, domain `SliverVineCitadel`, sig hex shape) plus `&lt;28kb` Wasm soil evaluation **BEFORE** any UserOp hits the mempool.
 > **Full cryptographic signature recovery / m-of-n quorum is bound at the L1 `SliverVineGate` contract layer** (`verifyAndConsume`) — not claimed as complete off-chain ECDSA recovery in this SDK package.
 
 Stateless pre-execution harness. No private keys. No custody. Fail-closed by default.
@@ -24,10 +24,10 @@ Stateless pre-execution harness. No private keys. No custody. Fail-closed by def
 
 ```ts
 import {
-  verifyAgentIntent,
-  assertUnidirectionalBridge,
-  SLIVERVINE_GATE_ADDRESS,
-  EIP712_DOMAIN_NAME,
+ verifyAgentIntent,
+ assertUnidirectionalBridge,
+ SLIVERVINE_GATE_ADDRESS,
+ EIP712_DOMAIN_NAME,
 } from "../sdk"; // or `@slivervine/citadel-sdk` when published
 ```
 
@@ -37,22 +37,22 @@ import {
 
 ```ts
 const verdict = verifyAgentIntent({
-  intentDigest, // 0x + 32-byte UserOp / calldata digest
-  sessionKey: { agentAddress, maxOrderClipUsd: 30, expiresAtMs },
-  soil: { symbol: "ETH-PERP", hlSpot, hlPerp, dydxPerp, depthUsd, isTestnet: false },
-  gasBurst: { estimatedGasCostUsd: 0.1, sponsored: true },
-  attestation: {
-    digest: intentDigest,
-    expiresAtMs: Date.now() + 30_000,
-    sig: "0x…", // Risk Oracle / Gate signer
-    verifyingContract: SLIVERVINE_GATE_ADDRESS,
-    domainName: EIP712_DOMAIN_NAME,
-  },
-  preset: "production", // default — missing attestation ⇒ allowedToSign: false
+ intentDigest, // 0x + 32-byte UserOp / calldata digest
+ sessionKey: { agentAddress, maxOrderClipUsd: 30, expiresAtMs },
+ soil: { symbol: "ETH-PERP", hlSpot, hlPerp, dydxPerp, depthUsd, isTestnet: false },
+ gasBurst: { estimatedGasCostUsd: 0.1, sponsored: true },
+ attestation: {
+ digest: intentDigest,
+ expiresAtMs: Date.now() + 30_000,
+ sig: "0x…", // Risk Oracle / Gate signer
+ verifyingContract: SLIVERVINE_GATE_ADDRESS,
+ domainName: EIP712_DOMAIN_NAME,
+ },
+ preset: "production", // default — missing attestation ⇒ allowedToSign: false
 });
 
 if (!verdict.allowedToSign) {
-  // Do not request wallet / Session Key signature
+ // Do not request wallet / Session Key signature
 }
 ```
 
@@ -69,25 +69,41 @@ if (!verdict.allowedToSign) {
 
 Dev bypass only with explicit `allowDevBypass: true` or `preset: "test"` + `soil.isTestnet: true`.
 
-### 2. Unidirectional bridge (Robinhood → Arbitrum)
+### 3. Pre-Consensus Intent Firewall (`withCitadelShield`)
+
+One-line decorator — Edge soil clearing before agent execution (0-Gas fail-closed on trip):
+
+```ts
+import { withCitadelShield } from "@slivervine/citadel-sdk";
+
+const shieldedSwap = withCitadelShield(async (intent) => agent.executeSwap(intent));
+await shieldedSwap({ symbol: "ETH", hlSpot, hlPerp, dydxPerp, depthUsd: 200_000 });
+```
+
+Tests: `tests/sdk/decorator.test.ts` · Reference harness: `examples/agent-interceptor-demo.ts`
+
+### 4. Unidirectional bridge (Robinhood → Arbitrum)
 
 ```ts
 const escort = assertUnidirectionalBridge({
-  sourceChainId: 46630, // or 4663 mainnet alias
-  destChainId: 42161,
-  amountUsd: 1000,
-  wallet,
-  initiatedAtMs: Date.now(),
+ sourceChainId: 46630, // or 4663 mainnet alias
+ destChainId: 42161,
+ amountUsd: 1000,
+ wallet,
+ initiatedAtMs: Date.now(),
 });
 // inbound (→ Robinhood) ⇒ capitalLabel AML_INBOUND_TO_ROBINHOOD_BLOCKED, lostUsd === 0
 ```
 
 ## Audit test harness
 
-Executable gap proofs live in `tests/sdk/citadel-sdk.test.ts`:
+Executable gap proofs live in:
+
+- `tests/sdk/citadel-sdk-intent.test.ts`
+- `tests/sdk/citadel-sdk-bridge-armor.test.ts`
 
 ```bash
-pnpm exec vitest run tests/sdk/citadel-sdk.test.ts
+pnpm exec vitest run tests/sdk/citadel-sdk-intent.test.ts tests/sdk/citadel-sdk-bridge-armor.test.ts
 pnpm test
 pnpm audit:fast
 ```
@@ -96,14 +112,13 @@ Covers: prompt-injection / session drift interception, missing & tampered attest
 
 ## M4 Wasm
 
-- Rust `#![no_std]` core: `src/wasm/soil_core.rs` → `pkg/soil_core.wasm` (&lt;28 KiB Cloudflare budget)
+- Rust `#![no_std]` core: [`soil_core.rs`](../../src/wasm/soil_core.rs) → [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) (&lt;28 KiB Cloudflare budget)
 - Hot-path exec budget: **&lt;60µs**
 - Production `verifyAgentIntent` requires Wasm (`WASM_CORE_REQUIRED` if missing); dev falls back to TS sim
 - Rebuild: `pnpm build:wasm`
 
 ## Related
 
-- Blueprint: `docs/sdk/CITADEL_SDK_BLUEPRINT.md`
-- Internal ZH brief (Confidential): `docs/internal/CITADEL_SDK_INTERNAL_ZH.md`
-- Docs index: `docs/README.md`
-- On-chain: `SliverVineGate/`, `contracts/SliverVineRiskOracle.sol`
+- Blueprint: [`CITADEL_SDK_BLUEPRINT.md`](../../docs/sdk/CITADEL_SDK_BLUEPRINT.md)
+- Docs index: [`docs/README.md`](../../docs/README.md)
+- On-chain: [`SliverVineGate/`](../../SliverVineGate/) · [`SliverVineRiskOracle.sol`](../../contracts/SliverVineRiskOracle.sol)

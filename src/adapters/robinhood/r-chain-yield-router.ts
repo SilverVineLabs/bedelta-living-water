@@ -9,6 +9,12 @@ import {
   ROBINHOOD_TESTNET_CHAIN_ID,
 } from "../../sdk/constants";
 import { assertUnidirectionalBridge } from "../../sdk/unidirectional-bridge";
+import { IN_FLIGHT_BRIDGE_CAPITAL } from "../across-ingress-bridge";
+import { type GmPoolRouteKey, resolveGmxMarketByRouteKey } from "../../config/gmx-markets";
+import {
+  GMX_V2_EXCHANGE_ROUTER_ARBITRUM,
+  resolveZeroDevSmartRouteTarget,
+} from "../../config/gmx-revenue";
 import {
   buildDeterministicRouteId,
   buildRChainExecutionProbe,
@@ -23,8 +29,11 @@ export const RWA_YIELD_MAX_USD = 250_000 as const;
 export interface RChainYieldEscortInput extends RChainYieldRouteInput {
   wallet: string;
   sourceChainId?: number;
+  /** @deprecated use targetRoute */
   gmPoolTarget?: string;
+  targetRoute?: GmPoolRouteKey;
   initiatedAtMs?: number;
+  settledAtMs?: number | null;
   nowMs?: number;
 }
 
@@ -39,6 +48,9 @@ export interface RChainYieldEscortQuote {
   expectedApyBps: number;
   routeId: string;
   gmPoolTarget: string;
+  targetRoute: GmPoolRouteKey;
+  smartRoutingAddress: `0x${string}`;
+  destMarketToken: `0x${string}`;
   bridgeEscortOk: boolean;
   /** Decision layer is live; on-chain yield vault still undeployed. */
   decisionReady: true;
@@ -63,7 +75,16 @@ export function quoteRChainYieldToArbitrumGm(
 ): RChainYieldEscortQuote {
   const nowMs = input.nowMs ?? Date.now();
   const resolvedSource = resolveSourceChainId(input.sourceChainId);
-  const gmPoolTarget = input.gmPoolTarget ?? GM_POOL_TARGET_DEFAULT;
+  const sourceChainId = resolvedSource ?? ROBINHOOD_TESTNET_CHAIN_ID;
+  const smartRoute = resolvedSource !== null ? resolveZeroDevSmartRouteTarget(sourceChainId) : null;
+  const targetRoute: GmPoolRouteKey =
+    input.targetRoute ??
+    (input.gmPoolTarget as GmPoolRouteKey | undefined) ??
+    smartRoute?.gmPoolRouteKey ??
+    GM_POOL_TARGET_DEFAULT;
+  const gmPoolTarget = targetRoute;
+  const market = resolveGmxMarketByRouteKey(targetRoute);
+  const smartRoutingAddress = smartRoute?.smartRoutingAddress ?? GMX_V2_EXCHANGE_ROUTER_ARBITRUM;
   const reasons: string[] = [];
 
   if (resolvedSource === null) {
@@ -79,7 +100,6 @@ export function quoteRChainYieldToArbitrumGm(
     reasons.push("RWA_YIELD_SYMBOL_REQUIRED");
   }
 
-  const sourceChainId = resolvedSource ?? ROBINHOOD_TESTNET_CHAIN_ID;
   let bridgeEscortOk = false;
   if (resolvedSource !== null) {
     const bridge = assertUnidirectionalBridge({
@@ -88,10 +108,14 @@ export function quoteRChainYieldToArbitrumGm(
       amountUsd: input.amountUsd,
       wallet: input.wallet,
       initiatedAtMs: input.initiatedAtMs ?? nowMs,
+      settledAtMs: input.settledAtMs,
       nowMs,
     });
-    bridgeEscortOk = bridge.ok;
-    if (!bridge.ok) reasons.push(...bridge.reasons);
+    bridgeEscortOk = bridge.deployable;
+    if (!bridge.routeAllowed) reasons.push(...bridge.reasons);
+    else if (!bridge.deployable && bridge.capitalLabel === IN_FLIGHT_BRIDGE_CAPITAL) {
+      reasons.push(IN_FLIGHT_BRIDGE_CAPITAL);
+    }
   }
 
   const routeInput: RChainYieldRouteInput = {
@@ -114,6 +138,9 @@ export function quoteRChainYieldToArbitrumGm(
     expectedApyBps: APY_BPS[input.assetKind],
     routeId,
     gmPoolTarget,
+    targetRoute,
+    smartRoutingAddress,
+    destMarketToken: market.marketToken,
     bridgeEscortOk,
     decisionReady: true,
     contractDeployed: false,

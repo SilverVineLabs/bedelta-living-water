@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveSanmHudFrame, isEvacuationTriggered } from "../../src/components/NirvanaEvacuationShield";
+import { resolveSanmHudFrame, isEvacuationTriggered } from "../../src/lib/gui-bridge/sanm-hud-frame";
 
 describe("NirvanaEvacuationShield data plane", () => {
   it("mockSanmHUD default step stays nominal (standby — no evacuation overlay)", () => {

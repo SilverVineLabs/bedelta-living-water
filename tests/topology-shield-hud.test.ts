@@ -8,7 +8,7 @@ import {
   getTopologyShieldCard,
   verifyInternalHudPassword,
   INTERNAL_HUD_PASSWORD,
-} from "../src/v2/services/tension-engine-service";
+} from "../src/services/tension-engine-service";
 
 describe("Internal HUD password gate", () => {
   it("accepts only 0xwallet", () => {

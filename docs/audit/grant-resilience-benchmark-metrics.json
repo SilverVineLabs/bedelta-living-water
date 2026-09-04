@@ -1,5 +1,5 @@
 {
-  "protocol": "Santenmoku v0.9",
+  "protocol": "SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ)",
   "harness": "grant-advanced-resilience-benchmark",
   "tests": {
     "toctou": {
@@ -16,26 +16,26 @@
       "keeperDelayMs": 2000
     },
     "failover": {
-      "pass": true,
-      "maxFailoverMs": 40.77846599999975,
+      "pass": false,
+      "maxFailoverMs": 237.99711099999968,
       "falseNegatives": 0,
       "gateChecks": 6,
       "routes": [
         {
           "route": "https://rpc.ankr.com/arbitrum",
-          "failoverMs": 38.64548500000001,
+          "failoverMs": 237.99711099999968,
           "primaryFailed": true,
           "statusCode": 200
         },
         {
           "route": "https://rpc.ankr.com/arbitrum",
-          "failoverMs": 0.27088599999979124,
+          "failoverMs": 2.661073000000215,
           "primaryFailed": true,
           "statusCode": 200
         },
         {
           "route": "https://rpc.ankr.com/arbitrum",
-          "failoverMs": 40.77846599999975,
+          "failoverMs": 41.9994999999999,
           "primaryFailed": true,
           "statusCode": 200
         }
@@ -43,15 +43,15 @@
     },
     "benchmark": {
       "pass": true,
-      "meanLatencyMs": 0.0003,
-      "heapDeltaMb": 0.3788,
+      "meanLatencyMs": 0.002,
+      "heapDeltaMb": 0.3819,
       "gcUsed": true,
       "iterations": 10000,
       "sloTargetMs": 1,
       "soilSloMs": 500
     }
   },
-  "allPass": true,
-  "durationMs": 2156,
-  "generatedAt": "2026-08-19T11:34:52.415Z"
+  "allPass": false,
+  "durationMs": 2982,
+  "generatedAt": "2026-08-24T07:41:44.333Z"
 }

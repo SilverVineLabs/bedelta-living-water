@@ -6,7 +6,7 @@ import {
   type PublicLogEvent,
   type SanitizedLogEntry,
 } from "./opsec-log-sanitizer";
-import { isEvacuationTriggered } from "../../components/hud/use-sanm-hud-frame";
+import { isEvacuationTriggered } from "../../lib/gui-bridge/sanm-hud-frame";
 
 function mapFrameToEvent(evac: boolean, status: string): PublicLogEvent {
   if (evac) return "EVACUATION_TRIGGERED";

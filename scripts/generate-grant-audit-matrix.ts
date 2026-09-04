@@ -168,7 +168,7 @@ function cohortMatrixTable(): string {
     ["Verifiable Test Matrix", "—", "—", "—", "135 files / 725 PASS + Chaos"],
     ["Live JSON Telemetry", "—", "—", "—", "/api/grant-audit"],
   ];
-  const header = "| Dimension | Carbon | LayerV | T3tris | SilverVine |";
+  const header = "| Dimension | Carbon | LayerV | T3tris | SliverVine |";
   const sep = "| --- | --- | --- | --- | --- |";
   const body = rows.map((r) => `| ${r.join(" | ")} |`).join("\n");
   return `${header}\n${sep}\n${body}`;
@@ -222,7 +222,7 @@ SliverVine Protocol (BeDelta-Living-Water) is a pre-execution risk gateway for G
 | **Pillar 2 — The Firewall (Compliance)** | Robinhood Unidirectional Escort & AML Block | Outbound-only \`46630\`/\`4663\`→\`42161\` · inbound AML blocked · lostUsd≡0 |
 | **Pillar 3 — The Shield (CORE MOAT)** | Sub-ms Wasm Soil Engine & Restored Deadman Switch (\`agent-citadel-guard\`) | \`checkSoilResistance()\` · Wasm &lt;60µs · Deadman 50 bps fail-closed · RPC/sandwich armor |
 
-## SilverVine vs. Arbitrum Cohort 1 Winners
+## SliverVine vs. Arbitrum Cohort 1 Winners
 
 ${cohortMatrixTable()}
 

@@ -17,14 +17,18 @@ export type {
 } from "./unidirectional-bridge";
 export {
   buildRobinhoodAuditSnapshot,
+  exportDailyRobinhoodComplianceReport,
   exportRobinhoodAuditSnapshot,
+  formatDailyUtcCutoff,
+  formatDailyUtcDate,
 } from "./robinhood-audit-snapshot";
 export type {
+  DailyRobinhoodComplianceReport,
   RobinhoodAuditChainId,
   RobinhoodAuditSnapshot,
   RobinhoodAuditSnapshotInput,
 } from "./robinhood-audit-snapshot";
-export { AML_INBOUND_TO_ROBINHOOD_BLOCKED } from "../adapters/robinhood/robinhood-across-bridge";
+export { AML_INBOUND_TO_ROBINHOOD_BLOCKED } from "../adapters/across-ingress-bridge";
 export { quoteRChainYieldToArbitrumGm } from "../adapters/robinhood/r-chain-yield-router";
 export type {
   RChainYieldEscortInput,
@@ -37,13 +41,21 @@ export {
   evaluateAgentCitadelGuard,
   guardAgentUserOp,
 } from "../core/agent-citadel-guard";
+export { withCitadelShield } from "./decorator";
+export type { CitadelShieldIntent } from "./decorator";
 export {
   ARBITRUM_ONE_CHAIN_ID,
+  ARBITRUM_SEPOLIA_CHAIN_ID,
   EIP712_DOMAIN_NAME,
   EIP712_DOMAIN_VERSION,
+  GMX_UI_FEE_BPS,
+  LOCAL_MOCK_GATE_ADDRESS,
   ROBINHOOD_MAINNET_CHAIN_ID,
   ROBINHOOD_TESTNET_CHAIN_ID,
+  SESSION_KEY_NOTIONAL_CAP_USD,
   SLIVERVINE_GATE_ADDRESS,
+  SLIVERVINE_GATE_SEPOLIA_ADDRESS,
+  resolveSliverVineGateAddress,
 } from "./constants";
 export type { CitadelSdkPreset } from "./constants";
 export {

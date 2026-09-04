@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * One-shot treasury tx — GMX v2 ExchangeRouter.setUiFeeFactor(5 bps).
+ * One-shot treasury tx — GMX v2 ExchangeRouter.setUiFeeFactor(10 bps).
  *
  * Usage: npx tsx scripts/set-gmx-ui-fee-factor.ts
  *
@@ -21,8 +21,8 @@ import { GMX_DEFAULT_UI_FEE_RECEIVER } from "../src/services/adapters/gmx-v2-ord
 export const GMX_V2_EXCHANGE_ROUTER =
   "0x7dE39FF2e232A2203196788d37e234cF8F1b83f1" as const;
 
-/** 5 bps = 0.05% at GMX FLOAT_PRECISION 1e30. */
-export const UI_FEE_FACTOR_5_BPS = 500000000000000000000000000n;
+/** 10 bps = 0.10% at GMX FLOAT_PRECISION 1e30. */
+export const UI_FEE_FACTOR_10_BPS = 1000000000000000000000000000n;
 
 const SET_UI_FEE_FACTOR_ABI = [
   "function setUiFeeFactor(uint256 uiFeeFactor) payable",
@@ -67,8 +67,8 @@ function expectedTreasury(): string {
 }
 
 function verifyCheck(stdout: string): void {
-  if (!stdout.includes("(5 bps)")) {
-    throw new Error("POST_CHECK_MISMATCH: on-chain factor is not 5 bps");
+  if (!stdout.includes("(10 bps)")) {
+    throw new Error("POST_CHECK_MISMATCH: on-chain factor is not 10 bps");
   }
 }
 
@@ -91,7 +91,7 @@ async function main(): Promise<void> {
 
   console.log(`[GMX UI FEE SET] Treasury: ${shortAddr(signer)}`);
   console.log(`[GMX UI FEE SET] Router: ${router}`);
-  console.log(`[GMX UI FEE SET] Factor: ${UI_FEE_FACTOR_5_BPS.toString()} (5 bps)`);
+  console.log(`[GMX UI FEE SET] Factor: ${UI_FEE_FACTOR_10_BPS.toString()} (10 bps)`);
 
   const code = await provider.getCode(router);
   if (!code || code === "0x") {
@@ -99,7 +99,7 @@ async function main(): Promise<void> {
   }
 
   const contract = new Contract(router, SET_UI_FEE_FACTOR_ABI, wallet);
-  const tx = await contract.setUiFeeFactor(UI_FEE_FACTOR_5_BPS, { value: 0n });
+  const tx = await contract.setUiFeeFactor(UI_FEE_FACTOR_10_BPS, { value: 0n });
   console.log(`[GMX UI FEE SET] Tx: ${tx.hash}`);
   const receipt = await tx.wait();
   if (receipt?.status !== 1) {
@@ -119,7 +119,7 @@ async function main(): Promise<void> {
     throw new Error("POST_CHECK_FAILED");
   }
   verifyCheck(check.stdout ?? "");
-  console.log("[GMX UI FEE SET] Verified on-chain: 5 bps");
+  console.log("[GMX UI FEE SET] Verified on-chain: 10 bps");
 }
 
 main().catch((err) => {

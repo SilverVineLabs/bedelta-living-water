@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { extendToFullGrantAuditView } from "../../src/components/hud/v0/grant-audit-view-adapter";
+import { extendToFullGrantAuditView } from "../../src/lib/gui-bridge/grant-audit/grant-audit-view-adapter";
 import {
   buildPhase01CitadelAuditCertificate,
   PHASE01_ARMOR_INDEX_SCORE,
-} from "../../src/components/hud/v0/phase01-audit-certificate-export";
+} from "../../src/lib/gui-bridge/grant-audit/phase01-audit-certificate-export";
 import {
   AML_INBOUND_TO_ROBINHOOD_BLOCKED,
   exportRobinhoodAuditSnapshot,
