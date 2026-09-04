@@ -1,9 +1,13 @@
-# Build & Temp
-node_modules/
+# Build & Compilation Artifacts
+cache/
+broadcast/
+coverage/
 dist/
 dist-worker/
 .wrangler/
-coverage/
+
+# Dependencies
+node_modules/
 .pnpm-store/
 
 # Secrets & Local Configs
