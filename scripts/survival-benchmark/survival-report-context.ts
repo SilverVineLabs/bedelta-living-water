@@ -9,7 +9,7 @@ import type {
   PreemptiveGasBiddingStub,
   UsdYieldLendStub,
   ZeroSpreadRebalancerStub,
-} from "../../src/services/stubs";
+} from "./survival-stubs";
 import type { CrossAssetRotationService } from "../../src/services/cross-asset-rotation";
 import type {
   Candle,

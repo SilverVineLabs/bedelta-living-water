@@ -7,7 +7,7 @@ import {
   PreemptiveGasBiddingStub,
   UsdYieldLendStub,
   ZeroSpreadRebalancerStub,
-} from "../../src/services/stubs";
+} from "./survival-stubs";
 import { COIN, NOTIONAL_USD } from "./survival-benchmark.types";
 import { maxDrawdown, sharpeFromDailyReturns } from "./survival-benchmark.utils";
 import type { PhaseIsolationsResult } from "./phase-isolations";
