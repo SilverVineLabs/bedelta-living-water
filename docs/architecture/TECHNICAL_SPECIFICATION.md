@@ -51,11 +51,13 @@ Santenmoku is a **unified sub-millisecond pre-execution gateway**. **Center of g
 [ PRIMARY: Arbitrum One GMX v2 ETH/USDC GM + Hyperliquid 1× Short ]
 ```
 
-| Pillar | Role | SSOT / Mechanism |
-|--------|------|------------------|
-| **Gatehouse (Auth)** | ZeroDev scoped session keys | Kernel v3 · `ORDER_EXECUTE` bounds · daily gas sponsorship limits · R06 / R07 |
-| **Pillar 2: Compliance Ingress Firewall** | **Venue-agnostic unidirectional AML firewall & escort accounting layer** — permissioned ingress sources escort outbound-only into Arbitrum; inbound AML blocked; honest `IN_FLIGHT_BRIDGE_CAPITAL` / Pending-Capital Recognition Invariant (`lostUsd ≡ 0`) labels. **Robinhood Chain (`46630`/`4663`) is the inaugural Code-Verified / Dry-Run Verified reference adapter**, not the product identity. Includes ZeroDev Smart Routing Address for 1-click USDG deposit/swap via `GMX_V2_EXCHANGE_ROUTER_ARBITRUM` (`ZERODEV_SMART_ROUTE_TARGETS`); calldata bound at `GatedExecutor.payloadHash()` | `src/adapters/across-ingress-bridge.ts` · `IngressSafetySwitch.sol` · `ZERODEV_SMART_ROUTE_TARGETS` |
-| **Shield (CORE MOAT)** | Sub-ms Wasm pre-execution armor — **primary technical moat** | `checkSoilResistance()` p50 ~106 μs · Wasm warm path &lt;60µs · R01 / R04 |
+| Pillar | Role | SSOT / Mechanism | Dedicated specification |
+|--------|------|------------------|-------------------------|
+| **[Pillar 1: The Gatehouse (Auth)]** | ZeroDev scoped session keys · EIP-712 intent scopes | Kernel v3 · `ORDER_EXECUTE` bounds · daily gas sponsorship · R06 / R07 | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
+| **[Pillar 2: Compliance Ingress Firewall]** | Venue-agnostic unidirectional AML escort · honest `IN_FLIGHT_BRIDGE_CAPITAL` / `lostUsd ≡ 0` | `across-ingress-bridge.ts` · `IngressSafetySwitch.sol` · Robinhood / Across = **optional reference adapters** | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
+| **[Pillar 3: Shield (CORE MOAT)]** | Sub-ms Wasm pre-execution armor — **primary technical moat** | `checkSoilResistance()` p50 ~106 μs · Wasm warm &lt;60µs · R01–R20 | [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
+
+> **Three Pillars routing:** Pillar 1 (Gatehouse) and Pillar 2 (optional ingress) are summarized inline below; **exhaustive audit-grade specifications** live in the dedicated Pillar 1–3 documents above. This file retains cross-pillar topology, settlement bounds, and integration anchors.
 
 > *While single components like `checkSoilResistance()` formulas are kept standard and open for seamless `@slivervine/citadel-sdk` adoption across Arbitrum, our core moat lies in the production integration complexity—stitching Rust `#![no_std]` Wasm, Edge Worker execution, and EIP-712 Gate into a sub-ms, fail-closed system.*
 
@@ -225,7 +227,9 @@ Solidity vault surface splits capital into two non-fungible risk lanes:
 
 Anchors: [`gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-smart-route-payload-binding.ts) · [`gated-executor-payload.ts`](../../src/sdk/gated-executor-payload.ts) · [`r-chain-yield-router.ts`](../../src/adapters/robinhood/r-chain-yield-router.ts) · [`GatedExecutor.sol`](../../SliverVineGate/src/GatedExecutor.sol).
 
-### 2.4 Pillar 1 — ZeroDev Account Abstraction (Deep Specification)
+### 2.4 Pillar 1 — ZeroDev Account Abstraction (Integration Summary)
+
+> **Full Pillar 1 specification:** [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) — ZeroDev Kernel v3 session keys, EIP-7702 comparative analysis, `sessionOk` / `allowedToSign` dry-run scope (`pnpm run demo:e2e`), and `pnpm test:zerodev` harness. This section retains integration anchors only.
 
 > **Status:** v1.0 production SSOT = **Kernel v3** (`ZERODEV_KERNEL_VERSION` v0.3.1 · EntryPoint v0.7); **Kernel v4** = V1.5 alignment path (Gatehouse adapter upgrade only — **no rewrite** of Shield / Wasm / EIP-712 Gate).
 
@@ -316,7 +320,9 @@ Sign in ──► Fund ──► Gas ──► Authorize ──► Execute
 
 ## 3. Cross-Venue Risk Engine & Defense Matrix (R01–R20)
 
-### 3.1 Microsecond Moats
+> **Full Pillar 3 specification:** [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) — Wasm `soil_core.wasm` engine, `checkSoilResistance()` latency moats (p50 ~106 µs · warm &lt;60 µs), Tri-Sensor matrix, and complete R01–R20 defense matrix. Below is the integration summary retained in this topology document.
+
+### 3.1 Microsecond Moats (Summary)
 
 | Moat | Constant / Module | Spec |
 |------|-------------------|------|
@@ -374,35 +380,19 @@ Python-verified **48-day runway** under sustained negative funding. Automated 3-
 | **Day 15** | Delever **−50%** notional |
 | **Day 22 (30% reserve)** | **100% Fail-Closed return** — flatten remaining exposure; R17 / R20 severance envelope if flatten stalls |
 
-### 3.3 Defense Matrix (R01–R20) — Day-1 SSOT vs v1.0
+### 3.3 Defense Matrix (R01–R20) — Summary
 
-**Status:** **17 Active | 2 Refactored | 1 Deprecated**
+**Status:** **17 Active | 2 Refactored | 1 Deprecated** · Full rule table: [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md#defense-matrix-r01r20).
 
-Core invariants: Edge / Session / Saga (`src/services/`, `src/core/`, `src/adapters/`).
-L1 lock: `SliverVineGate.sol` consume-once attestation. SDK surface: [`../sdk/CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md).
+| Tier | Rules | Role |
+|------|-------|------|
+| **Pre-execution soil** | R01 · R03 · R04 · R05† | Wasm soil fuse · L2 stale book · Pgate latency |
+| **Session / AA** | R06 · R07 · R08 · R14 | Scoped keys · notional cap · nonce heal · re-auth |
+| **Saga / flatten** | R09 · R10 · R12 · R13 | 2PC ledger · auto-flatten · leverage scaling · black-swan halt |
+| **Severance** | R17 · R20 · R02 | Daily loss cutoff · physical deadlock · `rootProtection()` |
+| **Anchors / infra** | R11 · R15 · R16 · R18 · R19 | Dynamic SL · CCXT harness · 5-TX provenance · KV hardlock |
 
-| ID | Name | Status | Code SSOT |
-|----|------|--------|-----------|
-| **R01** | Soil Resistance | Active | `soil-resistance.ts` + Wasm `pkg/soil_core.wasm` |
-| **R02** | VineWrap / rootProtection | Active | `root-protection.ts` |
-| **R03** | L2 Book Fail-Closed (500ms) | Active | `hl-l2-book-types.ts` |
-| **R04** | PGATE Latency (200ms) | Active | `PGATE_MAX_LATENCY_MS` |
-| **R05** | SpoofBuster | Deprecated | Superseded by soil / depth gate |
-| **R06** | Scoped Session Key `ORDER_EXECUTE` | Active | `hl-session/permissions.ts` |
-| **R07** | Notional Cap $5,000 | Active | `SESSION_KEY_NOTIONAL_CAP_USD` |
-| **R08** | Nonce Auto-Healing | Refactored | `nonce-auto-healing.ts` |
-| **R09** | Two-Phase Saga | Active | `intent-ledger.ts` |
-| **R10** | Auto-Compensating Flatten | Active | `flatten-hardlock.ts` |
-| **R11** | Dynamic Account Risk Ceiling (V0.8 Baseline: Equity-Weighted SL; V1.0 Mainnet: Dynamic Adaptive Engine) | Active | `effective-max-sl.ts` |
-| **R12** | Leverage Scaling 3x→1x→Halt | Active | `funding-regime-guard.ts` |
-| **R13** | Black-Swan Speed-Halt | Active | `black-swan-guard-core.ts` |
-| **R14** | EIP-712 Re-Auth (5-min) | Active | `unlock-reauthorization.ts` |
-| **R15** | CCXT Fault Harness | Refactored | `safe-exchange-fetch.ts` · `chase-engine.ts` |
-| **R16** | SHA-256 5-TX Anchor | Active | `verified-5tx-lib/` |
-| **R17** | Daily Loss Severance | Active | `circuit-breaker.ts` |
-| **R18** | KV Hardlock 24h | Active | `kv-lib/keys.ts` TTL 86_400s |
-| **R19** | `SESSION_ENTROPY_SEED` | Active | `layout-metric-provider.ts` |
-| **R20** | Physical Deadlock `R20_FLATTEN_FAILED` | Active | flatten-hardlock + sever |
+† R05 SpoofBuster — **Deprecated** (superseded by soil / depth gate).
 
 **Supporting sensors:** Sequencer Guard · Arbitrum Gas / Oracle Lag · RPC Whitelist · Escalation Ladder.
 
@@ -421,10 +411,12 @@ Routing policy: venue selected per risk flags; both paths share the same fail-cl
 4. **Hedge** — session-key HL leg when Citadel trips.
 5. **State** — unidirectional `SystemState`; 2PC intent ledger → KV.
 
-### 3.5 Wasm Soil Core (M4)
+### 3.5 Wasm Soil Core (M4) — Summary
+
+> **Full Wasm / latency specification:** [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md#wasm-soil-core-engine-no_std).
 
 - Artifact: `pkg/soil_core.wasm` (`#![no_std]`)
-- Budget: **&lt;28kb** Cloudflare · hot-path exec **&lt;60µs**
+- Budget: **&lt;28kb** Cloudflare · hot-path exec **&lt;60µs** · Shield p50 **~106µs**
 - Wire: `src/sdk/soil-wasm.ts` (production); TS sim fallback for dev
 
 ### 3.6 Financial Risk Parameters & Epoch Operations

@@ -38,6 +38,7 @@
 |----------|----------|------|
 | **Cross-chain risk & roadmap** | [`architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](./architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) | 60 invariants · V1.0 vs V1.5/V2.0 badge separation |
 | **Compliance Ingress Firewall (Pillar 2)** | [`audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Venue-agnostic unidirectional AML escort · Robinhood Chain as inaugural reference adapter · 5/5 tests |
+| **Edge Shield Wasm Core (Pillar 3)** | [`audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | `checkSoilResistance()` · p50 ~106µs · Tri-Sensor · R01–R20 defense matrix |
 | **Security audit snapshot** | [`audit/PRINCIPAL_AUDIT_REPORT.md`](./audit/PRINCIPAL_AUDIT_REPORT.md) | Principal review · Gate / survival matrix |
 | **Grant submissions** | [`grants/SUBMISSION.md`](./grants/SUBMISSION.md) | Buildathon main submission pack |
 | **HackQuest dual-video scripts** | [`pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](./pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | Pitch 180s (rainstorm) · Demo 120s (live CLI) |

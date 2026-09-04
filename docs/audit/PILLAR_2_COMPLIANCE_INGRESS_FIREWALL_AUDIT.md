@@ -183,6 +183,7 @@ cd SliverVineGate && forge test && cd ..
 | Path | Role |
 |------|------|
 | [`docs/architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) | Triangle Liquidity Loop · Segregated Tranches · Elara alignment |
+| [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield · R01–R20 · Tri-Sensor |
 | [`docs/audit/PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) | Principal Audit v1.0.0-rc1 · survival matrix |
 | [`src/adapters/across-ingress-bridge.ts`](../../src/adapters/across-ingress-bridge.ts) | Edge adapter — unidirectional routing + AML block |
 | [`contracts/IngressSafetySwitch.sol`](../../contracts/IngressSafetySwitch.sol) | On-chain compliance filter |

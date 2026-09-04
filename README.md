@@ -291,6 +291,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 | [`docs/pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](./docs/pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | Grant pitch · 35s demo video storyboard |
 | [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) | 178 test files · 782 PASS · regression bar SSOT |
 | [`docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 reference adapter audit · 5/5 bridge tests |
+| [`docs/audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./docs/audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield core spec · R01–R20 · Tri-Sensor |
 | [`docs/grants/SUBMISSION.md`](./docs/grants/SUBMISSION.md) | Buildathon main submission pack |
 | [`docs/README.md`](./docs/README.md) | Full docs index · language policy |
 

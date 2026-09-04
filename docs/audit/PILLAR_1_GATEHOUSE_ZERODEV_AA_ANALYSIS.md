@@ -207,6 +207,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Full DDIP · Risk & Disclaimer · Basel mapping |
 | [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 | ZeroDev Kernel v3/v4 · 106 µs coupling |
 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Three Pillars · AML firewall |
+| [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield · R01–R20 |
 | [`CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) | 60 invariants · real yield vs. toxic inflation |
 
 ---
