@@ -117,6 +117,10 @@ function highlightDemoLine(line: string): string {
   out = out.replace(/\+\s*10\s*bps/gi, `${YELLOW}+10 bps${RESET}`);
   out = out.replace(/<\s*60\s*µs/gi, `${CYAN}<60µs${RESET}`);
   out = out.replace(/Wasm Core Hot-Path/g, `${BRIGHT_CYAN}Wasm Core Hot-Path${RESET}`);
+  out = out.replace(/Wasm Soil p50/g, `${BRIGHT_CYAN}Wasm Soil p50${RESET}`);
+  out = out.replace(/\bIN_BAND\b/g, `${GREEN}IN_BAND${RESET}`);
+  out = out.replace(/\bFAST_LOCAL\b/g, `${GREEN}FAST_LOCAL${RESET}`);
+  out = out.replace(/\bOUT_OF_BAND\b/g, `${RED_BOLD}OUT_OF_BAND${RESET}`);
   out = out.replace(/524\s*µs/gi, `${CYAN}524µs${RESET}`);
   out = out.replace(/\d+\.?\d*\s*µs/g, (m) => `${CYAN}${m.trim()}${RESET}`);
   out = out.replace(/Δnet\s*≡\s*0/g, `${BRIGHT_CYAN}Δnet ≡ 0${RESET}`);
@@ -167,21 +171,47 @@ function sha16(payload: unknown): string {
   return createHash("sha256").update(JSON.stringify(payload)).digest("hex").slice(0, 16);
 }
 
-function measureWasmCoreHotPathUs(
+function percentile(sorted: number[], p: number): number {
+  const index = Math.min(
+    sorted.length - 1,
+    Math.max(0, Math.ceil((p / 100) * sorted.length) - 1),
+  );
+  return sorted[index]!;
+}
+
+const WASM_SOIL_P50_TARGET_US = 106;
+const WASM_SOIL_P50_HEALTHY_MIN_US = 95;
+const WASM_SOIL_P50_HEALTHY_MAX_US = 120;
+const WASM_SOIL_SAMPLE_ITERATIONS = 100;
+const WASM_SOIL_WARMUP_ITERATIONS = 5;
+
+function sampleWasmSoilLatencyUs(
   input: Parameters<typeof evaluateSoilCore>[0],
-): number {
-  for (let i = 0; i < 5; i++) evaluateSoilCore(input);
-  let minUs = Number.POSITIVE_INFINITY;
-  for (let i = 0; i < 20; i++) {
-    minUs = Math.min(minUs, evaluateSoilCore(input).elapsedUs);
+): { p50Us: number; minUs: number } {
+  for (let i = 0; i < WASM_SOIL_WARMUP_ITERATIONS; i++) evaluateSoilCore(input);
+  const samples: number[] = [];
+  for (let i = 0; i < WASM_SOIL_SAMPLE_ITERATIONS; i++) {
+    samples.push(evaluateSoilCore(input).elapsedUs);
   }
-  return minUs;
+  samples.sort((a, b) => a - b);
+  return { p50Us: percentile(samples, 50), minUs: samples[0]! };
+}
+
+function formatWasmP50BandStatus(p50Us: number): string {
+  if (p50Us >= WASM_SOIL_P50_HEALTHY_MIN_US && p50Us <= WASM_SOIL_P50_HEALTHY_MAX_US) {
+    return "IN_BAND";
+  }
+  if (p50Us < WASM_SOIL_P50_HEALTHY_MIN_US) {
+    return "FAST_LOCAL";
+  }
+  return "OUT_OF_BAND";
 }
 
 function step1CitadelPreExec(): {
   ok: boolean;
   wasmUsed: boolean;
   wasmHotPathUs: number;
+  wasmP50Us: number;
   nodeE2eRttUs: number;
   deadmanOk: boolean;
 } {
@@ -205,11 +235,15 @@ function step1CitadelPreExec(): {
     maxSlippage: WASM_SOIL_DEFAULT_SLIPPAGE_FUSE,
     minDepthUsd: WASM_SOIL_MIN_DEPTH_USD,
   };
-  const wasmHotPathUs = measureWasmCoreHotPathUs(soilInput);
+  const { p50Us: wasmP50Us, minUs: wasmHotPathUs } = sampleWasmSoilLatencyUs(soilInput);
   const core = evaluateSoilCore(soilInput);
   const wasmBudgetPass = wasmHotPathUs < WASM_EXEC_BUDGET_US;
+  const p50BandStatus = formatWasmP50BandStatus(wasmP50Us);
   demoLog(
     `Wasm Core Hot-Path (#![no_std] soil_core_eval): ${wasmHotPathUs.toFixed(1)}µs (<${WASM_EXEC_BUDGET_US}µs budget ${wasmBudgetPass ? "PASS" : "FAIL"})`,
+  );
+  demoLog(
+    `Wasm Soil p50 (${WASM_SOIL_SAMPLE_ITERATIONS}-sample empirical): ${wasmP50Us.toFixed(1)}µs | Target: ~${WASM_SOIL_P50_TARGET_US}µs | Healthy Band: ${WASM_SOIL_P50_HEALTHY_MIN_US}µs–${WASM_SOIL_P50_HEALTHY_MAX_US}µs | ${p50BandStatus}`,
   );
   demoLog(
     `Soil core: tripped=${core.output.tripped} wasmUsed=${core.wasmUsed}`,
@@ -270,6 +304,7 @@ function step1CitadelPreExec(): {
     ok: true,
     wasmUsed: verdict.wasmUsed,
     wasmHotPathUs,
+    wasmP50Us,
     nodeE2eRttUs,
     deadmanOk: verdict.deadmanOk,
   };
@@ -418,9 +453,13 @@ async function step4HlSessionHedge(mode: DemoMode): Promise<{
   }
 
   loadEnvProduction();
-  const sessionPk = process.env.HYPERLIQUID_MAINNET_SESSION_PK?.trim();
+  const sessionPk =
+    process.env.HYPERLIQUID_MAINNET_SESSION_PK?.trim() ||
+    process.env.HL_TESTNET_PRIVATE_KEY?.trim();
   if (!sessionPk) {
-    demoLog("LIVE: HYPERLIQUID_MAINNET_SESSION_PK missing — falling back to simulated hedge");
+    demoLog(
+      "LIVE: HYPERLIQUID_MAINNET_SESSION_PK / HL_TESTNET_PRIVATE_KEY missing — falling back to simulated hedge",
+    );
     return {
       ok: true,
       dryRun: true,
@@ -563,6 +602,8 @@ async function main(): Promise<void> {
             wasmUsed: s1.wasmUsed,
             deadmanOk: s1.deadmanOk,
             wasmHotPathUs: Number(s1.wasmHotPathUs.toFixed(2)),
+            wasmP50Us: Number(s1.wasmP50Us.toFixed(2)),
+            wasmP50BandStatus: formatWasmP50BandStatus(s1.wasmP50Us),
             nodeE2eRttUs: Number(s1.nodeE2eRttUs.toFixed(2)),
           },
           "2_robinhoodUnidirectionalEscort": {
