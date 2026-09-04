@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   AML_INBOUND_TO_ROBINHOOD_BLOCKED,
   ARBITRUM_ONE_CHAIN_ID,
+  BRIDGE_SETTLEMENT_TIMESTAMP_INVALID,
   BRIDGE_TIMEOUT_FAIL_CLOSED,
   DEFAULT_ACROSS_BRIDGE_TIMEOUT_MS,
   IN_FLIGHT_BRIDGE_CAPITAL,
@@ -100,6 +101,23 @@ describe("across-ingress-bridge", () => {
     expect(state.ok).toBe(false);
     expect(state.capitalLabel).toBe(AML_INBOUND_TO_ROBINHOOD_BLOCKED);
     expect(state.inboundToRobinhoodPermitted).toBe(false);
+  });
+
+  it("fail-closes when settledAtMs precedes initiatedAtMs (clock skew / forged)", () => {
+    const state = evaluateAcrossBridgeTransfer(
+      {
+        amountUsd: 1_000,
+        wallet: WALLET,
+        initiatedAtMs: T0,
+      },
+      { nowMs: T0 + 60_000, settledAtMs: T0 - 1 },
+    );
+    expect(state.ok).toBe(false);
+    expect(state.routeAllowed).toBe(false);
+    expect(state.deployable).toBe(false);
+    expect(state.capitalLabel).toBe(BRIDGE_SETTLEMENT_TIMESTAMP_INVALID);
+    expect(state.lostUsd).toBe(0);
+    expect(state.reasons[0]).toContain(BRIDGE_SETTLEMENT_TIMESTAMP_INVALID);
   });
 
   it("fail-closes on bridge timeout without marking capital as lost", () => {

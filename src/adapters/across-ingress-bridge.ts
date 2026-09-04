@@ -2,6 +2,7 @@
 import {
   AML_INBOUND_TO_ROBINHOOD_BLOCKED,
   ARBITRUM_ONE_CHAIN_ID,
+  BRIDGE_SETTLEMENT_TIMESTAMP_INVALID,
   BRIDGE_TIMEOUT_FAIL_CLOSED,
   DEFAULT_ACROSS_BRIDGE_TIMEOUT_MS,
   IN_FLIGHT_BRIDGE_CAPITAL,
@@ -17,6 +18,7 @@ import {
 export {
   AML_INBOUND_TO_ROBINHOOD_BLOCKED,
   ARBITRUM_ONE_CHAIN_ID,
+  BRIDGE_SETTLEMENT_TIMESTAMP_INVALID,
   BRIDGE_TIMEOUT_FAIL_CLOSED,
   DEFAULT_ACROSS_BRIDGE_TIMEOUT_MS,
   IN_FLIGHT_BRIDGE_CAPITAL,
@@ -92,10 +94,26 @@ export function evaluateAcrossBridgeTransfer(
   }
   const timeout = evaluateBridgeTimeout(input.initiatedAtMs, nowMs, options.timeoutMs);
   const cap = options.timeoutMs ?? DEFAULT_ACROSS_BRIDGE_TIMEOUT_MS;
+  if (
+    options.settledAtMs != null &&
+    options.settledAtMs < input.initiatedAtMs
+  ) {
+    return pack(
+      false,
+      false,
+      "outbound-only",
+      BRIDGE_SETTLEMENT_TIMESTAMP_INVALID,
+      0,
+      0,
+      [
+        `${BRIDGE_SETTLEMENT_TIMESTAMP_INVALID}:settledAtMs=${options.settledAtMs}<initiatedAtMs=${input.initiatedAtMs}`,
+      ],
+    );
+  }
   if (timeout.failClosed && options.settledAtMs == null) {
     return pack(false, false, "outbound-only", BRIDGE_TIMEOUT_FAIL_CLOSED, 0, 0, [`${BRIDGE_TIMEOUT_FAIL_CLOSED}:${timeout.elapsedMs}ms>${cap}ms`]);
   }
-  if (options.settledAtMs != null && options.settledAtMs >= input.initiatedAtMs) {
+  if (options.settledAtMs != null) {
     return pack(true, true, "outbound-only", "SETTLED", 0, amountUsd, ["BRIDGE_SETTLED"]);
   }
   return pack(true, true, "outbound-only", IN_FLIGHT_BRIDGE_CAPITAL, amountUsd, 0, ["BRIDGE_IN_FLIGHT"]);

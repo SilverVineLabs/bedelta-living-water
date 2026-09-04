@@ -52,7 +52,10 @@ export {
   type SoilResistanceResult,
 } from "./soil-resistance-types";
 
-function collectExternalSoilReasons(input: SoilResistanceInput): string[] {
+function collectExternalSoilReasons(
+  input: SoilResistanceInput,
+  minDepthUsd: number,
+): string[] {
   const reasons: string[] = [];
   const { symbol, depthUsd } = input;
 
@@ -85,7 +88,7 @@ function collectExternalSoilReasons(input: SoilResistanceInput): string[] {
   const hlOrderbookGap = evaluateHlOrderbookGapGuard({
     symbol,
     depthUsd,
-    minDepthUsd: resolveSoilMinDepthUsd(input),
+    minDepthUsd,
     requestedLeverage: input.requestedLeverage,
     at: input.at,
   });
@@ -110,7 +113,7 @@ export function checkSoilResistance(
     minDepthUsd,
   };
   const metrics = computeSoilSlippageMetrics(effectiveInput);
-  const reasons = [...collectExternalSoilReasons(input), ...metrics.reasons];
+  const reasons = [...collectExternalSoilReasons(effectiveInput, minDepthUsd), ...metrics.reasons];
 
   const tripped = reasons.length > 0;
   const result: SoilResistanceResult = {
