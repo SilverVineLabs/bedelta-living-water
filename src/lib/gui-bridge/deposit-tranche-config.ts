@@ -56,7 +56,7 @@ export const DEPOSIT_TRANCHE_A: DepositTrancheConfig = {
   receiveChainOptions: [{ value: "arbitrum", label: "Arbitrum One" }],
   safetyBadgeLabel:
     "Native Vault · payloadHash bound via GatedExecutor (Zero EIP-712 struct change)",
-  actionLabel: "🌊 Deposit to BDLW Native Vault (Tranche A)",
+  actionLabel: "🌊 Deposit to SliverVine Citadel Shield Native Vault (Tranche A)",
   depositingLabel: "Binding GM payload…",
   bridgeStateMachine: ["N/A — Arbitrum-native · no IN_FLIGHT bridge state"],
 };

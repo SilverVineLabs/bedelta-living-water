@@ -14,11 +14,13 @@
 | **Spec SSOT** | [`../architecture/TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) |
 | **Risk Framework SSOT** | [`../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) |
 
+> **Philosophy — BeΔ (BeDelta Living Water v1.0):** **Be** is inspired by Bruce Lee's *"Be Water, My Friend"* — fluid, adaptive intent routing and friction-free multi-chain execution. **Δ (Delta)** denotes **market delta-neutrality** and risk-neutral execution — neutralizing directional exposure via the GMX v2 GM + Hyperliquid 1× short envelope. **SliverVine Citadel Shield** is the pre-consensus execution safety primitive that binds both.
+
 ---
 
 ## Core Objective
 
-This memorandum provides a **transparent, code-verified audit trail** for the Arbitrum Foundation, ZeroDev, and institutional allocators evaluating BDLW Delta-Neutral vault infrastructure. Every quantitative claim maps to a **reproducible command, test file, or on-chain artifact** — not narrative assurance.
+This memorandum provides a **transparent, code-verified audit trail** for the Arbitrum Foundation, ZeroDev, and institutional allocators evaluating SliverVine Citadel Shield delta-neutral vault infrastructure. Every quantitative claim maps to a **reproducible command, test file, or on-chain artifact** — not narrative assurance.
 
 > **Read first:** Full **Risk & Disclaimer** disclosures — including non-custodial semantics, residual cross-chain/basis risks, and the limits of Fail-Closed protection — are in [**§ Risk & Disclaimer**](#risk--disclaimer) below. DDIP is an architectural diligence artifact; it does **not** constitute legal, investment, or tax advice, nor regulatory certification.
 
@@ -26,11 +28,11 @@ This memorandum provides a **transparent, code-verified audit trail** for the Ar
 
 ## Risk & Disclaimer
 
-> **Effective scope:** This section applies to all readers — retail participants, institutional allocators, grant evaluators, and fund-of-funds diligence teams. By referencing DDIP, you acknowledge that BDLW is a **sophisticated smart-contract protocol**, not a bank deposit, money-market fund, or insured cash product.
+> **Effective scope:** This section applies to all readers — retail participants, institutional allocators, grant evaluators, and fund-of-funds diligence teams. By referencing DDIP, you acknowledge that SliverVine Protocol is a **sophisticated smart-contract protocol**, not a bank deposit, money-market fund, or insured cash product.
 
 ### R.1 Protocol Classification — Sophisticated Smart-Contract Infrastructure
 
-BeDelta Living Water (BDLW) is a **sophisticated, non-custodial DeFi execution protocol** operated by SilverVine Labs. It composes:
+SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **sophisticated, non-custodial DeFi execution protocol** operated by SilverVine Labs. It composes:
 
 | Layer | Function | SSOT |
 |-------|----------|------|
@@ -40,7 +42,7 @@ BeDelta Living Water (BDLW) is a **sophisticated, non-custodial DeFi execution p
 | **Pillar 2 — Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort & Pending-Capital Recognition Invariant (`IN_FLIGHT_BRIDGE_CAPITAL` · `lostUsd ≡ 0`); inbound AML blocked. **Robinhood Chain / Across are Pillar 2 Reference Escort Adapters** — not the product identity | `src/adapters/across-ingress-bridge.ts` · `IngressSafetySwitch.sol` |
 | **Venue legs** | GMX v2 GM pools (Arbitrum One) + Hyperliquid 1× short hedge | Tech Spec §2 |
 
-**Fail-Closed posture:** When soil, oracle, sequencer, bridge, or session sensors trip, BDLW **prefers no action over wrong action** — `signingChannelOpen: false`, UserOp rejected pre-bundler, bridge state `BRIDGE_TIMEOUT_FAIL_CLOSED`. This is a **pre-execution safety layer**, not a guarantee of profit, principal protection, or elimination of market risk.
+**Fail-Closed posture:** When soil, oracle, sequencer, bridge, or session sensors trip, SliverVine Protocol **prefers no action over wrong action** — `signingChannelOpen: false`, UserOp rejected pre-bundler, bridge state `BRIDGE_TIMEOUT_FAIL_CLOSED`. This is a **pre-execution safety layer**, not a guarantee of profit, principal protection, or elimination of market risk.
 
 ```text
 User intent → 106µs Wasm Soil Engine (Fail-Closed) → Gate attestation → Venue broadcast
@@ -50,19 +52,19 @@ User intent → 106µs Wasm Soil Engine (Fail-Closed) → Gate attestation → V
 
 ### R.2 Non-Custodial Execution Substrate
 
-BDLW operates on a **non-custodial execution substrate**:
+SliverVine Protocol operates on a **non-custodial execution substrate**:
 
 - User principal resides in **ZeroDev Kernel Smart Accounts** controlled by the user — not in a protocol treasury, omnibus wallet, or discretionary custodian account.
 - SilverVine Labs does **not** take discretionary possession of user funds, does **not** rehypothecate labeled in-flight bridge capital, and does **not** represent itself as a licensed custodian, broker-dealer, or payment institution.
 - Protocol yield accrual via GMX **`uiFeeReceiver` (+10 bps)** and **up to 25% GMX Referral Rebate** is **protocol revenue**, explicitly separated from user principal in accounting semantics (§6.3). The 10 bps builder fee is a native GMX v2 ExchangeRouter parameter — zero additional overhead on v1.0 execution safety.
 
-**0-Proxy architecture** (§5.3) means BDLW provides **risk gates and routing logic** — not balance-sheet intermediation. Users and institutions retain **direct smart-contract exposure** to underlying venues (GMX, Hyperliquid, Across bridge, Robinhood Chain escort path).
+**0-Proxy architecture** (§5.3) means SliverVine Protocol provides **risk gates and routing logic** — not balance-sheet intermediation. Users and institutions retain **direct smart-contract exposure** to underlying venues (GMX, Hyperliquid, Across bridge, Robinhood Chain escort path).
 
 ### R.3 Residual Risks — Quantified, Isolated, and Buffered (Not Hidden)
 
-BDLW **does not** market "zero risk," "guaranteed yield," or "capital-protected returns." Residual risks remain **fully disclosed, quantified where possible, isolated by state labels, and economically buffered** — rather than obscured behind marketing copy.
+SliverVine Protocol **does not** market "zero risk," "guaranteed yield," or "capital-protected returns." Residual risks remain **fully disclosed, quantified where possible, isolated by state labels, and economically buffered** — rather than obscured behind marketing copy.
 
-| Residual risk class | How BDLW treats it | What Fail-Closed does **not** remove |
+| Residual risk class | How SliverVine Protocol treats it | What Fail-Closed does **not** remove |
 |--------------------|--------------------|--------------------------------------|
 | **Cross-chain / bridge** | `IN_FLIGHT_BRIDGE_CAPITAL` label · 1h timeout → `BRIDGE_TIMEOUT_FAIL_CLOSED` · **`lostUsd ≡ 0`** honest pending accounting | Bridge operator failure · settlement delay · smart-contract exploit on bridge |
 | **Basis drift (GM vs HL)** | Dual-leg delta tracking · Citadel Safety Buffer · Survival Benchmark 3σ replay | Persistent funding/basis divergence · venue-specific insolvency |
@@ -74,15 +76,15 @@ BDLW **does not** market "zero risk," "guaranteed yield," or "capital-protected 
 
 **Isolation principle:** Cross-chain capital in transit is **labeled and non-deployable** until `SETTLED`. Basis and funding shocks are **buffered** by Citadel Safety Buffer and hurdle-gated redeployment (`FRICTION_BUFFER_APY = 0.005`). These controls **reduce preventable loss paths** — they do **not** convert DeFi into a risk-free product.
 
-> **Anti-marketing pledge:** Any representation of BDLW as "risk-free," "guaranteed APY," or "principal protected" is **inconsistent with this memorandum** and with the protocol's honest-accounting invariants.
+> **Anti-marketing pledge:** Any representation of SliverVine Protocol as "risk-free," "guaranteed APY," or "principal protected" is **inconsistent with this memorandum** and with the protocol's honest-accounting invariants.
 
 ### R.4 What Fail-Closed Protection Means (and Does Not Mean)
 
 | Statement | Accurate? |
 |-----------|-----------|
-| BDLW blocks toxic orders **before** GMX/HL broadcast when sensors trip | **Yes** — 255/255 chaos scenarios · `capitalLossUsd: 0` in adversarial matrix |
-| BDLW eliminates smart-contract, market, bridge, or counterparty risk | **No** |
-| BDLW guarantees the Dynamic Target Range 8.2–11.8% APY | **No** — display band only; see §5.6 |
+| SliverVine Protocol blocks toxic orders **before** GMX/HL broadcast when sensors trip | **Yes** — 255/255 chaos scenarios · `capitalLossUsd: 0` in adversarial matrix |
+| SliverVine Protocol eliminates smart-contract, market, bridge, or counterparty risk | **No** |
+| SliverVine Protocol guarantees the Dynamic Target Range 8.2–11.8% APY | **No** — display band only; see §5.6 |
 | Pending bridge liquidity is booked as principal loss | **No** — `lostUsd ≡ 0` until explicit, bounded execution loss |
 | Users require sophistication to evaluate residual risks | **Yes** |
 
@@ -94,15 +96,15 @@ Fail-Closed is **operational risk severance at the pre-execution boundary** — 
 |-------|------------|
 | **Legal advice** | DDIP is **not** legal advice. Engage qualified counsel for jurisdiction-specific analysis. |
 | **Investment advice** | DDIP is **not** investment, financial, or tax advice. No recommendation to buy, sell, or hold any asset. |
-| **Regulatory status** | BDLW does **not** claim banking license, MiCA CASP authorization, SEC/CFTC registration, or **SOC 2 Type II** attestation. Framework mappings in §5 are **architectural alignment narratives** only. |
-| **Securities characterization** | SilverVine Labs makes **no** representation regarding whether any BDLW interaction constitutes a security in any jurisdiction. |
+| **Regulatory status** | SliverVine Protocol does **not** claim banking license, MiCA CASP authorization, SEC/CFTC registration, or **SOC 2 Type II** attestation. Framework mappings in §5 are **architectural alignment narratives** only. |
+| **Securities characterization** | SilverVine Labs makes **no** representation regarding whether any SliverVine Protocol interaction constitutes a security in any jurisdiction. |
 | **Forward-looking statements** | Roadmap items marked **⏳ Roadmap Spec** are design targets — not commitments of delivery or performance. |
-| **Third-party venues** | GMX, Hyperliquid, ZeroDev, Across, Robinhood Chain, and Arbitrum are **independent third parties**. BDLW is not responsible for their uptime, governance, or solvency. |
+| **Third-party venues** | GMX, Hyperliquid, ZeroDev, Across, Robinhood Chain, and Arbitrum are **independent third parties**. SliverVine Protocol is not responsible for their uptime, governance, or solvency. |
 | **Live audit endpoint** | `GET /api/grant-audit` reflects **operational telemetry under normal test criteria** — not a real-time guarantee for all future states. |
 
 ### R.6 Allocator & User Acknowledgment
 
-Institutional allocators and sophisticated users interacting with BDLW should acknowledge that they:
+Institutional allocators and sophisticated users interacting with SliverVine Protocol should acknowledge that they:
 
 1. **Understand smart-contract composability risk** across Arbitrum One, Hyperliquid, and optional Robinhood escort paths.
 2. **Accept residual cross-chain and basis exposure** even when Fail-Closed gates are operational — including scenarios outside the 255-case chaos matrix and 30D Survival Benchmark replay.
@@ -115,7 +117,7 @@ Institutional allocators and sophisticated users interacting with BDLW should ac
 
 ## 1. Executive Summary
 
-BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping GMX v2 GM pools on Arbitrum One with a Hyperliquid 1× short hedge leg. Capital may ingress via **Arbitrum-native USDC** (instant path) or **Robinhood Chain USDG escort** (unidirectional Across bridge with honest in-flight accounting).
+SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **pre-execution Citadel risk layer** wrapping GMX v2 GM pools on Arbitrum One with a Hyperliquid 1× short hedge leg. Capital may ingress via **Arbitrum-native USDC** (instant path) or **Robinhood Chain USDG escort** (unidirectional Across bridge with honest in-flight accounting).
 
 ### 1.1 Diligence Verdict Matrix
 
@@ -162,7 +164,7 @@ BeDelta Living Water (BDLW) is a **pre-execution Citadel risk layer** wrapping G
 
 ### 2.1 Trust Services Criteria Mapping
 
-| TSC domain | BDLW control | Code / artifact anchor |
+| TSC domain | SliverVine Citadel Shield control | Code / artifact anchor |
 |------------|-------------|------------------------|
 | **CC6 — Logical access** | Scoped Session Keys (`ORDER_EXECUTE` only) · **30s TTL Heartbeat / Intent Execution Window** (crypto session key lifetime bounded up to **24h / 7d**) · R07 $5k cap | `hl-session/permissions.ts` · `session-key-gates.ts` |
 | **CC7 — System operations** | Sequencer guard (600s grace) · oracle lag fail-closed · PGATE 200ms latency fuse | `sequencer-guard.ts` · `PGATE_MAX_LATENCY_MS` |
@@ -217,7 +219,7 @@ pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
 
 ## 3. Simulation, Stress Testing & Chaos Engineering Framework
 
-BDLW maintains a **three-layer simulation stack** — institutional market replay (Survival Benchmark), AA/session dry-run gates (ZeroDev + HL), and adversarial chaos matrix — each producing CLI-verifiable artifacts with **`capitalLossUsd: 0`** as the pass criterion.
+SliverVine Protocol maintains a **three-layer simulation stack** — institutional market replay (Survival Benchmark), AA/session dry-run gates (ZeroDev + HL), and adversarial chaos matrix — each producing CLI-verifiable artifacts with **`capitalLossUsd: 0`** as the pass criterion.
 
 ```text
 Layer 1 — Survival Benchmark scripts/survival-benchmark/ (30D HL L2 + Dual-Radar replay)
@@ -480,13 +482,13 @@ pnpm exec vitest run tests/adapters/across-ingress-bridge.test.ts
 
 ## 5. Regulatory & Institutional Compliance Alignment
 
-> **Disclaimer:** This section maps BDLW architectural controls to **widely referenced institutional frameworks** (Basel III operational risk · Expected Shortfall · SOC 2 TSC · MiCA operational-resilience principles) for allocator diligence. It is **not** a claim of banking license, MiCA CASP authorization, SOC 2 Type II attestation, or formal Pillar compliance.
+> **Disclaimer:** This section maps SliverVine Protocol architectural controls to **widely referenced institutional frameworks** (Basel III operational risk · Expected Shortfall · SOC 2 TSC · MiCA operational-resilience principles) for allocator diligence. It is **not** a claim of banking license, MiCA CASP authorization, SOC 2 Type II attestation, or formal Pillar compliance.
 
 ### 5.1 Basel III Operational Risk → Fail-Closed Citadel Controls
 
-Basel III operational-risk principles require identifiable controls, loss limits, and fail-safe severance when models breach tolerance. BDLW implements these as **code-enforced predicates** — not policy documents.
+Basel III operational-risk principles require identifiable controls, loss limits, and fail-safe severance when models breach tolerance. SliverVine Protocol implements these as **code-enforced predicates** — not policy documents.
 
-| Basel III / AMA pillar | BDLW Fail-Closed control | Code / test anchor |
+| Basel III / AMA pillar | SliverVine Protocol Fail-Closed control | Code / test anchor |
 |------------------------|-------------------------|-------------------|
 | **Risk identification** | Pre-broadcast soil matrix — depth · cross-spread · slippage | R01 · `checkSoilResistance()` · `soil-resistance.ts` |
 | **Risk assessment & measurement** | Dynamic Max SL · order-aware soil budget · daily loss cap | R11 · R17 · `effective-max-sl.ts` |
@@ -499,9 +501,9 @@ Basel III operational-risk principles require identifiable controls, loss limits
 
 ### 5.2 Expected Shortfall (ES) Alignment → Tail-Risk Budgeting
 
-Expected Shortfall captures **average loss beyond a confidence threshold** — the tail beyond VaR. BDLW does not run a bank AMA model on-chain; instead, it enforces **hard tail-loss ceilings** that function as operational ES guards:
+Expected Shortfall captures **average loss beyond a confidence threshold** — the tail beyond VaR. SliverVine Protocol does not run a bank AMA model on-chain; instead, it enforces **hard tail-loss ceilings** that function as operational ES guards:
 
-| ES concept | BDLW quantitative guard | @ $100k vault equity |
+| ES concept | SliverVine Protocol quantitative guard | @ $100k vault equity |
 |------------|--------------------------|----------------------|
 | **Tail loss per clip** | Order-aware Max SL = min(Dynamic Max SL, order × 0.5% fuse) | **$500** max soil loss @ $100k notional |
 | **Dynamic Max SL (R11)** | Dynamic Account Risk Ceiling (V0.8 Baseline: Equity-Weighted SL; V1.0 Mainnet: Dynamic Adaptive Engine) | **$1,100** |
@@ -529,7 +531,7 @@ Portfolio tail ≤ $100k Alpha Cap + stress replay ← §4 + Survival Benchmark
 
 ### 5.3 0-Proxy Immutable Infrastructure (SOC 2–Aligned)
 
-**0-Proxy** denotes BDLW's **non-custodial, non-rehypothecation architecture**: user principal resides in ZeroDev Kernel Smart Accounts; the protocol never acts as a balance-sheet proxy, omnibus wallet, or discretionary signer. Immutable artifacts prevent post-deployment tampering of the pre-execution gate.
+**0-Proxy** denotes SliverVine Protocol's **non-custodial, non-rehypothecation architecture**: user principal resides in ZeroDev Kernel Smart Accounts; the protocol never acts as a balance-sheet proxy, omnibus wallet, or discretionary signer. Immutable artifacts prevent post-deployment tampering of the pre-execution gate.
 
 | SOC 2 TSC domain | 0-Proxy / Immutable control | Verification |
 |------------------|----------------------------|--------------|
@@ -548,13 +550,13 @@ Layer 2 — SliverVineGate.sol (consume-once) → L1 attestation digest lock
 Layer 3 — Negative proofs + Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean) regression → silent fuse widening impossible
 ```
 
-> **SOC 2 note:** Controls are **mapped** to AICPA Trust Services Criteria for transparency — BDLW does **not** claim SOC 2 Type II certification. See also §2.1 for full TSC table.
+> **SOC 2 note:** Controls are **mapped** to AICPA Trust Services Criteria for transparency — SliverVine Protocol does **not** claim SOC 2 Type II certification. See also §2.1 for full TSC table.
 
 ### 5.4 Unidirectional AML Firewall (MiCA-Aligned)
 
-MiCA (Markets in Crypto-Assets Regulation) emphasizes **operational resilience, segregation of client assets, and robust governance** for crypto-asset service providers. BDLW's Robinhood escort implements a **unidirectional AML compliance firewall** — architecturally aligned with MiCA segregation principles, **without claiming CASP authorization**.
+MiCA (Markets in Crypto-Assets Regulation) emphasizes **operational resilience, segregation of client assets, and robust governance** for crypto-asset service providers. SliverVine Protocol's Robinhood escort implements a **unidirectional AML compliance firewall** — architecturally aligned with MiCA segregation principles, **without claiming CASP authorization**.
 
-| MiCA-aligned principle | BDLW implementation | SSOT |
+| MiCA-aligned principle | SliverVine Protocol implementation | SSOT |
 |------------------------|---------------------|------|
 | **Asset segregation** | User funds in Kernel Smart Accounts — not protocol treasury | ZeroDev Kernel v3 · non-custodial SSOT |
 | **Operational resilience** | Fail-closed on bridge timeout · sequencer grace · soil trip | R01–R20 matrix |
@@ -580,7 +582,7 @@ pnpm test -- --run # Proposal Baseline: 175 test files | 773 PASS (Current Branc
 
 ### 5.6 ArbOS Elara Compliance Alignment & Dynamic Target Range
 
-> **V1.0 Design Spec.** BDLW's **Pillar 2 Compliance Ingress Firewall** natively aligns with the **ArbOS Elara upgrade** — Arbitrum's protocol-level ingress filtering plane — documenting **transaction-ordering awareness** as a reinforcement layer alongside Edge fail-closed gates. See [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §4.2.
+> **V1.0 Design Spec.** SliverVine Protocol's **Pillar 2 Compliance Ingress Firewall** natively aligns with the **ArbOS Elara upgrade** — Arbitrum's protocol-level ingress filtering plane — documenting **transaction-ordering awareness** as a reinforcement layer alongside Edge fail-closed gates. See [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §4.2.
 
 | Compliance plane | Function | UI / code anchor |
 |------------------|----------|------------------|
@@ -610,7 +612,7 @@ pnpm test -- --run # Proposal Baseline: 175 test files | 773 PASS (Current Branc
 
 ### 5.7 Three Lines of Defense & Allocator FAQ
 
-| Line | Function | BDLW layer |
+| Line | Function | SliverVine Citadel Shield layer |
 |------|----------|------------|
 | **First** | Business operations | Yield hurdle · buffer engine (5–10%) · rebalance rules |
 | **Second** | Risk & compliance | Fail-closed soil · PGATE · AML firewall · bridge accounting |
@@ -628,7 +630,7 @@ pnpm test -- --run # Proposal Baseline: 175 test files | 773 PASS (Current Branc
 
 ## 6. Capital Accounting Invariants
 
-BDLW enforces **honest accounting** as a hard invariant — pending liquidity is never mis-booked as principal loss.
+SliverVine Protocol enforces **honest accounting** as a hard invariant — pending liquidity is never mis-booked as principal loss.
 
 ### 6.1 Pending-Capital Recognition Invariant — `lostUsd ≡ 0`
 

@@ -26,7 +26,7 @@ AI Agents arrive at an Arbitrum DEX **transport station** (GMX v2 GM + session-k
 |--------|----------|---------|------------|
 | **A — Fail-Open** | Run into the storm with **no umbrella** | Soaked and sick — liquidation, sandwich fill | `lostUsd > 0` · `capitalLossUsd > 0` |
 | **B — Fail-Slow** | Hide under a **static shelter** (timelock / committee) | Misses every transport; capital stuck in the rain | Governance delay · paralyzed NAV |
-| **C — BDLW Citadel** | **Sub-ms automated shield** + pre-broadcast severance | Stays **100% dry** at the station | **`lostUsd ≡ 0`** · soil fuse **p50 ~106µs** `checkSoilResistance()` |
+| **C — SliverVine Citadel Shield** | **Sub-ms automated shield** + pre-broadcast severance | Stays **100% dry** at the station | **`lostUsd ≡ 0`** · soil fuse **p50 ~106µs** `checkSoilResistance()` |
 
 **VO lock (metaphor honesty):** "`lostUsd ≡ 0`" is the **in-flight / honest-label invariant** (pending capital is never written off as loss and never treated as deployable). It is **not** a promise of zero market PnL.
 

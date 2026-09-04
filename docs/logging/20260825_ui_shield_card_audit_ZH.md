@@ -1,4 +1,4 @@
-# UI Audit — `LivingWaterShieldCard.tsx` (BDLW v1.0)
+# UI Audit — `LivingWaterShieldCard.tsx` (SliverVine Protocol v1.0)
 
 > **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
 
@@ -48,4 +48,4 @@
 
 - 行數 &lt; 200，純 React；log 視窗新行自動捲底。
 - 與 `HeaderNav` 共用 `gmx-citadel-theme` token。
-- 尚未掛載至 BDLW SPA；待殼層與 `/api` 遙測接線。
+- 尚未掛載至 SliverVine Citadel Shield SPA；待殼層與 `/api` 遙測接線。

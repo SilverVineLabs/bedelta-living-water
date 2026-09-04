@@ -13,7 +13,7 @@
 
 | 檔案 | 動作 | 說明 |
 |------|------|------|
-| `docs/internal/ZERODEV_SMART_ROUTING_DEEP_DIVE.md` | **新增** | Smart Routing vs 傳統橋深度對比 + BDLW 整合架構（繁體中文） |
+| `docs/internal/ZERODEV_SMART_ROUTING_DEEP_DIVE.md` | **新增** | Smart Routing vs 傳統橋深度對比 + SliverVine Protocol 整合架構（繁體中文） |
 | `docs/logging/20260826_zerodev_smart_routing_deep_dive.md` | **新增** | 本建立日誌 |
 
 ---
@@ -23,7 +23,7 @@
 ### 文件涵蓋範圍
 
 1. **深度對比** — ZeroDev Smart Routing vs Stargate/Hop（帳戶模型、交易筆數、合規、風控插入點、payload 綁定、`lostUsd` 會計）
-2. **BDLW 整合**
+2. **SliverVine Protocol 整合**
    - `ZERODEV_SMART_ROUTE_TARGETS` SSOT（USDG → GMX ExchangeRouter → GM_ETH_USDC）
    - 1-Click 跨鏈 deposit/swap → Kernel Smart Account 四階段流程
    - `buildGmxSmartRoutePayloadBinding()` + `computeGatedExecutorPayloadHash()` 零 EIP-712 修改綁定
@@ -52,4 +52,4 @@
 
 ## 備註
 
-Across 橋在文件中定位為 **合規 escort 決策層參考**，與 ZeroDev Smart Routing **互補**；避免讀者誤以為 BDLW 完全放棄 Across 語意。
+Across 橋在文件中定位為 **合規 escort 決策層參考**，與 ZeroDev Smart Routing **互補**；避免讀者誤以為 SliverVine Protocol 完全放棄 Across 語意。

@@ -10,7 +10,7 @@
 | **Baseline** | **Vitest SSOT:** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
 | **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
-> **Scope note:** This document compares **consumer-focused EIP-7702 AA implementations** with BDLW's **institutional-grade pre-execution risk substrate**. It is an architectural diligence artifact — not legal or investment advice.
+> **Scope note:** This document compares **consumer-focused EIP-7702 AA implementations** with SliverVine Protocol's **institutional-grade pre-execution risk substrate**. It is an architectural diligence artifact — not legal or investment advice.
 
 ---
 
@@ -18,7 +18,7 @@
 
 EIP-7702 and ERC-7579 enable EOAs to delegate execution to smart-account logic — unlocking **1-click intent composition**, **gas sponsorship**, and **session-scoped permissions**. Consumer AA stacks optimize for **conversion and retention**: long-lived session keys, broad contract scopes, and post-hoc policy checks.
 
-BeDelta Living Water (BDLW) adopts ZeroDev Kernel v3 as **Code-Verified / Dry-Run Verified** (Kernel v4 + EIP-7702 intent composer on the **⏳ V1.5 roadmap**) but **never substitutes UX for risk governance**. Frictionless onboarding rides on the same **Three Pillars** stack:
+SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) adopts ZeroDev Kernel v3 as **Code-Verified / Dry-Run Verified** (Kernel v4 + EIP-7702 intent composer on the **⏳ V1.5 roadmap**) but **never substitutes UX for risk governance**. Frictionless onboarding rides on the same **Three Pillars** stack:
 
 ```text
 [Pillar 1: The Gatehouse (Auth)] ZeroDev Kernel v3 Session Keys & EIP-712 Scopes
@@ -29,7 +29,7 @@ BeDelta Living Water (BDLW) adopts ZeroDev Kernel v3 as **Code-Verified / Dry-Ru
 
 > **Pillar 1 verification scope:** **[Pillar 1: The Gatehouse (Auth)]** authorization mechanics (`sessionOk`, `allowedToSign`) are evaluated via secure dry-run adapters in the E2E demo (`pnpm run demo:e2e`); comprehensive ZeroDev Kernel v3 integration coverage is verified under `pnpm test:zerodev`.
 
-**Institutional differentiation:** BDLW binds every UserOp to a **p50 ~106 µs Wasm soil gate** (Shield/TS Gateway path), **30s TTL Heartbeat / Intent Execution Window** (distinct from underlying session key lifetime bounded up to **24h / 7d**), and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** — before any GMX or Hyperliquid broadcast.
+**Institutional differentiation:** SliverVine Protocol binds every UserOp to a **p50 ~106 µs Wasm soil gate** (Shield/TS Gateway path), **30s TTL Heartbeat / Intent Execution Window** (distinct from underlying session key lifetime bounded up to **24h / 7d**), and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** — before any GMX or Hyperliquid broadcast.
 
 ---
 
@@ -47,9 +47,9 @@ These patterns are appropriate for **retail conversion funnels**. They are **ins
 
 ---
 
-## 3. Comparative Matrix — Consumer AA vs. BDLW Citadel
+## 3. Comparative Matrix — Consumer AA vs. SliverVine Citadel Shield
 
-| Architecture dimension | Consumer EIP-7702 AA (industry benchmark) | BDLW institutional substrate (code-verified) |
+| Architecture dimension | Consumer EIP-7702 AA (industry benchmark) | SliverVine Citadel Shield institutional substrate (code-verified) |
 |------------------------|-------------------------------------------|---------------------------------------------|
 | **Primary objective** | UX · onboarding · transaction volume | **Fail-Closed risk mitigation** · honest accounting · bounded tail loss |
 | **Account runtime** | EIP-7702 delegation / ERC-4337 smart account | ZeroDev **Kernel v3** (✅ Code-Verified / Dry-Run Verified) → **Kernel v4 + EIP-7702** (⏳ roadmap) |
@@ -72,7 +72,7 @@ These patterns are appropriate for **retail conversion funnels**. They are **ins
 
 ### 4.1 [Pillar 1: The Gatehouse (Auth)] — 30s TTL Heartbeat / Intent Execution Window
 
-Consumer AA extends session duration to reduce wallet prompts. BDLW **minimizes signing-channel exposure** via a **30s TTL Heartbeat / Intent Execution Window** — distinct from the underlying cryptographic session key lifetime (bounded up to **24h / 7d** per module scope):
+Consumer AA extends session duration to reduce wallet prompts. SliverVine Protocol **minimizes signing-channel exposure** via a **30s TTL Heartbeat / Intent Execution Window** — distinct from the underlying cryptographic session key lifetime (bounded up to **24h / 7d** per module scope):
 
 | Control | Value / behavior | SSOT |
 |---------|------------------|------|
@@ -93,7 +93,7 @@ Session key minted → 30s heartbeat / intent window (crypto key may live up to 
 
 ### 4.2 106 µs Shield/TS Gateway Soil Gate (Shield)
 
-Consumer stacks often simulate transactions **after** UserOp construction. BDLW evaluates soil **before** bundler dispatch:
+Consumer stacks often simulate transactions **after** UserOp construction. SliverVine Protocol evaluates soil **before** bundler dispatch:
 
 | Metric | Locked value | SSOT |
 |--------|-------------|------|
@@ -118,7 +118,7 @@ verifyAgentIntent() / checkSoilResistance() ← p50 ~106 µs Wasm (Fail-Closed)
 
 ### 4.3 Pending-Capital Recognition Invariant — `lostUsd ≡ 0` (Compliance Ingress Firewall + Bridge SSOT)
 
-Consumer bridge UX often treats in-flight tokens as deployable balance. BDLW **labels and isolates** via the **Pending-Capital Recognition Invariant** — the protocol never prematurely writes off in-flight bridge capital as a loss during active execution:
+Consumer bridge UX often treats in-flight tokens as deployable balance. SliverVine Protocol **labels and isolates** via the **Pending-Capital Recognition Invariant** — the protocol never prematurely writes off in-flight bridge capital as a loss during active execution:
 
 | `capitalLabel` | Deployable? | `lostUsd` |
 |----------------|-------------|-----------|
@@ -126,13 +126,13 @@ Consumer bridge UX often treats in-flight tokens as deployable balance. BDLW **l
 | `BRIDGE_TIMEOUT_FAIL_CLOSED` | **No** — fail-closed severance | **0** |
 | `SETTLED` / Arbitrum-native | Yes — full soil envelope | **0** |
 
-**Invariant:** Pending bridge liquidity is **never mis-booked as principal loss** — eliminating phantom NAV inflation during Robinhood escort. ZeroDev orchestrates the UserOp; BDLW's **`evaluateAcrossBridgeTransfer()`** state machine governs deployability.
+**Invariant:** Pending bridge liquidity is **never mis-booked as principal loss** — eliminating phantom NAV inflation during Robinhood escort. ZeroDev orchestrates the UserOp; SliverVine Protocol's **`evaluateAcrossBridgeTransfer()`** state machine governs deployability.
 
 **Test anchor:** `tests/adapters/across-ingress-bridge.test.ts` · **5/5 PASS**
 
 ---
 
-## 5. Execution Pipeline — Consumer vs. BDLW
+## 5. Execution Pipeline — Consumer vs. SliverVine Protocol
 
 ### 5.1 Consumer EIP-7702 (Typical)
 
@@ -142,7 +142,7 @@ EOA → EIP-7702 delegate → UserOp → bundler → venue
  policy check (soft / post-hoc)
 ```
 
-### 5.2 BDLW Institutional Stack (V1.0)
+### 5.2 SliverVine Protocol Institutional Stack (V1.0)
 
 ```text
 Kernel Smart Account (ZeroDev v3)
@@ -164,9 +164,9 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 ---
 
-## 6. How BDLW Adopts ZeroDev EIP-7702 Without Architectural Overhaul
+## 6. How SliverVine Protocol Adopts ZeroDev EIP-7702 Without Architectural Overhaul
 
-| ZeroDev capability | BDLW usage | Risk control preserved |
+| ZeroDev capability | SliverVine Citadel Shield usage | Risk control preserved |
 |--------------------|-----------|------------------------|
 | **Paymaster sponsorship** | Onboarding + agent gas | Daily cap **`DAILY_SPONSORSHIP_LIMIT_USD`** · exhaustion → fail-closed |
 | **Smart Routing deposit** | Robinhood → Arbitrum GM route | `IN_FLIGHT_BRIDGE_CAPITAL` until settled |
@@ -194,7 +194,7 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 ## 8. Auditor & Allocator Defense Narrative
 
-> Consumer AA protocols optimize for **making DeFi easy to click**. BDLW optimizes for **making 1-click execution mathematically safe before broadcast**.
+> Consumer AA protocols optimize for **making DeFi easy to click**. SliverVine Protocol optimizes for **making 1-click execution mathematically safe before broadcast**.
 >
 > We adopt ZeroDev's Kernel and EIP-7702 intent composer for frictionless, non-custodial onboarding — but every UserOp passes a **106 µs Wasm circuit breaker** (`soil_core.wasm`, Shield/TS Gateway path), **30s TTL Heartbeat / Intent Execution Window** (crypto session keys bounded up to 24h/7d), and **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)**. Under a 3σ market shock, the AA pipeline **fails closed** — `signingChannelOpen: false` — rather than opening naked delta or mis-booking in-flight capital as deployable NAV.
 

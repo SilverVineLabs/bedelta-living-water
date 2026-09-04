@@ -1,4 +1,4 @@
-# UI Audit — BDLW Dashboard Assembly (4/4)
+# UI Audit — SliverVine Citadel Shield Dashboard Assembly (4/4)
 
 > **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
 
@@ -19,7 +19,7 @@
 | Card 1 | `LivingWaterShieldCard` |
 | Card 2 | `SmartRoutingDepositCard` |
 | Card 3 | `AMLShieldCard` |
-| Footer | BDLW 品牌 + `742 Vitest PASS \| 60/60 Foundry PASS \| 87.76 KiB Gzip` |
+| Footer | SliverVine 品牌 + `742 Vitest PASS \| 60/60 Foundry PASS \| 87.76 KiB Gzip` |
 
 ## AMLShieldCard
 
@@ -41,5 +41,5 @@
 
 ## 備註
 
-- `src/v2/App.tsx` 保留供舊 Trader Dashboard；SPA 入口已切換至 BDLW 殼層。
+- `src/v2/App.tsx` 保留供舊 Trader Dashboard；SPA 入口已切換至 SliverVine Citadel Shield 殼層。
 - `App.tsx` 156 行 · `AMLShieldCard.tsx` 122 行（均 &lt; 200）。

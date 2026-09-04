@@ -1,4 +1,4 @@
-# UI Audit — `SmartRoutingDepositCard.tsx` (BDLW v1.0)
+# UI Audit — `SmartRoutingDepositCard.tsx` (SliverVine Protocol v1.0)
 
 > **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
 

@@ -4,7 +4,7 @@
 > **This file SSOT:** R01–R20 invariants · dual-engine topology · KV / MDD · settlement & fee bounds.
 > **Docs index:** [`docs/README.md`](../README.md) · **Grants:** [`docs/grants/`](../grants/)
 
-**Philosophy:** **BeDelta (BeΔ)** = Market Delta-Neutrality & Execution Safety · **SliverVine** = fragmented intent protection & steel trading execution.
+**Philosophy — BeΔ (BeDelta Living Water v1.0):** **Be** is inspired by Bruce Lee's *"Be Water, My Friend"* — fluid, adaptive intent routing and friction-free multi-chain execution. **Δ (Delta)** denotes **market delta-neutrality** and risk-neutral execution — neutralizing directional exposure. **SliverVine** = fragmented intent protection & steel trading execution · **SliverVine Citadel Shield** = the pre-consensus execution safety primitive.
 **Entity:** SilverVine Labs · **Protocol brand:** SliverVine Citadel Shield
 **Live proof:** `GET /api/grant-audit` · [bedeltawater.slivervine.xyz](https://bedeltawater.slivervine.xyz)
 **Repo:** [SilverVineLabs/bedelta-living-water](https://github.com/SilverVineLabs/bedelta-living-water)
@@ -233,13 +233,13 @@ Anchors: [`gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-
 
 > **Status:** v1.0 production SSOT = **Kernel v3** (`ZERODEV_KERNEL_VERSION` v0.3.1 · EntryPoint v0.7); **Kernel v4** = V1.5 alignment path (Gatehouse adapter upgrade only — **no rewrite** of Shield / Wasm / EIP-712 Gate).
 
-#### 2.4.1 Why ZeroDev Is the Foundation of BDLW's Non-Custodial 106 µs Execution Pipeline
+#### 2.4.1 Why ZeroDev Is the Foundation of SliverVine Protocol's Non-Custodial 106 µs Execution Pipeline
 
 BeDelta Living Water's product promise is **institutional pre-execution gate (p50 ~106 µs) + non-custodial capital flow**. Without a unified **smart-account execution plane**, the system would fall back to EOA multisig or hot-wallet custody — breaking `lostUsd ≡ 0` and compliance narrative.
 
-ZeroDev provides three capabilities BDLW **cannot replicate in-house**:
+ZeroDev provides three capabilities SliverVine Protocol **cannot replicate in-house**:
 
-| Capability | Without ZeroDev | With BDLW + ZeroDev integration |
+| Capability | Without ZeroDev | With SliverVine Protocol + ZeroDev integration |
 |------------|-----------------|-------------------------------|
 | **Scoped Session Keys** | Full private keys or manual multisig | Kernel modular `ORDER_EXECUTE` · R06/R07 notional cap · TTL auto-expiry |
 | **Paymaster sponsorship** | Institutions must prefund multi-chain gas | `zerodev.sponsorUserOperation` · per-op ≤ $0.50 · daily $10 circuit breaker |
@@ -295,9 +295,9 @@ This invariant ensures institutional UserOps are **predictably deliverable** on 
 
 #### 2.4.5 ZeroDev v4 "Seven Stages, One Stack" Alignment Roadmap
 
-ZeroDev v4 converges the smart-wallet lifecycle into **seven stages, one stack**. BDLW aligns five **execution-critical stages** (Recover / Compose marked V1.0):
+ZeroDev v4 converges the smart-wallet lifecycle into **seven stages, one stack**. SliverVine Protocol aligns five **execution-critical stages** (Recover / Compose marked V1.0):
 
-| Stage | ZeroDev v4 semantics | BDLW integration anchor | Status |
+| Stage | ZeroDev v4 semantics | SliverVine Citadel Shield integration anchor | Status |
 |-------|---------------------|-------------------------|--------|
 | **① Sign in** | Identity · Kernel account resolution | ZeroDev login → `sender` Kernel address · no hot-wallet seed | ✅ v1.0 Delivered (Sepolia verified) |
 | **② Fund** | Cross-chain deposit · Smart Routing | `ZERODEV_SMART_ROUTE_TARGETS` · USDG → GMX ExchangeRouter (§2.3) | ✅ v1.0 Delivered (Sepolia verified) |
@@ -595,7 +595,7 @@ B2B Option B (slippage-savings fee) remains a separate commercial SKU and is not
 
 ## 6. ERC-7579 Pre-Execution Hook Alignment — AI Agent Reflex Architecture
 
-> **Design thesis:** ERC-7579 modular smart accounts provide **permission scope**; BDLW provides **reflex speed**. Together they form the pre-execution hook stack that AI agents and institutional vaults require to avoid MEV/LVR traps without surrendering custody.
+> **Design thesis:** ERC-7579 modular smart accounts provide **permission scope**; SliverVine Protocol provides **reflex speed**. Together they form the pre-execution hook stack that AI agents and institutional vaults require to avoid MEV/LVR traps without surrendering custody.
 
 ### 6.1 Two-Plane Hook Stack
 
@@ -615,7 +615,7 @@ AI Agent Intent (seconds)
  │ UserOp draft passes structural auth
  ▼
 ┌───────────────────────────────────────────────────────────┐
-│ BDLW Pre-Execution Reflex Hook (106µs Cerebellum) │
+│ SliverVine Citadel Shield Pre-Execution Reflex Hook (106µs Cerebellum) │
 │ Edge: verifyAgentIntent() → evaluateSoilCore() │
 │ → checkSoilResistance() [pkg/soil_core.wasm] │
 │ On-chain: SliverVineSoilCoprocessor.evaluate_soil_…() │
@@ -628,7 +628,7 @@ AI Agent Intent (seconds)
 
 ### 6.2 ZeroDev Kernel v3 Validator Module (Pillar 1)
 
-| Hook point | ERC-7579 module role | BDLW invariant |
+| Hook point | ERC-7579 module role | SliverVine Citadel Shield invariant |
 |------------|---------------------|----------------|
 | **`validateUserOp`** | Session module verifies scoped signature + callData shape | Whitelisted GMX ExchangeRouter · HL adapter selectors only |
 | **`isValidSignature` (ERC-1271)** | Kernel returns `0x1626ba7e` on scoped intent digest | Dual plane: Kernel ERC-1271 ∥ Gate ECDSA m-of-n attestation |

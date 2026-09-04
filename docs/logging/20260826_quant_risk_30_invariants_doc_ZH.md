@@ -12,7 +12,7 @@
 
 | 檔案 | 動作 | 說明 |
 |------|------|------|
-| `docs/internal/QUANT_RISK_30_INVARIANTS.md` | **新增** | BDLW 動態 Delta-Neutral Vault 三十條黃金不變量（繁體中文） |
+| `docs/internal/QUANT_RISK_30_INVARIANTS.md` | **新增** | SliverVine Protocol 動態 Delta-Neutral Vault 三十條黃金不變量（繁體中文） |
 | `docs/logging/20260826_quant_risk_30_invariants_doc.md` | **新增** | 本建立日誌 |
 
 ---
@@ -30,7 +30,7 @@
 | 5. 密碼學與資產安全 | GI-21–25 | **lostUsd ≡ 0** · payloadHash · EIP-712 · **ZeroDev Session Keys** · R20 |
 | 6. 巨觀與多場執行 | GI-26–30 | Δ-neutral 1× short · RH 單向 escort · funding delever · R17/R13 |
 
-### 四項 BDLW 核心錨點
+### 四項 SliverVine Protocol 核心錨點
 
 - 106 µs Wasm Soil Engine → GI-16–20
 - lostUsd ≡ 0 → GI-21, GI-27

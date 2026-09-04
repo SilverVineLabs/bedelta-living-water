@@ -1,4 +1,4 @@
-# UI Audit — `HeaderNav.tsx` (BDLW v1.0)
+# UI Audit — `HeaderNav.tsx` (SliverVine Protocol v1.0)
 
 > **Vitest SSOT:** Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)
 
@@ -41,4 +41,4 @@
 
 - 行數 &lt; 180，純 React，無 Node 依賴。
 - Logo 資產路徑為 public `/brand/`；部署前確認靜態檔已上架。
-- 尚未掛載至 SPA root；待 BDLW 殼層整合時接入。
+- 尚未掛載至 SPA root；待 SliverVine Citadel Shield 殼層整合時接入。

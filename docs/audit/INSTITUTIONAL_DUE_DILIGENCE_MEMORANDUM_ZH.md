@@ -6,7 +6,7 @@
 | **版本** | **v1.0.0** |
 | **分類** | 公開 Grant / 機構配置者盡職調查 |
 | **實體** | SilverVine Labs |
-| **協議** | SliverVine / BeΔ Living Water (BDLW) · Santenmoku 風控引擎 |
+| **協議** | SliverVine / SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) · Santenmoku 風控引擎 |
 | **受眾** | Arbitrum Foundation · ZeroDev Grant 委員會 · 機構配置者 · Fund-of-Funds 盡職 |
 | **基線** | **Vitest SSOT：** **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm 熱路徑 **87.76 KiB gzip** · Shield **p50 ~106 µs** |
 | **即時驗證** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
@@ -14,11 +14,13 @@
 | **風控框架 SSOT** | [`../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md`](../architecture/CROSS_CHAIN_RISK_AND_EVOLUTION.md) |
 | **英文 SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 
+> **哲學 — BeΔ (BeDelta Living Water v1.0)：** **Be** 源自 Bruce Lee *「Be Water, My Friend」* — 如水般流動、自適應的意圖路由與無摩擦多鏈執行。**Δ (Delta)** 為市場 **Delta 中性** 的數學符號 — 透過 GMX v2 GM + Hyperliquid 1× Short 對沖腿中和方向性敞口。**SliverVine Citadel Shield** 為將二者綁定的預共識執行安全原語。
+
 ---
 
 ## 核心目標 (Core Objective)
 
-本備忘錄為 **Arbitrum Foundation、ZeroDev 及機構配置者** 評估 BDLW Delta-Neutral Vault 基礎設施時，提供**透明、程式碼可驗證的審計軌跡**。每一項量化宣稱均可對應至**可重現的命令、測試檔或鏈上產物**——而非敘述性保證。
+本備忘錄為 **Arbitrum Foundation、ZeroDev 及機構配置者** 評估 SliverVine Citadel Shield delta-neutral Vault 基礎設施時，提供**透明、程式碼可驗證的審計軌跡**。每一項量化宣稱均可對應至**可重現的命令、測試檔或鏈上產物**——而非敘述性保證。
 
 > **免責聲明：** DDIP 為架構盡職調查產物，**不構成**法律意見、投資建議或監管認證聲明（含 SOC 2 Type II 鑑證）。
 
@@ -26,7 +28,7 @@
 
 ## 一、執行摘要 (Executive Summary)
 
-BeΔ Living Water (BDLW) 為包裹 Arbitrum One 上 GMX v2 GM Pool 與 Hyperliquid 1× Short 對沖腿的**預執行 Citadel 風控層**。資金可經 **Arbitrum 原生 USDC**（即時路徑）或 **Robinhood Chain USDG 護航**（Across 單向橋接 + 誠實在途會計）入場。
+SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) 為包裹 Arbitrum One 上 GMX v2 GM Pool 與 Hyperliquid 1× Short 對沖腿的**預執行 Citadel 風控層**。資金可經 **Arbitrum 原生 USDC**（即時路徑）或 **Robinhood Chain USDG 護航**（Across 單向橋接 + 誠實在途會計）入場。
 
 ### 1.1 盡職判定矩陣
 
@@ -66,7 +68,7 @@ BeΔ Living Water (BDLW) 為包裹 Arbitrum One 上 GMX v2 GM Pool 與 Hyperliqu
 
 ### 2.1 Trust Services Criteria 映射
 
-| TSC 域 | BDLW 控制 | 程式 / 產物錨點 |
+| TSC 域 | SliverVine Citadel Shield 控制 | 程式 / 產物錨點 |
 |--------|----------|----------------|
 | **CC6 — 邏輯存取** | 範圍 Session Keys（僅 `ORDER_EXECUTE`）· 30s TTL · R07 $5k 上限 | `hl-session/permissions.ts` · `session-key-gates.ts` |
 | **CC7 — 系統營運** | Sequencer 守衛（600s 寬限）· Oracle 延遲熔斷 · PGATE 200ms | `sequencer-guard.ts` · `PGATE_MAX_LATENCY_MS` |
@@ -117,7 +119,7 @@ pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
 
 ## 三、資金會計不變量 (Capital Accounting Invariants)
 
-BDLW 將**誠實會計**作為硬不變量——在途流動性永不誤記為本金損失。
+SliverVine Protocol 將**誠實會計**作為硬不變量——在途流動性永不誤記為本金損失。
 
 ### 3.1 零損失橋接不變量 (`lostUsd ≡ 0`)
 
@@ -207,11 +209,11 @@ pnpm tsx scripts/generate-survival-report.ts
 
 ## 五、監管對齊 (Regulatory Alignment)
 
-> **免責聲明：** 本節將 BDLW 控制映射至**機構對話常用框架** — **非**監管登記、銀行牌照或正式 Basel 支柱合規聲明。
+> **免責聲明：** 本節將 SliverVine Citadel Shield 控制映射至**機構對話常用框架** — **非**監管登記、銀行牌照或正式 Basel 支柱合規聲明。
 
 ### 5.1 Basel III 營運風險（架構呼應）
 
-| Basel 概念 | BDLW 實作 | 證據 |
+| Basel 概念 | SliverVine Protocol 實作 | 證據 |
 |-----------|----------|------|
 | **內部控制環境** | 單向 `SystemState` · R09 兩階段 Saga | `intent-ledger.ts` |
 | **風險識別與評估** | 預交易 Soil 矩陣 | R01 · `soil-resistance.ts` |
@@ -229,7 +231,7 @@ pnpm tsx scripts/generate-survival-report.ts
 
 ### 5.3 三道防線
 
-| 防線 | 職能 | BDLW 層級 |
+| 防線 | 職能 | SliverVine Citadel Shield 層級 |
 |------|------|----------|
 | **第一道** | 業務營運 | 收益門檻 · 緩衝引擎 · 再平衡規則 |
 | **第二道** | 風控合規 | Soil · PGATE · Sequencer/Oracle · 橋接 AML |

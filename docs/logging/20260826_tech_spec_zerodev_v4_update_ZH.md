@@ -24,7 +24,7 @@
 
 | 小節 | 內容 |
 |------|------|
-| **§2.4.1** | ZeroDev 作為 BDLW 非託管 106 µs 管線基礎核心（Session Keys · Paymaster · Bundler 三能力表 + 執行管線圖） |
+| **§2.4.1** | ZeroDev 作為 SliverVine Protocol 非託管 106 µs 管線基礎核心（Session Keys · Paymaster · Bundler 三能力表 + 執行管線圖） |
 | **§2.4.2** | Kernel v3（v0.9 SSOT）vs Kernel v4（V1.0 適配層遷移 · Shield/Wasm 零改寫） |
 | **§2.4.3** | Paymaster Gas Sponsorship（$0.50/筆 · $10/日 · soil 串行熔斷） |
 | **§2.4.4** | EIP-7562 Zero-Bundler-Rejection 不變量（fail-closed · 3s timeout） |
@@ -54,4 +54,4 @@
 
 ## 備註
 
-「Seven Stages, One Stack」中 BDLW 明確對齊前五階段（Sign in → Execute）；⑥ Recover、⑦ Compose 標記 V1.0，與現有 `intent-ledger.ts` 2PC 語意部分重疊。
+「Seven Stages, One Stack」中 SliverVine Protocol 明確對齊前五階段（Sign in → Execute）；⑥ Recover、⑦ Compose 標記 V1.0，與現有 `intent-ledger.ts` 2PC 語意部分重疊。

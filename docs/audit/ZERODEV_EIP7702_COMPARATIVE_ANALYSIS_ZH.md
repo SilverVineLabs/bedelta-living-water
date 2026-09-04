@@ -1,4 +1,4 @@
-# ZeroDev EIP-7702 vs. BDLW 機構級預執行風控底層 — 對照分析
+# ZeroDev EIP-7702 vs. SliverVine Protocol 機構級預執行風控底層 — 對照分析
 
 | 欄位 | 值 |
 |------|-----|
@@ -6,12 +6,12 @@
 | **版本** | **v1.0.0** |
 | **分類** | Grant / 機構 Allocator · AA 架構基準 |
 | **分支基線** | `v1.0_push_BDLW` |
-| **實體** | SilverVine Labs · BeΔ Living Water (BDLW) |
+| **實體** | SilverVine Labs · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
 | **基線** | Vitest **Proposal Baseline: 175 test files | 773 PASS (Current Branch Live: 176 test files | 775 PASS Clean)** · Wasm **87.76 KiB gzip** · Shield **p50 ~106 µs** |
 | **英文 SSOT** | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
 | **關聯 SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`TECHNICAL_SPECIFICATION.md`](../architecture/TECHNICAL_SPECIFICATION.md) §2.4 |
 
-> **範圍說明：** 本文對照 **面向消費者的 EIP-7702 AA 實作** 與 BDLW **機構級預執行風控底層**。屬架構盡職 artifact — 非法律或投資建議。
+> **範圍說明：** 本文對照 **面向消費者的 EIP-7702 AA 實作** 與 SliverVine Protocol **機構級預執行風控底層**。屬架構盡職 artifact — 非法律或投資建議。
 
 ---
 
@@ -19,7 +19,7 @@
 
 EIP-7702 與 ERC-7579 使 EOA 可委派至智能帳戶邏輯 — 解鎖 **一鍵意圖編排**、**Gas 代付** 與 **Session 權限範圍**。消費者 AA 堆疊優化 **轉化與留存**：長效 Session Key、寬泛合約 scope、事後政策檢查。
 
-BeDelta Living Water (BDLW) 生產環境採 **ZeroDev Kernel v3**（**Kernel v4 + EIP-7702** 意圖編排器為 **⏳ V1.5 路線圖**），但 **不以 UX 取代風控治理**。無摩擦 onboarding 仍綁定 **三柱（Three Pillars）** 堆疊：
+SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) 生產環境採 **ZeroDev Kernel v3**（**Kernel v4 + EIP-7702** 意圖編排器為 **⏳ V1.5 路線圖**），但 **不以 UX 取代風控治理**。無摩擦 onboarding 仍綁定 **三柱（Three Pillars）** 堆疊：
 
 ```text
 Pillar 1 GATEHOUSE   → ZeroDev Kernel · 範圍 Session Keys · Paymaster 上限
@@ -45,9 +45,9 @@ Pillar 3 SHIELD      → checkSoilResistance() · pkg/soil_core.wasm · Fail-Clo
 
 ---
 
-## 三、對照矩陣 — 消費者 AA vs. BDLW Citadel
+## 三、對照矩陣 — 消費者 AA vs. SliverVine Citadel Shield
 
-| 架構維度 | 消費者 EIP-7702 AA（業界基準） | BDLW 機構底層（程式驗證） |
+| 架構維度 | 消費者 EIP-7702 AA（業界基準） | SliverVine Citadel Shield 機構底層（程式驗證） |
 |---------|------------------------------|-------------------------|
 | **首要目標** | UX · onboarding · 交易量 | **Fail-Closed 風控** · 誠實會計 · 有界尾部損失 |
 | **帳戶 runtime** | EIP-7702 委派 / ERC-4337 智能帳戶 | ZeroDev **Kernel v3**（✅ 生產）→ **Kernel v4 + EIP-7702**（⏳ 路線圖） |
@@ -110,7 +110,7 @@ EOA → EIP-7702 delegate → UserOp → bundler → venue
                          ↑ 事後 / 軟性政策檢查
 ```
 
-### BDLW 機構堆疊（V1.0）
+### SliverVine Citadel Shield 機構堆疊（V1.0）
 
 ```text
 Kernel Smart Account → payloadHash 綁定 → checkSoilResistance() (106µs)
@@ -134,7 +134,7 @@ Kernel Smart Account → payloadHash 綁定 → checkSoilResistance() (106µs)
 
 ## 七、審計 / Allocator 答辯敘事
 
-> 消費者 AA 優化 **「好點擊」**；BDLW 優化 **「廣播前數學安全」**。
+> 消費者 AA 優化 **「好點擊」**；SliverVine Protocol 優化 **「廣播前數學安全」**。
 >
 > 我們採 ZeroDev Kernel 與 EIP-7702 意圖編排實現非託管 onboarding — 但每筆 UserOp 必過 **106 µs Wasm 熔斷**、**30 秒自毀 Session Key**、**誠實橋接標記（`lostUsd ≡ 0`）**。3σ 衝擊下 AA 管線 **Fail-Closed** — 而非開裸倉或將在途資金誤計為可部署 NAV。
 
