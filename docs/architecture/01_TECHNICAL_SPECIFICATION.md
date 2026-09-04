@@ -53,9 +53,9 @@ Santenmoku is a **unified sub-millisecond pre-execution gateway**. **Center of g
 
 | Pillar | Role | SSOT / Mechanism | Dedicated specification |
 |--------|------|------------------|-------------------------|
-| **[Pillar 1: The Gatehouse (Auth)]** | **Opt-In** ZeroDev scoped session keys · EIP-712 intent scopes | Kernel v3 · `ORDER_EXECUTE` bounds · Paymaster ($0.50/op · $10/day) · R06 / R07 · `USE_ZERODEV_AA` default-off | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
-| **[Pillar 2: Compliance Ingress Firewall]** | Venue-agnostic unidirectional AML escort · honest `IN_FLIGHT_BRIDGE_CAPITAL` / `lostUsd ≡ 0` | `across-ingress-bridge.ts` · `IngressSafetySwitch.sol` · Robinhood / Across = **optional reference adapters** | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
-| **[Pillar 3: Shield (CORE MOAT)]** | Sub-ms Wasm pre-execution armor — **primary technical moat** | `checkSoilResistance()` p50 ~106 μs · Wasm warm &lt;60µs · R01–R20 | [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
+| **[Pillar 1: The Gatehouse (Auth)]** | **Opt-In** ZeroDev scoped session keys · EIP-712 intent scopes | Kernel v3 · `ORDER_EXECUTE` bounds · Paymaster ($0.50/op · $10/day) · R06 / R07 · `USE_ZERODEV_AA` default-off | [`02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
+| **[Pillar 2: Compliance Ingress Firewall]** | Venue-agnostic unidirectional AML escort · honest `IN_FLIGHT_BRIDGE_CAPITAL` / `lostUsd ≡ 0` | `across-ingress-bridge.ts` · `IngressSafetySwitch.sol` · Robinhood / Across = **optional reference adapters** | [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
+| **[Pillar 3: Shield (CORE MOAT)]** | Sub-ms Wasm pre-execution armor — **primary technical moat** | `checkSoilResistance()` p50 ~106 μs · Wasm warm &lt;60µs · R01–R20 | [`04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
 
 > **Three Pillars routing:** Pillar 1 (Gatehouse) and Pillar 2 (optional ingress) are summarized inline below; **exhaustive audit-grade specifications** live in the dedicated Pillar 1–3 documents above. This file retains cross-pillar topology, settlement bounds, and integration anchors.
 
@@ -135,7 +135,7 @@ Reference adapters in [`examples/adapters/`](../../examples/adapters/) — evalu
 | **Hedge** | Hyperliquid | Session-key **1× short** Emergency Liquidity Sponge · nonce-healed signing |
 | **Ingress (optional)** | Robinhood Chain | **Pillar 2 Reference Escort Adapter** — not product identity |
 
-**Robinhood Chain role:** **Pillar 2 Reference Escort Adapter** only — regulated treasuries may escort outbound (`46630`/`4663` → `42161`). Inbound AML is blocked by default. Product identity remains **SliverVine Citadel on Arbitrum**. **Audit:** [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
+**Robinhood Chain role:** **Pillar 2 Reference Escort Adapter** only — regulated treasuries may escort outbound (`46630`/`4663` → `42161`). Inbound AML is blocked by default. Product identity remains **SliverVine Citadel on Arbitrum**. **Audit:** [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
 
 ### 1.1 Engineering Restraint (Blue-Chip Scope)
 
@@ -237,7 +237,7 @@ Anchors: [`gmx-smart-route-payload-binding.ts`](../../src/services/adapters/gmx-
 
 ### 2.4 Pillar 1 — Opt-In ZeroDev Account Abstraction (Integration Summary)
 
-> **Full Pillar 1 specification:** [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) — ZeroDev Kernel v3 session keys, EIP-7702 comparative analysis, `sessionOk` / `allowedToSign` dry-run scope (`pnpm run demo:e2e`), and `pnpm test:zerodev` harness. This section retains integration anchors only.
+> **Full Pillar 1 specification:** [`02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) — ZeroDev Kernel v3 session keys, EIP-7702 comparative analysis, `sessionOk` / `allowedToSign` dry-run scope (`pnpm run demo:e2e`), and `pnpm test:zerodev` harness. This section retains integration anchors only.
 
 > **Status:** v1.0 production SSOT = **Kernel v3** (`ZERODEV_KERNEL_VERSION` v0.3.1 · EntryPoint v0.7); **Kernel v4** = post-grant V1.5 alignment path (Gatehouse adapter upgrade only — **no rewrite** of Shield / Wasm / EIP-712 Gate).
 
@@ -369,7 +369,7 @@ v1.0 Active Triangle (42161)
 
 ## 3. Cross-Venue Risk Engine & Defense Matrix (R01–R20)
 
-> **Full Pillar 3 specification:** [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) — Wasm `soil_core.wasm` engine, `checkSoilResistance()` latency moats (p50 ~106 µs · warm &lt;60 µs), Tri-Sensor matrix, and complete R01–R20 defense matrix. Below is the integration summary retained in this topology document.
+> **Full Pillar 3 specification:** [`04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) — Wasm `soil_core.wasm` engine, `checkSoilResistance()` latency moats (p50 ~106 µs · warm &lt;60 µs), Tri-Sensor matrix, and complete R01–R20 defense matrix. Below is the integration summary retained in this topology document.
 
 ### 3.1 Microsecond Moats (Summary)
 
@@ -431,7 +431,7 @@ Python-verified **48-day runway** under sustained negative funding. Automated 3-
 
 ### 3.3 Defense Matrix (R01–R20) — Summary
 
-**Status:** **17 Active | 2 Refactored | 1 Deprecated** · Full rule table: [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md#defense-matrix-r01r20).
+**Status:** **17 Active | 2 Refactored | 1 Deprecated** · Full rule table: [`04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md#defense-matrix-r01r20).
 
 | Tier | Rules | Role |
 |------|-------|------|
@@ -462,7 +462,7 @@ Routing policy: venue selected per risk flags; both paths share the same fail-cl
 
 ### 3.5 Wasm Soil Core (M4) — Summary
 
-> **Full Wasm / latency specification:** [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md#wasm-soil-core-engine-no_std).
+> **Full Wasm / latency specification:** [`04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md#wasm-soil-core-engine-no_std).
 
 > **Dual-Engine Soil Topology:** SliverVine Citadel Shield enforces dual-engine soil resistance: pure high-throughput TypeScript soil math on Cloudflare Worker hot paths, alongside native `pkg/soil_core.wasm` execution on `@slivervine/citadel-sdk` agent-intent paths. Both engines share identical p50 ~106µs fail-closed thresholds and defense bounds.
 

@@ -36,7 +36,7 @@
 
 > **Note:** Initial mainnet deployment utilizes Bootstrap Ignition Keys (`0x1111…`/`0x2222…`) for public verification without exposing production HSM keys. Key rotation to production multisig is executed via native governance functions.
 
-**Ingress (optional):** Robinhood Chain `46630`/`4663` → Arbitrum — **Pillar 2 Reference Escort Adapter** only; [Pillar 2 audit](./docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
+**Ingress (optional):** Robinhood Chain `46630`/`4663` → Arbitrum — **Pillar 2 Reference Escort Adapter** only; [Pillar 2 audit](./docs/audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
 
 **Triangle loop:** [Technical Specification §2](./docs/architecture/01_TECHNICAL_SPECIFICATION.md#2-triangle-liquidity-loop--segregated-tranches) · **Arbitrum execution premium:** +15–30 bps vs bridged routes *(design estimate)*.
 
@@ -253,7 +253,7 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 
 **[Pillar 1: Gatehouse — Opt-In Account Abstraction Layer]** ZeroDev Kernel v3 **opt-in** scoped session keys (`USE_ZERODEV_AA` default-off) · **30s TTL Heartbeat / Intent Execution Window** (`WS_HEARTBEAT_INTERVAL_MS` · `DEFAULT_TTL_MS`) — distinct from underlying cryptographic session key lifetime (bounded up to **24h / 7d** per module scope) · **Paymaster gas sponsorship** ($0.50/op · $10/day cap; fail-closed fallback when exhausted). *Pillar 3 Wasm Shield (p50 ~106 µs) and Arbitrum Native Ingress operate independently of ZeroDev.* Evaluated via `pnpm test:zerodev` and E2E dry-run (`sessionOk`, `allowedToSign`).*
 
-**[Pillar 2: Compliance Ingress Firewall — Escort Accounting]** Venue-agnostic unidirectional AML firewall · honest **`IN_FLIGHT_BRIDGE_CAPITAL`** labels · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** — protocol never prematurely writes off in-flight bridge capital as loss during active execution · *(Robinhood Chain / Across are **Pillar 2 Reference Escort Adapters** — they serve as integration examples and are not the core product identity of SliverVine Protocol.)* **Audit:** [`docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
+**[Pillar 2: Compliance Ingress Firewall — Escort Accounting]** Venue-agnostic unidirectional AML firewall · honest **`IN_FLIGHT_BRIDGE_CAPITAL`** labels · **Pending-Capital Recognition Invariant (`lostUsd ≡ 0`)** — protocol never prematurely writes off in-flight bridge capital as loss during active execution · *(Robinhood Chain / Across are **Pillar 2 Reference Escort Adapters** — they serve as integration examples and are not the core product identity of SliverVine Protocol.)* **Audit:** [`docs/audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./docs/audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
 
 **[Pillar 3: Shield — Pre-Execution Risk Engine]** **`pkg/soil_core.wasm`** · `checkSoilResistance()` at **p50 ~106 µs** (Shield/TS Gateway path) · Wasm warm **&lt;60 µs** · **R01–R20 Defense Matrix (17 Active | 2 Refactored | 1 Deprecated)** · **`signingChannelOpen: false`** on any soil / oracle / sequencer trip — primary technical moat before Arbitrum / HL broadcast.
 
@@ -271,8 +271,8 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 |---|----------|------|
 | 1 | [`docs/VERIFICATION_MATRIX.md`](./docs/VERIFICATION_MATRIX.md) | SSOT verification hub — Express → Three Pillars Inside → Outside |
 | 2 | [`docs/architecture/01_TECHNICAL_SPECIFICATION.md`](./docs/architecture/01_TECHNICAL_SPECIFICATION.md) | Yellow Paper · R01–R20 risk matrix |
-| 3 | [`docs/audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./docs/audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Institutional DDIP · Basel III alignment |
-| 4 | [`docs/audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./docs/audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Opt-In Pillar 1 ZeroDev AA vs. independent Wasm Shield substrate |
+| 3 | [`docs/audit/01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./docs/audit/01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Institutional DDIP · Basel III alignment |
+| 4 | [`docs/audit/02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./docs/audit/02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Opt-In Pillar 1 ZeroDev AA vs. independent Wasm Shield substrate |
 | 5 | [`docs/sdk/CITADEL_SDK_BLUEPRINT.md`](./docs/sdk/CITADEL_SDK_BLUEPRINT.md) | B2B CaaS integration blueprint · 10 bps builder + referral rebate model |
 
 ### Supporting
@@ -281,8 +281,8 @@ The Citadel pre-execution gateway runs a closed-loop **Tri-Sensor Telemetry Matr
 |----------|---------|
 | [`docs/pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md`](./docs/pitch/GRANT_PITCH_AND_VIDEO_STORYBOARD.md) | Grant pitch · 35s demo video storyboard |
 | [`docs/architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](./docs/architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Risk mitigation · **88% / 12% spectrum** · fail-closed boundaries · disclaimer framework |
-| [`docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 reference adapter audit · 5/5 bridge tests |
-| [`docs/audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./docs/audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield core spec · R01–R20 · Tri-Sensor |
+| [`docs/audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./docs/audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 reference adapter audit · 5/5 bridge tests |
+| [`docs/audit/04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./docs/audit/04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield core spec · R01–R20 · Tri-Sensor |
 | [`docs/ARB_Buildathon/SUBMISSION.md`](./docs/ARB_Buildathon/SUBMISSION.md) | Buildathon main submission pack |
 | [`docs/README.md`](./docs/README.md) | Full docs index · language policy |
 

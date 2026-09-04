@@ -19,9 +19,9 @@
 
 | Pillar | Role | Spec |
 |--------|------|------|
-| **Pillar 1 — Gatehouse** | ZeroDev Kernel v3 · EIP-712 · session scopes | [`../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
-| **Pillar 2 — Compliance Ingress Firewall** | AML escort · outbound-only · `lostUsd ≡ 0` | [`../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
-| **Pillar 3 — SliverVine Citadel Shield** | `checkSoilResistance()` · Wasm · R01–R20 | [`../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
+| **Pillar 1 — Gatehouse** | ZeroDev Kernel v3 · EIP-712 · session scopes | [`../audit/02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
+| **Pillar 2 — Compliance Ingress Firewall** | AML escort · outbound-only · `lostUsd ≡ 0` | [`../audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
+| **Pillar 3 — SliverVine Citadel Shield** | `checkSoilResistance()` · Wasm · R01–R20 | [`../audit/04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
 
 ---
 
@@ -87,7 +87,7 @@ User / AI intent → Pillar 1 Gatehouse (session scope)
 
 ### 0.4 No-Advice & Classification Disclaimer
 
-SliverVine Protocol is **sophisticated smart-contract infrastructure** — not a bank deposit, money-market fund, or insured cash product. Dynamic Target Range **8.2% ~ 11.8% APY** is a **non-guaranteed display band**, not a yield guarantee. See [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) § Risk & Disclaimer for full allocator disclosures.
+SliverVine Protocol is **sophisticated smart-contract infrastructure** — not a bank deposit, money-market fund, or insured cash product. Dynamic Target Range **8.2% ~ 11.8% APY** is a **non-guaranteed display band**, not a yield guarantee. See [`01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) § Risk & Disclaimer for full allocator disclosures.
 
 ---
 
@@ -334,7 +334,7 @@ Real yield stack (conceptual):
 
 > **Allocator note:** Real yield **does not mean risk-free**. Funding can flip negative, skew rebates compress, and Aave rates move. SliverVine Protocol quantifies and buffers these residuals (§2.5 · §6) — it simply refuses to **substitute** them with empty token inflation.
 
-**Code anchors:** `src/services/yield/rebalance-rules.ts` · `src/adapters/arbitrum/arbitrum-yield-ingress.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `scripts/survival-benchmark/` (HL funding replay) · [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) § Risk & Disclaimer (no guaranteed APY).
+**Code anchors:** `src/services/yield/rebalance-rules.ts` · `src/adapters/arbitrum/arbitrum-yield-ingress.ts` · `src/services/adapters/gmx-v2-order-payload.ts` · `scripts/survival-benchmark/` (HL funding replay) · [`01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](../audit/01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) § Risk & Disclaimer (no guaranteed APY).
 
 ---
 
@@ -677,5 +677,5 @@ gmx-smart-route-payload-binding.ts → buildGmxSmartRoutePayloadBinding()
 | Document | Purpose |
 |----------|---------|
 | [`01_TECHNICAL_SPECIFICATION.md`](./01_TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · Triangle Liquidity Loop |
-| [`../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 Compliance Ingress Firewall Audit |
+| [`../audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 Compliance Ingress Firewall Audit |
 | [`../sdk/CITADEL_SDK_BLUEPRINT.md`](../sdk/CITADEL_SDK_BLUEPRINT.md) | `@slivervine/citadel-sdk` integration |

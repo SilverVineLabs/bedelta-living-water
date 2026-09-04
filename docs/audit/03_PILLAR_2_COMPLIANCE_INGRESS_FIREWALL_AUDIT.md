@@ -183,8 +183,8 @@ cd SliverVineGate && forge test && cd ..
 | Path | Role |
 |------|------|
 | [`docs/architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) | Triangle Liquidity Loop · Segregated Tranches · Elara alignment |
-| [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield · R01–R20 · Tri-Sensor |
-| [`docs/audit/PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) | Principal Audit v1.0.0-rc1 · survival matrix |
+| [`04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield · R01–R20 · Tri-Sensor |
+| [`docs/audit/05_PRINCIPAL_AUDIT_REPORT.md`](./05_PRINCIPAL_AUDIT_REPORT.md) | Principal Audit v1.0.0-rc1 · survival matrix |
 | [`src/adapters/across-ingress-bridge.ts`](../../src/adapters/across-ingress-bridge.ts) | Edge adapter — unidirectional routing + AML block |
 | [`contracts/IngressSafetySwitch.sol`](../../contracts/IngressSafetySwitch.sol) | On-chain compliance filter |
 | [`tests/adapters/across-ingress-bridge.test.ts`](../../tests/adapters/across-ingress-bridge.test.ts) | Vitest gate verification |

@@ -131,11 +131,11 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **pre-execution Cita
 
 | Pillar | Posture | Primary evidence |
 |--------|---------|------------------|
-| **Pillar 3 — SliverVine Citadel Shield** | Fail-closed before broadcast | `checkSoilResistance()` · `pkg/soil_core.wasm` · R01–R20 matrix · [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
+| **Pillar 3 — SliverVine Citadel Shield** | Fail-closed before broadcast | `checkSoilResistance()` · `pkg/soil_core.wasm` · R01–R20 matrix · [`04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
 | **Capital accounting** | `lostUsd ≡ 0` on pending bridge liquidity | `src/adapters/across-ingress-bridge.ts` · 5/5 Vitest |
-| **Pillar 1 — Gatehouse** | **Opt-In** scoped keys · notional cap · gas ledger | ZeroDev AA gate (`USE_ZERODEV_AA` default-off) · `session-key-gates.ts` · [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
+| **Pillar 1 — Gatehouse** | **Opt-In** scoped keys · notional cap · gas ledger | ZeroDev AA gate (`USE_ZERODEV_AA` default-off) · `session-key-gates.ts` · [`02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
 | **Stress & simulation** | 30D Survival Benchmark + **173 test files \| 765 PASS Clean** regression | `generate-survival-report.ts` · `pnpm test -- --run` |
-| **Pillar 2 — Compliance Ingress Firewall** | Outbound-only escort · AML inbound block · Robinhood Chain as inaugural reference adapter | `IngressSafetySwitch.sol` · [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
+| **Pillar 2 — Compliance Ingress Firewall** | Outbound-only escort · AML inbound block · Robinhood Chain as inaugural reference adapter | `IngressSafetySwitch.sol` · [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
 
 ### 1.2 Locked SSOT Metrics (Evaluator Copy-Paste)
 
@@ -159,10 +159,10 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **pre-execution Cita
 | ArbOS Elara · Dynamic Target Range | §5.6 | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §6.5 · [`02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md`](../architecture/02_STANDARD_COMPLIANCE_AND_EIP_WIKI.md#arbos--stylus-alignment--code-verified-on-chain-coprocessor) |
 | Real yield vs. toxic inflation | §2.6 (Risk Framework SSOT) | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §2.6 |
 | 60 architectural invariants | §5.1–§5.2 | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §3 |
-| Robinhood reference adapter audit | §2.3 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
-| Principal security interrogations | §2 | [`PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) |
-| Pillar 1 — ZeroDev Gatehouse AA | — | [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
-| Pillar 3 — Edge Shield Wasm core | — | [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
+| Robinhood reference adapter audit | §2.3 | [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
+| Principal security interrogations | §2 | [`05_PRINCIPAL_AUDIT_REPORT.md`](./05_PRINCIPAL_AUDIT_REPORT.md) |
+| Pillar 1 — ZeroDev Gatehouse AA | — | [`02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
+| Pillar 3 — Edge Shield Wasm core | — | [`04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) |
 | Yellow Paper / R01–R20 | §2.2 | [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) |
 
 ---
@@ -194,11 +194,11 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **pre-execution Cita
 
 ### 2.3 Three Pillars Architecture (Evaluator Mental Model)
 
-**Pillar 1 — Gatehouse (Auth):** **Opt-In Pillar 1 Account Abstraction Layer** — ZeroDev Kernel v3 session keys · EIP-712 scopes · notional cap · AA dry-run harness (`USE_ZERODEV_AA` default-off). v1.0 active scope: Stage ① Sign-in · ③ Gas · ④ Authorize · ⑤ Execute. Stage ② Smart Routing = Reference Harness. Stages ⑥⑦ = Post-Grant. **Spec:** [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md).
+**Pillar 1 — Gatehouse (Auth):** **Opt-In Pillar 1 Account Abstraction Layer** — ZeroDev Kernel v3 session keys · EIP-712 scopes · notional cap · AA dry-run harness (`USE_ZERODEV_AA` default-off). v1.0 active scope: Stage ① Sign-in · ③ Gas · ④ Authorize · ⑤ Execute. Stage ② Smart Routing = Reference Harness. Stages ⑥⑦ = Post-Grant. **Spec:** [`02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md).
 
-**Pillar 2 — Compliance Ingress Firewall (Reference Escort Adapters):** A **venue-agnostic**, unidirectional AML firewall and escort accounting layer. Capital from permissioned ingress sources is escorted outbound-only into Arbitrum; inbound AML paths are fail-closed at the **Edge ingress adapter** (`src/adapters/across-ingress-bridge.ts`); in-flight bridge capital is honestly labeled via the **Pending-Capital Recognition Invariant** (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`) until settled. **Robinhood Chain / Across (`46630`/`4663`) are Pillar 2 Reference Escort Adapters** — not the product identity. **Spec:** [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
+**Pillar 2 — Compliance Ingress Firewall (Reference Escort Adapters):** A **venue-agnostic**, unidirectional AML firewall and escort accounting layer. Capital from permissioned ingress sources is escorted outbound-only into Arbitrum; inbound AML paths are fail-closed at the **Edge ingress adapter** (`src/adapters/across-ingress-bridge.ts`); in-flight bridge capital is honestly labeled via the **Pending-Capital Recognition Invariant** (`IN_FLIGHT_BRIDGE_CAPITAL`, `lostUsd ≡ 0`) until settled. **Robinhood Chain / Across (`46630`/`4663`) are Pillar 2 Reference Escort Adapters** — not the product identity. **Spec:** [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md).
 
-**Pillar 3 — SliverVine Citadel Shield (Pre-Execution Edge Shield):** The **core technical moat** — `checkSoilResistance()` · `pkg/soil_core.wasm` · R01–R20 Defense Matrix · p50 ~106 µs Shield path. Pillar 3 decides whether any broadcast may proceed. **Spec:** [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md).
+**Pillar 3 — SliverVine Citadel Shield (Pre-Execution Edge Shield):** The **core technical moat** — `checkSoilResistance()` · `pkg/soil_core.wasm` · R01–R20 Defense Matrix · p50 ~106 µs Shield path. Pillar 3 decides whether any broadcast may proceed. **Spec:** [`04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md).
 
 ```text
 [ Allocator Capital ]
@@ -216,7 +216,7 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) is a **pre-execution Cita
  ▼
 ┌─────────────────────────────────────┐
 │ Pillar 3: SLIVERVINE CITADEL SHIELD │ checkSoilResistance() · Wasm · R01–R20
-│ (Pre-Execution Edge Shield)         │ PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md
+│ (Pre-Execution Edge Shield)         │ 04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md
 └─────────────────────────────────────┘
 ```
 
@@ -418,7 +418,7 @@ V1.0 exposes two **capital ingress modes** that converge on the same Citadel pre
 |------|--------|------|
 | Arbitrum native sizing | `trade-pipeline-order-sizing.ts` · `soil-resistance-types.ts` | `tests/risk-control/*` |
 | Robinhood escort | `src/adapters/across-ingress-bridge.ts` | `tests/adapters/across-ingress-bridge.test.ts` (**5/5**) |
-| On-chain AML firewall | `IngressSafetySwitch.sol` | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
+| On-chain AML firewall | `IngressSafetySwitch.sol` | [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
 
 ### 4.2 Execution Timing — Instant vs. In-Flight State Machine
 
@@ -576,7 +576,7 @@ MiCA (Markets in Crypto-Assets Regulation) emphasizes **operational resilience, 
 | **Operational resilience** | Fail-closed on bridge timeout · sequencer grace · soil trip | R01–R20 matrix |
 | **Conflicts / contamination prevention** | **Outbound-only** escort · inbound reverse path blocked | `validateAcrossBridgeDirection()` |
 | **AML inbound isolation** | `42161 → 46630/4663` → `AML_INBOUND_TO_ROBINHOOD_BLOCKED` | `src/adapters/across-ingress-bridge.ts` |
-| **On-chain invariant enforcement** | **`IngressSafetySwitch.sol`** address-level oracle flush + blacklist · inbound AML at **`src/adapters/across-ingress-bridge.ts`** | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
+| **On-chain invariant enforcement** | **`IngressSafetySwitch.sol`** address-level oracle flush + blacklist · inbound AML at **`src/adapters/across-ingress-bridge.ts`** | [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
 | **Honest pending-asset labeling** | `IN_FLIGHT_BRIDGE_CAPITAL` · **`lostUsd ≡ 0`** | Vitest **5/5** |
 
 ```text
@@ -710,10 +710,10 @@ Ingress capacity and execution timing are fully specified in **§4**. Basel / ES
 |----------|---------|
 | [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) | Yellow Paper — R01–R20 · formal risk equations |
 | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Risk mitigation · disclaimers · 60 invariants · stress harness · Basel mapping |
-| [`PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) | Four diagnostic interrogations · Three Pillars mapping |
-| [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Pillar 1 — ZeroDev Kernel v3 AA · EIP-7702 comparative |
-| [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 — AML escort · inbound block · bridge accounting |
-| [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 — SliverVine Citadel Shield · Wasm soil core |
+| [`05_PRINCIPAL_AUDIT_REPORT.md`](./05_PRINCIPAL_AUDIT_REPORT.md) | Four diagnostic interrogations · Three Pillars mapping |
+| [`02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Pillar 1 — ZeroDev Kernel v3 AA · EIP-7702 comparative |
+| [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 — AML escort · inbound block · bridge accounting |
+| [`04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 — SliverVine Citadel Shield · Wasm soil core |
 | [`static-analysis-report.json`](./static-analysis-report.json) | 3-Tier security matrix artifact |
 | [`chaos-blackswan-metrics.json`](./chaos-blackswan-metrics.json) | 255-scenario adversarial matrix |
 

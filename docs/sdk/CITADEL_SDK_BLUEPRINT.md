@@ -442,4 +442,4 @@ pnpm build:wasm # rebuild pkg/soil_core.wasm
 - Technical Spec: [`docs/architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md)
 - Wasm core: [`src/wasm/soil_core.rs`](../../src/wasm/soil_core.rs)
 - On-chain Gate: [`SliverVineGate/`](../../SliverVineGate/)
-- Robinhood audit: [`docs/audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md)
+- Robinhood audit: [`docs/audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](../audit/03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md)

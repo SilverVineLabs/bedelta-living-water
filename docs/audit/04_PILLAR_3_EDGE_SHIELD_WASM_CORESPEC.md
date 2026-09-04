@@ -202,8 +202,8 @@ pnpm exec vitest run tests/adapters/zerodev-aa-gate.test.ts
 
 | Path | Role |
 |------|------|
-| [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Pillar 1 Gatehouse · ZeroDev Kernel v3 |
-| [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 optional ingress adapters |
+| [`02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](./02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) | Pillar 1 Gatehouse · ZeroDev Kernel v3 |
+| [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Pillar 2 optional ingress adapters |
 | [`docs/architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) | Cross-pillar topology · settlement · fee bounds |
 | [`src/services/risk-control-lib/soil-resistance.ts`](../../src/services/risk-control-lib/soil-resistance.ts) | Soil fuse SSOT |
 | [`pkg/soil_core.wasm`](../../pkg/soil_core.wasm) | Wasm soil core artifact |

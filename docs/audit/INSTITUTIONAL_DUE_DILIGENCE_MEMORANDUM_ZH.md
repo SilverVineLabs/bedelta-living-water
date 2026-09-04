@@ -12,7 +12,7 @@
 | **即時驗證** | [`GET /api/grant-audit`](https://bedeltawater.slivervine.xyz/api/grant-audit) |
 | **規格 SSOT** | [`../architecture/01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) |
 | **風控框架 SSOT** | [`../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) |
-| **英文 SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
+| **英文 SSOT** | [`01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 
 > **哲學 — BeΔ (BeDelta Living Water v1.0)：** **Be** 源自 Bruce Lee *「Be Water, My Friend」* — 如水般流動、自適應的意圖路由與無摩擦多鏈執行。**Δ (Delta)** 為市場 **Delta 中性** 的數學符號 — 透過 GMX v2 GM + Hyperliquid 1× Short 對沖腿中和方向性敞口。**SliverVine Citadel Shield** 為將二者綁定的預共識執行安全原語。
 
@@ -62,8 +62,8 @@ SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) 為包裹 Arbitrum One �
 | 主題 | DDIP 章節 | 延伸 SSOT |
 |------|----------|----------|
 | 60 重架構不變量 | §五（監管對齊） | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) §三 |
-| Robinhood 三柱架構 | §2.3 | [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
-| Principal 安全質詢 | §二 | [`PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) |
+| Robinhood 三柱架構 | §2.3 | [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) |
+| Principal 安全質詢 | §二 | [`05_PRINCIPAL_AUDIT_REPORT.md`](./05_PRINCIPAL_AUDIT_REPORT.md) |
 | Yellow Paper / R01–R20 | §2.2 | [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) |
 
 ---
@@ -273,11 +273,11 @@ pnpm tsx scripts/generate-survival-report.ts
 
 | 文檔 | 用途 |
 |------|------|
-| [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | 英文官方 SSOT |
+| [`01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | 英文官方 SSOT |
 | [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) | Yellow Paper |
 | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | 60 不變量 · 壓力框架 |
-| [`PRINCIPAL_AUDIT_REPORT.md`](./PRINCIPAL_AUDIT_REPORT.md) | 四項診斷質詢 |
-| [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | 三柱 · 橋接閘門 |
+| [`05_PRINCIPAL_AUDIT_REPORT.md`](./05_PRINCIPAL_AUDIT_REPORT.md) | 四項診斷質詢 |
+| [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | 三柱 · 橋接閘門 |
 
 ---
 

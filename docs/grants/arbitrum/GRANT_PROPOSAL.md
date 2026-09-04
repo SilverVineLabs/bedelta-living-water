@@ -63,7 +63,7 @@ Security diligence is first-class: **3-Tier Audit Matrix** — security tier **5
 |-------|-------|--------|
 | Open House / Buildathon | Live HUD · Gate · Sepolia proof · **173 test files | 765 PASS Clean** · 5-step E2E (`pnpm run demo:e2e`) | ✅ Submitted |
 | Security Grant pack | Cold audit pack · R01–R20 + Slither/Echidna narrative | ⏳ Planned |
-| Institutional AA | Kernel v3 Session Key — [ZeroDev Comparative Analysis](../../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) · [Technical Specification §2.4](../../architecture/01_TECHNICAL_SPECIFICATION.md#24-pillar-1--zerodev-account-abstraction-deep-specification) | ✅ Delivered in v1.0 |
+| Institutional AA | Kernel v3 Session Key — [ZeroDev Comparative Analysis](../../audit/02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) · [Technical Specification §2.4](../../architecture/01_TECHNICAL_SPECIFICATION.md#24-pillar-1--zerodev-account-abstraction-deep-specification) | ✅ Delivered in v1.0 |
 
 ---
 

@@ -74,7 +74,7 @@ pnpm tsx examples/agent-interceptor-demo.ts --trip   # Rogue ElizaOS intent → 
 | Dune telemetry · SQL panels | [Dune Dashboard Specification](../telemetry/DUNE_DASHBOARD_SPECIFICATION.md) |
 | Pendle × GMX cross-guard | [§ Core Risk Decision Matrix](#core-risk-decision-matrix-evaluatependlegmxcrossguard) · [`pendle-gmx-cross-guard.ts`](../../src/guards/pendle-gmx-cross-guard.ts) |
 | [ERC-8196](https://eips.ethereum.org/EIPS/eip-8196) agent policy | [Technical Specification §0.1](../architecture/01_TECHNICAL_SPECIFICATION.md#01-bytecode-predicate-verification-v10--erc-7715--post-grant-design-spec) |
-| Institutional DD / Basel mapping | [Due Diligence Memorandum](../audit/INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
+| Institutional DD / Basel mapping | [Due Diligence Memorandum](../audit/01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) |
 | **80/20 boundaries & V2.0 R&D** | [Risk Spectrum §0.1](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) · [§ 88% Defense Mesh](#88-defense-mesh--honest-12-post-grant-rd-blueprint) · [`JUDGE_BRIEF.md`](../../JUDGE_BRIEF.md) |
 
 Built on the Santenmoku internal engine (p50 ~106µs), [`@slivervine/citadel-sdk`](../../src/sdk/README.md), and consume-once EIP-712 Gate attestation — SliverVine intercepts AI trade intents **before** mempool or bundler ingress. Deep narrative: [Problem / Solution](#the-problem) · [Sponsor Integration Matrix](#sponsor-integration-matrix).
@@ -241,7 +241,7 @@ Hyperliquid Session Key Adapter and TCA provenance (`src/data/verified-5tx-lib/v
 
 | Pillar | Role | SSOT |
 |--------|------|------|
-| **Gatehouse (Auth)** | **Opt-In Pillar 1** ZeroDev scoped session keys · Kernel v3 · R06 / R07 · `USE_ZERODEV_AA` default-off | `zerodev-aa-*` · Gate attestation · [`PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
+| **Gatehouse (Auth)** | **Opt-In Pillar 1** ZeroDev scoped session keys · Kernel v3 · R06 / R07 · `USE_ZERODEV_AA` default-off | `zerodev-aa-*` · Gate attestation · [`02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md`](../audit/02_PILLAR_1_GATEHOUSE_ZERODEV_AA_ANALYSIS.md) |
 | **Pillar 2: Compliance Ingress Firewall** | Venue-agnostic unidirectional AML escort · Robinhood / Across (`46630`/`4663` → `42161`) as **Pillar 2 Reference Escort Adapters** | `src/adapters/across-ingress-bridge.ts` · `contracts/IngressSafetySwitch.sol` |
 | **Shield (CORE MOAT)** | Sub-ms Wasm pre-execution armor · p50 ~106 μs · fail-closed before mempool · **independent of ZeroDev** | `checkSoilResistance()` · `soil_core.wasm` · Stylus `SliverVineSoilCoprocessor` |
 

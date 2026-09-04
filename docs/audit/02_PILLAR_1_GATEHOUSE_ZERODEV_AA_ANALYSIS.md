@@ -8,7 +8,7 @@
 | **Branch baseline** | `v1.0_push_BDLW` |
 | **Entity** | SilverVine Labs · SliverVine Protocol (BeDelta Living Water v1.0 / BeΔ) |
 | **Baseline** | **Vitest SSOT:** **173 test files | 765 PASS Clean** · Wasm **91.2 KiB gzip** · Shield **p50 ~106 µs** (TS Gateway path) · Wasm warm **&lt;60 µs** |
-| **Related SSOT** | [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) §2.4 · [Risk Spectrum §0.1](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) |
+| **Related SSOT** | [`01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) · [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) §2.4 · [Risk Spectrum §0.1](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md#01-what-slivervine-citadel-shield-does--and-does-not--guarantee) |
 
 > **Boundary:** ZeroDev Kernel v3 is an **Opt-In Pillar 1 Account Abstraction Layer** (`USE_ZERODEV_AA` default-off). **Pillar 3 Edge Wasm Shield** (`checkSoilResistance()` · p50 ~106 µs · `pkg/soil_core.wasm`) and **Pillar 2 Arbitrum Native Ingress** function **100% independently** — ZeroDev failure never impairs sub-ms pre-broadcast protection or bridge `lostUsd ≡ 0` accounting.
 
@@ -218,10 +218,10 @@ Pillar 3 — checkSoilResistance() · p50 ~106 µs · Fail-Closed
 
 | Document | Purpose |
 |----------|---------|
-| [`INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Full DDIP · Risk & Disclaimer · Basel mapping |
+| [`01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md`](./01_INSTITUTIONAL_DUE_DILIGENCE_MEMORANDUM.md) | Full DDIP · Risk & Disclaimer · Basel mapping |
 | [`01_TECHNICAL_SPECIFICATION.md`](../architecture/01_TECHNICAL_SPECIFICATION.md) §2.4 | Opt-In ZeroDev Kernel v3/v4 · Wasm Shield decoupled (§2.4.1) |
-| [`PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Three Pillars · AML firewall |
-| [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield · R01–R20 |
+| [`03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md`](./03_PILLAR_2_COMPLIANCE_INGRESS_FIREWALL_AUDIT.md) | Three Pillars · AML firewall |
+| [`04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](./04_PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md) | Pillar 3 Wasm Shield · R01–R20 |
 | [`03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md`](../architecture/03_RISK_MITIGATION_AND_DISCLAIMER_FRAMEWORK.md) | Risk mitigation · fail-closed boundaries · 60 invariants · real yield vs. toxic inflation |
 
 ---
