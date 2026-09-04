@@ -47,6 +47,8 @@ export interface SoilResistanceInput {
   crossSpread?: CrossSpreadSoilInput;
   /** GMX v2 GM pool price-impact penalty / subsidy probe */
   gmxPriceImpact?: GmxV2PriceImpactSoilInput;
+  /** Disable dynamic ±2–5 bps threshold jitter (tests / replay) */
+  disableThresholdJitter?: boolean;
 }
 
 export interface SoilResistanceResult {

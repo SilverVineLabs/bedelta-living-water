@@ -33,6 +33,7 @@ import {
   applySoilRiskCaps,
   computeSoilSlippageMetrics,
 } from "./soil-resistance-math";
+import { resolveJitteredSoilThresholds } from "./soil-threshold-jitter";
 import {
   MAX_SLIPPAGE,
   resolveSoilMinDepthUsd,
@@ -102,8 +103,13 @@ export function checkSoilResistance(
   input: SoilResistanceInput,
 ): SoilResistanceResult {
   const { symbol, depthUsd } = input;
-  const slippageFuse = input.maxSlippage ?? MAX_SLIPPAGE;
-  const metrics = computeSoilSlippageMetrics(input);
+  const { slippageFuse, minDepthUsd } = resolveJitteredSoilThresholds(input);
+  const effectiveInput: SoilResistanceInput = {
+    ...input,
+    maxSlippage: slippageFuse,
+    minDepthUsd,
+  };
+  const metrics = computeSoilSlippageMetrics(effectiveInput);
   const reasons = [...collectExternalSoilReasons(input), ...metrics.reasons];
 
   const tripped = reasons.length > 0;
@@ -141,7 +147,7 @@ export function checkSoilResistance(
           spotPerpSlippage: result.spotPerpSlippage,
           maxSlippage: slippageFuse,
           depthUsd: depthUsd ?? null,
-          minDepthUsd: resolveSoilMinDepthUsd(input),
+          minDepthUsd,
           reasons: formatTripReasons(reasons),
           tradeAllowed: false,
         },

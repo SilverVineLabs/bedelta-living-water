@@ -96,6 +96,12 @@ from langchain_core.tools import BaseTool  # SlivervinePreExecutionGuardTool in 
 
 Executable adapters with Cyberpunk ANSI HUD: [`examples/adapters/`](./examples/adapters/) (TS + Python) · Reference harness: [`examples/agent-interceptor-demo.ts`](./examples/agent-interceptor-demo.ts)
 
+#### AI Behavioral Safety Substrate
+
+- **Native LLM Back-off & Retry Intercepts** — `withCitadelShield` enforces a **60-second mandatory cooldown** per `agentId` after `SOIL_RESISTANCE_TRIP` / `FAIL_CLOSED` severance, returning an LLM-readable `[Citadel Back-off] MANDATORY_COOLDOWN_ACTIVE` error to stop token-burning infinity retry loops and RPC rate-limit storms ([`src/sdk/decorator.ts`](./src/sdk/decorator.ts)).
+- **Dynamic Threshold Jitter (±2–5 bps)** — `checkSoilResistance()` applies cryptographic pseudo-random noise to slippage / depth cutoffs so MEV searchers cannot snipe static 50 bps fuse boundaries off-chain ([`soil-threshold-jitter.ts`](./src/services/risk-control-lib/soil-threshold-jitter.ts)).
+- **Non-Semantic Bytecode Predicate Assertions** — Shield enforces **Asymmetric Predicate Bytecode Hard Assertions** on ERC-4337 UserOp calldata (not natural-language prompts) — immune to indirect prompt-injection narratives at the signing layer (§0.1 · [`TECHNICAL_SPECIFICATION.md`](./docs/architecture/TECHNICAL_SPECIFICATION.md)).
+
 ---
 
 ## Official Rubric — CLI Proof Pointers
