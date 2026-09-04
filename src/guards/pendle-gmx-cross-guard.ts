@@ -1,5 +1,4 @@
 import {
-  hydratePendlePtRegistryEntry,
   resolvePendlePtMarketState,
   resolvePendlePtRegistryEntry,
 } from "../adapters/pendle/pendle-pt-registry";
