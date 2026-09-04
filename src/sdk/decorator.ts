@@ -18,7 +18,7 @@ export function __clearCitadelCooldownsForTests(): void {
 }
 
 function resolveAgentId(intent: CitadelShieldIntent): string {
-  return intent.agentId?.trim() || intent.symbol?.trim() || "default-agent";
+  return intent.agentId?.trim() || "default-agent";
 }
 
 function activateCooldown(agentId: string): void {
@@ -32,7 +32,7 @@ function assertCooldownClear(agentId: string): void {
   if (now < cooldownUntil) {
     const remainingSec = Math.max(1, Math.ceil((cooldownUntil - now) / 1000));
     throw new Error(
-      `[Citadel Back-off] MANDATORY_COOLDOWN_ACTIVE: Do not retry for ${remainingSec} seconds to prevent token burn and RPC rate limits.`,
+      `[Citadel Back-off] MANDATORY_COOLDOWN_ACTIVE: Agent '${agentId}' tripped soil fuse recently. DO NOT RETRY or invoke LLM inference for the next ${remainingSec} seconds to prevent token burn and RPC rate limits.`,
     );
   }
   activeCooldowns.delete(agentId);

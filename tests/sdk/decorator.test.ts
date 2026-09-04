@@ -71,7 +71,7 @@ describe("withCitadelShield", () => {
     );
   });
 
-  it("enforces 60s mandatory cooldown after soil trip before retry", async () => {
+  it("activates cooldown on SOIL_RESISTANCE_TRIP and blocks immediate retry with MANDATORY_COOLDOWN_ACTIVE", async () => {
     vi.useFakeTimers();
     const soilSpy = vi.spyOn(riskControl, "checkSoilResistance");
     soilSpy
@@ -94,6 +94,9 @@ describe("withCitadelShield", () => {
 
     await expect(shielded(healthyIntent)).rejects.toThrow("[Citadel Shield Trip]");
     await expect(shielded(healthyIntent)).rejects.toThrow("MANDATORY_COOLDOWN_ACTIVE");
+    await expect(shielded(healthyIntent)).rejects.toThrow(
+      "Agent 'virtuals-agent-0xbeef' tripped soil fuse recently",
+    );
     expect(executionFn).not.toHaveBeenCalled();
     expect(soilSpy).toHaveBeenCalledTimes(1);
 
