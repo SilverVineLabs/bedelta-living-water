@@ -2,11 +2,11 @@
 /**
  * Unified E2E Citadel Demo — 5-step institutional trade lifecycle (grant auditor CLI).
  *
- * Step 1: Citadel Pre-Execution (verifyAgentIntent + Wasm Soil + Deadman Switch)
- * Step 2: Robinhood 46630 → 42161 Unidirectional Escort & AML inbound block
- * Step 3: GMX v2 underweight rebalance (+5 bps uiFeeReceiver)
- * Step 4: Hyperliquid Session Key hedge envelope (simulate / execute)
- * Step 5: R20 Physical Deadlock → Panic Flash unwind interception
+ * Step 1: [Pillar 3] Edge Shield / Wasm Soil Core — checkSoilResistance() + Deadman Switch
+ * Step 2: [Pillar 2] Compliance Ingress Firewall — Robinhood/Across escort · lostUsd ≡ 0
+ * Step 3: GMX v2 Underweight Rebalance & UI Fee Rebase (+10 bps uiFeeReceiver)
+ * Step 4: Hyperliquid 1× Short Session Key Hedge Envelope — cross-venue Δnet proof
+ * Step 5: [R20] Physical Deadlock / Fail-Closed Circuit Breaker — EIP-712 severance
  *
  * Usage:
  *   pnpm demo:e2e | demo:pipeline | demo:citadel   # dry-run (default)
@@ -116,6 +116,8 @@ function highlightDemoLine(line: string): string {
   out = out.replace(/uiFeeReceiver/gi, `${YELLOW}uiFeeReceiver${RESET}`);
   out = out.replace(/\+\s*10\s*bps/gi, `${YELLOW}+10 bps${RESET}`);
   out = out.replace(/<\s*60\s*µs/gi, `${CYAN}<60µs${RESET}`);
+  out = out.replace(/Pillar [123]/g, (m) => `${BRIGHT_CYAN}${m}${RESET}`);
+  out = out.replace(/Architecture:/g, `${CYAN}Architecture:${RESET}`);
   out = out.replace(/Wasm Core Hot-Path/g, `${BRIGHT_CYAN}Wasm Core Hot-Path${RESET}`);
   out = out.replace(/Wasm Soil p50/g, `${BRIGHT_CYAN}Wasm Soil p50${RESET}`);
   out = out.replace(/\bIN_BAND\b/g, `${GREEN}IN_BAND${RESET}`);
@@ -162,9 +164,10 @@ function parseMode(argv: string[]): DemoMode {
   return "dry-run";
 }
 
-function logStep(n: number, title: string): void {
+function logStep(n: number, title: string, architecture: string): void {
   demoLog("");
   demoLog(`── Step ${n}: ${title} ──`);
+  demoLog(`    Architecture: ${architecture}`);
 }
 
 function sha16(payload: unknown): string {
@@ -217,7 +220,8 @@ function step1CitadelPreExec(): {
 } {
   logStep(
     1,
-    "Citadel Pre-Execution Check (verifyAgentIntent + Wasm Soil + Restored Deadman Switch)",
+    "Citadel Pre-Execution — Wasm Soil + Deadman Switch",
+    "[Pillar 3: Edge Shield / Wasm Soil Core] checkSoilResistance() sub-ms intent clearing + Deadman Switch",
   );
   const wasmOk = ensureSoilWasm();
   demoLog(
@@ -317,7 +321,8 @@ function step2RobinhoodEscort(): {
 } {
   logStep(
     2,
-    "Robinhood Chain 46630 → 42161 Unidirectional Escort & AML Block Test",
+    "Robinhood 46630 → 42161 Unidirectional Escort & AML Ingress Block",
+    "[Pillar 2: Compliance Ingress Firewall] Unidirectional Across/Robinhood Escort accounting with lostUsd ≡ 0",
   );
   const nowMs = Date.now();
 
@@ -366,7 +371,11 @@ function step3GmxUnderweightRebalance(): {
   underweightSide: string;
   payloadRef: string;
 } {
-  logStep(3, `GMX v2 Underweight Pool Rebalance (uiFeeReceiver +${GMX_UI_FEE_BPS} bps Injection)`);
+  logStep(
+    3,
+    "GMX v2 Underweight Rebalance & UI Fee Rebase",
+    `GMX v2 Underweight Rebalance & UI Fee Rebase (+${GMX_UI_FEE_BPS} bps uiFeeReceiver builder lane)`,
+  );
 
   const pool = { longTokenUsd: 8_000_000, shortTokenUsd: 2_000_000 };
   const isLong = false; // short side underweight → short order qualifies
@@ -425,7 +434,11 @@ async function step4HlSessionHedge(mode: DemoMode): Promise<{
   oid: number | null;
   detail: string;
 }> {
-  logStep(4, "Hyperliquid Session Key Hedge Envelope Generation");
+  logStep(
+    4,
+    "Hyperliquid 1× Short Session Key Hedge Envelope",
+    "Hyperliquid 1× Short Session Key Hedge Envelope — cross-venue delta-neutral proof",
+  );
 
   const limitPx = formatHlPerpPrice(DEMO_ETH_MID * 0.99, HL_ETH_SZ_DECIMALS);
   const wirePlan = buildSessionAgentMarketOrderWire({
@@ -497,7 +510,11 @@ function step5R20PanicFlash(): {
   closeCount: number;
   withinBudget: boolean;
 } {
-  logStep(5, "R20 Physical Deadlock & Panic Flash Unwind Interception");
+  logStep(
+    5,
+    "R20 Physical Deadlock & Panic Flash Unwind",
+    "[R20 Physical Deadlock / Fail-Closed Circuit Breaker] EIP-712 signing channel severance under slippage/depth anomalies",
+  );
 
   __resetCircuitBreakerSeverForTests();
 
