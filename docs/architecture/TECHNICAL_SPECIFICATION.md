@@ -442,6 +442,8 @@ Routing policy: venue selected per risk flags; both paths share the same fail-cl
 
 > **Full Wasm / latency specification:** [`PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md`](../audit/PILLAR_3_EDGE_SHIELD_WASM_CORESPEC.md#wasm-soil-core-engine-no_std).
 
+> **Dual-Engine Soil Topology:** SliverVine Citadel Shield enforces dual-engine soil resistance: pure high-throughput TypeScript soil math on Cloudflare Worker hot paths, alongside native `pkg/soil_core.wasm` execution on `@slivervine/citadel-sdk` agent-intent paths. Both engines share identical p50 ~106µs fail-closed thresholds and defense bounds.
+
 - Artifact: `pkg/soil_core.wasm` (`#![no_std]`)
 - Budget: **&lt;28kb** Cloudflare · hot-path exec **&lt;60µs** · Shield p50 **~106µs**
 - Wire: `src/sdk/soil-wasm.ts` (production); TS sim fallback for dev
